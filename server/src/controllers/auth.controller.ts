@@ -34,10 +34,8 @@ export const register = async (req: Request, res: Response): Promise<Response> =
       refreshToken: tokens.refreshToken,
     });
 
-    const responseUser = createResponseUser(user);
-
     return CustomResponse.created(res, {
-      user: responseUser,
+      user: createResponseUser(user),
       ...tokens,
     });
   } catch (error) {
@@ -77,16 +75,28 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       refreshToken: tokens.refreshToken,
     });
 
-    const responseUser = createResponseUser(existedUser);
-
     return CustomResponse.created(res, {
       ...tokens,
-      user: responseUser,
+      user: createResponseUser(existedUser),
     });
   } catch (error) {
     console.error(error);
     return CustomResponse.serverError(res, {
       message: 'server side authorization error',
+    });
+  }
+};
+
+export const authMe = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const existedUser = await UserModel.getById(req.user.id);
+
+    return CustomResponse.ok(res, createResponseUser(existedUser));
+  } catch (error) {
+    console.log(error);
+    return CustomResponse.serverError(res, {
+      id: req.user.id,
+      message: 'an error occurred on the server side while getting user information',
     });
   }
 };

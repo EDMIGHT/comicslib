@@ -51,7 +51,7 @@ class TokenService {
       }
       return await TokenModel.create({ userId, refreshToken });
     } catch (error) {
-      console.log('token save: ', error);
+      console.error('token save: ', error);
       return null;
     }
   }

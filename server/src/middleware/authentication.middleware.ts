@@ -4,7 +4,7 @@ import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 
-const authentication = async (
+export const authentication = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -44,5 +44,3 @@ const authentication = async (
     });
   }
 };
-
-export default authentication;
