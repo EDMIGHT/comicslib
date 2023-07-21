@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
-import customResponse from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/customResponse';
 
 const authentication = async (
   request: Request,
@@ -12,7 +12,7 @@ const authentication = async (
   try {
     const token = request.headers.authorization?.split(' ')[1];
     if (!token) {
-      return customResponse.unauthorized(response, {
+      return CustomResponse.unauthorized(response, {
         message: 'unauthorized access',
       });
     }
@@ -29,17 +29,17 @@ const authentication = async (
         request.user = existedUser;
         return next();
       } else {
-        return customResponse.unauthorized(response, {
+        return CustomResponse.unauthorized(response, {
           message: 'request from non-existent user',
         });
       }
     } else {
-      return customResponse.unauthorized(response, {
+      return CustomResponse.unauthorized(response, {
         message: 'unauthorized access, token expired',
       });
     }
   } catch (error) {
-    return customResponse.serverError(response, {
+    return CustomResponse.serverError(response, {
       message: 'an error occurred while authenticating on the server side',
     });
   }
