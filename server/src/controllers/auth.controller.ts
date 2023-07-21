@@ -3,8 +3,9 @@ import { Request, Response } from 'express';
 
 import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
-import createResponseUser from '@/utils/helpers/createResponseUser';
+import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
+import { isTokenInvalid } from '@/utils/helpers/isTokenInvalid';
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -97,6 +98,47 @@ export const authMe = async (req: Request, res: Response): Promise<Response> => 
     return CustomResponse.serverError(res, {
       id: req.user.id,
       message: 'an error occurred on the server side while getting user information',
+    });
+  }
+};
+
+export const updateTokens = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  try {
+    const { refreshToken } = request.body;
+
+    const tokenPayload = await tokenService.verifyRefreshToken(refreshToken);
+    const dbToken = await tokenService.findRefreshToken(refreshToken);
+
+    if (!dbToken || !tokenPayload || isTokenInvalid(dbToken, tokenPayload)) {
+      return CustomResponse.unauthorized(response, {
+        message: 'unauthorized access',
+      });
+    }
+
+    const tokens = tokenService.createTokens({
+      id: tokenPayload.id,
+      login: tokenPayload.login,
+    });
+    await tokenService.save({
+      userId: tokenPayload.id,
+      refreshToken: tokens.refreshToken,
+    });
+
+    const existedUser = await UserModel.getByLogin(tokenPayload.login);
+
+    const responseUser = createResponseUser(existedUser);
+
+    return CustomResponse.ok(response, {
+      ...tokens,
+      user: responseUser,
+    });
+  } catch (error) {
+    console.error('update token: ', error);
+    return CustomResponse.serverError(response, {
+      message: `an error occurred on the server while updating tokens: ${error}`,
     });
   }
 };
