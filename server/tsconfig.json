@@ -27,6 +27,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true // чтоб не руинило переопределение Request-а
   },
-  "include": ["src/**/*.ts", ".eslintrc.cjs", "jest.config.cjs", "tests/**/*.ts"],
+  "include": ["src/**/*.ts", ".eslintrc.cjs"],
   "exclude": ["node_modules", "**/*.test.ts"]
 }

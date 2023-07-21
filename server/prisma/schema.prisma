@@ -8,9 +8,18 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   login    String  @unique
   name     String?
   password String
   img      String  @default("/uploads/default-avatar.jpg")
+  Token    Token?
+}
+
+model Token {
+  userId       String    @id
+  refreshToken String    @db.VarChar(255)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime? @updatedAt @map("updated_at")
+  user         User      @relation(fields: [userId], references: [id])
 }
