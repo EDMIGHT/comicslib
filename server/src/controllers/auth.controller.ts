@@ -47,3 +47,46 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     });
   }
 };
+
+export const login = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { login, password } = req.body;
+
+    const existedUser = await UserModel.getByLogin(login);
+
+    if (!existedUser) {
+      return CustomResponse.notFound(res, {
+        message: `User with login = ${login} does not exist`,
+      });
+    }
+
+    const isPasswordEqual = await bcrypt.compare(password, existedUser.password);
+
+    if (!isPasswordEqual) {
+      return CustomResponse.conflict(res, {
+        message: 'wrong password',
+      });
+    }
+
+    const tokens = await tokenService.createTokens({
+      id: existedUser.id,
+      login: existedUser.login,
+    });
+    await tokenService.save({
+      userId: existedUser.id,
+      refreshToken: tokens.refreshToken,
+    });
+
+    const responseUser = createResponseUser(existedUser);
+
+    return CustomResponse.created(res, {
+      ...tokens,
+      user: responseUser,
+    });
+  } catch (error) {
+    console.error(error);
+    return CustomResponse.serverError(res, {
+      message: 'server side authorization error',
+    });
+  }
+};

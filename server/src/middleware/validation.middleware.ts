@@ -3,7 +3,7 @@ import { validationResult } from 'express-validator';
 
 import { CustomResponse } from '@/utils/helpers/customResponse';
 
-const validation = async (
+export const validation = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -22,5 +22,3 @@ const validation = async (
     });
   }
 };
-
-export default validation;
