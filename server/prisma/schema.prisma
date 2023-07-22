@@ -39,8 +39,10 @@ model Author {
 
 model Genre {
   id     String  @id @default(uuid())
-  title  String
+  title  String  @unique
   comics Comic[]
+
+  @@index([title])
 }
 
 model Comic {
