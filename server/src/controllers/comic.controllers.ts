@@ -17,3 +17,15 @@ export const createComic = async (req: Request, res: Response): Promise<Response
     });
   }
 };
+
+// export const getComics = async (req: Request, res: Response): Promise<Response> => {
+//   try {
+//     const comics = await ComicModel.
+//   } catch (error) {
+//     return serverErrorResponse({
+//       res,
+//       message: 'error while fetching comics on server side',
+//       error,
+//     });
+//   }
+// };

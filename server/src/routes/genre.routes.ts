@@ -1,14 +1,12 @@
 import express from 'express';
 
-import { createComic } from '@/controllers/comic.controllers';
+import { createGenre } from '@/controllers/genre.controllers';
 import { authentication } from '@/middleware/authentication.middleware';
 import { validation } from '@/middleware/validation.middleware';
-import { createComicValidators } from '@/utils/validations/comic.validators';
+import { createGenreValidators } from '@/utils/validations/genre.validators';
 
 const router = express.Router({ mergeParams: true });
 
-router.get('/');
-
-router.post('/', authentication, createComicValidators, validation, createComic);
+router.post('/', authentication, createGenreValidators, validation, createGenre);
 
 export default router;

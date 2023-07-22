@@ -10,4 +10,5 @@ export class ComicModel {
       data,
     });
   }
+  // public static async getAll()
 }

@@ -32,19 +32,15 @@ model Token {
 }
 
 model Author {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  comics    Comic[]
+  id     String  @id @default(uuid())
+  name   String
+  comics Comic[]
 }
 
 model Genre {
-  id        String   @id @default(uuid())
-  title     String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  comics    Comic[]
+  id     String  @id @default(uuid())
+  title  String
+  comics Comic[]
 }
 
 model Comic {
@@ -73,13 +69,11 @@ model Rating {
 }
 
 model Folder {
-  id        String   @id @default(uuid())
-  title     String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  comics    Comic[]
+  id     String  @id @default(uuid())
+  title  String
+  user   User    @relation(fields: [userId], references: [id])
+  userId String
+  comics Comic[]
 }
 
 model Comment {
