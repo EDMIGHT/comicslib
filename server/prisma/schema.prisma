@@ -8,18 +8,86 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  login    String  @unique
-  name     String?
-  password String
-  img      String  @default("/uploads/default-avatar.jpg")
-  Token    Token?
+  id        String    @id @default(uuid())
+  login     String    @unique
+  name      String?
+  password  String
+  img       String    @default("/uploads/default-avatar.jpg")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  token     Token?
+  ratings   Rating[]
+  folders   Folder[]
+  comments  Comment[]
+
+  @@index([login])
 }
 
 model Token {
-  userId       String    @id
-  refreshToken String    @db.VarChar(255)
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime? @updatedAt @map("updated_at")
-  user         User      @relation(fields: [userId], references: [id])
+  userId       String   @id @map("user_id")
+  refreshToken String   @map("refresh_token") @db.VarChar(255)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model Author {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  comics    Comic[]
+}
+
+model Genre {
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  comics    Comic[]
+}
+
+model Comic {
+  id        String    @id @default(uuid())
+  title     String
+  img       String    @default("/uploads/default-comics.jpg")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  authors   Author[]
+  ratings   Rating[]
+  genres    Genre[]
+  folders   Folder[]
+  comments  Comment[]
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  value     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  comic     Comic    @relation(fields: [comicId], references: [id])
+  comicId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Folder {
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  comics    Comic[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  comic     Comic    @relation(fields: [comicId], references: [id])
+  comicId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }

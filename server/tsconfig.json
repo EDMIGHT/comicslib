@@ -25,7 +25,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true // чтоб не руинило переопределение Request-а
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", ".eslintrc.cjs"],
   "exclude": ["node_modules", "**/*.test.ts"]
