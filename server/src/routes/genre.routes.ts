@@ -1,8 +1,7 @@
 import express from 'express';
 
 import { createGenre } from '@/controllers/genre.controllers';
-import { authentication } from '@/middleware/authentication.middleware';
-import { validation } from '@/middleware/validation.middleware';
+import { authentication, validation } from '@/middleware';
 import { createGenreValidators } from '@/utils/validations/genre.validators';
 
 const router = express.Router({ mergeParams: true });

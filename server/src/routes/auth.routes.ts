@@ -1,8 +1,7 @@
 import express from 'express';
 
 import { authMe, login, register, updateTokens } from '@/controllers/auth.controllers';
-import { authentication } from '@/middleware/authentication.middleware';
-import { validation } from '@/middleware/validation.middleware';
+import { authentication, validation } from '@/middleware';
 import { loginValidators, registerValidators } from '@/utils/validations/auth.validators';
 
 const router = express.Router({ mergeParams: true });
