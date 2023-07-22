@@ -50,6 +50,7 @@ model Genre {
 model Comic {
   id        String    @id @default(uuid())
   title     String
+  desc      String?   @db.Text
   img       String    @default("/uploads/default-comics.jpg")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")

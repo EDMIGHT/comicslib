@@ -19,12 +19,9 @@ export class TokenModel {
       },
     });
   }
-  public static async create({ userId, refreshToken }: ICreateTokenArg): Promise<Token> {
+  public static async create(data: ICreateTokenArg): Promise<Token> {
     return prisma.token.create({
-      data: {
-        userId,
-        refreshToken,
-      },
+      data,
     });
   }
   public static async update({ userId, refreshToken }: ICreateTokenArg): Promise<Token> {
