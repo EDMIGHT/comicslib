@@ -28,6 +28,7 @@ interface IQuery {
 interface IGetAllArg {
   authors: string[];
   genres: string[];
+  title: string;
   page: number;
   limit: number;
   order: string;
@@ -55,7 +56,15 @@ export class ComicModel {
       },
     });
   }
-  public static async getAll({ authors, genres, page, limit, order, sort }: IGetAllArg) {
+  public static async getAll({
+    authors,
+    genres,
+    title,
+    page,
+    limit,
+    order,
+    sort,
+  }: IGetAllArg) {
     const query: IQuery = {};
 
     const offset = (+page - 1) * +limit;
@@ -87,6 +96,9 @@ export class ComicModel {
       },
       where: {
         ...query,
+        title: {
+          contains: title,
+        },
       },
       include: {
         genres: true,
@@ -103,7 +115,8 @@ export class ComicModel {
   public static async getAllCount({
     genres,
     authors,
-  }: Pick<IGetAllArg, 'authors' | 'genres'>): Promise<number> {
+    title,
+  }: Pick<IGetAllArg, 'authors' | 'genres' | 'title'>): Promise<number> {
     const query: IQuery = {};
 
     if (genres.length > 0) {
@@ -128,6 +141,9 @@ export class ComicModel {
     return prisma.comic.count({
       where: {
         ...query,
+        title: {
+          contains: title,
+        },
       },
     });
   }

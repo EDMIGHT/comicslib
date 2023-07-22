@@ -1,4 +1,5 @@
 import { authentication } from './authentication.middleware';
+import { upload } from './upload.middleware';
 import { validation } from './validation.middleware';
 
-export { authentication, validation };
+export { authentication, upload, validation };

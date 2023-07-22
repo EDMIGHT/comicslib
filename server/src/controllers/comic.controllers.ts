@@ -23,6 +23,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     const {
       genres,
       authors,
+      title,
       page = 1,
       limit = 10,
       order = 'desc',
@@ -35,6 +36,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     const comics = await ComicModel.getAll({
       authors: authorsList,
       genres: genresList,
+      title: title as string,
       page: +page,
       limit: +limit,
       order: order as string,
@@ -44,6 +46,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     const totalComics = await ComicModel.getAllCount({
       genres: genresList,
       authors: authorsList,
+      title: title as string,
     });
 
     return CustomResponse.ok(res, {
