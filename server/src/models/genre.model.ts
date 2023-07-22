@@ -5,7 +5,7 @@ import prisma from '@/db/prisma';
 type ICreateGenreArg = Pick<Genre, 'title'>;
 
 export class GenreModel {
-  public static async create(data: ICreateGenreArg) {
+  public static async create(data: ICreateGenreArg): Promise<Genre> {
     return prisma.genre.create({
       data,
     });
