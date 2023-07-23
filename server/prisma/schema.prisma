@@ -57,6 +57,8 @@ model Comic {
   genres    Genre[]
   folders   Folder[]
   comments  Comment[]
+
+  @@index([title])
 }
 
 model Rating {

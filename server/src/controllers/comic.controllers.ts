@@ -43,6 +43,16 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       sort: sort as string,
     });
 
+    const comicsWithAvgRating = await Promise.all(
+      comics.map(async (comic) => {
+        const avgRating = await ComicModel.getAvgRating(comic.id);
+        return {
+          ...comic,
+          avgRating,
+        };
+      })
+    );
+
     const totalComics = await ComicModel.getAllCount({
       genres: genresList,
       authors: authorsList,
@@ -50,7 +60,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     });
 
     return CustomResponse.ok(res, {
-      comics,
+      comics: comicsWithAvgRating,
       currentPage: +page,
       totalPages: Math.ceil(totalComics / +limit),
     });
@@ -58,6 +68,33 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     return serverErrorResponse({
       res,
       message: 'error while fetching comics on server side',
+      error,
+    });
+  }
+};
+
+export const getComic = async (req: Request, res: Response): Promise<Response> => {
+  const { id } = req.params;
+
+  try {
+    const existedComic = await ComicModel.get(id);
+
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: `сomic with id = ${id} does not exist`,
+      });
+    }
+
+    const avgRating = await ComicModel.getAvgRating(existedComic.id);
+
+    return CustomResponse.ok(res, {
+      ...existedComic,
+      avgRating,
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when fetching comic with id = ${id}`,
       error,
     });
   }

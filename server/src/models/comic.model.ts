@@ -1,6 +1,7 @@
 import { Comic } from '@prisma/client';
 
 import prisma from '@/db/prisma';
+import { IComicWithData, IComicWithDataSingle } from '@/types/comic.types';
 
 type ICreateComic = Pick<Comic, 'title' | 'desc'> &
   Partial<Pick<Comic, 'img'>> & {
@@ -64,7 +65,7 @@ export class ComicModel {
     limit,
     order,
     sort,
-  }: IGetAllArg) {
+  }: IGetAllArg): Promise<IComicWithData[]> {
     const query: IQuery = {};
 
     const offset = (+page - 1) * +limit;
@@ -146,5 +147,36 @@ export class ComicModel {
         },
       },
     });
+  }
+  public static async get(id: string): Promise<IComicWithDataSingle | null> {
+    return prisma.comic.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        authors: true,
+        genres: true,
+        comments: true,
+        _count: {
+          select: {
+            comments: true,
+            folders: true,
+            ratings: true,
+          },
+        },
+      },
+    });
+  }
+  public static async getAvgRating(id: string): Promise<number | null> {
+    const avgRating = await prisma.rating.aggregate({
+      where: {
+        comicId: id,
+      },
+      _avg: {
+        value: true,
+      },
+    });
+
+    return avgRating._avg?.value || null;
   }
 }
