@@ -33,8 +33,11 @@ model Token {
 
 model Author {
   id     String  @id @default(uuid())
-  name   String
+  login  String  @unique
+  name   String?
   comics Comic[]
+
+  @@index([login])
 }
 
 model Genre {
