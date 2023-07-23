@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ComicModel } from '@/models/comic.model';
+import { ISortOrder } from '@/types/common.types';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
@@ -39,7 +40,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       title: title as string,
       page: +page,
       limit: +limit,
-      order: order as string,
+      order: order as ISortOrder,
       sort: sort as string,
     });
 

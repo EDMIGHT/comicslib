@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { ComicModel } from '@/models/comic.model';
 import { CommentModel } from '@/models/comment.model';
+import { ISortOrder } from '@/types/common.types';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -27,6 +28,48 @@ export const createComment = async (req: Request, res: Response): Promise<Respon
     return CustomResponse.created(res, {
       ...comment,
       user: createResponseUser(comment.user),
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'error when creating a comic on the server side',
+      error,
+    });
+  }
+};
+
+export const getComments = async (req: Request, res: Response): Promise<Response> => {
+  const { comicId } = req.params;
+  const { page = 1, limit = 10, order = 'desc', sort = 'createdAt' } = req.query;
+
+  try {
+    const existedComic = await ComicModel.get(comicId);
+
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which comments are requested does not exist',
+      });
+    }
+
+    const comments = await CommentModel.getAllForComic({
+      comicId,
+      page: +page,
+      limit: +limit,
+      sort: sort as string,
+      order: order as ISortOrder,
+    });
+
+    const totalCommentsByComic = await CommentModel.getTotal(comicId);
+
+    const responseComments = comments.map((comm) => ({
+      ...comm,
+      user: createResponseUser(comm.user),
+    }));
+
+    return CustomResponse.created(res, {
+      comments: responseComments,
+      currentPage: +page,
+      totalPages: Math.ceil(totalCommentsByComic / +limit),
     });
   } catch (error) {
     return serverErrorResponse({

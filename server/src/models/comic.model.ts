@@ -2,6 +2,7 @@ import { Comic } from '@prisma/client';
 
 import prisma from '@/db/prisma';
 import { IComicWithData, IComicWithDataSingle } from '@/types/comic.types';
+import { IPaginationArg, ISortArg } from '@/types/common.types';
 
 type ICreateComic = Pick<Comic, 'title' | 'desc'> &
   Partial<Pick<Comic, 'img'>> & {
@@ -26,15 +27,12 @@ interface IQuery {
   };
 }
 
-interface IGetAllArg {
+type IGetAllArg = {
   authors: string[];
   genres: string[];
   title: string;
-  page: number;
-  limit: number;
-  order: string;
-  sort: string;
-}
+} & ISortArg &
+  IPaginationArg;
 
 export class ComicModel {
   public static async create({ authors, genres, ...data }: ICreateComic): Promise<Comic> {
