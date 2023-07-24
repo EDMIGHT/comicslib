@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const IndexPage: NextPage = () => {
   return (
-    <div className='container'>
+    <div>
       <NewComicsSection />
     </div>
   );

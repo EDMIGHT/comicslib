@@ -1,10 +1,15 @@
-import { NextPage } from 'next';
+import { Metadata, NextPage } from 'next';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
+import ComicGenres from '@/components/comic-genres';
+import { ComicInfo } from '@/components/comic-info';
+import { Button } from '@/components/ui/button';
 import { IResponseComic } from '@/types/comic.types';
 
 interface ProductPageProps {
   params: {
-    comicId: string;
+    id: string;
   };
 }
 
@@ -28,10 +33,39 @@ const getComic = async (id: string) => {
   }
 };
 
-const ComicPage: NextPage<ProductPageProps> = async ({ params: { comicId } }) => {
-  const comic = await getComic(comicId);
+// export const metadata: Metadata = {
+//   title: '',
+//   description: 'Main page',
+// };
 
-  return <div>page</div>;
+const ComicPage: NextPage<ProductPageProps> = async ({ params: { id } }) => {
+  const comic = await getComic(id);
+
+  if (!comic) {
+    notFound();
+  }
+
+  const { img, title, desc, genres, _count, avgRating } = comic;
+
+  return (
+    <div>
+      <div className='flex gap-2'>
+        <div className='flex flex-col gap-1'>
+          <Image src={img} alt={title} width={250} height={250} />
+          <Button className='w-full'>read</Button>
+          <Button className='w-full bg-secondary'>to folder</Button>
+        </div>
+        <div className='flex w-full flex-col gap-2'>
+          <div className='flex justify-between gap-2'>
+            <h1 className='text-2xl'>{title}</h1>
+            <ComicInfo avgRating={avgRating} _count={_count} />
+          </div>
+          <ComicGenres genres={genres} />
+          <p>{desc}</p>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ComicPage;

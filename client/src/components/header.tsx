@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 export const Header = () => {
   return (
-    <header className='supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full bg-background/95 p-2 backdrop-blur'>
+    <header className='supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full border-b bg-background/95 p-2 backdrop-blur'>
       <nav className='container flex justify-between gap-2'>
         <Link href='/' className='text-2xl hover:opacity-80'>
           comicslib

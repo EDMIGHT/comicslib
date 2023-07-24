@@ -27,3 +27,10 @@ export type IResponseComic = IComic & {
 export type IResponseAllComics = {
   comics: IResponseComic[];
 } & IPagination;
+
+export type IResponseSingleComic = IResponseComic & {
+  comments: {
+    id: string;
+    text: string;
+  };
+};

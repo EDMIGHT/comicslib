@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
 
+import { ReduxProvider } from '@/components/redux-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
@@ -21,9 +22,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={cn('min-h-screen bg-background font-sans antialiased', fontSans.className)}
       >
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          {children}
-        </ThemeProvider>
+        <ReduxProvider>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+            {children}
+          </ThemeProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

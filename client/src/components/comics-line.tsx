@@ -20,7 +20,13 @@ const ComicsLine: FC<IComicsProps> = ({ comics }) => {
           <Card className='flex gap-2 p-2'>
             <Link href={`/comics/${id}`}>
               <div className='relative min-h-[200px] min-w-[160px] overflow-hidden rounded hover:opacity-80'>
-                <Image src={img} alt={title} fill className='object-cover object-center ' />
+                <Image
+                  src={img}
+                  alt={title}
+                  sizes='200px'
+                  fill
+                  className='object-cover object-center '
+                />
               </div>
             </Link>
             <div className='flex flex-col gap-2'>
