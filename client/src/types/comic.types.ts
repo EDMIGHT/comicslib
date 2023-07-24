@@ -1,20 +1,29 @@
-// export type IComicCount = {
-//   comments: number;
-//   folders: number;
-//   ratings: number;
-// };
+import { IAuthor } from './author.types';
+import { IGenre } from './genre.types';
+import { IPagination } from './response.types';
 
-// export type Comic = {
-//   id: string;
-//   title: string;
-//   desc: string | null;
-//   img: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-// };
+export type IComicCount = {
+  comments: number;
+  folders: number;
+  ratings: number;
+};
 
-// export type IResponseComic = Comic & {
-//   authors: Author[];
-//   genres: Genre[];
-//   _count: Pick<IComicCount, 'comments' | 'folders'>;
-// };
+export type IComic = {
+  id: string;
+  title: string;
+  desc: string | null;
+  img: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type IResponseComic = IComic & {
+  authors: IAuthor[];
+  genres: IGenre[];
+  _count: Pick<IComicCount, 'comments' | 'folders'>;
+  avgRating: number;
+};
+
+export type IResponseAllComics = {
+  comics: IResponseComic[];
+} & IPagination;

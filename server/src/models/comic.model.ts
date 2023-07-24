@@ -4,6 +4,11 @@ import prisma from '@/db/prisma';
 import { IComicWithData, IComicWithDataSingle } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 
+const defaultComicImg = process.env.COMIC_DEFAULT_IMG_PATH;
+const hostURL = `http://localhost:${process.env.PORT}/`;
+
+const hostWithImgPath = hostURL + defaultComicImg;
+
 type ICreateComic = Pick<Comic, 'title' | 'desc'> &
   Partial<Pick<Comic, 'img'>> & {
     authors: string[];
@@ -42,6 +47,7 @@ export class ComicModel {
     return prisma.comic.create({
       data: {
         ...data,
+        img: data.img || hostWithImgPath,
         authors: {
           connect: authorsConnect,
         },

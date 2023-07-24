@@ -1,7 +1,18 @@
-import { NextPage } from 'next';
+import { Metadata, NextPage } from 'next';
 
-const pagePage = () => {
-  return <div>page</div>;
+import NewComicsSection from '@/components/new-comics-section';
+
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'Main page',
 };
 
-export default pagePage;
+const IndexPage: NextPage = () => {
+  return (
+    <div className='container'>
+      <NewComicsSection />
+    </div>
+  );
+};
+
+export default IndexPage;

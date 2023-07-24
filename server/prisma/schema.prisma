@@ -12,7 +12,7 @@ model User {
   login     String    @unique
   name      String?
   password  String
-  img       String    @default("/uploads/default-avatar.jpg")
+  img       String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   token     Token?
@@ -52,7 +52,7 @@ model Comic {
   id        String    @id @default(uuid())
   title     String
   desc      String?   @db.Text
-  img       String    @default("/uploads/default-comics.jpg")
+  img       String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   authors   Author[]
