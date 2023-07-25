@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 
 import { ReduxProvider } from '@/components/redux-provider';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ReduxProvider>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
             {children}
+            <Toaster />
           </ThemeProvider>
         </ReduxProvider>
       </body>

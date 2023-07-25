@@ -3,8 +3,8 @@ import React from 'react';
 
 import { Button } from '@/components/ui/button';
 
+import AuthMenu from './auth-menu';
 import { ThemeSwitcher } from './theme-switcher';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 export const Header = () => {
   return (
@@ -15,14 +15,24 @@ export const Header = () => {
         </Link>
         <div className='flex gap-2'>
           <ThemeSwitcher />
-          <Button variant='outline'>search</Button>
-          <Avatar>
-            <AvatarImage
-              src='https://i.pinimg.com/564x/9b/3f/e2/9b3fe2b12cdd77e50f94aac698e4318a.jpg'
-              alt='your avatar'
-            />
-            <AvatarFallback>YOU</AvatarFallback>
-          </Avatar>
+          <Button variant='outline' className='w-40 items-center justify-start gap-1'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='h-5 w-5'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
+              />
+            </svg>
+            search
+          </Button>
+          <AuthMenu />
         </div>
       </nav>
     </header>
