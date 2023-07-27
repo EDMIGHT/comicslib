@@ -1,24 +1,58 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import axios from 'axios';
 
-const BASE_API_URL = process.env.API_HOST || 'http://localhost:3001/api/';
+import { getAccessToken, removeFromStorage } from '@/lib/helpers/token.helper';
 
-export const baseQuery = fetchBaseQuery({ baseUrl: BASE_API_URL });
+import { AuthService } from './auth.service';
 
-export interface IPagination {
-  currentPage: number;
-  totalPages: number;
-}
-export interface IPaginationArg {
-  page?: number;
-  limit?: number;
-}
-
-export interface IAuthentication {
-  accessToken: string;
-}
-
-export const api = createApi({
-  reducerPath: 'api',
-  baseQuery,
-  endpoints: () => ({}),
+export const getContentType = () => ({
+  'Content-Type': 'application/json',
 });
+
+export const errorCatch = (error: any): string => {
+  const message = error?.response?.data?.message;
+
+  return message ? message : error.message;
+};
+
+export const instance = axios.create({
+  baseURL: process.env.API_HOST,
+  headers: getContentType(),
+});
+
+instance.interceptors.request.use(async (config) => {
+  const accessToken = getAccessToken();
+
+  if (config.headers && accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  return config;
+});
+
+instance.interceptors.response.use(
+  (config) => config,
+  async (error) => {
+    // сохраняем запрос у которого мы получили ошибку
+    const originalRequest = error.config;
+
+    if (
+      (error.response.status === 401 ||
+        errorCatch(error) === 'unauthorized access' ||
+        errorCatch(error) === 'unauthorized access, token expired') &&
+      error.config &&
+      !error.config._isRetry
+    ) {
+      // чтоб не повторялась попытка в случае неудачи
+      originalRequest._isRetry = true;
+
+      try {
+        await AuthService.getNewTokens();
+        return instance.request(originalRequest);
+      } catch (error) {
+        if (errorCatch(error) === 'unauthorized access, token expired') {
+          removeFromStorage();
+        }
+      }
+    }
+  }
+);

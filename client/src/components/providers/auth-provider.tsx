@@ -1,40 +1,49 @@
 'use client';
 
-import { FC, ReactNode, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
 
-import { useAppDispatch } from '@/hooks/reduxHooks';
-import { useAuthMeMutation } from '@/services/auth.service';
-import { setAuthData } from '@/store/slices/auth.slice';
+import { useActions } from '@/hooks/useActions';
+import { useAuth } from '@/hooks/useAuth';
+import { getAccessToken, getRefreshToken } from '@/lib/helpers/token.helper';
+import { IComponentAuthFields } from '@/types/auth-page.types';
 
-type IAuthProverProps = {
-  children: ReactNode;
-};
+const DynamicCheckRole = dynamic(() => import('./check-role-provider'), {
+  ssr: false,
+});
 
-export const AuthProvider: FC<IAuthProverProps> = ({ children }) => {
-  const accessToken = localStorage.getItem('accessToken') || '';
-  const refreshToken = localStorage.getItem('refreshToken') || '';
+export const AuthProvider: FC<PropsWithChildren<IComponentAuthFields>> = ({
+  Component: { isOnlyUser },
+  children,
+}) => {
+  const { user } = useAuth();
 
-  const dispatch = useAppDispatch();
+  const { checkAuth, logout } = useActions();
 
-  const [authMe, { data, isSuccess }] = useAuthMeMutation();
+  const { pathname } = useRouter();
 
   useEffect(() => {
+    // получили новые токены при первой загрузки приложения
+    const accessToken = getAccessToken();
+
     if (accessToken) {
-      authMe(accessToken);
+      checkAuth();
     }
-  }, [accessToken]);
+  }, []);
 
-  useEffect(() => {
-    if (isSuccess && data) {
-      dispatch(
-        setAuthData({
-          user: data,
-          accessToken,
-          refreshToken,
-        })
-      );
-    }
-  }, [data, isSuccess]);
+  // useEffect(() => {
+  //   // проверяем при изменении страницы не пропал ли у нас refresh токен
+  //   const refreshToken = getRefreshToken();
 
-  return <>{children}</>;
+  //   if (!refreshToken && user) {
+  //     logout();
+  //   }
+  // }, [pathname]);
+
+  return isOnlyUser ? (
+    <DynamicCheckRole Component={{ isOnlyUser }}>{children}</DynamicCheckRole>
+  ) : (
+    <>children</>
+  );
 };

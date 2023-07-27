@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IResponseAllComics } from '@/types/comic.types';
 
-import ComicsLine from './comics-line';
+import { ComicsLine } from './comics-line';
 
 const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
 

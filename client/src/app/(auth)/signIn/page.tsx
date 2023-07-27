@@ -1,7 +1,7 @@
 import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
 
-import SignInForm from '@/components/sign-in-form';
+import { SignInForm } from '@/components/sign-in-form';
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Sign In',
-  description: 'Main page',
+  description: 'Page for user authorization',
 };
 
 const SignInPage: NextPage = () => {

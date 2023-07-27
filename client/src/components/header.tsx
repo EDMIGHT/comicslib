@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button } from '@/components/ui/button';
 
-import AuthMenu from './auth-menu';
+import { AuthMenu } from './auth-menu';
 import { ThemeSwitcher } from './theme-switcher';
 
 export const Header = () => {

@@ -1,14 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAuth } from '@/hooks/useAuth';
 
-const AuthMenu = () => {
-  const { user } = useAppSelector((state) => state.auth);
+export const AuthMenu: FC = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return user ? (
     <Avatar>
@@ -24,5 +33,3 @@ const AuthMenu = () => {
     </Link>
   );
 };
-
-export default AuthMenu;

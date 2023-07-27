@@ -1,28 +1,54 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { IResponseAuth } from '@/types/user.types';
+import { getLocalStore } from '@/lib/helpers/local-storage.helper';
+import { checkAuth, logout, signIn, signUp } from '@/store/actions/auth.actions';
+import { IResponseUser } from '@/types/user.types';
 
-type IAuthSlice = Partial<IResponseAuth>;
+type IAuthSlice = {
+  user: IResponseUser | null;
+  isLoading: boolean;
+};
 
 const initialState: IAuthSlice = {
-  user: undefined,
-  accessToken: undefined,
-  refreshToken: undefined,
+  user: getLocalStore('user'),
+  // user: null,
+  isLoading: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    setAuthData: (state, action: PayloadAction<IResponseAuth>) => {
-      const { user, accessToken, refreshToken } = action.payload || {};
-      state.user = user;
-      state.accessToken = accessToken;
-      state.refreshToken = refreshToken;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(signIn.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signIn.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(signIn.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(signUp.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signUp.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.user = payload.user;
+      })
+      .addCase(signUp.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoading = false;
+        state.user = null;
+      })
+      .addCase(checkAuth.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
+      });
   },
 });
-
-export const { setAuthData } = authSlice.actions;
 
 export default authSlice.reducer;

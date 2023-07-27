@@ -3,6 +3,11 @@ export type IPagination = {
   totalPages: number;
 };
 
+export type ITokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 export type IBadResponse = {
   error: {
     data: {

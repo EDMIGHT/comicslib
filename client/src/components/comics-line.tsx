@@ -5,14 +5,14 @@ import { FC } from 'react';
 import { Card, CardTitle } from '@/components/ui/card';
 import { IResponseComic } from '@/types/comic.types';
 
-import ComicGenres from './comic-genres';
+import { ComicGenres } from './comic-genres';
 import { ComicInfo } from './comic-info';
 
 type IComicsProps = {
   comics: IResponseComic[];
 };
 
-const ComicsLine: FC<IComicsProps> = ({ comics }) => {
+export const ComicsLine: FC<IComicsProps> = ({ comics }) => {
   return (
     <ul className='flex flex-col gap-2'>
       {comics.map(({ id, title, desc, img, _count, avgRating, genres }) => (
@@ -43,5 +43,3 @@ const ComicsLine: FC<IComicsProps> = ({ comics }) => {
     </ul>
   );
 };
-
-export default ComicsLine;

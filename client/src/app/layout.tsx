@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 import { AuthProvider } from '@/components/providers/auth-provider';
@@ -18,20 +19,28 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en'>
       <body
         className={cn('min-h-screen bg-background font-sans antialiased', fontSans.className)}
       >
+        {/* <QueryClientProvider client={queryClient}> */}
         <ReduxProvider>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-            <AuthProvider>
-              {children}
-              <Toaster />
-            </AuthProvider>
+            {children}
+            <Toaster />
           </ThemeProvider>
         </ReduxProvider>
+        {/* </QueryClientProvider> */}
       </body>
     </html>
   );

@@ -1,3 +1,5 @@
+import { ITokens } from './response.types';
+
 export type IUser = {
   id: string;
   login: string;
@@ -12,6 +14,4 @@ export type IResponseUser = Omit<IUser, 'password'>;
 
 export type IResponseAuth = {
   user: IResponseUser;
-  accessToken: string;
-  refreshToken: string;
-};
+} & ITokens;

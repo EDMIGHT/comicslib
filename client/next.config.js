@@ -4,7 +4,7 @@ const nextConfig = {
     API_HOST: process.env.API_HOST,
   },
   images: {
-    domains: ['localhost', 'w3'],
+    domains: ['localhost'],
   },
 };
 

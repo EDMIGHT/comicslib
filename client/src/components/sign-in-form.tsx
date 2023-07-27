@@ -20,14 +20,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { useAppDispatch } from '@/hooks/reduxHooks';
+import { useActions } from '@/hooks/useActions';
+import { useAuth } from '@/hooks/useAuth';
 import { signInValidation } from '@/lib/validations/signIn.validation';
-import { IAuthQuery, useLoginMutation } from '@/services/auth.service';
-import { setAuthData } from '@/store/slices/auth.slice';
 import { isBadResponse } from '@/types/response.types';
 
 export type ISignInFields = z.infer<typeof signInValidation>;
 
-const SignInForm = () => {
+export const SignInForm = () => {
+  const { isLoading, user } = useAuth();
+  const { signIn } = useActions();
+
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [globalError, setGlobalError] = useState('');
@@ -40,39 +43,45 @@ const SignInForm = () => {
     },
   });
 
-  const [login, { isLoading, isError }] = useLoginMutation();
-
   useEffect(() => {
-    if (globalError && isError) {
-      toast({
-        variant: 'destructive',
-        title: 'Oops, something went wrong while logging in.',
-        description: globalError,
-      });
+    if (user) {
+      router.replace('/');
     }
-  }, [isError, globalError]);
+  }, [user]);
+
+  // const [login, { isLoading, isError }] = useLoginMutation();
+
+  // useEffect(() => {
+  //   if (globalError && isError) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Oops, something went wrong while logging in.',
+  //       description: globalError,
+  //     });
+  //   }
+  // }, [isError, globalError]);
 
   const onSubmit = form.handleSubmit(async (data) => {
-    try {
-      const response = (await login(data)) as IAuthQuery;
+    signIn(data);
 
-      if (isBadResponse(response)) {
-        setGlobalError(response.error.data.message);
-      } else if (response.data) {
-        dispatch(setAuthData(response.data));
-
-        localStorage.setItem('accessToken', response.data.accessToken);
-        localStorage.setItem('refreshToken', response.data.refreshToken);
-
-        router.push('/');
-      }
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Oops, something went wrong while logging in.',
-        description: 'Please double check your input or try again later.',
-      });
-    }
+    form.reset();
+    // try {
+    // const response = (await login(data)) as IAuthQuery;
+    //   if (isBadResponse(response)) {
+    //     setGlobalError(response.error.data.message);
+    //   } else if (response.data) {
+    //     dispatch(setAuthData(response.data));
+    //     localStorage.setItem('accessToken', response.data.accessToken);
+    //     localStorage.setItem('refreshToken', response.data.refreshToken);
+    //     router.push('/');
+    //   }
+    // } catch (error) {
+    //   toast({
+    //     variant: 'destructive',
+    //     title: 'Oops, something went wrong while logging in.',
+    //     description: 'Please double check your input or try again later.',
+    //   });
+    // }
   });
 
   return (
@@ -104,7 +113,7 @@ const SignInForm = () => {
             </FormItem>
           )}
         />
-        <Button type='submit' className='w-full' disabled={isLoading}>
+        <Button type='submit' className='w-full'>
           {isLoading && <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />}
           Sign In
         </Button>
@@ -112,5 +121,3 @@ const SignInForm = () => {
     </Form>
   );
 };
-
-export default SignInForm;
