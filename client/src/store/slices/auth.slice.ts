@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { getLocalStore } from '@/lib/helpers/local-storage.helper';
-import { checkAuth, logout, signIn, signUp } from '@/store/actions/auth.actions';
+import { checkAuth, logout } from '@/store/actions/auth.actions';
 import { IResponseUser } from '@/types/user.types';
 
 type IAuthSlice = {
@@ -18,29 +18,13 @@ const initialState: IAuthSlice = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action: PayloadAction<IResponseUser>) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(signIn.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(signIn.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.user = action.payload.user;
-      })
-      .addCase(signIn.rejected, (state, action) => {
-        state.isLoading = false;
-      })
-      .addCase(signUp.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(signUp.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.user = payload.user;
-      })
-      .addCase(signUp.rejected, (state, action) => {
-        state.isLoading = false;
-      })
       .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
@@ -50,5 +34,7 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const { setUser } = authSlice.actions;
 
 export default authSlice.reducer;

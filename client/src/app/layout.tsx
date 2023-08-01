@@ -1,9 +1,8 @@
 import '@/styles/globals.css';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
-import { AuthProvider } from '@/components/providers/auth-provider';
+import { QueryProvider } from '@/components/providers/query-provider';
 import { ReduxProvider } from '@/components/providers/redux-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
@@ -19,28 +18,20 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
-
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en'>
       <body
         className={cn('min-h-screen bg-background font-sans antialiased', fontSans.className)}
       >
-        {/* <QueryClientProvider client={queryClient}> */}
-        <ReduxProvider>
-          <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </ReduxProvider>
-        {/* </QueryClientProvider> */}
+        <QueryProvider>
+          <ReduxProvider>
+            <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </ReduxProvider>
+        </QueryProvider>
       </body>
     </html>
   );

@@ -1,9 +1,9 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ReloadIcon } from '@radix-ui/react-icons';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,20 +19,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { useActions } from '@/hooks/useActions';
-import { useAuth } from '@/hooks/useAuth';
+import { saveToStorage } from '@/lib/helpers/token.helper';
 import { signInValidation } from '@/lib/validations/signIn.validation';
-import { isBadResponse } from '@/types/response.types';
+import { AuthService } from '@/services/auth.service';
+import { setUser } from '@/store/slices/auth.slice';
 
 export type ISignInFields = z.infer<typeof signInValidation>;
 
 export const SignInForm = () => {
-  const { isLoading, user } = useAuth();
-  const { signIn } = useActions();
-
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [globalError, setGlobalError] = useState('');
   const { toast } = useToast();
   const form = useForm<ISignInFields>({
     resolver: zodResolver(signInValidation),
@@ -43,45 +38,55 @@ export const SignInForm = () => {
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      router.replace('/');
-    }
-  }, [user]);
+  const { mutate: signIn, isLoading } = useMutation({
+    mutationFn: async ({ login, password }: ISignInFields) => {
+      const payload: ISignInFields = {
+        login,
+        password,
+      };
+      const data = await AuthService.auth('signIn', payload);
 
-  // const [login, { isLoading, isError }] = useLoginMutation();
+      if (data && data.accessToken) {
+        saveToStorage(data);
+      }
 
-  // useEffect(() => {
-  //   if (globalError && isError) {
-  //     toast({
-  //       variant: 'destructive',
-  //       title: 'Oops, something went wrong while logging in.',
-  //       description: globalError,
-  //     });
-  //   }
-  // }, [isError, globalError]);
+      dispatch(setUser(data.user));
+
+      return data;
+    },
+    onSuccess: () => {
+      router.back();
+      router.refresh();
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 400) {
+          return toast({
+            variant: 'destructive',
+            title: 'Invalid request body',
+            description:
+              err.response.data?.details[0]?.msg ||
+              'Check the correctness of the entered data',
+          });
+        } else if (err.response?.status === 409) {
+          return toast({
+            variant: 'destructive',
+            title: 'You entered the wrong password',
+          });
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Oops, something went wrong while logging in.',
+            description: 'Please double check your input or try again later.',
+          });
+        }
+      }
+    },
+  });
 
   const onSubmit = form.handleSubmit(async (data) => {
     signIn(data);
-
     form.reset();
-    // try {
-    // const response = (await login(data)) as IAuthQuery;
-    //   if (isBadResponse(response)) {
-    //     setGlobalError(response.error.data.message);
-    //   } else if (response.data) {
-    //     dispatch(setAuthData(response.data));
-    //     localStorage.setItem('accessToken', response.data.accessToken);
-    //     localStorage.setItem('refreshToken', response.data.refreshToken);
-    //     router.push('/');
-    //   }
-    // } catch (error) {
-    //   toast({
-    //     variant: 'destructive',
-    //     title: 'Oops, something went wrong while logging in.',
-    //     description: 'Please double check your input or try again later.',
-    //   });
-    // }
   });
 
   return (
@@ -113,8 +118,7 @@ export const SignInForm = () => {
             </FormItem>
           )}
         />
-        <Button type='submit' className='w-full'>
-          {isLoading && <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />}
+        <Button type='submit' className='w-full' isLoading={isLoading}>
           Sign In
         </Button>
       </form>

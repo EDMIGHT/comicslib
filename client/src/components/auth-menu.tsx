@@ -1,35 +1,21 @@
-'use client';
+import Image from 'next/image';
 
-import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
+import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
-export const AuthMenu: FC = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const { user } = useAuth();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
+export const AuthMenu = async () => {
+  const user = await getAuthServer();
 
   return user ? (
     <Avatar>
-      <AvatarImage
-        src='https://i.pinimg.com/564x/9b/3f/e2/9b3fe2b12cdd77e50f94aac698e4318a.jpg'
-        alt='your avatar'
-      />
-      <AvatarFallback>YOU</AvatarFallback>
+      {user.img ? (
+        <Image src={user.img} alt='your avatar' fill />
+      ) : (
+        <AvatarFallback>YOU</AvatarFallback>
+      )}
     </Avatar>
   ) : (
-    <Link href='/signIn'>
-      <Button className=''>Sign In</Button>
-    </Link>
+    <Button className=''>Sign In</Button>
   );
 };

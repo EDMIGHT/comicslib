@@ -2,7 +2,7 @@ import { Metadata, NextPage } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-import ComicGenres from '@/components/comic-genres';
+import { ComicGenres } from '@/components/comic-genres';
 import { ComicInfo } from '@/components/comic-info';
 import { Button } from '@/components/ui/button';
 import { IResponseComic } from '@/types/comic.types';
