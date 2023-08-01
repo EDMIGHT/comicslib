@@ -1,19 +1,19 @@
+import axios from 'axios';
+
 import { ComicsPathConfig } from '@/configs/url.configs';
 import { IResponseAllComics, IResponseSingleComic } from '@/types/comic.types';
 
-import { api } from './api';
-
 export class ComicsService {
   public static async getAll() {
-    return api<IResponseAllComics>({
-      url: ComicsPathConfig.origin,
-      method: 'GET',
-    });
+    const { data } = await axios<IResponseAllComics>(
+      `${process.env.API_HOST}${ComicsPathConfig.origin}`
+    );
+    return data;
   }
   public static async getById(id: string | number) {
-    return api<IResponseSingleComic>({
-      url: `${ComicsPathConfig.origin}/${id}`,
-      method: 'GET',
-    });
+    const { data } = await axios<IResponseSingleComic>(
+      `${process.env.API_HOST}${ComicsPathConfig.origin}/${id}`
+    );
+    return data;
   }
 }

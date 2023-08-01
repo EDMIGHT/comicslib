@@ -1,31 +1,11 @@
 import React from 'react';
 
-import { IResponseAllComics } from '@/types/comic.types';
+import { ComicsService } from '@/services/comics.service';
 
 import { ComicsLine } from './comics-line';
 
-const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
-
-const getComics = async () => {
-  try {
-    const data = (await fetch(`${API_HOST}/comics`, {
-      next: {
-        revalidate: 60,
-      },
-    }).then((res) => res.json())) as IResponseAllComics;
-
-    if (!data) {
-      return null;
-    }
-
-    return data;
-  } catch (error) {
-    return null;
-  }
-};
-
 const NewComicsSection = async () => {
-  const responseComics = await getComics();
+  const responseComics = await ComicsService.getAll();
 
   return (
     <section>

@@ -1,7 +1,8 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
 export const AuthMenu = async () => {
@@ -16,6 +17,8 @@ export const AuthMenu = async () => {
       )}
     </Avatar>
   ) : (
-    <Button className=''>Sign In</Button>
+    <Link href='/sign-in' className={buttonVariants()}>
+      Sign In
+    </Link>
   );
 };

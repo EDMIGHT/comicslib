@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { API_AUTH_URL, PUBLIC_URL } from '@/configs/url.configs';
@@ -6,6 +5,7 @@ import { Tokens } from '@/lib/helpers/token.helper';
 
 export const config = {
   matcher: ['/protected'],
+  // matcher: ['/comics/:path*'],
 };
 
 export async function middleware(req: NextRequest) {

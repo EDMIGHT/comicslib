@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { useAppDispatch } from '@/hooks/reduxHooks';
 import { saveToStorage } from '@/lib/helpers/token.helper';
-import { signInValidation } from '@/lib/validations/signIn.validation';
+import { signInValidation } from '@/lib/validators/auth.validators';
 import { AuthService } from '@/services/auth.service';
 import { setUser } from '@/store/slices/auth.slice';
 

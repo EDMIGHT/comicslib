@@ -5,41 +5,29 @@ import { notFound } from 'next/navigation';
 import { ComicGenres } from '@/components/comic-genres';
 import { ComicInfo } from '@/components/comic-info';
 import { Button } from '@/components/ui/button';
-import { IResponseComic } from '@/types/comic.types';
+import { ComicsService } from '@/services/comics.service';
 
-interface ProductPageProps {
+type PageProps = {
   params: {
     id: string;
   };
-}
-
-const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
-
-const getComic = async (id: string) => {
-  try {
-    const data = (await fetch(`${API_HOST}/comics/${id}`, {
-      next: {
-        revalidate: 60,
-      },
-    }).then((res) => res.json())) as IResponseComic;
-
-    if (!data) {
-      return null;
-    }
-
-    return data;
-  } catch (error) {
-    return null;
-  }
 };
 
-// export const metadata: Metadata = {
-//   title: '',
-//   description: 'Main page',
-// };
+export async function generateStaticParams() {
+  const { comics } = await ComicsService.getAll();
 
-const ComicPage: NextPage<ProductPageProps> = async ({ params: { id } }) => {
-  const comic = await getComic(id);
+  return comics.map((comic) => ({ id: comic.id }));
+}
+
+export async function generateMetadata({ params: { id } }: PageProps): Promise<Metadata> {
+  const data = await ComicsService.getById(id);
+  return {
+    title: data.title,
+  };
+}
+
+const ComicPage: NextPage<PageProps> = async ({ params: { id } }) => {
+  const comic = await ComicsService.getById(id);
 
   if (!comic) {
     notFound();

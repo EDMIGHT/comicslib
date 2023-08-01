@@ -1,5 +1,5 @@
 export const PUBLIC_URL = {
-  signIn: '/',
+  signIn: '/sign-in',
 };
 
 export const API_AUTH_URL = {
