@@ -1,13 +1,13 @@
 import Link from 'next/link';
 
+import { SidebarFooter } from '@/components/sidebar-footer';
 import { siteConfig } from '@/configs/site.configs';
 
-import { SidebarFooter } from '../sidebar-footer';
 import { Menu } from './menu';
 
 export const Sidebar = () => {
   return (
-    <div className='sticky left-0 top-0 z-10 flex h-screen min-w-[256px] flex-col bg-card p-3'>
+    <aside className='sticky left-0 top-0 z-10 flex h-screen min-w-[256px] flex-col bg-card p-3'>
       <h2>
         <Link
           href='/'
@@ -19,6 +19,6 @@ export const Sidebar = () => {
       </h2>
       <Menu navigation={siteConfig.navigation} />
       <SidebarFooter socialLinks={siteConfig.socials} />
-    </div>
+    </aside>
   );
 };

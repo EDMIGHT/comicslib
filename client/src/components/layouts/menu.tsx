@@ -32,7 +32,7 @@ export const Menu: FC<MenuProps> = ({ navigation }) => {
                       navItemStyles,
                       'rounded',
                       pathname === navItem.href
-                        ? 'bg-accent text-accent-foreground'
+                        ? 'bg-active text-active-foreground'
                         : 'hover:bg-background/30 focus:bg-background/30'
                     )}
                   >

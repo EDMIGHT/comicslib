@@ -11,8 +11,10 @@ const LobbyLayout = ({ children }: LobbyLayoutProps) => {
     <div className='relative flex min-h-screen'>
       <Sidebar />
 
-      {/* <Header /> */}
-      <main className='container flex-1 py-4'>{children}</main>
+      <div className='flex-1'>
+        <Header />
+        <main className='container'>{children}</main>
+      </div>
     </div>
   );
 };
