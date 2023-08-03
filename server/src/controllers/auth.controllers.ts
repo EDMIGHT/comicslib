@@ -127,13 +127,8 @@ export const updateTokens = async (
       refreshToken: tokens.refreshToken,
     });
 
-    const existedUser = await UserModel.getByLogin(tokenPayload.login);
-
-    const responseUser = createResponseUser(existedUser);
-
     return CustomResponse.ok(response, {
       ...tokens,
-      user: responseUser,
     });
   } catch (error) {
     console.error('update token: ', error);

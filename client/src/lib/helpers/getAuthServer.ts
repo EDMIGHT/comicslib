@@ -1,10 +1,8 @@
-import { cookies } from 'next/headers';
-
-import { api } from '@/services/api';
+import { apiAuth } from '@/services/apiAuth';
 
 export const getAuthServer = async () => {
   try {
-    const { data } = await api.get('auth/me');
+    const { data } = await apiAuth.get('auth/me');
     return data;
   } catch (error) {
     return null;

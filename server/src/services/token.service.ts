@@ -15,6 +15,7 @@ class TokenService {
   public createTokens(payload: TokenPayload): {
     accessToken: string;
     refreshToken: string;
+    expiresIn: number;
   } {
     const accessToken = jwt.sign(payload, accessKey, {
       expiresIn,
@@ -24,6 +25,7 @@ class TokenService {
     return {
       accessToken,
       refreshToken,
+      expiresIn,
     };
   }
   public verifyAccessToken(token: string): VerifiedTokenPayload | null {

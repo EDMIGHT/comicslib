@@ -1,4 +1,5 @@
 import { Metadata, NextPage } from 'next';
+import { cookies } from 'next/headers';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 

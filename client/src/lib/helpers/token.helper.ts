@@ -8,6 +8,7 @@ import { isServer } from './general.helper';
 export enum Tokens {
   ACCESS = 'accessToken',
   REFRESH = 'refreshToken',
+  EXPIRES_IN = 'expiresIn',
 }
 
 export const getServerCookieStore = () => {
@@ -48,23 +49,8 @@ export const clearTokens = () => {
   }
 };
 
-export const getUserFromStorage = () => {
-  return JSON.parse(localStorage.getItem('user') || '{}');
-};
-
 export const saveTokens = (data: ITokens) => {
-  console.log(Cookies.get(Tokens.ACCESS));
   Cookies.set(Tokens.ACCESS, data.accessToken);
   Cookies.set(Tokens.REFRESH, data.refreshToken);
-};
-
-export const removeFromStorage = () => {
-  Cookies.remove(Tokens.ACCESS);
-  Cookies.remove(Tokens.REFRESH);
-  localStorage.removeItem('user');
-};
-
-export const saveToStorage = (data: IResponseAuth) => {
-  saveTokens(data);
-  localStorage.setItem('user', JSON.stringify(data.user));
+  Cookies.set(Tokens.EXPIRES_IN, data.expiresIn.toString());
 };

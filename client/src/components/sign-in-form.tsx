@@ -17,18 +17,18 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
 import { useAppDispatch } from '@/hooks/reduxHooks';
-import { saveToStorage } from '@/lib/helpers/token.helper';
+import { useActions } from '@/hooks/use-actions';
+import { useToast } from '@/hooks/use-toast';
+import { saveTokens } from '@/lib/helpers/token.helper';
 import { signInValidation } from '@/lib/validators/auth.validators';
 import { AuthService } from '@/services/auth.service';
-import { setUser } from '@/store/slices/auth.slice';
 
 export type ISignInFields = z.infer<typeof signInValidation>;
 
 export const SignInForm = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const { setUser } = useActions();
   const { toast } = useToast();
   const form = useForm<ISignInFields>({
     resolver: zodResolver(signInValidation),
@@ -47,10 +47,13 @@ export const SignInForm = () => {
       const data = await AuthService.auth('signIn', payload);
 
       if (data && data.accessToken) {
-        saveToStorage(data);
+        saveTokens({
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          expiresIn: data.expiresIn,
+        });
+        setUser(data.user);
       }
-
-      dispatch(setUser(data.user));
 
       return data;
     },

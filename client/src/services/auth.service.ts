@@ -3,22 +3,17 @@ import axios from 'axios';
 import { ISignInFields } from '@/components/sign-in-form';
 import { API_AUTH_URL } from '@/configs/url.configs';
 import { isServer } from '@/lib/helpers/general.helper';
-import {
-  getAccessToken,
-  getRefreshToken,
-  getServerRefreshToken,
-  saveTokens,
-  saveToStorage,
-} from '@/lib/helpers/token.helper';
+import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
+import { ITokens } from '@/types/response.types';
 import { IResponseAuth, IResponseUser } from '@/types/user.types';
 
-import { api, getContentType } from './api';
+import { apiAuth } from './apiAuth';
 
 type ISignUpFields = {};
 
 export class AuthService {
   public static async auth(type: 'signIn' | 'signUp', data: ISignInFields | ISignUpFields) {
-    const response = await api<IResponseAuth>({
+    const response = await apiAuth<IResponseAuth>({
       url: API_AUTH_URL[type],
       method: 'POST',
       data,
@@ -27,7 +22,7 @@ export class AuthService {
     return response.data;
   }
 
-  public static async getNewTokens() {
+  public static async getNewTokens(): Promise<ITokens> {
     let refreshToken;
 
     if (isServer) {
@@ -35,22 +30,29 @@ export class AuthService {
     } else {
       refreshToken = getRefreshToken();
     }
-
-    const { data } = await axios.post<string, { data: IResponseAuth }>(
-      process.env.API_HOST + API_AUTH_URL.tokens,
-      {
+    try {
+      const { data } = await axios.post(process.env.API_HOST + API_AUTH_URL.tokens, {
         refreshToken,
-      }
-    );
-    if (data.accessToken) {
-      console.log(1);
-      saveTokens(data);
-    }
+      });
 
-    return data;
+      return data;
+    } catch (error) {
+      return {
+        accessToken: '',
+        refreshToken: '',
+        expiresIn: 0,
+      };
+    }
   }
 
   public static async getUser() {
-    return api.get<IResponseUser>(process.env.API_HOST + API_AUTH_URL.authMe);
+    try {
+      const { data } = await apiAuth.get<IResponseUser>(
+        process.env.API_HOST + API_AUTH_URL.authMe
+      );
+      return data;
+    } catch (error) {
+      return null;
+    }
   }
 }

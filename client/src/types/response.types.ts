@@ -6,6 +6,7 @@ export type IPagination = {
 export type ITokens = {
   accessToken: string;
   refreshToken: string;
+  expiresIn: number;
 };
 
 export type IBadResponse = {

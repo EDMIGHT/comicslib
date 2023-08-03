@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getLocalStore } from '@/lib/helpers/local-storage.helper';
-import { checkAuth, logout } from '@/store/actions/auth.actions';
+import { logout } from '@/store/actions/auth.actions';
 import { IResponseUser } from '@/types/user.types';
 
 type IAuthSlice = {
@@ -10,31 +9,26 @@ type IAuthSlice = {
 };
 
 const initialState: IAuthSlice = {
-  user: getLocalStore('user'),
-  // user: null,
+  user: null,
   isLoading: false,
 };
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<IResponseUser>) => {
+    setUser: (state, action: PayloadAction<IResponseUser | null>) => {
       state.user = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(logout.fulfilled, (state) => {
-        state.isLoading = false;
-        state.user = null;
-      })
-      .addCase(checkAuth.fulfilled, (state, { payload }) => {
-        state.user = payload.user;
-      });
+    builder.addCase(logout.fulfilled, (state) => {
+      state.isLoading = false;
+      state.user = null;
+    });
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const authSliceActions = authSlice.actions;
 
 export default authSlice.reducer;
