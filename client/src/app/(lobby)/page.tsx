@@ -11,6 +11,7 @@ const IndexPage: NextPage = () => {
   return (
     <div>
       <NewComicsSection />
+      <NewComicsSection />
     </div>
   );
 };

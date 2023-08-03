@@ -11,6 +11,8 @@ type LayoutProps = {
   children: ReactNode;
 };
 
+// TODO как можно более адекватно рефрешить токены
+
 export const AuthProvider: FC<LayoutProps> = ({ children }) => {
   const router = useRouter();
   const { setUser } = useActions();
