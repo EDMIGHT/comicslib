@@ -66,7 +66,7 @@ export const getComments = async (req: Request, res: Response): Promise<Response
       user: createResponseUser(comm.user),
     }));
 
-    return CustomResponse.created(res, {
+    return CustomResponse.ok(res, {
       comments: responseComments,
       currentPage: +page,
       totalPages: Math.ceil(totalCommentsByComic / +limit),

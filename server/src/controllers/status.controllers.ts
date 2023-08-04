@@ -8,7 +8,7 @@ export const getAllStatuses = async (req: Request, res: Response): Promise<Respo
   try {
     const statuses = await StatusModel.getAll();
 
-    return CustomResponse.created(res, statuses);
+    return CustomResponse.ok(res, statuses);
   } catch (error) {
     return serverErrorResponse({
       res,

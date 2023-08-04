@@ -8,7 +8,7 @@ export const getAllAuthors = async (req: Request, res: Response): Promise<Respon
   try {
     const authors = await AuthorModel.getAll();
 
-    return CustomResponse.created(res, {
+    return CustomResponse.ok(res, {
       authors,
       currentPage: 1,
       totalPages: 1,

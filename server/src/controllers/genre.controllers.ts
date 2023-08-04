@@ -8,7 +8,7 @@ export const getAllGenres = async (req: Request, res: Response): Promise<Respons
   try {
     const genres = await GenreModel.getAll();
 
-    return CustomResponse.created(res, {
+    return CustomResponse.ok(res, {
       genres,
       currentPage: 1,
       totalPages: 1,

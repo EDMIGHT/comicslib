@@ -6,6 +6,7 @@ import chaptersRouter from './chapter.routes';
 import comicsRouter from './comic.routes';
 import commentsRouter from './comment.routes';
 import genresRouter from './genre.routes';
+import pagesRouter from './page.routes';
 import statusesRouter from './status.routes';
 import uploadsRouter from './upload.routes';
 
@@ -17,6 +18,7 @@ router.use('/chapters', chaptersRouter);
 router.use('/comics', comicsRouter);
 router.use('/comments', commentsRouter);
 router.use('/genres', genresRouter);
+router.use('/pages', pagesRouter);
 router.use('/statuses', statusesRouter);
 router.use('/uploads', uploadsRouter);
 

@@ -18,7 +18,7 @@ export const getChaptersByComicId = async (req: Request, res: Response): Promise
     });
     const totalChapters = await ChapterModel.getTotalChapters(comicId);
 
-    return CustomResponse.created(res, {
+    return CustomResponse.ok(res, {
       chapters,
       currentPage: Number(page),
       totalPages: Math.ceil(totalChapters / +limit),
