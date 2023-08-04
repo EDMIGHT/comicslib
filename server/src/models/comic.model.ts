@@ -9,7 +9,7 @@ const hostURL = `http://localhost:${process.env.PORT}/`;
 
 const hostWithImgPath = hostURL + defaultComicImg;
 
-type ICreateComic = Pick<Comic, 'title' | 'desc'> &
+type ICreateComic = Pick<Comic, 'title' | 'desc' | 'statusId'> &
   Partial<Pick<Comic, 'img'>> & {
     authors: string[];
     genres: string[];
@@ -48,6 +48,7 @@ export class ComicModel {
       data: {
         ...data,
         img: data.img || hostWithImgPath,
+
         authors: {
           connect: authorsConnect,
         },

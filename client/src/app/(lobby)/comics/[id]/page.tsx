@@ -1,10 +1,10 @@
 import { Metadata, NextPage } from 'next';
-import { cookies } from 'next/headers';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 import { ComicGenres } from '@/components/comic-genres';
 import { ComicInfo } from '@/components/comic-info';
+import { ComicMenu } from '@/components/comic-menu';
 import { Button } from '@/components/ui/button';
 import { ComicsService } from '@/services/comics.service';
 
@@ -34,23 +34,22 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id } }) => {
     notFound();
   }
 
-  const { img, title, desc, genres, _count, avgRating } = comic;
+  const { img, title, desc, genres, _count, avgRating, id: comicId } = comic;
 
   return (
-    <div>
+    <div className=''>
       <div className='flex gap-2'>
         <div className='flex flex-col gap-1'>
           <Image src={img} alt={title} width={250} height={250} />
-          <Button className='w-full'>read</Button>
-          <Button className='w-full bg-secondary'>to folder</Button>
         </div>
         <div className='flex w-full flex-col gap-2'>
           <div className='flex justify-between gap-2'>
-            <h1 className='text-2xl'>{title}</h1>
+            <h1 className='text-5xl font-bold'>{title}</h1>
             <ComicInfo avgRating={avgRating} _count={_count} />
           </div>
           <ComicGenres genres={genres} />
           <p>{desc}</p>
+          <ComicMenu comicId={comicId} />
         </div>
       </div>
     </div>

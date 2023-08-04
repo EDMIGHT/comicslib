@@ -14,7 +14,7 @@ type IComicsProps = {
 
 export const ComicsLine: FC<IComicsProps> = ({ comics }) => {
   return (
-    <ul className='flex flex-col gap-2'>
+    <ul className='grid auto-cols-max grid-cols-2 gap-2'>
       {comics.map(({ id, title, desc, img, _count, avgRating, genres }) => (
         <li key={id}>
           <Card className='flex gap-2 p-2'>
@@ -35,7 +35,7 @@ export const ComicsLine: FC<IComicsProps> = ({ comics }) => {
               </Link>
               <ComicInfo avgRating={avgRating} _count={_count} />
               <ComicGenres genres={genres} />
-              <p>{desc}</p>
+              <p className='line-clamp-3'>{desc}</p>
             </div>
           </Card>
         </li>

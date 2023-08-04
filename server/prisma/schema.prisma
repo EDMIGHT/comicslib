@@ -7,18 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum StatusName {
+  ongoing
+  completed
+  hiatus
+  cancelled
+}
+
 model User {
-  id        String    @id @default(uuid())
-  login     String    @unique
-  name      String?
-  password  String
-  img       String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  token     Token?
-  ratings   Rating[]
-  folders   Folder[]
-  comments  Comment[]
+  id             String           @id @default(uuid())
+  login          String           @unique
+  name           String?
+  password       String
+  img            String
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  token          Token?
+  ratings        Rating[]
+  folders        Folder[]
+  comments       Comment[]
+  readingHistory ReadingHistory[]
 
   @@index([login])
 }
@@ -48,20 +56,53 @@ model Genre {
   @@index([title])
 }
 
-model Comic {
-  id        String    @id @default(uuid())
-  title     String
-  desc      String?   @db.Text
-  img       String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  authors   Author[]
-  ratings   Rating[]
-  genres    Genre[]
-  folders   Folder[]
-  comments  Comment[]
+model Page {
+  id             String           @id @default(uuid())
+  img            String
+  number         Int              @db.TinyInt
+  chapter        Chapter          @relation(fields: [chapterId], references: [id])
+  chapterId      String           @map("chapter_id")
+  readingHistory ReadingHistory[]
+}
+
+model Chapter {
+  id             String           @id @default(uuid())
+  title          String
+  comic          Comic            @relation(fields: [comicId], references: [id])
+  comicId        String           @map("comic_id")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  pages          Page[]
+  readingHistory ReadingHistory[]
 
   @@index([title])
+}
+
+model Comic {
+  id             String           @id @default(uuid())
+  title          String
+  desc           String?          @db.Text
+  img            String
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  authors        Author[]
+  ratings        Rating[]
+  genres         Genre[]
+  folders        Folder[]
+  comments       Comment[]
+  chapters       Chapter[]
+  status         Status           @relation(fields: [statusId], references: [id])
+  statusId       String           @map("status_id")
+  readingHistory ReadingHistory[]
+
+  @@index([title])
+}
+
+model Status {
+  id     String     @id @default(uuid())
+  name   StatusName @unique
+  comics Comic[]
+
+  @@index([name])
 }
 
 model Rating {
@@ -70,9 +111,9 @@ model Rating {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   comic     Comic    @relation(fields: [comicId], references: [id])
-  comicId   String
+  comicId   String   @map("comic_id")
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String   @map("user_id")
 }
 
 model Folder {
@@ -89,7 +130,24 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   comic     Comic    @relation(fields: [comicId], references: [id])
-  comicId   String
+  comicId   String   @map("comic_id")
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String   @map("user_id")
+}
+
+model ReadingHistory {
+  userId    String   @map("user_id")
+  comicId   String   @map("comic_id")
+  chapterId String   @map("chapter_id")
+  pageId    String   @map("page_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user    User    @relation(fields: [userId], references: [id])
+  comic   Comic   @relation(fields: [comicId], references: [id])
+  chapter Chapter @relation(fields: [chapterId], references: [id])
+  page    Page    @relation(fields: [pageId], references: [id])
+
+  @@id([userId, comicId])
+  @@index([chapterId, pageId])
 }

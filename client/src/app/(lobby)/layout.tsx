@@ -13,7 +13,7 @@ const LobbyLayout = ({ children }: LobbyLayoutProps) => {
 
       <div className='flex-1'>
         <Header />
-        <main className='container'>{children}</main>
+        <main className='container py-2'>{children}</main>
       </div>
     </div>
   );
