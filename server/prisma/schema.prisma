@@ -27,6 +27,7 @@ model User {
   folders        Folder[]
   comments       Comment[]
   readingHistory ReadingHistory[]
+  chapters       Chapter[]
 
   @@index([login])
 }
@@ -57,22 +58,26 @@ model Genre {
 }
 
 model Page {
-  id             String           @id @default(uuid())
-  img            String
-  number         Int              @db.TinyInt
-  chapter        Chapter          @relation(fields: [chapterId], references: [id])
   chapterId      String           @map("chapter_id")
+  number         Int              @db.UnsignedTinyInt
+  img            String
+  chapter        Chapter          @relation(fields: [chapterId], references: [id])
   readingHistory ReadingHistory[]
+
+  @@id([chapterId, number])
 }
 
 model Chapter {
   id             String           @id @default(uuid())
-  title          String
-  comic          Comic            @relation(fields: [comicId], references: [id])
+  number         Float            @unique
+  title          String?
   comicId        String           @map("comic_id")
+  userId         String
   createdAt      DateTime         @default(now()) @map("created_at")
   pages          Page[]
   readingHistory ReadingHistory[]
+  comic          Comic            @relation(fields: [comicId], references: [id])
+  user           User             @relation(fields: [userId], references: [id])
 
   @@index([title])
 }
@@ -139,14 +144,14 @@ model ReadingHistory {
   userId    String   @map("user_id")
   comicId   String   @map("comic_id")
   chapterId String   @map("chapter_id")
-  pageId    String   @map("page_id")
+  pageId    Int      @map("page_id") @db.UnsignedTinyInt
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   user    User    @relation(fields: [userId], references: [id])
   comic   Comic   @relation(fields: [comicId], references: [id])
   chapter Chapter @relation(fields: [chapterId], references: [id])
-  page    Page    @relation(fields: [pageId], references: [id])
+  page    Page    @relation(fields: [chapterId, pageId], references: [chapterId, number])
 
   @@id([userId, comicId])
   @@index([chapterId, pageId])
