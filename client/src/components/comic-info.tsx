@@ -1,30 +1,41 @@
 import { FC } from 'react';
 
-import { IResponseComic } from '@/types/comic.types';
+import { Badge } from '@/components/ui/badge';
+import { IAuthor } from '@/types/author.types';
+import { IGenre } from '@/types/genre.types';
 
-import { Icons } from './icons';
+type ComicInfoProps = {
+  genres: IGenre[];
+  authors: IAuthor[];
+};
 
-export const ComicInfo: FC<Pick<IResponseComic, 'avgRating' | '_count'>> = ({
-  avgRating,
-  _count: { comments, folders },
-}) => {
+export const ComicInfo: FC<ComicInfoProps> = ({ authors, genres }) => {
   return (
-    <ul className='flex items-center gap-2'>
-      <li className='flex items-center gap-1'>
-        <Icons.star />
-        {avgRating || 0}
-      </li>
-
-      <li className='flex items-center gap-1'>
-        <Icons.bookmark />
-
-        {folders || 0}
-      </li>
-
-      <li className='flex items-center gap-1'>
-        <Icons.comment />
-        {comments || 0}
-      </li>
-    </ul>
+    <div className='flex min-w-[25%] max-w-[400px] flex-col gap-2'>
+      {authors && (
+        <div>
+          <h2 className='text-xl font-semibold'>Authors:</h2>
+          <ul className='flex flex-wrap gap-1'>
+            {authors.map(({ id, login }) => (
+              <li key={id}>
+                <Badge className='uppercase'>{login}</Badge>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {genres && (
+        <div>
+          <h2 className='text-xl font-semibold'>Genres:</h2>
+          <ul className='flex flex-wrap gap-1'>
+            {genres.map(({ id, title }) => (
+              <li key={id}>
+                <Badge className='uppercase'>{title}</Badge>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   );
 };

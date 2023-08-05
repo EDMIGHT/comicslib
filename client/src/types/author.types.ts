@@ -1,4 +1,5 @@
 export type IAuthor = {
   id: string;
-  name: string;
+  login: string;
+  name?: string;
 };

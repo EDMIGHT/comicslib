@@ -5,7 +5,7 @@ import { API_AUTH_URL } from '@/configs/url.configs';
 import { isServer } from '@/lib/helpers/general.helper';
 import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
 import { ITokens } from '@/types/response.types';
-import { IResponseAuth, IResponseUser } from '@/types/user.types';
+import { IResponseAuth, IUser } from '@/types/user.types';
 
 import { apiAuth } from './apiAuth';
 
@@ -47,9 +47,7 @@ export class AuthService {
 
   public static async getUser() {
     try {
-      const { data } = await apiAuth.get<IResponseUser>(
-        process.env.API_HOST + API_AUTH_URL.authMe
-      );
+      const { data } = await apiAuth.get<IUser>(process.env.API_HOST + API_AUTH_URL.authMe);
       return data;
     } catch (error) {
       return null;

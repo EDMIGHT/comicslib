@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { logout } from '@/store/actions/auth.actions';
-import { IResponseUser } from '@/types/user.types';
+import { IUser } from '@/types/user.types';
 
 type IAuthSlice = {
-  user: IResponseUser | null;
+  user: IUser | null;
   isLoading: boolean;
 };
 
@@ -17,7 +17,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<IResponseUser | null>) => {
+    setUser: (state, action: PayloadAction<IUser | null>) => {
       state.user = action.payload;
     },
   },

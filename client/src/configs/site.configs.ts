@@ -1,7 +1,7 @@
 import { Icons } from '@/components/icons';
 import { NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
 
-export const siteSocialLinks: SocialLink[] = [
+export const SITE_SOCIAL_LINKS: SocialLink[] = [
   {
     title: 'github',
     icon: Icons.github,
@@ -19,7 +19,7 @@ export const siteSocialLinks: SocialLink[] = [
   },
 ];
 
-export const titlesNavigation: NavigationLink[] = [
+export const TITLES_NAVIGATION: NavigationLink[] = [
   {
     title: 'advanced search',
     href: '/search',
@@ -38,7 +38,7 @@ export const titlesNavigation: NavigationLink[] = [
   },
 ];
 
-export const followsNavigation: NavigationLink[] = [
+export const FOLLOWS_NAVIGATION: NavigationLink[] = [
   {
     title: 'updates',
     href: '/library/updates',
@@ -53,25 +53,27 @@ export const followsNavigation: NavigationLink[] = [
   },
 ];
 
-export const siteConfig: SiteConfig = {
+export const SITE_CONFIG: SiteConfig = {
   name: 'comicslib',
   logo: Icons.logo,
   navigation: [
     {
       title: 'Home',
       href: '/',
-      // icon: Icons.home,
     },
     {
       title: 'Follows',
-      // icon: Icons.follows,
-      links: followsNavigation,
+      links: FOLLOWS_NAVIGATION,
     },
     {
       title: 'Titles',
-      // icon: Icons.titles,
-      links: titlesNavigation,
+      links: TITLES_NAVIGATION,
     },
   ],
-  socials: siteSocialLinks,
+  socials: SITE_SOCIAL_LINKS,
+};
+
+export const PAGINATION_LIMIT_CONFIG = {
+  chapters: 1,
+  comics: 5,
 };

@@ -5,8 +5,8 @@ import { FC } from 'react';
 import { Card, CardTitle } from '@/components/ui/card';
 import { IResponseComic } from '@/types/comic.types';
 
+import { ComicCounters } from './comic-counters';
 import { ComicGenres } from './comic-genres';
-import { ComicInfo } from './comic-info';
 
 type IComicsProps = {
   comics: IResponseComic[];
@@ -33,7 +33,7 @@ export const ComicsLine: FC<IComicsProps> = ({ comics }) => {
               <Link href={`/comics/${id}`}>
                 <CardTitle className='text-xl hover:opacity-80'>{title}</CardTitle>
               </Link>
-              <ComicInfo avgRating={avgRating} _count={_count} />
+              <ComicCounters avgRating={avgRating} _count={_count} />
               <ComicGenres genres={genres} />
               <p className='line-clamp-3'>{desc}</p>
             </div>

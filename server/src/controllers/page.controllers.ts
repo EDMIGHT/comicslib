@@ -37,6 +37,14 @@ export const getPageByChapterId = async (req: Request, res: Response): Promise<R
 
 export const createPage = async (req: Request, res: Response): Promise<Response> => {
   try {
+    const existedPage = await PageModel.get(req.body);
+
+    if (existedPage) {
+      return CustomResponse.conflict(res, {
+        message: 'such page with such number already exists in this part',
+      });
+    }
+
     const page = await PageModel.create(req.body);
 
     return CustomResponse.created(res, page);

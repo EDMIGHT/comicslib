@@ -9,6 +9,10 @@ export const API_AUTH_URL = {
   authMe: '/auth/me',
 };
 
-export const ComicsPathConfig = {
+export const API_COMICS_URL = {
   origin: '/comics',
+};
+
+export const API_CHAPTERS_URL = {
+  origin: '/chapters',
 };
