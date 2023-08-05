@@ -16,6 +16,8 @@ type PageProps = {
   searchParams: { [key: string]: string | undefined };
 };
 
+// TODO как вкладывать ссылку в ссылку без гидратация
+
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const page = searchParams['page'] ?? '1';
   const limit = searchParams['limit'] ?? PAGINATION_LIMIT_CONFIG.chapters;
@@ -34,11 +36,11 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
             {response.chapters.map((chap) => (
               <li key={chap.id}>
                 <Card className='flex items-center justify-between gap-2  hover:bg-card/80'>
-                  <Link href={`/`} className='flex-1 p-2'>
+                  <a href={`/chapter/${chap.id}`} className='flex-1 p-2'>
                     <h3>
                       Ch. {chap.number} {chap.title && `- ${chap.title}`}
                     </h3>
-                  </Link>
+                  </a>
                   <div className='flex items-center gap-1'>
                     <a
                       href={`/profile/${chap.userId}`}
@@ -46,9 +48,9 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
                     >
                       {chap.user.login}
                     </a>
-                    <Link href={`/`} className='flex-1 p-2'>
+                    <a href={`/chapter/${chap.id}`} className='flex-1 p-2'>
                       {chap.createdAt && <Time time={new Date(chap.createdAt)} />}
-                    </Link>
+                    </a>
                   </div>
                 </Card>
               </li>

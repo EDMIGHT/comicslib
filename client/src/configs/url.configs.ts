@@ -16,3 +16,7 @@ export const API_COMICS_URL = {
 export const API_CHAPTERS_URL = {
   origin: '/chapters',
 };
+
+export const API_PAGES_URL = {
+  origin: '/pages',
+};

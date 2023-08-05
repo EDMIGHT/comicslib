@@ -1,5 +1,4 @@
 import { Header } from '@/components/layouts/header';
-import { Menu } from '@/components/layouts/menu';
 import { Sidebar } from '@/components/layouts/sidebar';
 
 interface LobbyLayoutProps {
