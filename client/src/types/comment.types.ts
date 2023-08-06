@@ -1,3 +1,4 @@
+import { IPagination } from './response.types';
 import { IShortUser } from './user.types';
 
 export type IComment = {
@@ -11,3 +12,7 @@ export type IComment = {
 export type IResponseComment = IComment & {
   user: IShortUser;
 };
+
+export type IResponseAllComments = {
+  comments: IResponseComment[];
+} & IPagination;

@@ -1,8 +1,7 @@
 import { ICreateCommentFields } from '@/components/forms/create-comment-form';
 import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
-import { API_CHAPTERS_URL, API_COMMENTS_URL } from '@/configs/url.configs';
-import { IResponseAllChapters } from '@/types/chapter.types';
-import { IResponseComment } from '@/types/comment.types';
+import { API_COMMENTS_URL } from '@/configs/url.configs';
+import { IResponseAllComments, IResponseComment } from '@/types/comment.types';
 
 import { api } from './api';
 import { apiAuth } from './apiAuth';
@@ -28,9 +27,9 @@ export class CommentsService {
     page = 1,
     order = 'desc',
   }: IGetAllChaptersArg) {
-    const { data } = await api.get<IResponseAllChapters>(
-      `${API_CHAPTERS_URL.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
+    const { data } = await api.get<IResponseAllComments>(
+      `${API_COMMENTS_URL.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
     );
-    return data;
+    return data.comments;
   }
 }

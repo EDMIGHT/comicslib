@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
@@ -70,6 +70,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
     onSuccess: () => {
       form.reset();
       router.refresh();
+      // queryClient.invalidateQueries(['comments']);
     },
   });
 

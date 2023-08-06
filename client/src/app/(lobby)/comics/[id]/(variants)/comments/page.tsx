@@ -1,8 +1,6 @@
-import { FC } from 'react';
-
+import { CommentFeed } from '@/components/comment-feed-infinity';
 import { CreateCommentForm } from '@/components/forms/create-comment-form';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { CommentsService } from '@/services/comments.service';
 
 type PageProps = {
   params: {
@@ -10,10 +8,13 @@ type PageProps = {
   };
 };
 
-const Page: FC<PageProps> = ({ params: { id } }) => {
+const Page = async ({ params: { id } }: PageProps) => {
+  const comments = await CommentsService.getAll({ comicId: id });
+
   return (
-    <div>
+    <div className='flex flex-col gap-2'>
       <CreateCommentForm comicId={id} />
+      <CommentFeed comicId={id} initialComments={comments} />
     </div>
   );
 };

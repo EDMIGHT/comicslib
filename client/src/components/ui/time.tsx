@@ -1,17 +1,18 @@
 import React, { useMemo } from 'react';
 
 import formatTime from '@/lib/helpers/formatTime';
+import { cn } from '@/lib/utils';
 
-interface TimeProps {
+type TimeProps = {
   time: Date;
   children?: React.ReactNode;
-}
+} & React.HTMLAttributes<HTMLSpanElement>;
 
-export const Time: React.FC<TimeProps> = ({ time, children }) => {
+export const Time: React.FC<TimeProps> = ({ time, children, className, ...rest }) => {
   const formattedTime = formatTime(time);
 
   return (
-    <span className='text-sm'>
+    <span {...rest} className={cn('text-sm', className)}>
       {children} {formattedTime}
     </span>
   );
