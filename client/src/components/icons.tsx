@@ -1,9 +1,11 @@
 import {
   Bookmark,
   BookMarked,
+  ChevronsUpDown,
   Github,
   Home,
   Library,
+  Loader2,
   LucideProps,
   Menu,
   MessageCircle,
@@ -21,6 +23,7 @@ export const Icons: IconType = {
   logo: (props: LucideProps) => <Orbit {...props} />,
   menu: (props: LucideProps) => <Menu {...props} />,
   close: (props: LucideProps) => <X {...props} />,
+  loading: (props: LucideProps) => <Loader2 {...props} />,
   search: (props: LucideProps) => <Search {...props} />,
   home: (props: LucideProps) => <Home {...props} />,
   titles: (props: LucideProps) => <Library {...props} />,
@@ -28,6 +31,7 @@ export const Icons: IconType = {
   star: (props: LucideProps) => <Star {...props} />,
   bookmark: (props: LucideProps) => <Bookmark {...props} />,
   comment: (props: LucideProps) => <MessageCircle {...props} />,
+  chevronUpDown: (props: LucideProps) => <ChevronsUpDown {...props} />,
   github: (props: LucideProps) => <Github {...props} />,
   discord: (props: LucideProps) => (
     <svg

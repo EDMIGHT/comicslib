@@ -6,8 +6,8 @@ import { api } from './api';
 
 type IGetAllChaptersArg = {
   comicId: string;
-  page: string | number | undefined;
-  limit: string | number | undefined;
+  page?: string | number;
+  limit?: string | number;
 };
 
 export class ChaptersService {

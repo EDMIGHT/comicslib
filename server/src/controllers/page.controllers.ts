@@ -22,6 +22,7 @@ export const getPageByChapterId = async (req: Request, res: Response): Promise<R
     const totalPagesInChapter = await PageModel.getTotal(chapterId);
 
     return CustomResponse.ok(res, {
+      chapter: page.chapter,
       img: page.img,
       currentPage: page.number,
       totalPages: totalPagesInChapter,

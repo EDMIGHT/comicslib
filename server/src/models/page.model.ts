@@ -6,9 +6,27 @@ type ICreateGenreArg = Page;
 type IGetPageArg = Pick<Page, 'chapterId' | 'number'>;
 
 export class PageModel {
-  public static async get(data: IGetPageArg): Promise<Page | null> {
+  public static async get(data: IGetPageArg) {
     return prisma.page.findFirst({
       where: data,
+      include: {
+        chapter: {
+          include: {
+            comic: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                login: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
   public static async create(data: ICreateGenreArg): Promise<Page> {

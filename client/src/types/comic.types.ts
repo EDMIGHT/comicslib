@@ -17,6 +17,11 @@ export type IComic = {
   updatedAt: Date;
 };
 
+export type IShortComic = {
+  id: string;
+  title: string;
+};
+
 export type IResponseComic = IComic & {
   authors: IAuthor[];
   genres: IGenre[];
