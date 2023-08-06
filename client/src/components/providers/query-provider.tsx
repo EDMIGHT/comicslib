@@ -7,14 +7,14 @@ type IQueryProviderProps = {
   children: ReactNode;
 };
 
-export const QueryProvider: FC<IQueryProviderProps> = ({ children }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
     },
-  });
+  },
+});
 
+export const QueryProvider: FC<IQueryProviderProps> = ({ children }) => {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };

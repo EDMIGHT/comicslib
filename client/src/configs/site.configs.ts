@@ -76,4 +76,5 @@ export const SITE_CONFIG: SiteConfig = {
 export const PAGINATION_LIMIT_CONFIG = {
   chapters: 1,
   comics: 5,
+  comments: 5,
 };

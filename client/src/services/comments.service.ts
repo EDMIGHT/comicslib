@@ -30,6 +30,6 @@ export class CommentsService {
     const { data } = await api.get<IResponseAllComments>(
       `${API_COMMENTS_URL.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
     );
-    return data.comments;
+    return data;
   }
 }

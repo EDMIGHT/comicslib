@@ -4,13 +4,14 @@ import { FC } from 'react';
 import { Time } from '@/components/ui/time';
 import { IResponseComment } from '@/types/comment.types';
 
+import { Card } from './ui/card';
 import { UserAvatar } from './user-avatar';
 
 type CommentProps = IResponseComment;
 
 export const Comment: FC<CommentProps> = ({ text, user, createdAt }) => {
   return (
-    <div className='flex flex-col gap-2 rounded bg-card p-2'>
+    <Card className='flex flex-col gap-2 p-2'>
       <div className='flex items-center gap-2'>
         <Link
           href={`/profile/${user.login}`}
@@ -23,6 +24,6 @@ export const Comment: FC<CommentProps> = ({ text, user, createdAt }) => {
         <Time time={new Date(createdAt)} className='text-xs opacity-80' />
       </div>
       <p className='line-clamp-2 '>{text}</p>
-    </div>
+    </Card>
   );
 };

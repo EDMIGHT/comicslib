@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { ComicChaptersPagination } from '@/components/comic-chapters-pagination';
+import { Pagination } from '@/components/pagination';
 import { buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Time } from '@/components/ui/time';
@@ -57,7 +57,8 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
             ))}
           </ul>
           {response.totalPages > 1 && (
-            <ComicChaptersPagination
+            <Pagination
+              initialLimit={PAGINATION_LIMIT_CONFIG.chapters}
               totalPages={response.totalPages}
               hasNextPage={response.currentPage < response.totalPages}
               hasPrevPage={response.currentPage > 1}

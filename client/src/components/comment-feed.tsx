@@ -15,7 +15,8 @@ type CommentFeedProps = {
   comicId: string;
 };
 
-// TODO найти причину не обновления данных при создании нового комментария
+// TODO найти причину почему не обновляются данные при создании нового комментария
+// ? при router.refresh() обновляется время на постах, но не добавляется новый
 
 export const CommentFeed: FC<CommentFeedProps> = ({ comicId, initialComments }) => {
   const lastCommentRef = useRef<HTMLLIElement>(null);
@@ -27,11 +28,12 @@ export const CommentFeed: FC<CommentFeedProps> = ({ comicId, initialComments }) 
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ['comments'],
-    async ({ pageParam = 1 }) => {
-      return await CommentsService.getAll({
+    async ({ pageParam = 0 }) => {
+      const { comments } = await CommentsService.getAll({
         comicId,
         page: pageParam,
       });
+      return comments;
     },
     {
       getNextPageParam: (_, pages) => {
