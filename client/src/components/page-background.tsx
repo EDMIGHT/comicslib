@@ -1,7 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FC, MouseEvent, ReactNode } from 'react';
+import { FC, MouseEvent, ReactNode, useEffect } from 'react';
+
+import { useActions } from '@/hooks/use-actions';
 
 type PageBackgroundProps = {
   children: ReactNode;
@@ -17,6 +19,12 @@ export const PageBackground: FC<PageBackgroundProps> = ({
   totalPages,
 }) => {
   const router = useRouter();
+
+  // const { setIsActiveMenu } = useActions();
+
+  // useEffect(() => {
+  //   setIsActiveMenu(false);
+  // }, []);
 
   const onClickBlock = (e: MouseEvent<HTMLDivElement>) => {
     const block = e.currentTarget;
