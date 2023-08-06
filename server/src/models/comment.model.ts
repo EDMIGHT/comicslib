@@ -18,7 +18,13 @@ export class CommentModel {
     return prisma.comment.create({
       data,
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            login: true,
+            img: true,
+          },
+        },
       },
     });
   }
@@ -41,7 +47,13 @@ export class CommentModel {
         [sort as string]: order,
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            login: true,
+            img: true,
+          },
+        },
       },
     });
   }

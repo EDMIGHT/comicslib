@@ -1,5 +1,7 @@
-import { Comment, User } from '@prisma/client';
+import { Comment } from '@prisma/client';
+
+import { IShortUser } from './user.types';
 
 export type ICommentWithUser = Comment & {
-  user: User;
+  user: IShortUser;
 };

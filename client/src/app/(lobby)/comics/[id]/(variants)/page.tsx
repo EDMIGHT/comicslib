@@ -16,7 +16,7 @@ type PageProps = {
   searchParams: { [key: string]: string | undefined };
 };
 
-// TODO как вкладывать ссылку в ссылку без гидратация
+// ? как вкладывать ссылку в ссылку без гидратация
 
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const page = searchParams['page'] ?? '1';

@@ -1,9 +1,21 @@
 import { FC } from 'react';
 
-type PageProps = {};
+import { CreateCommentForm } from '@/components/forms/create-comment-form';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
-const Page: FC<PageProps> = ({}) => {
-  return <div>page2</div>;
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+const Page: FC<PageProps> = ({ params: { id } }) => {
+  return (
+    <div>
+      <CreateCommentForm comicId={id} />
+    </div>
+  );
 };
 
 export default Page;

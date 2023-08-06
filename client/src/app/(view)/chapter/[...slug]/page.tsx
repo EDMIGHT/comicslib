@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { ChapterControl } from '@/components/chapter-control';
-import { ChapterPagination } from '@/components/chapter-pagination';
 import { PageBackground } from '@/components/page-background';
 import { createTitle } from '@/lib/helpers/general.helper';
 import { PagesService } from '@/services/pages.service';

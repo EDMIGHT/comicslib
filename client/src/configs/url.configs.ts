@@ -20,3 +20,7 @@ export const API_CHAPTERS_URL = {
 export const API_PAGES_URL = {
   origin: '/pages',
 };
+
+export const API_COMMENTS_URL = {
+  origin: '/comments',
+};

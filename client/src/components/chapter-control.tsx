@@ -23,10 +23,12 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
 
   const router = useRouter();
 
+  // TODO infinity scroll for chapters
+
   const { data: response, isLoading } = useQuery({
     queryKey: ['chapters'],
     queryFn: async () => {
-      return await ChaptersService.getAll({ comicId, limit: 5 });
+      return await ChaptersService.getAll({ comicId, limit: 5, order: 'asc' });
     },
     onError: () => {
       toast({
