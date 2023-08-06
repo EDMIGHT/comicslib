@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import * as asyncActions from '@/store/actions';
 import { authSliceActions } from '@/store/slices/auth.slice';
+import { settingsSliceActions } from '@/store/slices/settings.slice';
 
 export const useActions = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ export const useActions = () => {
   const actions = {
     ...asyncActions,
     ...authSliceActions,
+    ...settingsSliceActions,
   };
 
   return useMemo(() => bindActionCreators(actions, dispatch), [dispatch]);

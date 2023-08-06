@@ -36,31 +36,33 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
             {response.chapters.map((chap) => (
               <li key={chap.id}>
                 <Card className='flex items-center justify-between gap-2  hover:bg-card/80'>
-                  <a href={`/chapter/${chap.id}`} className='flex-1 p-2'>
+                  <Link href={`/chapter/${chap.id}`} className='flex-1 p-2'>
                     <h3>
                       Ch. {chap.number} {chap.title && `- ${chap.title}`}
                     </h3>
-                  </a>
+                  </Link>
                   <div className='flex items-center gap-1'>
-                    <a
+                    <Link
                       href={`/profile/${chap.userId}`}
                       className={cn(buttonVariants({ variant: 'ghost' }), 'p-1 h-fit w-fit')}
                     >
                       {chap.user.login}
-                    </a>
-                    <a href={`/chapter/${chap.id}`} className='flex-1 p-2'>
+                    </Link>
+                    <Link href={`/chapter/${chap.id}`} className='p-2'>
                       {chap.createdAt && <Time time={new Date(chap.createdAt)} />}
-                    </a>
+                    </Link>
                   </div>
                 </Card>
               </li>
             ))}
           </ul>
-          <ComicChaptersPagination
-            totalPages={response.totalPages}
-            hasNextPage={response.currentPage < response.totalPages}
-            hasPrevPage={response.currentPage > 1}
-          />
+          {response.totalPages > 1 && (
+            <ComicChaptersPagination
+              totalPages={response.totalPages}
+              hasNextPage={response.currentPage < response.totalPages}
+              hasPrevPage={response.currentPage > 1}
+            />
+          )}
         </>
       )}
     </div>

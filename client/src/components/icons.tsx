@@ -4,14 +4,14 @@ import {
   Github,
   Home,
   Library,
-  LucideIcon,
   LucideProps,
+  Menu,
   MessageCircle,
   Orbit,
   Search,
   Star,
   Twitter,
-  User,
+  X,
 } from 'lucide-react';
 
 type IconType = {
@@ -19,6 +19,8 @@ type IconType = {
 };
 export const Icons: IconType = {
   logo: (props: LucideProps) => <Orbit {...props} />,
+  menu: (props: LucideProps) => <Menu {...props} />,
+  close: (props: LucideProps) => <X {...props} />,
   search: (props: LucideProps) => <Search {...props} />,
   home: (props: LucideProps) => <Home {...props} />,
   titles: (props: LucideProps) => <Library {...props} />,
