@@ -73,6 +73,21 @@ export const SITE_CONFIG: SiteConfig = {
   socials: SITE_SOCIAL_LINKS,
 };
 
+export const PROFILE_NAVIGATION: NavigationLink[] = [
+  {
+    title: 'Info',
+    href: '',
+  },
+  {
+    title: 'Rated',
+    href: 'rated',
+  },
+  {
+    title: 'Reading history',
+    href: 'rated',
+  },
+];
+
 export const PAGINATION_LIMIT_CONFIG = {
   chapters: 1,
   comics: 5,

@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      gridTemplateColumns: {
+        'profile-md': '200px 1fr',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

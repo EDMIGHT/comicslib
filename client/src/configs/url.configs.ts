@@ -26,3 +26,7 @@ export const API_PAGES_URL = {
 export const API_COMMENTS_URL = {
   origin: '/comments',
 };
+
+export const API_PROFILE_URL = {
+  origin: '/profile',
+};

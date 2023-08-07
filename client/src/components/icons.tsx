@@ -1,6 +1,7 @@
 import {
   Bookmark,
   BookMarked,
+  ChevronsRight,
   ChevronsUpDown,
   Github,
   Home,
@@ -25,6 +26,7 @@ export const Icons: IconType = {
   close: (props: LucideProps) => <X {...props} />,
   loading: (props: LucideProps) => <Loader2 {...props} />,
   search: (props: LucideProps) => <Search {...props} />,
+  link: (props: LucideProps) => <ChevronsRight {...props} />,
   home: (props: LucideProps) => <Home {...props} />,
   titles: (props: LucideProps) => <Library {...props} />,
   follows: (props: LucideProps) => <BookMarked {...props} />,
