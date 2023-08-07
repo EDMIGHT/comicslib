@@ -3,18 +3,11 @@ import { Rating } from '@prisma/client';
 import prisma from '@/db/prisma';
 
 type ICreateGenreArg = Pick<Rating, 'comicId' | 'userId' | 'value'>;
-type IUpdateRatingArg = Pick<Rating, 'id'> & Partial<ICreateGenreArg>;
+type IUpdateRatingArg = Pick<Rating, 'id' | 'value'>;
 
 export class RatingModel {
   public static async getAll(comicId: string): Promise<Rating[]> {
     return prisma.rating.findMany({
-      where: {
-        comicId,
-      },
-    });
-  }
-  public static async get(comicId: string): Promise<Rating | null> {
-    return prisma.rating.findFirst({
       where: {
         comicId,
       },
@@ -33,12 +26,21 @@ export class RatingModel {
       data,
     });
   }
-  public static async update({ id, ...data }: IUpdateRatingArg): Promise<Rating> {
+  public static async update({ id, value }: IUpdateRatingArg): Promise<Rating> {
     return prisma.rating.update({
       where: {
         id,
       },
-      data,
+      data: {
+        value,
+      },
+    });
+  }
+  public static async delete(id: string): Promise<Rating> {
+    return prisma.rating.delete({
+      where: {
+        id,
+      },
     });
   }
 }

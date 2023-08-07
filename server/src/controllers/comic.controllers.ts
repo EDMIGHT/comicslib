@@ -91,7 +91,7 @@ export const getComic = async (req: Request, res: Response): Promise<Response> =
 
     return CustomResponse.ok(res, {
       ...existedComic,
-      avgRating,
+      avgRating: avgRating?.toFixed(1),
     });
   } catch (error) {
     return serverErrorResponse({
@@ -162,17 +162,20 @@ export const updateComicRating = async (req: Request, res: Response): Promise<Re
       });
     }
 
-    const existedReview = await RatingModel.get(id);
+    const existedReview = await RatingModel.getByUserId(id, req.user.id);
 
     let updatedReview;
 
     if (existedReview) {
-      updatedReview = await RatingModel.update({
-        id: existedReview.id,
-        comicId: id,
-        userId: req.user.id,
-        value: req.body.value,
-      });
+      if (existedReview.value === req.body.value) {
+        await RatingModel.delete(existedReview.id);
+        updatedReview = null;
+      } else {
+        updatedReview = await RatingModel.update({
+          id: existedReview.id,
+          value: req.body.value,
+        });
+      }
     } else {
       updatedReview = await RatingModel.create({
         comicId: id,

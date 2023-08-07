@@ -11,18 +11,17 @@ export const ComicCounters: FC<Pick<IResponseComic, 'avgRating' | '_count'>> = (
   return (
     <ul className='flex items-center gap-2'>
       <li className='flex items-center gap-1 '>
-        <Icons.star />
+        <Icons.star className='fill-foreground' />
         {avgRating || 0}
       </li>
 
       <li className='flex items-center gap-1'>
-        <Icons.bookmark />
-
+        <Icons.bookmark className='fill-foreground' />
         {folders || 0}
       </li>
 
       <li className='flex items-center gap-1'>
-        <Icons.comment />
+        <Icons.comment className='fill-foreground' />
         {comments || 0}
       </li>
     </ul>

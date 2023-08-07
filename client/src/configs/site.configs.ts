@@ -78,3 +78,8 @@ export const PAGINATION_LIMIT_CONFIG = {
   comics: 5,
   comments: 5,
 };
+
+export const COMIC_RATING_CONFIG = {
+  min: 1,
+  max: 10,
+};

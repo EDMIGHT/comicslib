@@ -11,6 +11,8 @@ export const API_AUTH_URL = {
 
 export const API_COMICS_URL = {
   origin: '/comics',
+  rating: '/comics/rating',
+  ratingUser: '/comics/rating/me',
 };
 
 export const API_CHAPTERS_URL = {
