@@ -1,7 +1,7 @@
 import { Comic } from '@prisma/client';
 
 import prisma from '@/db/prisma';
-import { IComicWithData, IComicWithDataSingle } from '@/types/comic.types';
+import { IComicWithData } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 
 const defaultComicImg = process.env.COMIC_DEFAULT_IMG_PATH;
@@ -109,6 +109,7 @@ export class ComicModel {
       include: {
         genres: true,
         authors: true,
+        status: true,
         _count: {
           select: {
             comments: true,
@@ -153,7 +154,7 @@ export class ComicModel {
       },
     });
   }
-  public static async get(id: string): Promise<IComicWithDataSingle | null> {
+  public static async get(id: string): Promise<IComicWithData | null> {
     return prisma.comic.findUnique({
       where: {
         id,
@@ -161,7 +162,7 @@ export class ComicModel {
       include: {
         authors: true,
         genres: true,
-        comments: true,
+        status: true,
         _count: {
           select: {
             comments: true,

@@ -1,6 +1,7 @@
 import { IAuthor } from './author.types';
 import { IGenre } from './genre.types';
 import { IPagination } from './response.types';
+import { IStatus } from './status.types';
 
 export type IComicCount = {
   comments: number;
@@ -25,6 +26,7 @@ export type IShortComic = {
 export type IResponseComic = IComic & {
   authors: IAuthor[];
   genres: IGenre[];
+  status: IStatus;
   _count: Pick<IComicCount, 'comments' | 'folders'>;
   avgRating: number;
 };
@@ -32,10 +34,3 @@ export type IResponseComic = IComic & {
 export type IResponseAllComics = {
   comics: IResponseComic[];
 } & IPagination;
-
-export type IResponseSingleComic = IResponseComic & {
-  comments: {
-    id: string;
-    text: string;
-  };
-};

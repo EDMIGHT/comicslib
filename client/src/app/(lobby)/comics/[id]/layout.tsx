@@ -38,7 +38,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     notFound();
   }
 
-  const { img, title, desc, genres, authors, _count, avgRating, id: comicId } = comic;
+  const { img, title, desc, genres, authors, _count, avgRating, id: comicId, status } = comic;
 
   return (
     <div className='flex flex-col gap-2 md:gap-4'>
@@ -65,7 +65,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
           <ComicNavigation comicId={comicId} />
           {children}
         </div>
-        <ComicInfo genres={genres} authors={authors} />
+        <ComicInfo genres={genres} authors={authors} status={status} />
       </div>
     </div>
   );

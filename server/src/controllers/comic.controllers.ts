@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ComicModel } from '@/models/comic.model';
+import { RatingModel } from '@/models/rating.model';
 import { ISortOrder } from '@/types/common.types';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -96,6 +97,95 @@ export const getComic = async (req: Request, res: Response): Promise<Response> =
     return serverErrorResponse({
       res,
       message: `server side error when fetching comic with id = ${id}`,
+      error,
+    });
+  }
+};
+
+export const getRatings = async (req: Request, res: Response): Promise<Response> => {
+  const { id } = req.params;
+
+  try {
+    const existedComic = await ComicModel.get(id);
+
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which ratings were requested does not exist.',
+      });
+    }
+
+    const ratings = await RatingModel.getAll(id);
+
+    return CustomResponse.ok(res, ratings);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when trying to get all ratings for a comic`,
+      error,
+    });
+  }
+};
+
+export const getUserRating = async (req: Request, res: Response): Promise<Response> => {
+  const { id } = req.params;
+
+  try {
+    const existedComic = await ComicModel.get(id);
+
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which the user rating was requested does not exist',
+      });
+    }
+
+    const rating = await RatingModel.getByUserId(id, req.user.id);
+
+    return CustomResponse.ok(res, rating);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when trying to get all ratings for a comic`,
+      error,
+    });
+  }
+};
+
+export const updateComicRating = async (req: Request, res: Response): Promise<Response> => {
+  const { id } = req.params;
+
+  try {
+    const existedComic = await ComicModel.get(id);
+
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which the rating is being created does not exist',
+      });
+    }
+
+    const existedReview = await RatingModel.get(id);
+
+    let updatedReview;
+
+    if (existedReview) {
+      updatedReview = await RatingModel.update({
+        id: existedReview.id,
+        comicId: id,
+        userId: req.user.id,
+        value: req.body.value,
+      });
+    } else {
+      updatedReview = await RatingModel.create({
+        comicId: id,
+        userId: req.user.id,
+        value: req.body.value,
+      });
+    }
+
+    return CustomResponse.ok(res, updatedReview);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when trying to rate a comic`,
       error,
     });
   }
