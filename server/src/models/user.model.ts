@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 
 import prisma from '@/db/prisma';
+import { IProfile } from '@/types/user.types';
 
 type ICreateUserArg = Omit<User, 'id'>;
 
@@ -21,6 +22,23 @@ export class UserModel {
     return prisma.user.findUnique({
       where: {
         login,
+      },
+    });
+  }
+  public static async getByLoginWithData(login: string): Promise<IProfile | null> {
+    return prisma.user.findFirst({
+      where: {
+        login,
+      },
+      include: {
+        folders: true,
+        _count: {
+          select: {
+            ratings: true,
+            chapters: true,
+            readingHistory: true,
+          },
+        },
       },
     });
   }
