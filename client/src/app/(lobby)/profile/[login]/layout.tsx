@@ -43,7 +43,9 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
       </div>
       <div className='flex flex-col justify-center gap-1'>
         <h1 className='text-4xl font-semibold'>{user.login}</h1>
-        <h2 className='text-foreground/75'>{user.name}</h2>
+        <h2 className='text-sm text-foreground/75'>
+          registered on {new Date(user.createdAt).toLocaleDateString()}
+        </h2>
       </div>
 
       <div>

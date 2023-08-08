@@ -75,10 +75,6 @@ export const SITE_CONFIG: SiteConfig = {
 
 export const PROFILE_NAVIGATION: NavigationLink[] = [
   {
-    title: 'Info',
-    href: '',
-  },
-  {
     title: 'Rated',
     href: 'rated',
   },
