@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 
+import { ProfileFolders } from '@/components/profile-folders';
 import { ProfileMenu } from '@/components/profile-menu';
 import { Card } from '@/components/ui/card';
 import { createTitle } from '@/lib/helpers/general.helper';
@@ -48,9 +49,10 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
         </h2>
       </div>
 
-      <div>
+      <nav className='rounded border-none bg-card p-1'>
         <ProfileMenu />
-      </div>
+        <ProfileFolders folders={user.folders} login={user.login} />
+      </nav>
       <div>{children}</div>
     </div>
   );

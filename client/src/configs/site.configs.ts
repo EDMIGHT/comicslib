@@ -76,11 +76,18 @@ export const SITE_CONFIG: SiteConfig = {
 export const PROFILE_NAVIGATION: NavigationLink[] = [
   {
     title: 'Rated',
-    href: 'rated',
+    href: '',
+    icon: 'star',
   },
   {
     title: 'Reading history',
-    href: 'rated',
+    href: 'reading-history',
+    icon: 'history',
+  },
+  {
+    title: 'Uploads',
+    href: 'uploads',
+    icon: 'upload',
   },
 ];
 

@@ -43,7 +43,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
                   </Link>
                   <div className='flex items-center gap-1'>
                     <Link
-                      href={`/profile/${chap.userId}`}
+                      href={`/profile/${chap.user.login}`}
                       className={cn(buttonVariants({ variant: 'ghost' }), 'p-1 h-fit w-fit')}
                     >
                       {chap.user.login}

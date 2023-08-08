@@ -9,6 +9,7 @@ export type SocialLink = {
 export type NavigationLink = {
   title: string;
   href: string;
+  icon?: string;
 };
 
 export type NavigationItem = {
