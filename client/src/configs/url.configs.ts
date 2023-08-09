@@ -27,6 +27,7 @@ export const API_COMMENTS_URL = {
   origin: '/comments',
 };
 
-export const API_PROFILE_URL = {
-  origin: '/profile',
+export const API_USERS_ENDPOINTS = {
+  origin: '/users',
+  folders: '/users/folders',
 };

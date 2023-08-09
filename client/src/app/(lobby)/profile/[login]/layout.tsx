@@ -7,7 +7,7 @@ import { ProfileFolders } from '@/components/profile-folders';
 import { ProfileMenu } from '@/components/profile-menu';
 import { Card } from '@/components/ui/card';
 import { createTitle } from '@/lib/helpers/general.helper';
-import { ProfileService } from '@/services/profile.service';
+import { UserService } from '@/services/users.service';
 
 type LayoutProps = {
   children: ReactNode;
@@ -17,7 +17,7 @@ type LayoutProps = {
 };
 
 export async function generateMetadata({ params: { login } }: LayoutProps): Promise<Metadata> {
-  const user = await ProfileService.get(login);
+  const user = await UserService.get(login);
 
   if (!user) {
     return notFound();
@@ -29,7 +29,7 @@ export async function generateMetadata({ params: { login } }: LayoutProps): Prom
 }
 
 const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
-  const user = await ProfileService.get(login);
+  const user = await UserService.get(login);
 
   if (!user) {
     return notFound();

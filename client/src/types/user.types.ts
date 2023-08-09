@@ -18,7 +18,7 @@ export type IResponseAuth = {
 export type IShortUser = Pick<IUser, 'id' | 'login' | 'img'>;
 
 export type IProfile = IUser & {
-  folders: Folder[];
+  folders: IFolder[];
   _count: {
     ratings: number;
     chapters: number;
@@ -26,8 +26,12 @@ export type IProfile = IUser & {
   };
 };
 
-export type Folder = {
+export type IFolder = {
   id: string;
   title: string;
   userId: string;
+};
+
+export type IFolderForComic = IFolder & {
+  isComicExist: boolean;
 };

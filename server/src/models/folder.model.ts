@@ -3,7 +3,7 @@ import { Folder } from '@prisma/client';
 import prisma from '@/db/prisma';
 import { IFolderWithComicIds, IResponseFolderWithData } from '@/types/folder.types';
 
-type ICreateFolderArg = Pick<Folder, 'title' | 'userId'> & {
+type ICreateFolderArg = Pick<Folder, 'title' | 'userId' | 'order'> & {
   comics?: string[];
 };
 type IGetByLoginFolderArg = Pick<Folder, 'id'> & {

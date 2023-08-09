@@ -89,6 +89,7 @@ model Comic {
   img            String
   createdAt      DateTime         @default(now()) @map("created_at")
   updatedAt      DateTime         @updatedAt @map("updated_at")
+  releasedAt     DateTime         @map("released_at")
   authors        Author[]
   ratings        Rating[]
   genres         Genre[]
@@ -112,7 +113,7 @@ model Status {
 
 model Rating {
   id        String   @id @default(uuid())
-  value     Int      @default(0)
+  value     Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   comic     Comic    @relation(fields: [comicId], references: [id])
@@ -122,12 +123,13 @@ model Rating {
 }
 
 model Folder {
-  id     String  @id @default(uuid())
-  title  String
-  order  Int     @db.UnsignedTinyInt
-  user   User    @relation(fields: [userId], references: [id])
-  userId String
-  comics Comic[]
+  id        String   @id @default(uuid())
+  title     String
+  order     Int      @db.UnsignedTinyInt
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  comics    Comic[]
 }
 
 model Comment {
