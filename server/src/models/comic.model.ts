@@ -30,12 +30,18 @@ interface IQuery {
       };
     };
   };
+  folders?: {
+    some: {
+      id: string;
+    };
+  };
 }
 
 type IGetAllArg = {
   authors: string[];
   genres: string[];
   title: string;
+  folderId?: string;
 } & ISortArg &
   IPaginationArg;
 
@@ -70,6 +76,7 @@ export class ComicModel {
     limit,
     order,
     sort,
+    folderId,
   }: IGetAllArg): Promise<IComicWithData[]> {
     const query: IQuery = {};
 
@@ -93,6 +100,13 @@ export class ComicModel {
         },
       };
     }
+    if (folderId) {
+      query.folders = {
+        some: {
+          id: folderId,
+        },
+      };
+    }
 
     return prisma.comic.findMany({
       skip: offset,
@@ -103,7 +117,7 @@ export class ComicModel {
       where: {
         ...query,
         title: {
-          contains: title,
+          startsWith: title,
         },
       },
       include: {
