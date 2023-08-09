@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { FolderModel } from '@/models/folder.model';
 import { UserModel } from '@/models/user.model';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
@@ -22,6 +23,23 @@ export const getProfile = async (req: Request, res: Response): Promise<Response>
     return serverErrorResponse({
       res,
       message: `a server error occurred while getting the user profile`,
+      error,
+    });
+  }
+};
+
+export const createFolder = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const folder = await FolderModel.create({
+      userId: req.user.id,
+      ...req.body,
+    });
+
+    return CustomResponse.created(res, folder);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error while creating folder`,
       error,
     });
   }
