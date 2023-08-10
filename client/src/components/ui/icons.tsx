@@ -1,4 +1,5 @@
 import {
+  BookCopy,
   Bookmark,
   BookMarked,
   BookOpen,
@@ -11,15 +12,18 @@ import {
   Library,
   ListPlus,
   Loader2,
+  LogOut,
   LucideProps,
   Menu,
   MessageCircle,
   Orbit,
+  Palette,
   PlusCircle,
   Search,
   Star,
   Twitter,
   UploadCloud,
+  User2,
   X,
 } from 'lucide-react';
 
@@ -27,26 +31,11 @@ type IconType = {
   [key: string]: (props: LucideProps) => JSX.Element;
 };
 export const Icons: IconType = {
-  logo: (props: LucideProps) => <Orbit {...props} />,
-  menu: (props: LucideProps) => <Menu {...props} />,
-  close: (props: LucideProps) => <X {...props} />,
-  loading: (props: LucideProps) => <Loader2 {...props} />,
-  search: (props: LucideProps) => <Search {...props} />,
-  link: (props: LucideProps) => <ChevronsRight {...props} />,
-  read: (props: LucideProps) => <BookOpen {...props} />,
   add: (props: LucideProps) => <PlusCircle {...props} />,
-  upload: (props: LucideProps) => <UploadCloud {...props} />,
-  folder: (props: LucideProps) => <FolderOpen {...props} />,
-  listPlus: (props: LucideProps) => <ListPlus {...props} />,
-  history: (props: LucideProps) => <History {...props} />,
-  home: (props: LucideProps) => <Home {...props} />,
-  titles: (props: LucideProps) => <Library {...props} />,
-  follows: (props: LucideProps) => <BookMarked {...props} />,
-  star: (props: LucideProps) => <Star {...props} />,
   bookmark: (props: LucideProps) => <Bookmark {...props} />,
-  comment: (props: LucideProps) => <MessageCircle {...props} />,
   chevronUpDown: (props: LucideProps) => <ChevronsUpDown {...props} />,
-  github: (props: LucideProps) => <Github {...props} />,
+  close: (props: LucideProps) => <X {...props} />,
+  comment: (props: LucideProps) => <MessageCircle {...props} />,
   discord: (props: LucideProps) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -66,5 +55,23 @@ export const Icons: IconType = {
       ></path>
     </svg>
   ),
+  logOut: (props: LucideProps) => <LogOut {...props} />,
+  folder: (props: LucideProps) => <FolderOpen {...props} />,
+  follows: (props: LucideProps) => <BookMarked {...props} />,
+  github: (props: LucideProps) => <Github {...props} />,
+  history: (props: LucideProps) => <History {...props} />,
+  home: (props: LucideProps) => <Home {...props} />,
+  library: (props: LucideProps) => <Library {...props} />,
+  link: (props: LucideProps) => <ChevronsRight {...props} />,
+  loading: (props: LucideProps) => <Loader2 {...props} />,
+  logo: (props: LucideProps) => <Orbit {...props} />,
+  menu: (props: LucideProps) => <Menu {...props} />,
+  palette: (props: LucideProps) => <Palette {...props} />,
+  read: (props: LucideProps) => <BookOpen {...props} />,
+  search: (props: LucideProps) => <Search {...props} />,
+  star: (props: LucideProps) => <Star {...props} />,
+  titles: (props: LucideProps) => <BookCopy {...props} />,
   twitter: (props: LucideProps) => <Twitter {...props} />,
+  upload: (props: LucideProps) => <UploadCloud {...props} />,
+  user: (props: LucideProps) => <User2 {...props} />,
 };

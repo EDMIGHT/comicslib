@@ -1,17 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { FC } from 'react';
 
-import { Icons } from '@/components/ui/icons';
 import { SidebarFooter } from '@/components/sidebar-footer';
+import { Icons } from '@/components/ui/icons';
 import { SITE_CONFIG } from '@/configs/site.configs';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { useActions } from '@/hooks/use-actions';
 import { cn } from '@/lib/utils';
+import { IUser } from '@/types/user.types';
 
 import { Menu } from './menu';
 
-export const Sidebar = () => {
+type SidebarProps = {
+  user: IUser | null;
+};
+
+export const Sidebar: FC<SidebarProps> = ({ user }) => {
   const { isActiveMenu } = useAppSelector((state) => state.settings);
   const { setIsActiveMenu } = useActions();
 
@@ -37,7 +43,7 @@ export const Sidebar = () => {
         </button>
       </div>
 
-      <Menu navigation={SITE_CONFIG.navigation} />
+      <Menu navigation={SITE_CONFIG.navigation} user={user} />
       <SidebarFooter socialLinks={SITE_CONFIG.socials} />
     </aside>
   );

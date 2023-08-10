@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { API_AUTH_URL } from '@/configs/url.configs';
+import { getAccessToken } from '@/lib/helpers/token.helper';
 import { apiAuth } from '@/services/apiAuth';
 import { IUser } from '@/types/user.types';
 
@@ -21,7 +22,9 @@ export const useAuth = () => {
       }
     };
 
-    fetchAuthData();
+    if (getAccessToken()) {
+      fetchAuthData();
+    }
   }, []);
 
   return { user, loading, error };

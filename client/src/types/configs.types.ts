@@ -15,6 +15,7 @@ export type NavigationLink = {
 export type NavigationItem = {
   title: string;
   href?: string;
+  isPrivate?: boolean;
   // icon: (props: LucideProps) => JSX.Element;
   links?: NavigationLink[];
 };

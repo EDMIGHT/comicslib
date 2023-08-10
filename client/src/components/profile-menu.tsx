@@ -18,7 +18,7 @@ export const ProfileMenu: FC<IProfileMenuProps> = ({ login }) => {
   return (
     <ul className='flex w-full flex-col gap-1'>
       {PROFILE_NAVIGATION.map((navItem, i) => {
-        const Icon = Icons[navItem.icon ?? ''];
+        const Icon = navItem.icon && Icons[navItem.icon];
         return (
           <li key={i + 'profile'} className=''>
             <h3>

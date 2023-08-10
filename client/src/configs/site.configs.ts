@@ -44,8 +44,8 @@ export const FOLLOWS_NAVIGATION: NavigationLink[] = [
     href: '/library/updates',
   },
   {
-    title: 'library',
-    href: '/library',
+    title: 'folders',
+    href: '/folders',
   },
   {
     title: 'reading history',
@@ -62,8 +62,9 @@ export const SITE_CONFIG: SiteConfig = {
       href: '/',
     },
     {
-      title: 'Follows',
+      title: 'Library',
       links: FOLLOWS_NAVIGATION,
+      isPrivate: true,
     },
     {
       title: 'Titles',
@@ -88,6 +89,19 @@ export const PROFILE_NAVIGATION: NavigationLink[] = [
     title: 'Uploads',
     href: '/uploads',
     icon: 'upload',
+  },
+];
+
+export const AUTH_MENU_NAVIGATION: NavigationLink[] = [
+  {
+    title: 'My folders',
+    href: '/folders',
+    icon: 'folder',
+  },
+  {
+    title: 'My reading history',
+    href: '/library/reading-history',
+    icon: 'history',
   },
 ];
 

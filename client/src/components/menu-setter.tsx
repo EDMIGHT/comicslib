@@ -8,7 +8,7 @@ type MenuSetterProps = {
   isOpen?: boolean;
 };
 
-const MenuSetter = ({ isOpen = false }: MenuSetterProps) => {
+export const MenuSetter = ({ isOpen = false }: MenuSetterProps) => {
   const { setIsActiveMenu } = useActions();
 
   useEffect(() => {
@@ -17,5 +17,3 @@ const MenuSetter = ({ isOpen = false }: MenuSetterProps) => {
 
   return null;
 };
-
-export default MenuSetter;
