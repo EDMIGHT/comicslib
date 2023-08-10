@@ -10,6 +10,7 @@ import { apiAuth } from './apiAuth';
 type IGetAllArg = IPaginationArg &
   ISortArg & {
     folderId?: string;
+    ratedUser?: string;
     title?: string;
   };
 
@@ -21,9 +22,10 @@ export class ComicsService {
     order = 'desc',
     title = '',
     folderId = '',
+    ratedUser = '',
   }: IGetAllArg) {
     const { data } = await api.get<IResponseAllComics>(
-      `${API_COMICS_URL.origin}?page=${page}&limit=${limit}&sort=${sort}&order=${order}&title=${title}&folderId=${folderId}`
+      `${API_COMICS_URL.origin}?page=${page}&limit=${limit}&sort=${sort}&order=${order}&title=${title}&folderId=${folderId}&ratedUser=${ratedUser}`
     );
     return data;
   }

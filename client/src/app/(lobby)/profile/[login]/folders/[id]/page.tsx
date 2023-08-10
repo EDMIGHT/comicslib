@@ -16,8 +16,6 @@ type PageProps = {
 const Page = async ({ params: { id, login } }: PageProps) => {
   const folderInfo = await UserService.getUserFolder(login, id);
 
-  // const { comics } = await ComicsService.getAll({});
-
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex justify-between'>

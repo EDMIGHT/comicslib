@@ -12,24 +12,25 @@ import { Comic } from './layouts/comic';
 
 type IComicsProps = {
   folderId?: string;
+  ratedUser?: string;
+  initialComics?: IResponseComic[];
 };
 
-export const ComicsFeed: FC<IComicsProps> = ({ folderId }) => {
+export const ComicsFeed: FC<IComicsProps> = ({ folderId, ratedUser, initialComics }) => {
   const lastCommentRef = useRef<HTMLLIElement>(null);
-  const router = useRouter();
-  const queryClient = useQueryClient();
 
   const { ref, entry } = useIntersection({
     root: lastCommentRef.current,
     threshold: 1,
   });
 
-  const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ['comics', folderId],
-    async ({ pageParam = 1 }) => {
+    async ({ pageParam = initialComics ? 2 : 1 }) => {
       const { comics } = await ComicsService.getAll({
         page: pageParam,
         folderId,
+        ratedUser,
       });
       return comics;
     },
@@ -38,20 +39,11 @@ export const ComicsFeed: FC<IComicsProps> = ({ folderId }) => {
         return pages.length + 1;
       },
       initialData: {
-        pages: [],
+        pages: initialComics ? [initialComics] : [],
         pageParams: [1],
       },
     }
   );
-
-  // useEffect(() => {
-  //   queryClient.invalidateQueries({ queryKey: ['comics', folderId] });
-  //   // router.refresh();
-  // }, [folderId]);
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [folderId]);
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -59,7 +51,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ folderId }) => {
     }
   }, [entry, fetchNextPage]);
 
-  const comics = data?.pages.flatMap((page) => page);
+  const comics = data?.pages.flatMap((page) => page) ?? initialComics;
 
   return (
     <ul className='grid auto-cols-max grid-cols-2 gap-2'>

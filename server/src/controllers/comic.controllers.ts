@@ -27,6 +27,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       authors,
       title,
       folderId,
+      ratedUser,
       page = 1,
       limit = 10,
       order = 'desc',
@@ -45,6 +46,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       order: order as ISortOrder,
       sort: sort as string,
       folderId: folderId as string,
+      ratedUser: ratedUser as string,
     });
 
     const comicsWithAvgRating = await Promise.all(
@@ -61,6 +63,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       genres: genresList,
       authors: authorsList,
       title: title as string,
+      folderId: folderId as string,
     });
 
     return CustomResponse.ok(res, {
@@ -85,7 +88,7 @@ export const getComic = async (req: Request, res: Response): Promise<Response> =
 
     if (!existedComic) {
       return CustomResponse.notFound(res, {
-        message: `сomic with id = ${id} does not exist`,
+        message: `comic with id = ${id} does not exist`,
       });
     }
 

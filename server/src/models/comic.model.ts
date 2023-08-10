@@ -35,6 +35,13 @@ interface IQuery {
       id: string;
     };
   };
+  ratings?: {
+    some: {
+      user: {
+        login: string;
+      };
+    };
+  };
 }
 
 type IGetAllArg = {
@@ -42,6 +49,7 @@ type IGetAllArg = {
   genres: string[];
   title: string;
   folderId?: string;
+  ratedUser?: string;
 } & ISortArg &
   IPaginationArg;
 
@@ -77,6 +85,7 @@ export class ComicModel {
     order,
     sort,
     folderId,
+    ratedUser,
   }: IGetAllArg): Promise<IComicWithData[]> {
     const query: IQuery = {};
 
@@ -104,6 +113,15 @@ export class ComicModel {
       query.folders = {
         some: {
           id: folderId,
+        },
+      };
+    }
+    if (ratedUser) {
+      query.ratings = {
+        some: {
+          user: {
+            login: ratedUser,
+          },
         },
       };
     }
@@ -137,7 +155,8 @@ export class ComicModel {
     genres,
     authors,
     title,
-  }: Pick<IGetAllArg, 'authors' | 'genres' | 'title'>): Promise<number> {
+    folderId,
+  }: Pick<IGetAllArg, 'authors' | 'genres' | 'title' | 'folderId'>): Promise<number> {
     const query: IQuery = {};
 
     if (genres.length > 0) {
@@ -155,6 +174,13 @@ export class ComicModel {
           id: {
             in: authors,
           },
+        },
+      };
+    }
+    if (folderId) {
+      query.folders = {
+        some: {
+          id: folderId,
         },
       };
     }
