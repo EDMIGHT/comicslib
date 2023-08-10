@@ -9,6 +9,16 @@ export type ITokens = {
   expiresIn: number;
 };
 
+export type IPaginationArg = {
+  page?: number;
+  limit?: number;
+};
+
+export type ISortArg = {
+  sort?: string;
+  order?: string;
+};
+
 export type IBadResponse = {
   error: {
     data: {

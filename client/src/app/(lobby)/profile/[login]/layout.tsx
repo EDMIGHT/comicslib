@@ -49,8 +49,8 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
         </h2>
       </div>
 
-      <nav className='rounded border-none bg-card p-1'>
-        <ProfileMenu />
+      <nav className='h-fit rounded border-none bg-card p-1'>
+        <ProfileMenu login={user.login} />
         <ProfileFolders folders={user.folders} login={user.login} />
       </nav>
       <div>{children}</div>

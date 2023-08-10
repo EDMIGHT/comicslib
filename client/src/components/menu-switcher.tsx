@@ -6,7 +6,7 @@ import { SITE_CONFIG } from '@/configs/site.configs';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import { useActions } from '@/hooks/use-actions';
 
-import { Icons } from './icons';
+import { Icons } from './ui/icons';
 
 export const MenuSwitcher = () => {
   const { isActiveMenu } = useAppSelector((state) => state.settings);

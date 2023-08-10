@@ -1,7 +1,7 @@
 import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
 
-import { SignInForm } from '@/components/sign-in-form';
+import { SignInForm } from '@/components/forms/sign-in-form';
 import {
   Card,
   CardContent,

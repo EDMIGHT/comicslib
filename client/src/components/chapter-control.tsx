@@ -11,7 +11,7 @@ import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ChaptersService } from '@/services/chapters.service';
 
-import { Icons } from './icons';
+import { Icons } from './ui/icons';
 
 type ChapterControlProps = {
   comicId: string;

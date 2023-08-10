@@ -12,8 +12,8 @@ export const useAuth = () => {
   useEffect(() => {
     const fetchAuthData = async () => {
       try {
-        const response = await apiAuth.get(API_AUTH_URL.authMe);
-        setUser(response.data);
+        const { data } = await apiAuth.get(API_AUTH_URL.authMe);
+        setUser(data);
         setLoading(false);
       } catch (error: unknown) {
         setError(error);

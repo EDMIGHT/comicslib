@@ -19,7 +19,7 @@ type PageProps = {
 };
 
 export async function generateStaticParams() {
-  const { comics } = await ComicsService.getAll();
+  const { comics } = await ComicsService.getAll({});
 
   return comics.map((comic) => ({ id: comic.id }));
 }

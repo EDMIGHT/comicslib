@@ -1,4 +1,4 @@
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/ui/icons';
 import { NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
 
 export const SITE_SOCIAL_LINKS: SocialLink[] = [
@@ -81,12 +81,12 @@ export const PROFILE_NAVIGATION: NavigationLink[] = [
   },
   {
     title: 'Reading history',
-    href: 'reading-history',
+    href: '/reading-history',
     icon: 'history',
   },
   {
     title: 'Uploads',
-    href: 'uploads',
+    href: '/uploads',
     icon: 'upload',
   },
 ];

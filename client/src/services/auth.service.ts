@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ISignInFields } from '@/components/sign-in-form';
+import { ISignInFields } from '@/components/forms/sign-in-form';
 import { API_AUTH_URL } from '@/configs/url.configs';
 import { isServer } from '@/lib/helpers/general.helper';
 import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';

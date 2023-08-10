@@ -26,6 +26,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       genres,
       authors,
       title,
+      folderId,
       page = 1,
       limit = 10,
       order = 'desc',
@@ -43,6 +44,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       limit: +limit,
       order: order as ISortOrder,
       sort: sort as string,
+      folderId: folderId as string,
     });
 
     const comicsWithAvgRating = await Promise.all(

@@ -6,12 +6,12 @@ import { FC } from 'react';
 
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
-import { Folder } from '@/types/user.types';
+import { IFolder } from '@/types/user.types';
 
-import { Icons } from './icons';
+import { Icons } from './ui/icons';
 
 type ProfileFoldersProps = {
-  folders: Folder[];
+  folders: IFolder[];
   login: string;
 };
 
@@ -36,11 +36,10 @@ export const ProfileFolders: FC<ProfileFoldersProps> = ({ folders, login }) => {
         {folders.map((f) => (
           <li key={f.id}>
             <Link
-              href={`${login}/folders/${f.title.replace(/ /g, '-').toLocaleLowerCase()}`}
+              href={`/profile/${login}/folders/${f.id}`}
               className={cn(
                 'flex items-center gap-1 rounded px-4 py-1 text-base',
-                pathname ===
-                  `${login}/folders/${f.title.replace(/ /g, '-').toLocaleLowerCase()}`
+                pathname.includes(`/profile/${login}/folders/${f.id}`)
                   ? 'bg-active text-active-foreground'
                   : 'hover:bg-background/30 focus:bg-background/30'
               )}

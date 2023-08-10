@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { IResponseComic } from '@/types/comic.types';
 
-import { Icons } from './icons';
+import { Icons } from './ui/icons';
 
 export const ComicCounters: FC<Pick<IResponseComic, 'avgRating' | '_count'>> = ({
   avgRating,

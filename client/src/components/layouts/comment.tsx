@@ -4,8 +4,8 @@ import { FC } from 'react';
 import { Time } from '@/components/ui/time';
 import { IResponseComment } from '@/types/comment.types';
 
-import { Card } from './ui/card';
-import { UserAvatar } from './user-avatar';
+import { Card } from '../ui/card';
+import { UserAvatar } from '../user-avatar';
 
 type CommentProps = IResponseComment;
 

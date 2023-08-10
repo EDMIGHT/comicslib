@@ -1,15 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { FC } from 'react';
 
-import { buttonVariants } from '@/components/ui/button';
+import { Icons } from '@/components/ui/icons';
 import { PROFILE_NAVIGATION } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 
-import { Icons } from './icons';
+type IProfileMenuProps = {
+  login: string;
+};
 
-export const ProfileMenu = () => {
+export const ProfileMenu: FC<IProfileMenuProps> = ({ login }) => {
   const pathname = usePathname();
 
   return (
@@ -20,10 +23,10 @@ export const ProfileMenu = () => {
           <li key={i + 'profile'} className=''>
             <h3>
               <Link
-                href={navItem.href}
+                href={`/profile/${login}${navItem.href}`}
                 className={cn(
                   'w-full text-base justify-start hover:no-underline flex gap-1 py-1 px-2 rounded font-semibold',
-                  pathname.includes(navItem.href)
+                  pathname === `/profile/${login}${navItem.href}`
                     ? 'bg-active text-active-foreground'
                     : 'hover:bg-background/30 focus:bg-background/30'
                 )}

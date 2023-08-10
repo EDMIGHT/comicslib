@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AuthMenu } from '@/components/auth-menu';
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/ui/icons';
 import { MenuSwitcher } from '@/components/menu-switcher';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 import { Button } from '@/components/ui/button';

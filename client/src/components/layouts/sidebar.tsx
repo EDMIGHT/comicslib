@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { Icons } from '@/components/icons';
+import { Icons } from '@/components/ui/icons';
 import { SidebarFooter } from '@/components/sidebar-footer';
 import { SITE_CONFIG } from '@/configs/site.configs';
 import { useAppSelector } from '@/hooks/reduxHooks';

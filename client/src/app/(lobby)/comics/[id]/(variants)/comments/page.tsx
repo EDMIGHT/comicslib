@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { Comment } from '@/components/comment';
+import { Comment } from '@/components/layouts/comment';
 import { CreateCommentForm } from '@/components/forms/create-comment-form';
 import { Pagination } from '@/components/pagination';
 import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';

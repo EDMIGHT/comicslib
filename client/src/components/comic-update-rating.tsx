@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { IRating } from '@/types/review.types';
 
-import { Icons } from './icons';
+import { Icons } from './ui/icons';
 
 type ComicUpdateRatingProps = {
   comicId: string;

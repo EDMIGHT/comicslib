@@ -7,7 +7,7 @@ import { ComicsService } from '@/services/comics.service';
 
 import { ComicFoldersBtn } from './comic-folders-btn';
 import { ComicUpdateRating } from './comic-update-rating';
-import { Icons } from './icons';
+import { Icons } from './ui/icons';
 
 type ComicMenuProps = {
   comicId: string;

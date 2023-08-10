@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from '@/hooks/use-toast';
 import { UserService } from '@/services/users.service';
 
-import { Icons } from './icons';
+import { Icons } from './ui/icons';
 
 type ComicFoldersBtnProps = {
   comicId: string;

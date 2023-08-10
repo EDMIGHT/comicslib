@@ -32,6 +32,13 @@ export type IFolder = {
   userId: string;
 };
 
+export type IUserFolder = IFolder & {
+  user: IShortUser;
+  _count: {
+    comics: number;
+  };
+};
+
 export type IFolderForComic = IFolder & {
   isComicExist: boolean;
 };
