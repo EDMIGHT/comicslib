@@ -1,14 +1,12 @@
 'use client';
 
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
+import { Comic } from '@/components/layouts/comic';
 import { useIntersection } from '@/hooks/use-intersection';
 import { ComicsService } from '@/services/comics.service';
 import { IResponseComic } from '@/types/comic.types';
-
-import { Comic } from './layouts/comic';
 
 type IComicsProps = {
   folderId?: string;

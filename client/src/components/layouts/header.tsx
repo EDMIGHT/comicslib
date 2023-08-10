@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import { AuthMenu } from '@/components/auth-menu';
+import { ComicSearch } from '@/components/comic-search';
 import { MenuSwitcher } from '@/components/menu-switcher';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
@@ -18,10 +19,7 @@ export const Header: FC<HeaderProps> = ({ user }) => {
           <MenuSwitcher />
         </div>
         <div className='flex items-center justify-end gap-2'>
-          <Button variant='outline' className='w-52 items-center justify-start gap-1'>
-            <Icons.search />
-            search
-          </Button>
+          <ComicSearch />
           <AuthMenu user={user} />
         </div>
       </div>

@@ -1,15 +1,20 @@
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
+import { Icons } from '@/components/ui/icons';
+import { cn } from '@/lib/utils';
 import { IResponseComic } from '@/types/comic.types';
 
-import { Icons } from './ui/icons';
+type ComicCountersProps = Pick<IResponseComic, 'avgRating' | '_count'> &
+  HTMLAttributes<HTMLUListElement>;
 
-export const ComicCounters: FC<Pick<IResponseComic, 'avgRating' | '_count'>> = ({
+export const ComicCounters: FC<ComicCountersProps> = ({
   avgRating,
   _count: { comments, folders },
+  className,
+  ...rest
 }) => {
   return (
-    <ul className='flex items-center gap-2'>
+    <ul {...rest} className={cn('flex items-center gap-2', className)}>
       <li className='flex items-center gap-1 '>
         <Icons.star className='fill-foreground' />
         {avgRating || 0}
