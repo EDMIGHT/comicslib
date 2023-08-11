@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { ChapterModel } from '@/models/chapter.model';
 import { PageModel } from '@/models/page.model';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -21,9 +22,16 @@ export const getPageByChapterId = async (req: Request, res: Response): Promise<R
 
     const totalPagesInChapter = await PageModel.getTotal(chapterId);
 
+    console.log(page.chapter.number);
+
+    const nextChapter = await ChapterModel.getNextChapter(page.chapter.number);
+    const prevChapter = await ChapterModel.getPrevChapter(page.chapter.number);
+
     return CustomResponse.ok(res, {
       chapter: page.chapter,
       img: page.img,
+      nextChapter,
+      prevChapter,
       currentPage: page.number,
       totalPages: totalPagesInChapter,
     });

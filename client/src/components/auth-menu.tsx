@@ -107,7 +107,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
             <li>
               <ThemeSwitcher className='text-sm font-medium' />
             </li>
-            {user ? (
+            {user && (
               <li>
                 <Button
                   variant='ghost'
@@ -117,7 +117,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
                   <Icons.logOut className='mr-1' /> Sign Out
                 </Button>
               </li>
-            ) : null}
+            )}
           </ul>
         </div>
       </PopoverContent>

@@ -59,16 +59,17 @@ const Page = async ({ params: { slug } }: PageProps) => {
           {page}/{response.totalPages}
         </div>
         <div>
-          <ChapterControl comicId={chapter.comic.id} currentChapterId={chapter.id} />
+          <ChapterControl comicId={chapter.comicId} currentChapterId={chapter.id} />
         </div>
-
-        {/* <ChapterPagination
-          page={+page}
-          chapterId={chapterId}
-          totalPages={response.totalPages}
-        /> */}
       </div>
-      <PageBackground page={+page} chapterId={chapterId} totalPages={response.totalPages}>
+      <PageBackground
+        page={+page}
+        comicId={chapter.comicId}
+        chapterId={chapterId}
+        totalPages={response.totalPages}
+        nextChapter={response.nextChapter}
+        prevChapter={response.prevChapter}
+      >
         <div className='relative min-h-screen w-auto'>
           <Image src={response.img} alt={`${page} page`} fill className='object-contain' />
         </div>

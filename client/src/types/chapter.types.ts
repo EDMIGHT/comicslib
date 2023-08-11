@@ -5,6 +5,7 @@ export type IChapter = {
   id: string;
   number: number;
   title: string;
+  comicId: string;
   userId: string;
   createdAt: Date;
 };

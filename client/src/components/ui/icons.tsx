@@ -56,6 +56,7 @@ export const Icons: IconType = {
     </svg>
   ),
   logOut: (props: LucideProps) => <LogOut {...props} />,
+  listPlus: (props: LucideProps) => <ListPlus {...props} />,
   folder: (props: LucideProps) => <FolderOpen {...props} />,
   follows: (props: LucideProps) => <BookMarked {...props} />,
   github: (props: LucideProps) => <Github {...props} />,

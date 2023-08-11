@@ -79,21 +79,27 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
           value={value}
           onValueChange={setValue}
         />
-        <ul className='flex flex-col gap-1 p-2'>
-          {searchedComics?.map((comic) => (
-            <li key={comic.id} className='flex gap-2'>
-              <div className='relative h-[86px] w-[58px] overflow-hidden rounded object-cover'>
-                <Image src={comic.img} alt={comic.title} fill />
-              </div>
-              <div className='flex flex-col gap-1'>
-                <h3 className='text-xl'>{comic.title}</h3>
+        {searchedComics && searchedComics.length > 0 ? (
+          <ul className='flex flex-col gap-1 p-2'>
+            {searchedComics?.map((comic) => (
+              <li key={comic.id} className='flex gap-2'>
+                <div className='relative h-[86px] w-[58px] overflow-hidden rounded object-cover'>
+                  <Image src={comic.img} alt={comic.title} fill />
+                </div>
+                <div className='flex flex-col gap-1'>
+                  <h3 className='text-xl'>{comic.title}</h3>
 
-                <ComicCounters _count={comic._count} avgRating={comic.avgRating} />
-                <Badge className='w-fit'>{comic.status.name}</Badge>
-              </div>
-            </li>
-          ))}
-        </ul>
+                  <ComicCounters _count={comic._count} avgRating={comic.avgRating} />
+                  <Badge className='w-fit'>{comic.status.name}</Badge>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className='p-10 text-center '>
+            <h2>comics not found</h2>
+          </div>
+        )}
       </CommandDialog>
     </>
   );
