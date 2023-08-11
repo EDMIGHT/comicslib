@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { FC, MouseEvent, ReactNode, useEffect } from 'react';
 
-import { useActions } from '@/hooks/use-actions';
 import { IChapter } from '@/types/chapter.types';
 
 type PageBackgroundProps = {
@@ -27,6 +26,25 @@ export const PageBackground: FC<PageBackgroundProps> = ({
 }) => {
   const router = useRouter();
 
+  const onClickToPrevPage = () => {
+    if (page > 1) {
+      router.push(`/chapter/${chapterId}/${Number(page) - 1}`);
+    } else if (prevChapter) {
+      router.push(`/chapter/${prevChapter.id}`);
+    } else {
+      router.push(`/comics/${comicId}`);
+    }
+  };
+  const onClickToNextPage = () => {
+    if (page < totalPages) {
+      router.push(`/chapter/${chapterId}/${Number(page) + 1}`);
+    } else if (nextChapter) {
+      router.push(`/chapter/${nextChapter.id}`);
+    } else {
+      router.push(`/comics/${comicId}`);
+    }
+  };
+
   const onClickBlock = (e: MouseEvent<HTMLDivElement>) => {
     const block = e.currentTarget;
     const blockRect = block.getBoundingClientRect();
@@ -34,23 +52,25 @@ export const PageBackground: FC<PageBackgroundProps> = ({
     const blockWidth = blockRect.width;
 
     if (clickX < blockWidth / 2) {
-      if (page > 1) {
-        router.push(`/chapter/${chapterId}/${Number(page) - 1}`);
-      } else if (prevChapter) {
-        router.push(`/chapter/${prevChapter.id}`);
-      } else {
-        router.push(`/comics/${comicId}`);
-      }
+      onClickToPrevPage();
     } else {
-      if (page < totalPages) {
-        router.push(`/chapter/${chapterId}/${Number(page) + 1}`);
-      } else if (nextChapter) {
-        router.push(`/chapter/${nextChapter.id}`);
-      } else {
-        router.push(`/comics/${comicId}`);
-      }
+      onClickToNextPage();
     }
   };
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      e.preventDefault();
+      if (e.key === 'ArrowRight') {
+        onClickToNextPage();
+      } else if (e.key === 'ArrowLeft') {
+        onClickToPrevPage();
+      }
+    };
+
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
+  }, []);
 
   return (
     <div onClick={onClickBlock} className='w-full cursor-pointer'>

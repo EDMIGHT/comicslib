@@ -4,4 +4,5 @@ export const isServer = typeof window === 'undefined';
 
 export const createTitle = (title: string) => `${title} • ${SITE_CONFIG.name}`;
 
-// export const isMacOS = () => window.navigator.userAgent.includes('Mac');
+export const isMacOS = () =>
+  typeof window !== 'undefined' && window.navigator.userAgent.includes('Mac');
