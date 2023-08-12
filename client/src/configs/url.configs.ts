@@ -15,8 +15,20 @@ export const API_COMICS_URL = {
   ratingUser: '/comics/rating/me',
 };
 
+export const API_GENRES_URL = {
+  origin: '/genres',
+};
+
+export const API_AUTHORS_URL = {
+  origin: '/authors',
+};
+
 export const API_CHAPTERS_URL = {
   origin: '/chapters',
+};
+
+export const API_STATUSES_URL = {
+  origin: '/statuses',
 };
 
 export const API_PAGES_URL = {

@@ -1,17 +1,29 @@
 import { Request, Response } from 'express';
 
 import { AuthorModel } from '@/models/author.model';
+import { ISortOrder } from '@/types/common.types';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getAllAuthors = async (req: Request, res: Response): Promise<Response> => {
+  const { login, page = 1, limit = 5, order = 'asc' } = req.query;
+
   try {
-    const authors = await AuthorModel.getAll();
+    const authors = await AuthorModel.getAll({
+      login: login as string,
+      page: Number(page),
+      limit: Number(limit),
+      order: order as ISortOrder,
+      sort: 'login',
+    });
+    const totalAuthors = await AuthorModel.getTotalAll({
+      login: login as string,
+    });
 
     return CustomResponse.ok(res, {
       authors,
-      currentPage: 1,
-      totalPages: 1,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalAuthors / Number(limit)),
     });
   } catch (error) {
     return serverErrorResponse({
