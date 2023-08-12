@@ -1,21 +1,21 @@
 'use client';
 
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
 import { Comic } from '@/components/layouts/comic';
 import { useIntersection } from '@/hooks/use-intersection';
-import { ComicsService } from '@/services/comics.service';
+import { ComicsService, IGetAllComicsArg } from '@/services/comics.service';
 import { IResponseComic } from '@/types/comic.types';
 
-type IComicsProps = {
-  folderId?: string;
-  ratedUser?: string;
+type IComicsProps = IGetAllComicsArg & {
   initialComics?: IResponseComic[];
 };
 
-export const ComicsFeed: FC<IComicsProps> = ({ folderId, ratedUser, initialComics }) => {
+export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions }) => {
   const lastCommentRef = useRef<HTMLLIElement>(null);
+  const [parent] = useAutoAnimate();
 
   const { ref, entry } = useIntersection({
     root: lastCommentRef.current,
@@ -23,12 +23,17 @@ export const ComicsFeed: FC<IComicsProps> = ({ folderId, ratedUser, initialComic
   });
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['comics', folderId],
+    [
+      'comics',
+      queryOptions.folderId,
+      queryOptions.title,
+      queryOptions.sort,
+      queryOptions.order,
+    ],
     async ({ pageParam = initialComics ? 2 : 1 }) => {
       const { comics } = await ComicsService.getAll({
         page: pageParam,
-        folderId,
-        ratedUser,
+        ...queryOptions,
       });
       return comics;
     },
@@ -52,7 +57,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ folderId, ratedUser, initialComic
   const comics = data?.pages.flatMap((page) => page) ?? initialComics;
 
   return (
-    <ul className='grid auto-cols-max grid-cols-2 gap-2'>
+    <ul ref={parent} className='grid auto-cols-max grid-cols-2 gap-2'>
       {comics?.map((comic, i) => {
         if (i === comics.length - 1) {
           return (

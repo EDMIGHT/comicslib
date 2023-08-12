@@ -1,5 +1,5 @@
 import { Icons } from '@/components/ui/icons';
-import { NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
+import { ISortVariants, NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
 
 export const SITE_SOCIAL_LINKS: SocialLink[] = [
   {
@@ -22,7 +22,7 @@ export const SITE_SOCIAL_LINKS: SocialLink[] = [
 export const TITLES_NAVIGATION: NavigationLink[] = [
   {
     title: 'advanced search',
-    href: '/search',
+    href: '/titles',
   },
   {
     title: 'recently added',
@@ -104,6 +104,46 @@ export const AUTH_MENU_NAVIGATION: NavigationLink[] = [
     icon: 'history',
   },
 ];
+
+export const SORT_VARIANTS: ISortVariants = {
+  comics: [
+    {
+      label: 'recently added',
+      field: 'createdAt',
+      order: 'asc',
+    },
+    {
+      label: 'oldest added',
+      field: 'createdAt',
+      order: 'desc',
+    },
+    {
+      label: 'recently updated',
+      field: 'updatedAt',
+      order: 'asc',
+    },
+    {
+      label: 'oldest updated',
+      field: 'updatedAt',
+      order: 'desc',
+    },
+    {
+      label: 'title ascending',
+      field: 'title',
+      order: 'asc',
+    },
+    {
+      label: 'title descending',
+      field: 'title',
+      order: 'desc',
+    },
+    // {
+    //   label: 'highest rating',
+    //   field: 'avgRating',
+    //   order: 'asc',
+    // },
+  ],
+};
 
 export const PAGINATION_LIMIT_CONFIG = {
   chapters: 1,

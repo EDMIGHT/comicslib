@@ -26,3 +26,13 @@ export type SiteConfig = {
   navigation: NavigationItem[];
   socials: SocialLink[];
 };
+
+export type ISortVariant = {
+  label: string;
+  field: string;
+  order: 'asc' | 'desc';
+};
+
+export type ISortVariants = {
+  comics: ISortVariant[];
+};

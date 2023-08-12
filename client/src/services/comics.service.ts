@@ -7,7 +7,7 @@ import { IRating } from '@/types/review.types';
 import { api } from './api';
 import { apiAuth } from './apiAuth';
 
-type IGetAllArg = IPaginationArg &
+export type IGetAllComicsArg = IPaginationArg &
   ISortArg & {
     folderId?: string;
     ratedUser?: string;
@@ -23,7 +23,7 @@ export class ComicsService {
     title = '',
     folderId = '',
     ratedUser = '',
-  }: IGetAllArg) {
+  }: IGetAllComicsArg) {
     const { data } = await api.get<IResponseAllComics>(
       `${API_COMICS_URL.origin}?page=${page}&limit=${limit}&sort=${sort}&order=${order}&title=${title}&folderId=${folderId}&ratedUser=${ratedUser}`
     );
