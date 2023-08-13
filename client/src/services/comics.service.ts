@@ -1,6 +1,6 @@
 import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
 import { API_COMICS_URL } from '@/configs/url.configs';
-import { IResponseAllComics, IResponseComic } from '@/types/comic.types';
+import { IResponseAllComics, IResponseComic, IResponseRandomComic } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import { IRating } from '@/types/review.types';
 
@@ -45,6 +45,10 @@ export class ComicsService {
   }
   public static async getUserRating(id: string | number) {
     const { data } = await apiAuth.get<IRating | null>(`${API_COMICS_URL.ratingUser}/${id}`);
+    return data;
+  }
+  public static async getRandomId() {
+    const { data } = await api.get<IResponseRandomComic>(API_COMICS_URL.random);
     return data;
   }
   public static async updateRating(id: string | number, value: number) {

@@ -11,6 +11,7 @@ export const API_AUTH_URL = {
 
 export const API_COMICS_URL = {
   origin: '/comics',
+  random: '/comics/random',
   rating: '/comics/rating',
   ratingUser: '/comics/rating/me',
 };

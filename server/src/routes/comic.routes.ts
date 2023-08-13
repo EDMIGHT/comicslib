@@ -4,6 +4,7 @@ import {
   createComic,
   getComic,
   getComics,
+  getRandom,
   getRatings,
   getUserRating,
   updateComicRating,
@@ -14,6 +15,7 @@ import { createComicValidators } from '@/utils/validations/comic.validators';
 const router = express.Router({ mergeParams: true });
 
 router.get('/', getComics);
+router.get('/random', getRandom);
 router.get('/:id', getComic);
 router.get('/rating/:id', getRatings);
 router.get('/rating/me/:id', authentication, getUserRating);

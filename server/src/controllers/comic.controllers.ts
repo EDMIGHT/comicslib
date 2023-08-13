@@ -202,3 +202,21 @@ export const updateComicRating = async (req: Request, res: Response): Promise<Re
     });
   }
 };
+
+export const getRandom = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const totalComic = await ComicModel.getAllCount({});
+    const skip = Math.floor(Math.random() * totalComic);
+    const randomComic = await ComicModel.getComicBySkip(skip);
+
+    return CustomResponse.ok(res, {
+      randomId: randomComic?.id,
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when getting random comic id`,
+      error,
+    });
+  }
+};

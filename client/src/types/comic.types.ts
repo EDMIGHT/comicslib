@@ -34,3 +34,7 @@ export type IResponseComic = IComic & {
 export type IResponseAllComics = {
   comics: IResponseComic[];
 } & IPagination;
+
+export type IResponseRandomComic = {
+  randomId: string;
+};

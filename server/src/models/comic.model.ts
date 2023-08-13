@@ -50,9 +50,9 @@ interface IQuery {
 }
 
 type IGetAllArg = {
-  authors: string[];
-  genres: string[];
-  statuses: string[];
+  authors?: string[];
+  genres?: string[];
+  statuses?: string[];
   title: string;
   folderId?: string;
   ratedUser?: string;
@@ -98,7 +98,7 @@ export class ComicModel {
 
     const offset = (+page - 1) * +limit;
 
-    if (genres.length > 0) {
+    if (genres && genres.length > 0) {
       query.genres = {
         some: {
           title: {
@@ -107,7 +107,7 @@ export class ComicModel {
         },
       };
     }
-    if (authors.length > 0) {
+    if (authors && authors.length > 0) {
       query.authors = {
         some: {
           login: {
@@ -116,7 +116,7 @@ export class ComicModel {
         },
       };
     }
-    if (statuses.length > 0) {
+    if (statuses && statuses.length > 0) {
       query.status = {
         name: {
           in: statuses as StatusName[],
@@ -172,13 +172,12 @@ export class ComicModel {
     statuses,
     title,
     folderId,
-  }: Pick<
-    IGetAllArg,
-    'authors' | 'genres' | 'statuses' | 'title' | 'folderId'
+  }: Partial<
+    Pick<IGetAllArg, 'authors' | 'genres' | 'statuses' | 'title' | 'folderId'>
   >): Promise<number> {
     const query: IQuery = {};
 
-    if (genres.length > 0) {
+    if (genres && genres.length > 0) {
       query.genres = {
         some: {
           title: {
@@ -187,7 +186,7 @@ export class ComicModel {
         },
       };
     }
-    if (authors.length > 0) {
+    if (authors && authors.length > 0) {
       query.authors = {
         some: {
           login: {
@@ -196,7 +195,7 @@ export class ComicModel {
         },
       };
     }
-    if (statuses.length > 0) {
+    if (statuses && statuses.length > 0) {
       query.status = {
         name: {
           in: statuses as StatusName[],
@@ -250,5 +249,10 @@ export class ComicModel {
     });
 
     return avgRating._avg?.value || null;
+  }
+  public static async getComicBySkip(skip: number): Promise<Comic | null> {
+    return prisma.comic.findFirst({
+      skip,
+    });
   }
 }
