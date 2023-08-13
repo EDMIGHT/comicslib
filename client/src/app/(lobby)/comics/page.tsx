@@ -18,8 +18,8 @@ type PageProps = {
 };
 
 export const metadata: Metadata = {
-  title: createTitle('Titles'),
-  description: 'Advanced search page by titles',
+  title: createTitle('Advanced search'),
+  description: 'Advanced search page by comics',
 };
 
 const Page = async ({ searchParams }: PageProps) => {
@@ -28,9 +28,13 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <Search />
+      <Search initialTitle={searchParams.title} />
       <div className='flex justify-between gap-2'>
-        <Sort variants={SORT_VARIANTS.comics} />
+        <Sort
+          initialSort={searchParams.sort}
+          initialOrder={searchParams.order}
+          variants={SORT_VARIANTS.comics}
+        />
         <AdvancedFiltering genres={genres} statuses={statuses} />
       </div>
       <ComicsFeed {...searchParams} />

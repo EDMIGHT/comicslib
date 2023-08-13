@@ -12,6 +12,9 @@ export type IGetAllComicsArg = IPaginationArg &
     folderId?: string;
     ratedUser?: string;
     title?: string;
+    genres?: string;
+    authors?: string;
+    statuses?: string;
   };
 
 export class ComicsService {
@@ -23,9 +26,15 @@ export class ComicsService {
     title = '',
     folderId = '',
     ratedUser = '',
+    authors = '',
+    genres = '',
+    statuses = '',
   }: IGetAllComicsArg) {
+    const paginationANDsortQuery = `page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
+    const searchQuery = `title=${title}&folderId=${folderId}&ratedUser=${ratedUser}&authors=${authors}&genres=${genres}&statuses=${statuses}`;
+
     const { data } = await api.get<IResponseAllComics>(
-      `${API_COMICS_URL.origin}?page=${page}&limit=${limit}&sort=${sort}&order=${order}&title=${title}&folderId=${folderId}&ratedUser=${ratedUser}`
+      `${API_COMICS_URL.origin}?${paginationANDsortQuery}&${searchQuery}`
     );
     return data;
   }

@@ -8,13 +8,15 @@ import { Input } from '@/components/ui/input';
 import { useDebounce } from '@/hooks/use-debounce';
 import { cn } from '@/lib/utils';
 
-type SearchProps = {} & HTMLAttributes<HTMLDivElement>;
+type SearchProps = {
+  initialTitle?: string;
+} & HTMLAttributes<HTMLDivElement>;
 
-export const Search: FC<SearchProps> = ({ className, ...rest }) => {
+export const Search: FC<SearchProps> = ({ className, initialTitle, ...rest }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState<undefined | string>();
+  const [value, setValue] = useState<undefined | string>(initialTitle);
   const [debounced] = useDebounce(value, 500);
 
   useEffect(() => {

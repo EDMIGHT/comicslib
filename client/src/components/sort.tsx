@@ -11,10 +11,15 @@ import { ISortVariant } from '@/types/configs.types';
 
 type SortProps = {
   variants: ISortVariant[];
+  initialSort?: string;
+  initialOrder?: string;
 };
 
-export const Sort: FC<SortProps> = ({ variants }) => {
-  const [variant] = useState(variants[0] ?? '');
+export const Sort: FC<SortProps> = ({ variants, initialOrder, initialSort }) => {
+  const initialVariant = variants.find(
+    (v) => v.field === initialSort && v.order === initialOrder
+  );
+  const [variant, setVariant] = useState(initialVariant ?? variants[0]);
   const [open, setOpen] = useState(false);
 
   const pathname = usePathname();
@@ -54,6 +59,7 @@ export const Sort: FC<SortProps> = ({ variants }) => {
                 'cursor-pointer hover:bg-background/80 p-2 pl-4 rounded text-sm font-medium'
               )}
               onClick={() => {
+                setVariant(variant);
                 router.push(
                   pathname.includes('?')
                     ? '&'

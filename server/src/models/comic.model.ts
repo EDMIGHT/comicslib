@@ -1,4 +1,4 @@
-import { Comic } from '@prisma/client';
+import { Comic, StatusName } from '@prisma/client';
 
 import prisma from '@/db/prisma';
 import { IComicWithData } from '@/types/comic.types';
@@ -25,9 +25,14 @@ interface IQuery {
   };
   authors?: {
     some: {
-      id: {
+      login: {
         in: string[];
       };
+    };
+  };
+  status?: {
+    name: {
+      in: StatusName[];
     };
   };
   folders?: {
@@ -47,6 +52,7 @@ interface IQuery {
 type IGetAllArg = {
   authors: string[];
   genres: string[];
+  statuses: string[];
   title: string;
   folderId?: string;
   ratedUser?: string;
@@ -79,6 +85,7 @@ export class ComicModel {
   public static async getAll({
     authors,
     genres,
+    statuses,
     title,
     page,
     limit,
@@ -103,9 +110,16 @@ export class ComicModel {
     if (authors.length > 0) {
       query.authors = {
         some: {
-          id: {
+          login: {
             in: authors,
           },
+        },
+      };
+    }
+    if (statuses.length > 0) {
+      query.status = {
+        name: {
+          in: statuses as StatusName[],
         },
       };
     }
@@ -138,6 +152,7 @@ export class ComicModel {
           startsWith: title,
         },
       },
+
       include: {
         genres: true,
         authors: true,
@@ -154,9 +169,13 @@ export class ComicModel {
   public static async getAllCount({
     genres,
     authors,
+    statuses,
     title,
     folderId,
-  }: Pick<IGetAllArg, 'authors' | 'genres' | 'title' | 'folderId'>): Promise<number> {
+  }: Pick<
+    IGetAllArg,
+    'authors' | 'genres' | 'statuses' | 'title' | 'folderId'
+  >): Promise<number> {
     const query: IQuery = {};
 
     if (genres.length > 0) {
@@ -171,9 +190,16 @@ export class ComicModel {
     if (authors.length > 0) {
       query.authors = {
         some: {
-          id: {
+          login: {
             in: authors,
           },
+        },
+      };
+    }
+    if (statuses.length > 0) {
+      query.status = {
+        name: {
+          in: statuses as StatusName[],
         },
       };
     }
@@ -189,7 +215,7 @@ export class ComicModel {
       where: {
         ...query,
         title: {
-          contains: title,
+          startsWith: title,
         },
       },
     });

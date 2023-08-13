@@ -25,6 +25,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     const {
       genres,
       authors,
+      statuses,
       title,
       folderId,
       ratedUser,
@@ -36,10 +37,12 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
 
     const genresList = genres ? (genres as string).split(',') : [];
     const authorsList = authors ? (authors as string).split(',') : [];
+    const statusesList = statuses ? (statuses as string).split(',') : [];
 
     const comics = await ComicModel.getAll({
       authors: authorsList,
       genres: genresList,
+      statuses: statusesList,
       title: title as string,
       page: +page,
       limit: +limit,
@@ -62,6 +65,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     const totalComics = await ComicModel.getAllCount({
       genres: genresList,
       authors: authorsList,
+      statuses: statusesList,
       title: title as string,
       folderId: folderId as string,
     });

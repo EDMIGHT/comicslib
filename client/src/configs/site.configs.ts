@@ -22,7 +22,7 @@ export const SITE_SOCIAL_LINKS: SocialLink[] = [
 export const TITLES_NAVIGATION: NavigationLink[] = [
   {
     title: 'advanced search',
-    href: '/titles',
+    href: '/comics',
   },
   {
     title: 'recently added',
@@ -110,22 +110,22 @@ export const SORT_VARIANTS: ISortVariants = {
     {
       label: 'recently added',
       field: 'createdAt',
-      order: 'asc',
+      order: 'desc',
     },
     {
       label: 'oldest added',
       field: 'createdAt',
-      order: 'desc',
+      order: 'asc',
     },
     {
       label: 'recently updated',
       field: 'updatedAt',
-      order: 'asc',
+      order: 'desc',
     },
     {
       label: 'oldest updated',
       field: 'updatedAt',
-      order: 'desc',
+      order: 'asc',
     },
     {
       label: 'title ascending',

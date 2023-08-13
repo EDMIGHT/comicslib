@@ -1,9 +1,8 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { FC, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { FC, useCallback } from 'react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,41 +12,75 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Icons } from '@/components/ui/icons';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useClickOutside } from '@/hooks/use-click-outside';
-import { useDebounce } from '@/hooks/use-debounce';
 import { cn } from '@/lib/utils';
-import { AuthorsService } from '@/services/authors.service';
+import { IAuthor } from '@/types/author.types';
 import { IGenre } from '@/types/genre.types';
 import { IStatus } from '@/types/status.types';
+
+import { AuthorsFiltering } from './authors-filtering';
+import { GenresList } from './genres-list';
+import { StatusesList } from './statuses-list';
 
 type AdvancedFilteringProps = {
   genres: IGenre[];
   statuses: IStatus[];
 };
 
+export enum AdvancedQuerySearchParams {
+  GENRE = 'genre',
+  AUTHOR = 'author',
+  STATUS = 'status',
+}
+
 export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({ genres, statuses }) => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const [debounced] = useDebounce(value, 500);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const handlerRefPopup = useClickOutside(() => setOpen(false));
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const existedValues = searchParams.getAll(name);
 
-  const {
-    data: authors,
-    isLoading: isLoadingAuthors,
-    isSuccess: isSuccessAuthors,
-  } = useQuery({
-    queryKey: ['authors', debounced],
-    queryFn: async () => {
-      if (debounced) {
-        const { authors } = await AuthorsService.getAll({ limit: 5, login: debounced });
-        return authors;
+      // @ts-ignore
+      const params = new URLSearchParams(searchParams);
+
+      if (existedValues.some((existVal) => existVal === value)) {
+        params.delete(name);
+        existedValues.forEach((existVal) => {
+          if (existVal !== value) {
+            params.append(name, existVal);
+          }
+        });
+      } else {
+        params.append(name, value);
       }
-      return [];
+
+      return params.toString();
     },
-  });
+    [searchParams]
+  );
+
+  const onClickGenre = (genre: IGenre) => {
+    router.push(
+      pathname +
+        (pathname.includes('?') ? '&' : '?') +
+        createQueryString(AdvancedQuerySearchParams.GENRE, genre.title)
+    );
+  };
+  const onClickAuthor = (author: IAuthor) => {
+    router.push(
+      pathname +
+        (pathname.includes('?') ? '&' : '?') +
+        createQueryString(AdvancedQuerySearchParams.AUTHOR, author.login)
+    );
+  };
+  const onClickStatus = (status: IStatus) => {
+    router.push(
+      pathname +
+        (pathname.includes('?') ? '&' : '?') +
+        createQueryString(AdvancedQuerySearchParams.STATUS, status.name)
+    );
+  };
 
   return (
     <Dialog>
@@ -62,91 +95,28 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({ genres, statuses
           <DialogTitle>Advanced filters</DialogTitle>
         </DialogHeader>
         <div className='space-y-1 md:space-y-2'>
-          <div className='relative'>
+          <div>
             <h3 className='ml-2'>Authors</h3>
-            <Input
-              placeholder='login author..'
-              value={value}
-              autoFocus={false}
-              className='w-[200px] bg-secondary'
-              onClick={() => {
-                if (!open) {
-                  setOpen(true);
-                }
-              }}
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
+            <AuthorsFiltering
+              onClick={onClickAuthor}
+              activeAuthors={searchParams.getAll(AdvancedQuerySearchParams.AUTHOR)}
             />
-
-            {open && debounced && (
-              <div
-                ref={handlerRefPopup}
-                className={cn('absolute left-0 top-[110%] w-[200px] rounded bg-secondary p-1')}
-              >
-                {isSuccessAuthors && authors && authors.length > 0 ? (
-                  <ul>
-                    {authors.map((author) => (
-                      <li key={author.id}>
-                        <button className='w-full cursor-pointer rounded p-1 px-2 text-start text-sm font-medium transition-colors hover:bg-background/80'>
-                          {author.login}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className='p-2'>
-                    <h4 className='text-center text-base'>empty</h4>
-                  </div>
-                )}
-                {isLoadingAuthors && (
-                  <ul className='space-y-1'>
-                    <li>
-                      <Skeleton className='h-6 w-full' />
-                    </li>
-                    <li>
-                      <Skeleton className='h-6 w-full' />
-                    </li>
-                    <li>
-                      <Skeleton className='h-6 w-full' />
-                    </li>
-                  </ul>
-                )}
-              </div>
-            )}
           </div>
           <div>
             <h3 className='ml-2 text-base font-medium'>Statuses</h3>
-            {statuses.length > 0 ? (
-              <ul className='flex gap-1'>
-                {statuses.map((status) => (
-                  <li key={status.id}>
-                    <Badge>{status.name}</Badge>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div>
-                <h4 className='text-base'>empty</h4>
-              </div>
-            )}
+            <StatusesList
+              statuses={statuses}
+              onClick={onClickStatus}
+              activeStatuses={searchParams.getAll(AdvancedQuerySearchParams.STATUS)}
+            />
           </div>
           <div>
             <h3 className='ml-2 text-base font-medium'>Genres</h3>
-
-            {genres.length > 0 ? (
-              <ul className='flex gap-1'>
-                {genres.map((genre) => (
-                  <li key={genre.id}>
-                    <Badge>{genre.title}</Badge>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div>
-                <h4 className='text-base'>empty</h4>
-              </div>
-            )}
+            <GenresList
+              genres={genres}
+              onClick={onClickGenre}
+              activeGenres={searchParams.getAll(AdvancedQuerySearchParams.GENRE)}
+            />
           </div>
         </div>
       </DialogContent>
