@@ -85,7 +85,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({ genres, statuses
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='w-fit justify-between gap-1 bg-secondary' variant='outline'>
+        <Button variant='outline' className=' w-fit justify-between gap-1 bg-secondary'>
           <span className='hidden md:block'>Advanced filters</span>
           <Icons.filter className='h-5 w-5 md:ml-1' />
         </Button>

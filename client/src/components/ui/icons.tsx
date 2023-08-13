@@ -3,6 +3,7 @@ import {
   Bookmark,
   BookMarked,
   BookOpen,
+  ChevronLeft,
   ChevronsRight,
   ChevronsUpDown,
   Filter,
@@ -33,6 +34,7 @@ type IconType = {
 };
 export const Icons: IconType = {
   add: (props: LucideProps) => <PlusCircle {...props} />,
+  back: (props: LucideProps) => <ChevronLeft {...props} />,
   bookmark: (props: LucideProps) => <Bookmark {...props} />,
   chevronUpDown: (props: LucideProps) => <ChevronsUpDown {...props} />,
   close: (props: LucideProps) => <X {...props} />,

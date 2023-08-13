@@ -35,7 +35,7 @@ export const Search: FC<SearchProps> = ({ className, initialTitle, ...rest }) =>
       <Input
         type='text'
         placeholder='enter name of title..'
-        className='bg-secondary p-5 pl-10 text-sm'
+        className='bg-secondary py-3 pl-10 text-sm'
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />

@@ -60,6 +60,7 @@ export const Sort: FC<SortProps> = ({ variants, initialOrder, initialSort }) => 
               )}
               onClick={() => {
                 setVariant(variant);
+                setOpen(false);
                 router.push(
                   pathname.includes('?')
                     ? '&'
