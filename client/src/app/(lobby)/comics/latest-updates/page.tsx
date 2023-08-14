@@ -15,7 +15,7 @@ type PageProps = {
 };
 
 export const metadata: Metadata = {
-  title: createTitle('Recently added'),
+  title: createTitle('Latest updates'),
   description:
     'Discover the latest updates in the world of comics. Explore newly updated comics that have just been released or refreshed. Stay current with the freshest content from your favorite comics.',
 };

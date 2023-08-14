@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 
+import { ChapterModel } from '@/models/chapter.model';
+import { ComicModel } from '@/models/comic.model';
 import { FolderModel } from '@/models/folder.model';
+import { PageModel } from '@/models/page.model';
+import { ReadingHistoryModel } from '@/models/reading-history.model';
 import { UserModel } from '@/models/user.model';
 import { IFoldersWithIsExistComic } from '@/types/folder.types';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
@@ -125,6 +129,50 @@ export const updateComicsFolder = async (req: Request, res: Response): Promise<R
     return serverErrorResponse({
       res,
       message: `server side error changing folder`,
+      error,
+    });
+  }
+};
+
+export const updateReadingHistory = async (req: Request, res: Response): Promise<Response> => {
+  const { comicId, chapterId, pageNumber } = req.body;
+  try {
+    const existedComic = await ComicModel.get(comicId);
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which the story is being updated was not found',
+      });
+    }
+
+    const existedChapter = await ChapterModel.get(chapterId);
+    if (!existedChapter) {
+      return CustomResponse.notFound(res, {
+        message: 'the chapter of the comic for which the story is being updated was not found',
+      });
+    }
+
+    const existedPage = await PageModel.get({
+      chapterId: existedChapter.id,
+      number: Number(pageNumber),
+    });
+    if (!existedPage) {
+      return CustomResponse.notFound(res, {
+        message: 'the chapter page for history update was not found',
+      });
+    }
+
+    const updatedReadingHistory = await ReadingHistoryModel.create({
+      chapterId,
+      comicId,
+      pageId: Number(pageNumber),
+      userId: req.user.id,
+    });
+
+    return CustomResponse.ok(res, updatedReadingHistory);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `an error occurred on the server side while updating the read history`,
       error,
     });
   }

@@ -1,21 +1,29 @@
 'use client';
 
+import { Metadata } from 'next';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import { createTitle } from '@/lib/helpers/general.helper';
 import { ComicsService } from '@/services/comics.service';
+
+export const metadata: Metadata = {
+  title: createTitle('Random comic'),
+  description:
+    "Explore the unknown with a random comic adventure. Dive into the world of comics with a surprise as you're redirected to a randomly selected comic. Discover something new every time you visit!",
+};
 
 const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const getRandom = async () => {
+    const redirectToRandomComic = async () => {
       const { randomId } = await ComicsService.getRandomId();
       router.push(`/comics/${randomId}`);
     };
 
-    getRandom();
+    redirectToRandomComic();
   }, []);
 
   return (

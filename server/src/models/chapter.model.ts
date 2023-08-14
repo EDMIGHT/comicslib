@@ -35,6 +35,13 @@ export class ChapterModel {
       },
     });
   }
+  public static async get(chapterId: string): Promise<Chapter | null> {
+    return prisma.chapter.findFirst({
+      where: {
+        id: chapterId,
+      },
+    });
+  }
   public static async getNextChapter(currentChapterNumber: number): Promise<Chapter | null> {
     return prisma.chapter.findFirst({
       where: {
