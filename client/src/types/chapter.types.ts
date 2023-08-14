@@ -10,6 +10,8 @@ export type IChapter = {
   createdAt: Date;
 };
 
+export type IShortChapter = Pick<IChapter, 'id' | 'number' | 'title'>;
+
 export type IChapterWithUser = IChapter & {
   user: Omit<IShortUser, 'img'>;
 };

@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 
 import { AdvancedFiltering } from '@/components/advanced-filtering';
 import { ComicsFeed } from '@/components/comics-feed';
+import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { BackBtn } from '@/components/ui/back-btn';
 import { createTitle } from '@/lib/helpers/general.helper';
@@ -26,10 +27,7 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <div className='flex items-center gap-2 md:gap-4'>
-        <BackBtn />
-        <h1 className='text-2xl'>Latest updates</h1>
-      </div>
+      <PageHeader title='Latest updates' />
       <div className='flex flex-wrap items-center gap-2'>
         <Search className='min-w-[300px] flex-1' initialTitle={searchParams.title} />
         <AdvancedFiltering genres={genres} statuses={statuses} />

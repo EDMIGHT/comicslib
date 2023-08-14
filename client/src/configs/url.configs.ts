@@ -43,4 +43,5 @@ export const API_COMMENTS_URL = {
 export const API_USERS_ENDPOINTS = {
   origin: '/users',
   folders: '/users/folders',
+  readingHistory: '/users/reading-history',
 };

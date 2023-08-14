@@ -23,6 +23,10 @@ export type IShortComic = {
   title: string;
 };
 
+export type IShortWithImgComic = IShortComic & {
+  img: string;
+};
+
 export type IResponseComic = IComic & {
   authors: IAuthor[];
   genres: IGenre[];

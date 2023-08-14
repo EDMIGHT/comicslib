@@ -1,8 +1,20 @@
+import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
 import { API_USERS_ENDPOINTS } from '@/configs/url.configs';
-import { IFolderForComic, IProfile, IUserFolder } from '@/types/user.types';
+import { IPaginationArg, ISortArg } from '@/types/response.types';
+import {
+  IFolderForComic,
+  IProfile,
+  IResponseAllReadingHistory,
+  IUserFolder,
+} from '@/types/user.types';
 
 import { api } from './api';
 import { apiAuth } from './apiAuth';
+
+export type IGetAllReadingHistory = IPaginationArg &
+  ISortArg & {
+    login: string;
+  };
 
 export class UserService {
   public static async get(login: string) {
@@ -24,6 +36,18 @@ export class UserService {
   public static async getUserFolder(login: string, folderId: string) {
     const { data } = await api.get<IUserFolder>(
       `${API_USERS_ENDPOINTS.folders}/${login}/${folderId}`
+    );
+    return data;
+  }
+  public static async getAllReadingHistory({
+    login,
+    page = 1,
+    limit = PAGINATION_LIMIT_CONFIG.readingHistory,
+    sort = 'updatedAt',
+    order = 'desc',
+  }: IGetAllReadingHistory) {
+    const { data } = await api.get<IResponseAllReadingHistory>(
+      `${API_USERS_ENDPOINTS.readingHistory}/${login}?page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
     return data;
   }

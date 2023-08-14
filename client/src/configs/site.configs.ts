@@ -49,7 +49,7 @@ export const FOLLOWS_NAVIGATION: NavigationLink[] = [
   },
   {
     title: 'reading history',
-    href: '/library/history',
+    href: '/library/reading-history',
   },
 ];
 
@@ -149,6 +149,7 @@ export const PAGINATION_LIMIT_CONFIG = {
   chapters: 1,
   comics: 5,
   comments: 5,
+  readingHistory: 5,
 };
 
 export const COMIC_RATING_CONFIG = {

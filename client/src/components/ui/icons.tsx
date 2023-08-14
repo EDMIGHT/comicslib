@@ -23,6 +23,7 @@ import {
   PlusCircle,
   Search,
   Star,
+  Trash2,
   Twitter,
   UploadCloud,
   User2,
@@ -58,6 +59,7 @@ export const Icons: IconType = {
       ></path>
     </svg>
   ),
+  delete: (props: LucideProps) => <Trash2 {...props} />,
   logOut: (props: LucideProps) => <LogOut {...props} />,
   listPlus: (props: LucideProps) => <ListPlus {...props} />,
   filter: (props: LucideProps) => <Filter {...props} />,

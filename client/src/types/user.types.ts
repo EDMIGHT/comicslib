@@ -1,6 +1,8 @@
 import { string } from 'zod';
 
-import { ITokens } from './response.types';
+import { IShortChapter } from './chapter.types';
+import { IShortWithImgComic } from './comic.types';
+import { IPagination, ITokens } from './response.types';
 
 export type IUser = {
   id: string;
@@ -41,4 +43,24 @@ export type IUserFolder = IFolder & {
 
 export type IFolderForComic = IFolder & {
   isComicExist: boolean;
+};
+
+export type IReadingHistory = {
+  userId: string;
+  comicId: string;
+  chapterId: string;
+  pageId: number;
+  updatedAt: string;
+};
+
+export type IResponseReadingHistory = IReadingHistory & {
+  comic: IShortWithImgComic;
+  chapter: IShortChapter;
+  page: {
+    number: number;
+  };
+};
+
+export type IResponseAllReadingHistory = IPagination & {
+  history: IResponseReadingHistory[];
 };
