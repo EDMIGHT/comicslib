@@ -9,5 +9,5 @@ export const createChapterValidators = [
     .isLength({ max: 190 })
     .withMessage('The maximum title length is 190 characters'),
   check('number').isInt({ min: 0 }).withMessage('Chapter number cannot be lower than 0'),
-  check('comicId').trim().exists().withMessage('Comic id is required field'),
+  check('comicId').exists().withMessage('Comic id is required field').trim(),
 ];

@@ -6,6 +6,7 @@ import { FolderModel } from '@/models/folder.model';
 import { PageModel } from '@/models/page.model';
 import { ReadingHistoryModel } from '@/models/reading-history.model';
 import { UserModel } from '@/models/user.model';
+import { ISortOrder } from '@/types/common.types';
 import { IFoldersWithIsExistComic } from '@/types/folder.types';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
@@ -125,6 +126,43 @@ export const updateComicsFolder = async (req: Request, res: Response): Promise<R
     });
 
     return CustomResponse.ok(res, updatedFolder);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error changing folder`,
+      error,
+    });
+  }
+};
+
+export const getReadingHistory = async (req: Request, res: Response): Promise<Response> => {
+  const { login } = req.params;
+  const { page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
+
+  try {
+    const existedUser = await UserModel.getByLogin(login);
+    if (!existedUser) {
+      return CustomResponse.notFound(res, {
+        message: 'user to get reading history was not found ',
+      });
+    }
+
+    const userReadingHistory = await ReadingHistoryModel.getAll({
+      login: existedUser.login,
+      page: Number(page),
+      limit: Number(limit),
+      sort: sort as string,
+      order: order as ISortOrder,
+    });
+    const userTotalCountReadingHistory = await ReadingHistoryModel.getAllCount(
+      existedUser.login
+    );
+
+    return CustomResponse.ok(res, {
+      history: userReadingHistory,
+      currentPage: Number(page),
+      totalPages: Math.ceil(userTotalCountReadingHistory / Number(limit)),
+    });
   } catch (error) {
     return serverErrorResponse({
       res,
