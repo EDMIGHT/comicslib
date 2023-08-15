@@ -14,6 +14,10 @@ type IGetUserBookmarkArg = {
   comicId: string;
   userId: string;
 };
+type IDeleteUserBookmarkArg = {
+  comicId: string;
+  userId: string;
+};
 
 export class BookmarksModel {
   public static async create({
@@ -101,6 +105,19 @@ export class BookmarksModel {
       where: {
         userId,
         comicId,
+      },
+    });
+  }
+  public static async deleteUserBookmark({
+    comicId,
+    userId,
+  }: IDeleteUserBookmarkArg): Promise<ReadingHistory | null> {
+    return prisma.readingHistory.delete({
+      where: {
+        userId_comicId: {
+          comicId,
+          userId,
+        },
       },
     });
   }

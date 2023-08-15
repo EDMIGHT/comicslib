@@ -226,13 +226,36 @@ export const updateBookmark = async (req: Request, res: Response): Promise<Respo
       });
     }
 
+    const existedBookmark = await BookmarksModel.getUserBookmark({
+      comicId,
+      userId: req.user.id,
+    });
+
+    if (
+      existedBookmark &&
+      existedBookmark.chapterId === chapterId &&
+      existedBookmark.pageId === Number(pageNumber)
+    ) {
+      if (existedBookmark.userId !== req.user.id) {
+        return CustomResponse.conflict(res, {
+          message: 'you are not the owner of this bookmark',
+        });
+      }
+
+      await BookmarksModel.deleteUserBookmark({
+        comicId,
+        userId: req.user.id,
+      });
+
+      return CustomResponse.ok(res, null);
+    }
+
     const updatedBookmark = await BookmarksModel.create({
       chapterId,
       comicId,
       pageId: Number(pageNumber),
       userId: req.user.id,
     });
-
     return CustomResponse.ok(res, updatedBookmark);
   } catch (error) {
     return serverErrorResponse({

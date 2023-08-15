@@ -22,8 +22,6 @@ export const getPageByChapterId = async (req: Request, res: Response): Promise<R
 
     const totalPagesInChapter = await PageModel.getTotal(chapterId);
 
-    console.log(page.chapter.number);
-
     const nextChapter = await ChapterModel.getNextChapter(page.chapter.number);
     const prevChapter = await ChapterModel.getPrevChapter(page.chapter.number);
 
