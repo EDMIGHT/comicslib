@@ -45,7 +45,7 @@ export type IFolderForComic = IFolder & {
   isComicExist: boolean;
 };
 
-export type IReadingHistory = {
+export type IBookmark = {
   userId: string;
   comicId: string;
   chapterId: string;
@@ -53,7 +53,7 @@ export type IReadingHistory = {
   updatedAt: string;
 };
 
-export type IResponseReadingHistory = IReadingHistory & {
+export type IResponseBookmark = IBookmark & {
   comic: IShortWithImgComic;
   chapter: IShortChapter;
   page: {
@@ -61,6 +61,6 @@ export type IResponseReadingHistory = IReadingHistory & {
   };
 };
 
-export type IResponseAllReadingHistory = IPagination & {
-  history: IResponseReadingHistory[];
+export type IResponseAllBookmarks = IPagination & {
+  history: IResponseBookmark[];
 };

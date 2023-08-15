@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 
-import { ReadingHistoryFeed } from '@/components/reading-history-feed';
+import { BookmarksFeed } from '@/components/bookmarks-feed';
 import { createTitle } from '@/lib/helpers/general.helper';
 import { UserService } from '@/services/users.service';
 
@@ -14,9 +14,8 @@ type PageProps = {
 
 export async function generateMetadata({ params: { login } }: PageProps): Promise<Metadata> {
   return {
-    title: createTitle(`${login} Reading History`),
-    description:
-      'Track the reading history of your comics on a personal read history page for the user. Recall each adventure and take a look at your comic book journey.',
+    title: createTitle(`${login} bookmarks`),
+    description: `Open ${login}'s bookmarks and dive into his comic preferences.`,
   };
 }
 
@@ -26,7 +25,7 @@ const Page: FC<PageProps> = async ({ params: { login } }) => {
     return notFound();
   }
 
-  return <ReadingHistoryFeed login={existedUser.login} />;
+  return <BookmarksFeed login={existedUser.login} />;
 };
 
 export default Page;

@@ -6,21 +6,16 @@ import { buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Icons } from '@/components/ui/icons';
 import { Time } from '@/components/ui/time';
-import { IResponseReadingHistory } from '@/types/user.types';
+import { IResponseBookmark } from '@/types/user.types';
 
-export const ReadingHistoryItem: FC<IResponseReadingHistory> = ({
-  comic,
-  page,
-  chapter,
-  updatedAt,
-}) => {
+export const Bookmark: FC<IResponseBookmark> = ({ comic, page, chapter, updatedAt }) => {
   return (
     <Card className='flex gap-2 p-2'>
       <Link href={`/comics/${comic.id}`} className='flex flex-1 gap-2 hover:opacity-80'>
         <div className='relative h-[80px] w-[56px] overflow-hidden rounded'>
           <Image src={comic.img} alt={comic.title} fill />
         </div>
-        <div className='flex h-full  flex-col justify-between gap-1'>
+        <div className='flex h-full flex-col justify-between gap-1'>
           <h2 className='text-xl font-medium'>{comic.title}</h2>
           <p className='text-sm'>
             Ch. {chapter.number} {chapter.title ? ` - ${chapter.title}` : ''}

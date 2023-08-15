@@ -1,18 +1,20 @@
 import { Author, Comic, Comment, Genre, Status } from '@prisma/client';
 
-export interface IComicCount {
+export type IComicCount = {
   comments: number;
   folders: number;
   ratings: number;
-}
+};
 
-export interface IComicWithData extends Comic {
+export type IShortComic = Pick<Comic, 'id' | 'img' | 'title'>;
+
+export type IComicWithData = Comic & {
   authors: Author[];
   genres: Genre[];
   status: Status;
   _count: Pick<IComicCount, 'comments' | 'folders'>;
-}
+};
 
-export interface IComicWithDataSingle extends IComicWithData {
+export type IComicWithDataSingle = IComicWithData & {
   comments: Comment[];
-}
+};

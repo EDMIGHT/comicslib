@@ -13,7 +13,7 @@ export const createFolderValidators = [
     .withMessage('comics must be passed as an array of strings with their id'),
 ];
 
-export const updateReadingHistoryValidators = [
+export const updateBookmarkValidators = [
   check('comicId').exists().withMessage('comic id is required field').trim(),
   check('chapterId').exists().withMessage('chapter id is required field').trim(),
   check('pageNumber').exists().withMessage('page number is required field').trim(),

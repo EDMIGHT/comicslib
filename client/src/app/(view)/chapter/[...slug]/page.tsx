@@ -3,10 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { BookmarkComicControl } from '@/components/bookmark-comic-control';
 import { ChapterControl } from '@/components/chapter-control';
 import { PageBackground } from '@/components/page-background';
 import { createTitle } from '@/lib/helpers/general.helper';
+import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { PagesService } from '@/services/pages.service';
+import { UserService } from '@/services/users.service';
 
 type PageProps = {
   params: {
@@ -36,12 +39,17 @@ const Page = async ({ params: { slug } }: PageProps) => {
   const page = slug[1] ?? '1';
 
   const response = await PagesService.get({ chapterId, page });
+  const { chapter } = response;
+  const isAuth = getServerAccessToken();
 
   if (!response) {
     return notFound();
   }
 
-  const { chapter } = response;
+  let bookmark;
+  if (isAuth) {
+    bookmark = await UserService.getComicBookmark(chapter.comicId);
+  }
 
   return (
     <div>
@@ -58,7 +66,15 @@ const Page = async ({ params: { slug } }: PageProps) => {
         <div className='font-semibold'>
           {page}/{response.totalPages}
         </div>
-        <div>
+        <div className='flex items-center gap-2'>
+          {isAuth && (
+            <BookmarkComicControl
+              chapterId={chapter.id}
+              comicId={chapter.comicId}
+              pageNumber={page}
+              bookmark={bookmark}
+            />
+          )}
           <ChapterControl comicId={chapter.comicId} currentChapterId={chapter.id} />
         </div>
       </div>

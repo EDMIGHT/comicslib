@@ -4,16 +4,16 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
+import { Bookmark } from '@/components/layouts/bookmark';
+import { BookmarkSkeletons } from '@/components/skeletons/bookmark-skeletons';
 import { useIntersection } from '@/hooks/use-intersection';
 import { UserService } from '@/services/users.service';
 
-import { ReadingHistoryItem } from './layouts/reading-history-item';
-
-type ReadingHistoryFeedProps = {
+type BookmarksFeedProps = {
   login: string;
 };
 
-export const ReadingHistoryFeed: FC<ReadingHistoryFeedProps> = ({ login }) => {
+export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
 
@@ -25,7 +25,7 @@ export const ReadingHistoryFeed: FC<ReadingHistoryFeedProps> = ({ login }) => {
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
     ['reading-history'],
     async ({ pageParam = 1 }) => {
-      return await UserService.getAllReadingHistory({
+      return await UserService.getAllBookmarks({
         login,
         page: pageParam,
       });
@@ -57,25 +57,23 @@ export const ReadingHistoryFeed: FC<ReadingHistoryFeedProps> = ({ login }) => {
             if (i === history.length - 1) {
               return (
                 <li key={hist.comicId} ref={ref}>
-                  <ReadingHistoryItem {...hist} />
+                  <Bookmark {...hist} />
                 </li>
               );
             } else {
               return (
                 <li key={hist.comicId}>
-                  <ReadingHistoryItem {...hist} />
+                  <Bookmark {...hist} />
                 </li>
               );
             }
           })
         ) : (
           <div className='col-span-2 flex h-[50vh] items-center justify-center text-center'>
-            <h3 className='text-xl font-medium md:text-3xl'>
-              Your reading history is empty 😢
-            </h3>
+            <h3 className='text-xl font-medium md:text-3xl'>Browsing history is empty 😢</h3>
           </div>
         ))}
-      {/* {isLoading && <ComicSkeletons />} */}
+      {isLoading && <BookmarkSkeletons />}
     </ul>
   );
 };

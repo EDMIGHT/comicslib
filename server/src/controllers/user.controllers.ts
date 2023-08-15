@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 
+import { BookmarksModel } from '@/models/bookmarks.model';
 import { ChapterModel } from '@/models/chapter.model';
 import { ComicModel } from '@/models/comic.model';
 import { FolderModel } from '@/models/folder.model';
 import { PageModel } from '@/models/page.model';
-import { ReadingHistoryModel } from '@/models/reading-history.model';
 import { UserModel } from '@/models/user.model';
 import { ISortOrder } from '@/types/common.types';
 import { IFoldersWithIsExistComic } from '@/types/folder.types';
@@ -135,7 +135,7 @@ export const updateComicsFolder = async (req: Request, res: Response): Promise<R
   }
 };
 
-export const getReadingHistory = async (req: Request, res: Response): Promise<Response> => {
+export const getBookmarks = async (req: Request, res: Response): Promise<Response> => {
   const { login } = req.params;
   const { page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
 
@@ -143,49 +143,76 @@ export const getReadingHistory = async (req: Request, res: Response): Promise<Re
     const existedUser = await UserModel.getByLogin(login);
     if (!existedUser) {
       return CustomResponse.notFound(res, {
-        message: 'user to get reading history was not found ',
+        message: 'user to get bookmarks was not found ',
       });
     }
 
-    const userReadingHistory = await ReadingHistoryModel.getAll({
+    const userBookmarks = await BookmarksModel.getAll({
       login: existedUser.login,
       page: Number(page),
       limit: Number(limit),
       sort: sort as string,
       order: order as ISortOrder,
     });
-    const userTotalCountReadingHistory = await ReadingHistoryModel.getAllCount(
-      existedUser.login
-    );
+    const userTotalCountBookmarks = await BookmarksModel.getAllCount(existedUser.login);
 
     return CustomResponse.ok(res, {
-      history: userReadingHistory,
+      history: userBookmarks,
       currentPage: Number(page),
-      totalPages: Math.ceil(userTotalCountReadingHistory / Number(limit)),
+      totalPages: Math.ceil(userTotalCountBookmarks / Number(limit)),
     });
   } catch (error) {
     return serverErrorResponse({
       res,
-      message: `server side error changing folder`,
+      message: `server side error receiving bookmarks`,
       error,
     });
   }
 };
 
-export const updateReadingHistory = async (req: Request, res: Response): Promise<Response> => {
+export const getUserBookmarkByComic = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { comicId } = req.params;
+
+  try {
+    const existedComic = await ComicModel.get(comicId);
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which the user bookmark was requested does not exist',
+      });
+    }
+
+    const bookmark = await BookmarksModel.getUserBookmark({
+      comicId,
+      userId: req.user.id,
+    });
+
+    return CustomResponse.ok(res, bookmark);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when getting user's bookmark for a comic`,
+      error,
+    });
+  }
+};
+
+export const updateBookmark = async (req: Request, res: Response): Promise<Response> => {
   const { comicId, chapterId, pageNumber } = req.body;
   try {
     const existedComic = await ComicModel.get(comicId);
     if (!existedComic) {
       return CustomResponse.notFound(res, {
-        message: 'the comic for which the story is being updated was not found',
+        message: 'the comic for bookmark is being updated was not found',
       });
     }
 
     const existedChapter = await ChapterModel.get(chapterId);
     if (!existedChapter) {
       return CustomResponse.notFound(res, {
-        message: 'the chapter of the comic for which the story is being updated was not found',
+        message: 'the chapter of the comic for bookmark is being updated was not found',
       });
     }
 
@@ -195,22 +222,22 @@ export const updateReadingHistory = async (req: Request, res: Response): Promise
     });
     if (!existedPage) {
       return CustomResponse.notFound(res, {
-        message: 'the chapter page for history update was not found',
+        message: 'the chapter page for bookmark was not found',
       });
     }
 
-    const updatedReadingHistory = await ReadingHistoryModel.create({
+    const updatedBookmark = await BookmarksModel.create({
       chapterId,
       comicId,
       pageId: Number(pageNumber),
       userId: req.user.id,
     });
 
-    return CustomResponse.ok(res, updatedReadingHistory);
+    return CustomResponse.ok(res, updatedBookmark);
   } catch (error) {
     return serverErrorResponse({
       res,
-      message: `an error occurred on the server side while updating the read history`,
+      message: `an error occurred on the server side while updating the bookmark`,
       error,
     });
   }

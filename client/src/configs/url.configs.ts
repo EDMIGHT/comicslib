@@ -7,14 +7,14 @@ export const API_AUTH_URL = {
   signUp: '/auth/register',
   tokens: '/auth/token',
   authMe: '/auth/me',
-};
+} as const;
 
 export const API_COMICS_URL = {
   origin: '/comics',
   random: '/comics/random',
   rating: '/comics/rating',
   ratingUser: '/comics/rating/me',
-};
+} as const;
 
 export const API_GENRES_URL = {
   origin: '/genres',
@@ -43,5 +43,6 @@ export const API_COMMENTS_URL = {
 export const API_USERS_ENDPOINTS = {
   origin: '/users',
   folders: '/users/folders',
-  readingHistory: '/users/reading-history',
-};
+  bookmark: '/users/reading-history',
+  bookmarkComic: '/users/reading-history/comic',
+} as const;

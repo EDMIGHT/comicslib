@@ -60,7 +60,6 @@ export const PageBackground: FC<PageBackgroundProps> = ({
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      e.preventDefault();
       if (e.key === 'ArrowRight') {
         onClickToNextPage();
       } else if (e.key === 'ArrowLeft') {

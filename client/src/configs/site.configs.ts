@@ -48,8 +48,8 @@ export const FOLLOWS_NAVIGATION: NavigationLink[] = [
     href: '/folders',
   },
   {
-    title: 'reading history',
-    href: '/library/reading-history',
+    title: 'bookmarks',
+    href: '/library/bookmarks',
   },
 ];
 
@@ -81,9 +81,9 @@ export const PROFILE_NAVIGATION: NavigationLink[] = [
     icon: 'star',
   },
   {
-    title: 'Reading history',
-    href: '/reading-history',
-    icon: 'history',
+    title: 'Bookmarks',
+    href: '/bookmarks',
+    icon: 'bookmark',
   },
   {
     title: 'Uploads',
@@ -99,8 +99,8 @@ export const AUTH_MENU_NAVIGATION: NavigationLink[] = [
     icon: 'folder',
   },
   {
-    title: 'My reading history',
-    href: '/library/reading-history',
+    title: 'My bookmarks',
+    href: '/library/bookmarks',
     icon: 'history',
   },
 ];
@@ -149,10 +149,10 @@ export const PAGINATION_LIMIT_CONFIG = {
   chapters: 1,
   comics: 5,
   comments: 5,
-  readingHistory: 5,
-};
+  bookmarks: 5,
+} as const;
 
 export const COMIC_RATING_CONFIG = {
   min: 1,
   max: 10,
-};
+} as const;

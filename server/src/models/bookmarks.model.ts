@@ -1,25 +1,27 @@
 import { ReadingHistory } from '@prisma/client';
 
 import prisma from '@/db/prisma';
+import { IResponseBookmark } from '@/types/bookmark.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 
-type IUpdateReadingHistory = Pick<
-  ReadingHistory,
-  'comicId' | 'pageId' | 'userId' | 'chapterId'
->;
+type IUpdateBookmark = Pick<ReadingHistory, 'comicId' | 'pageId' | 'userId' | 'chapterId'>;
 
-type IGetAllReadingHistory = IPaginationArg &
+type IGetAllBookmarksArg = IPaginationArg &
   ISortArg & {
     login: string;
   };
+type IGetUserBookmarkArg = {
+  comicId: string;
+  userId: string;
+};
 
-export class ReadingHistoryModel {
+export class BookmarksModel {
   public static async create({
     userId,
     comicId,
     pageId,
     chapterId,
-  }: IUpdateReadingHistory): Promise<ReadingHistory> {
+  }: IUpdateBookmark): Promise<ReadingHistory> {
     return prisma.readingHistory.upsert({
       where: {
         userId_comicId: {
@@ -39,7 +41,13 @@ export class ReadingHistoryModel {
       },
     });
   }
-  public static async getAll({ login, page, limit, sort, order }: IGetAllReadingHistory) {
+  public static async getAll({
+    login,
+    page,
+    limit,
+    sort,
+    order,
+  }: IGetAllBookmarksArg): Promise<IResponseBookmark[]> {
     const offset = (page - 1) * limit;
 
     return prisma.readingHistory.findMany({
@@ -82,6 +90,17 @@ export class ReadingHistoryModel {
         user: {
           login,
         },
+      },
+    });
+  }
+  public static async getUserBookmark({
+    comicId,
+    userId,
+  }: IGetUserBookmarkArg): Promise<ReadingHistory | null> {
+    return prisma.readingHistory.findFirst({
+      where: {
+        userId,
+        comicId,
       },
     });
   }

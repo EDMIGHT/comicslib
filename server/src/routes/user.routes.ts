@@ -2,23 +2,25 @@ import express from 'express';
 
 import {
   createFolder,
+  getBookmarks,
   getFolder,
   getProfile,
-  getReadingHistory,
+  getUserBookmarkByComic,
   getUserFolders,
+  updateBookmark,
   updateComicsFolder,
-  updateReadingHistory,
 } from '@/controllers/user.controllers';
 import { authentication, validation } from '@/middleware';
 import {
   createFolderValidators,
-  updateReadingHistoryValidators,
+  updateBookmarkValidators,
 } from '@/utils/validations/user.validators';
 
 const router = express.Router({ mergeParams: true });
 
 router.get('/:login', getProfile);
-router.get('/reading-history/:login', getReadingHistory);
+router.get('/reading-history/:login', getBookmarks);
+router.get('/reading-history/comic/:comicId', authentication, getUserBookmarkByComic);
 router.get('/folders/:login/:folderId', getFolder);
 router.get('/folders/:comicId', authentication, getUserFolders);
 
@@ -27,9 +29,9 @@ router.post('/folders', authentication, createFolderValidators, validation, crea
 router.patch(
   '/reading-history',
   authentication,
-  updateReadingHistoryValidators,
+  updateBookmarkValidators,
   validation,
-  updateReadingHistory
+  updateBookmark
 );
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
 

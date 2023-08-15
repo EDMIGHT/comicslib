@@ -50,7 +50,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
             <ul className='space-y-1'>
               <li>
                 <Link
-                  href={`profile/${user.login}`}
+                  href={`/profile/${user.login}`}
                   className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     'flex justify-start gap-1 hover:opacity-80'
