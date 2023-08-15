@@ -68,4 +68,10 @@ export class UserService {
     const { data } = await apiAuth.patch<IBookmark>(API_USERS_ENDPOINTS.bookmark, body);
     return data;
   }
+  public static async deleteBookmark(comicId: string) {
+    const { data } = await apiAuth.delete<null>(
+      `${API_USERS_ENDPOINTS.bookmarkComic}/${comicId}`
+    );
+    return data;
+  }
 }

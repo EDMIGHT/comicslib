@@ -4,11 +4,23 @@ import { FC } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Icons } from '@/components/ui/icons';
 import { Time } from '@/components/ui/time';
-import { IResponseBookmark } from '@/types/user.types';
+import { IResponseBookmark, IUser } from '@/types/user.types';
 
-export const Bookmark: FC<IResponseBookmark> = ({ comic, page, chapter, updatedAt }) => {
+import { BookmarkComicDelete } from '../bookmark-comic-deleting';
+
+type BookmarkProps = IResponseBookmark & {
+  currentUser: IUser | null;
+};
+
+export const Bookmark: FC<BookmarkProps> = ({
+  comic,
+  page,
+  chapter,
+  updatedAt,
+  currentUser,
+  userId,
+}) => {
   return (
     <Card className='flex gap-2 p-2'>
       <Link href={`/comics/${comic.id}`} className='flex flex-1 gap-2 hover:opacity-80'>
@@ -25,9 +37,7 @@ export const Bookmark: FC<IResponseBookmark> = ({ comic, page, chapter, updatedA
       </Link>
 
       <div className='flex flex-col justify-between gap-2'>
-        <button className='self-end justify-self-end'>
-          <Icons.delete className='h-5 w-5 hover:stroke-destructive' />
-        </button>
+        {currentUser?.id === userId && <BookmarkComicDelete comicId={comic.id} />}
         <Link href={`/chapter/${chapter.id}/${page.number}`} className={buttonVariants()}>
           continue
         </Link>

@@ -6,6 +6,7 @@ import { FC, useEffect, useRef } from 'react';
 
 import { Bookmark } from '@/components/layouts/bookmark';
 import { BookmarkSkeletons } from '@/components/skeletons/bookmark-skeletons';
+import { useAuth } from '@/hooks/use-auth';
 import { useIntersection } from '@/hooks/use-intersection';
 import { UserService } from '@/services/users.service';
 
@@ -14,6 +15,7 @@ type BookmarksFeedProps = {
 };
 
 export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
+  const { user } = useAuth();
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
 
@@ -23,7 +25,7 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    ['reading-history'],
+    ['bookmarks'],
     async ({ pageParam = 1 }) => {
       return await UserService.getAllBookmarks({
         login,
@@ -47,30 +49,30 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
     }
   }, [entry, fetchNextPage, hasNextPage]);
 
-  const history = data?.pages.flatMap((page) => page.history);
+  const bookmarks = data?.pages.flatMap((page) => page.history);
 
   return (
     <ul ref={parent} className='flex flex-col gap-2'>
       {isSuccess &&
-        (history && history.length > 0 ? (
-          history.map((hist, i) => {
-            if (i === history.length - 1) {
+        (bookmarks && bookmarks.length > 0 ? (
+          bookmarks.map((hist, i) => {
+            if (i === bookmarks.length - 1) {
               return (
                 <li key={hist.comicId} ref={ref}>
-                  <Bookmark {...hist} />
+                  <Bookmark {...hist} currentUser={user} />
                 </li>
               );
             } else {
               return (
                 <li key={hist.comicId}>
-                  <Bookmark {...hist} />
+                  <Bookmark {...hist} currentUser={user} />
                 </li>
               );
             }
           })
         ) : (
           <div className='col-span-2 flex h-[50vh] items-center justify-center text-center'>
-            <h3 className='text-xl font-medium md:text-3xl'>Browsing history is empty 😢</h3>
+            <h3 className='text-xl font-medium md:text-3xl'>No bookmarks found 😢</h3>
           </div>
         ))}
       {isLoading && <BookmarkSkeletons />}
