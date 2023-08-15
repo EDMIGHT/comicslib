@@ -265,3 +265,43 @@ export const updateBookmark = async (req: Request, res: Response): Promise<Respo
     });
   }
 };
+
+export const deleteBookmark = async (req: Request, res: Response): Promise<Response> => {
+  const { comicId } = req.params;
+
+  try {
+    const existedComic = await ComicModel.get(comicId);
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which the bookmark is being deleted does not exist',
+      });
+    }
+
+    const existedBookmark = await BookmarksModel.getUserBookmark({
+      comicId,
+      userId: req.user.id,
+    });
+    if (!existedBookmark) {
+      return CustomResponse.notFound(res, {
+        message: `bookmarks for comics with id = ${comicId} do not exist`,
+      });
+    }
+    if (existedBookmark.userId !== req.user.id) {
+      return CustomResponse.conflict(res, {
+        message: 'you cant delete other peoples bookmarks',
+      });
+    }
+
+    await BookmarksModel.deleteUserBookmark({
+      comicId,
+      userId: req.user.id,
+    });
+    return CustomResponse.ok(res, null);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `an error occurred on the server side while deleting a bookmark`,
+      error,
+    });
+  }
+};
