@@ -6,10 +6,10 @@ import { IPaginationArg, ISortArg } from '@/types/common.types';
 
 type ICreateCommentForComicArgs = Pick<Comment, 'text' | 'userId' | 'comicId'>;
 
-type IGetAllForComicsArgs = {
-  comicId: string;
-} & ISortArg &
-  IPaginationArg;
+type IGetAllForComicsArgs = ISortArg &
+  IPaginationArg & {
+    comicId: string;
+  };
 
 export class CommentModel {
   public static async createForComic(

@@ -164,7 +164,7 @@ export const updateComicsFolder = async (req: Request, res: Response): Promise<R
 
 export const getBookmarks = async (req: Request, res: Response): Promise<Response> => {
   const { login } = req.params;
-  const { page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
+  const { title, page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
 
   try {
     const existedUser = await UserModel.getByLogin(login);
@@ -175,6 +175,7 @@ export const getBookmarks = async (req: Request, res: Response): Promise<Respons
     }
 
     const userBookmarks = await BookmarksModel.getAll({
+      title: title as string,
       login: existedUser.login,
       page: Number(page),
       limit: Number(limit),
@@ -184,7 +185,7 @@ export const getBookmarks = async (req: Request, res: Response): Promise<Respons
     const userTotalCountBookmarks = await BookmarksModel.getAllCount(existedUser.login);
 
     return CustomResponse.ok(res, {
-      history: userBookmarks,
+      bookmarks: userBookmarks,
       currentPage: Number(page),
       totalPages: Math.ceil(userTotalCountBookmarks / Number(limit)),
     });
@@ -328,6 +329,20 @@ export const deleteBookmark = async (req: Request, res: Response): Promise<Respo
     return serverErrorResponse({
       res,
       message: `an error occurred on the server side while deleting a bookmark`,
+      error,
+    });
+  }
+};
+
+export const clearAllBookmarks = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const deleteResult = await BookmarksModel.deleteAllUserBookmarks(req.user.id);
+
+    return CustomResponse.ok(res, deleteResult);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when clearing user's bookmarks`,
       error,
     });
   }

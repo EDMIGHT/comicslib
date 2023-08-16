@@ -11,10 +11,10 @@ const hostURL = `http://localhost:${process.env.PORT}/`;
 
 const hostWithImgPath = hostURL + defaultUserImg;
 
-type IGetAllArg = {
-  login: string;
-} & ISortArg &
-  IPaginationArg;
+type IGetAllArg = ISortArg &
+  IPaginationArg & {
+    login: string;
+  };
 
 export class UserModel {
   public static async getAll({

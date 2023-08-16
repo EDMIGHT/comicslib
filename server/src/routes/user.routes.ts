@@ -1,6 +1,7 @@
 import express from 'express';
 
 import {
+  clearAllBookmarks,
   createFolder,
   deleteBookmark,
   getAllUser,
@@ -38,6 +39,7 @@ router.patch(
 );
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
 
+router.delete('/reading-history/comic/all', authentication, clearAllBookmarks);
 router.delete('/reading-history/comic/:comicId', authentication, deleteBookmark);
 
 export default router;

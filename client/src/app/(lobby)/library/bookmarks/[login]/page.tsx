@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { FC } from 'react';
 
 import { BookmarksFeed } from '@/components/bookmarks-feed';
+import { PageHeader } from '@/components/page-header';
 import { createTitle } from '@/lib/helpers/general.helper';
 import { UserService } from '@/services/users.service';
 
@@ -25,7 +26,12 @@ const Page: FC<PageProps> = async ({ params: { login } }) => {
     return notFound();
   }
 
-  return <BookmarksFeed login={existedUser.login} />;
+  return (
+    <>
+      <PageHeader>{login} bookmarks</PageHeader>
+      <BookmarksFeed login={existedUser.login} />
+    </>
+  );
 };
 
 export default Page;

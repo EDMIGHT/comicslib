@@ -1,4 +1,4 @@
-import { ReadingHistory } from '@prisma/client';
+import { Prisma, ReadingHistory } from '@prisma/client';
 
 import prisma from '@/db/prisma';
 import { IResponseBookmark } from '@/types/bookmark.types';
@@ -9,6 +9,7 @@ type IUpdateBookmark = Pick<ReadingHistory, 'comicId' | 'pageId' | 'userId' | 'c
 type IGetAllBookmarksArg = IPaginationArg &
   ISortArg & {
     login: string;
+    title: string;
   };
 type IGetUserBookmarkArg = {
   comicId: string;
@@ -46,6 +47,7 @@ export class BookmarksModel {
     });
   }
   public static async getAll({
+    title,
     login,
     page,
     limit,
@@ -60,6 +62,11 @@ export class BookmarksModel {
       where: {
         user: {
           login,
+        },
+        comic: {
+          title: {
+            startsWith: title,
+          },
         },
       },
       orderBy: {
@@ -118,6 +125,13 @@ export class BookmarksModel {
           comicId,
           userId,
         },
+      },
+    });
+  }
+  public static async deleteAllUserBookmarks(userId: string): Promise<Prisma.BatchPayload> {
+    return prisma.readingHistory.deleteMany({
+      where: {
+        userId,
       },
     });
   }

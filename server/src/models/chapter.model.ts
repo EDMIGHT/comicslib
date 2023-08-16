@@ -5,7 +5,7 @@ import { IChapterWithUser } from '@/types/chapter.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 
 type ICreateChapterArg = Pick<Chapter, 'title' | 'comicId' | 'userId' | 'number'>;
-type IGetChaptersByComicIdArg = { comicId: string } & ISortArg & IPaginationArg;
+type IGetChaptersByComicIdArg = ISortArg & IPaginationArg & { comicId: string };
 
 export class ChapterModel {
   public static async getAll({

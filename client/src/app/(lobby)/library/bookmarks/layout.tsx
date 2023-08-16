@@ -7,12 +7,7 @@ type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  return (
-    <div className='flex flex-col gap-2'>
-      <PageHeader title='Bookmarks' />
-      {children}
-    </div>
-  );
+  return <div className='flex flex-col gap-2'>{children}</div>;
 };
 
 export default Layout;

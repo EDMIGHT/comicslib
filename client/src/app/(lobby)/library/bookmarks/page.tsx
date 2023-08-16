@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { BookmarksFeed } from '@/components/bookmarks-feed';
+import { PageHeader } from '@/components/page-header';
+import { Search } from '@/components/search';
 import { createTitle } from '@/lib/helpers/general.helper';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
@@ -17,7 +19,13 @@ const Page = async () => {
     return notFound();
   }
 
-  return <BookmarksFeed login={user.login} />;
+  return (
+    <>
+      <PageHeader>Your bookmarks</PageHeader>
+      <Search placeholder='enter title name..' paramsKey='title' />
+      <BookmarksFeed login={user.login} />
+    </>
+  );
 };
 
 export default Page;
