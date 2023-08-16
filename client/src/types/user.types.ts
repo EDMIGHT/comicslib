@@ -1,5 +1,3 @@
-import { string } from 'zod';
-
 import { IShortChapter } from './chapter.types';
 import { IShortWithImgComic } from './comic.types';
 import { IPagination, ITokens } from './response.types';
@@ -11,6 +9,17 @@ export type IUser = {
   img: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type IResponseUser = IUser & {
+  _count: {
+    ratings: number;
+    comments: number;
+  };
+};
+
+export type IResponseAllUser = IPagination & {
+  users: IResponseUser[];
 };
 
 export type IResponseAuth = {

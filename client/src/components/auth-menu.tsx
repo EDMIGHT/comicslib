@@ -28,7 +28,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
       <PopoverTrigger asChild>
         <Avatar className='hover:cursor-pointer'>
           {user ? (
-            <UserAvatar user={user} />
+            <UserAvatar img={user.img} login={user.login} />
           ) : (
             <UserCircle2 className='h-full w-full stroke-1' />
           )}

@@ -23,7 +23,7 @@ export const Menu: FC<MenuProps> = ({ navigation, user }) => {
     <nav>
       <ul className='flex flex-col gap-2'>
         {navigation.map((navItem, i) => {
-          const Icon = navItem.title ? Icons[navItem.title.toLocaleLowerCase()] : null;
+          const Icon = Icons[navItem.icon];
           return (
             ((navItem.isPrivate && user) || !navItem.isPrivate) && (
               <li key={'navItem' + i}>

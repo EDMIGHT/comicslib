@@ -2,7 +2,7 @@ import { LucideProps } from 'lucide-react';
 
 export type SocialLink = {
   title: string;
-  icon: (props: LucideProps) => JSX.Element;
+  icon: string;
   href: string;
 };
 
@@ -16,13 +16,13 @@ export type NavigationItem = {
   title: string;
   href?: string;
   isPrivate?: boolean;
-  // icon: (props: LucideProps) => JSX.Element;
+  icon: string;
   links?: NavigationLink[];
 };
 
 export type SiteConfig = {
   name: string;
-  logo: (props: LucideProps) => JSX.Element;
+  logo: string;
   navigation: NavigationItem[];
   socials: SocialLink[];
 };
@@ -35,4 +35,5 @@ export type ISortVariant = {
 
 export type ISortVariants = {
   comics: ISortVariant[];
+  users: ISortVariant[];
 };

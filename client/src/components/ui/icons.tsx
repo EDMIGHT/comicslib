@@ -21,12 +21,14 @@ import {
   Orbit,
   Palette,
   PlusCircle,
+  Scale,
   Search,
   Star,
   Trash2,
   Twitter,
   UploadCloud,
   User2,
+  Users,
   X,
 } from 'lucide-react';
 
@@ -40,6 +42,7 @@ export const Icons: IconType = {
   chevronUpDown: (props: LucideProps) => <ChevronsUpDown {...props} />,
   close: (props: LucideProps) => <X {...props} />,
   comment: (props: LucideProps) => <MessageCircle {...props} />,
+  community: (props: LucideProps) => <Users {...props} />,
   discord: (props: LucideProps) => (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -75,6 +78,7 @@ export const Icons: IconType = {
   menu: (props: LucideProps) => <Menu {...props} />,
   palette: (props: LucideProps) => <Palette {...props} />,
   read: (props: LucideProps) => <BookOpen {...props} />,
+  rules: (props: LucideProps) => <Scale {...props} />,
   search: (props: LucideProps) => <Search {...props} />,
   star: (props: LucideProps) => <Star {...props} />,
   titles: (props: LucideProps) => <BookCopy {...props} />,

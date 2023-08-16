@@ -26,7 +26,7 @@ export const getAllUser = async (req: Request, res: Response): Promise<Response>
     const totalUsers = await UserModel.getAllCount(login as string);
 
     return CustomResponse.ok(res, {
-      users,
+      users: users.map((user) => createResponseUser(user)),
       currentPage: Number(page),
       totalPages: Math.ceil(totalUsers / +limit),
     });

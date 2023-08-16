@@ -31,9 +31,14 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <PageHeader title='Advanced search' />
+      <PageHeader>Advanced search</PageHeader>
       <div className='flex justify-between gap-2'>
-        <Search className='min-w-[300px] flex-1' initialTitle={searchParams.title} />
+        <Search
+          className='min-w-[300px] flex-1'
+          initialValue={searchParams.title}
+          placeholder='enter name of title..'
+          paramsKey='title'
+        />
         <AdvancedFiltering genres={genres} statuses={statuses} />
       </div>
       <Sort

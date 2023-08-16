@@ -9,21 +9,29 @@ import { useDebounce } from '@/hooks/use-debounce';
 import { cn } from '@/lib/utils';
 
 type SearchProps = {
-  initialTitle?: string;
+  initialValue?: string;
+  paramsKey: string;
+  placeholder?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
-export const Search: FC<SearchProps> = ({ className, initialTitle, ...rest }) => {
+export const Search: FC<SearchProps> = ({
+  className,
+  paramsKey,
+  initialValue,
+  placeholder = 'enter text..',
+  ...rest
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState<undefined | string>(initialTitle);
+  const [value, setValue] = useState<undefined | string>(initialValue);
   const [debounced] = useDebounce(value, 500);
 
   useEffect(() => {
     if (debounced !== undefined) {
       // @ts-ignore
       const params = new URLSearchParams(searchParams);
-      params.set('title', debounced);
+      params.set(paramsKey, debounced);
 
       router.push(pathname + (pathname.includes('?') ? '&' : '?') + params.toString());
     }
@@ -34,7 +42,7 @@ export const Search: FC<SearchProps> = ({ className, initialTitle, ...rest }) =>
       <Icons.search className='absolute left-2 top-1/2 -translate-y-1/2' />
       <Input
         type='text'
-        placeholder='enter name of title..'
+        placeholder={placeholder}
         className='bg-secondary py-3 pl-10 text-sm'
         value={value}
         onChange={(e) => setValue(e.target.value)}

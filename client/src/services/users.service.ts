@@ -6,12 +6,17 @@ import {
   IFolderForComic,
   IProfile,
   IResponseAllBookmarks,
+  IResponseAllUser,
   IUserFolder,
 } from '@/types/user.types';
 
 import { api } from './api';
 import { apiAuth } from './apiAuth';
 
+export type IGetAllUsersArg = IPaginationArg &
+  ISortArg & {
+    login?: string;
+  };
 export type IGetAllBookmarksArg = IPaginationArg &
   ISortArg & {
     login: string;
@@ -26,6 +31,18 @@ export type IUpdateBookmarkArg = {
 export class UserService {
   public static async get(login: string) {
     const { data } = await api.get<IProfile>(`${API_USERS_ENDPOINTS.origin}/${login}`);
+    return data;
+  }
+  public static async getAllUsers({
+    login = '',
+    page = 1,
+    limit = PAGINATION_LIMIT_CONFIG.users,
+    sort = 'createdAt',
+    order = 'desc',
+  }: IGetAllUsersArg) {
+    const { data } = await api.get<IResponseAllUser>(
+      `${API_USERS_ENDPOINTS.origin}/all?login=${login}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`
+    );
     return data;
   }
   public static async getFoldersByComic(comicId: string) {

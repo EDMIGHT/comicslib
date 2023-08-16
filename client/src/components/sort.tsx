@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { FC, useCallback, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
+import { Button, ButtonProps } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
@@ -13,9 +13,17 @@ type SortProps = {
   variants: ISortVariant[];
   initialSort?: string;
   initialOrder?: string;
-};
+  contentWidth?: string;
+} & ButtonProps;
 
-export const Sort: FC<SortProps> = ({ variants, initialOrder, initialSort }) => {
+export const Sort: FC<SortProps> = ({
+  variants,
+  initialOrder,
+  initialSort,
+  className,
+  contentWidth = '180px',
+  ...rest
+}) => {
   const initialVariant = variants.find(
     (v) => v.field === initialSort && v.order === initialOrder
   );
@@ -42,7 +50,8 @@ export const Sort: FC<SortProps> = ({ variants, initialOrder, initialSort }) => 
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className='w-[180px] justify-between gap-1 bg-secondary'
+          {...rest}
+          className={cn(`w-[${contentWidth}] justify-between gap-1 bg-secondary`, className)}
           variant='outline'
           role='combobox'
           aria-expanded={open}
@@ -50,7 +59,7 @@ export const Sort: FC<SortProps> = ({ variants, initialOrder, initialSort }) => 
           {variant.label ?? 'sort'} <Icons.chevronUpDown className='h-4 w-4' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[180px] bg-secondary p-0'>
+      <PopoverContent className={cn(`w-[${contentWidth}] bg-secondary p-0`)}>
         <ul>
           {variants.map((variant, i) => (
             <li

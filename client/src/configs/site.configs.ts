@@ -1,21 +1,35 @@
-import { Icons } from '@/components/ui/icons';
 import { ISortVariants, NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
 
 export const SITE_SOCIAL_LINKS: SocialLink[] = [
   {
     title: 'github',
-    icon: Icons.github,
+    icon: 'github',
     href: 'https://github.com/EDMIGHT/comicslib',
   },
   {
     title: 'discord',
-    icon: Icons.discord,
+    icon: 'discord',
     href: 'https://discord.com/',
   },
   {
     title: 'twitter',
-    icon: Icons.twitter,
+    icon: 'twitter',
     href: 'https://twitter.com/home',
+  },
+];
+
+export const LIBRARY_NAVIGATION: NavigationLink[] = [
+  {
+    title: 'updates',
+    href: '/library/updates',
+  },
+  {
+    title: 'folders',
+    href: '/folders',
+  },
+  {
+    title: 'bookmarks',
+    href: '/library/bookmarks',
   },
 ];
 
@@ -38,37 +52,57 @@ export const TITLES_NAVIGATION: NavigationLink[] = [
   },
 ];
 
-export const FOLLOWS_NAVIGATION: NavigationLink[] = [
+export const COMMUNITY_NAVIGATION: NavigationLink[] = [
   {
-    title: 'updates',
-    href: '/library/updates',
+    title: 'users',
+    href: '/users',
+  },
+];
+
+export const SITE_RULES_NAVIGATION: NavigationLink[] = [
+  {
+    title: 'rules',
+    href: '/rules',
   },
   {
-    title: 'folders',
-    href: '/folders',
+    title: 'privacy policy',
+    href: '/privacy-policy',
   },
   {
-    title: 'bookmarks',
-    href: '/library/bookmarks',
+    title: 'about us',
+    href: '/about-us',
   },
 ];
 
 export const SITE_CONFIG: SiteConfig = {
   name: 'comicslib',
-  logo: Icons.logo,
+  logo: 'logo',
   navigation: [
     {
       title: 'Home',
       href: '/',
+      icon: 'home',
     },
     {
       title: 'Library',
-      links: FOLLOWS_NAVIGATION,
+      links: LIBRARY_NAVIGATION,
       isPrivate: true,
+      icon: 'library',
     },
     {
       title: 'Titles',
       links: TITLES_NAVIGATION,
+      icon: 'titles',
+    },
+    {
+      title: 'Community',
+      links: COMMUNITY_NAVIGATION,
+      icon: 'community',
+    },
+    {
+      title: 'comicslib',
+      links: SITE_RULES_NAVIGATION,
+      icon: 'rules',
     },
   ],
   socials: SITE_SOCIAL_LINKS,
@@ -143,6 +177,29 @@ export const SORT_VARIANTS: ISortVariants = {
     //   order: 'asc',
     // },
   ],
+  users: [
+    {
+      label: 'recently registered',
+      field: 'createdAt',
+      order: 'desc',
+    },
+    {
+      label: 'oldest registered',
+      field: 'createdAt',
+      order: 'asc',
+    },
+
+    {
+      label: 'username ascending',
+      field: 'login',
+      order: 'asc',
+    },
+    {
+      label: 'username descending',
+      field: 'login',
+      order: 'desc',
+    },
+  ],
 };
 
 export const PAGINATION_LIMIT_CONFIG = {
@@ -150,6 +207,7 @@ export const PAGINATION_LIMIT_CONFIG = {
   comics: 5,
   comments: 5,
   bookmarks: 5,
+  users: 4,
 } as const;
 
 export const COMIC_RATING_CONFIG = {

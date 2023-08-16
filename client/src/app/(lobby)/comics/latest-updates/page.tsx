@@ -27,9 +27,14 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <PageHeader title='Latest updates' />
+      <PageHeader>Latest updates</PageHeader>
       <div className='flex flex-wrap items-center gap-2'>
-        <Search className='min-w-[300px] flex-1' initialTitle={searchParams.title} />
+        <Search
+          className='min-w-[300px] flex-1'
+          initialValue={searchParams.title}
+          placeholder='enter name of title..'
+          paramsKey='title'
+        />
         <AdvancedFiltering genres={genres} statuses={statuses} />
       </div>
       <ComicsFeed {...searchParams} sort='updatedAt' order='desc' />
