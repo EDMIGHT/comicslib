@@ -12,6 +12,33 @@ import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
+export const getAllUser = async (req: Request, res: Response): Promise<Response> => {
+  const { login, page = 1, limit = 5, sort = 'createdAt', order = 'asc' } = req.query;
+
+  try {
+    const users = await UserModel.getAll({
+      login: login as string,
+      page: Number(page),
+      limit: Number(limit),
+      sort: sort as string,
+      order: order as ISortOrder,
+    });
+    const totalUsers = await UserModel.getAllCount(login as string);
+
+    return CustomResponse.ok(res, {
+      users,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalUsers / +limit),
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `a server error occurred while getting the user profile`,
+      error,
+    });
+  }
+};
+
 export const getProfile = async (req: Request, res: Response): Promise<Response> => {
   const { login } = req.params;
 

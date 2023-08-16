@@ -3,6 +3,7 @@ import express from 'express';
 import {
   createFolder,
   deleteBookmark,
+  getAllUser,
   getBookmarks,
   getFolder,
   getProfile,
@@ -19,6 +20,7 @@ import {
 
 const router = express.Router({ mergeParams: true });
 
+router.get('/all', getAllUser);
 router.get('/:login', getProfile);
 router.get('/reading-history/:login', getBookmarks);
 router.get('/reading-history/comic/:comicId', authentication, getUserBookmarkByComic);
