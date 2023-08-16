@@ -71,5 +71,9 @@ export type IResponseBookmark = IBookmark & {
 };
 
 export type IResponseAllBookmarks = IPagination & {
-  history: IResponseBookmark[];
+  bookmarks: IResponseBookmark[];
+};
+
+export type IResponseCleaningBookmarks = {
+  count: number;
 };

@@ -37,10 +37,14 @@ export const Bookmark: FC<BookmarkProps> = ({
       </Link>
 
       <div className='flex flex-col justify-between gap-2'>
-        {currentUser?.id === userId && <BookmarkComicDelete comicId={comic.id} />}
-        <Link href={`/chapter/${chapter.id}/${page.number}`} className={buttonVariants()}>
-          continue
-        </Link>
+        {currentUser?.id === userId && (
+          <>
+            <BookmarkComicDelete comicId={comic.id} />
+            <Link href={`/chapter/${chapter.id}/${page.number}`} className={buttonVariants()}>
+              continue
+            </Link>
+          </>
+        )}
       </div>
     </Card>
   );

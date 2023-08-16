@@ -2,9 +2,13 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 
+import { BookmarksCleaning } from '@/components/bookmarks-cleaning';
 import { BookmarksFeed } from '@/components/bookmarks-feed';
 import { PageHeader } from '@/components/page-header';
+import { Search } from '@/components/search';
 import { createTitle } from '@/lib/helpers/general.helper';
+import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { UserService } from '@/services/users.service';
 
 type PageProps = {
@@ -26,10 +30,19 @@ const Page: FC<PageProps> = async ({ params: { login } }) => {
     return notFound();
   }
 
+  let currentUser = null;
+  if (getServerAccessToken()) {
+    currentUser = await getAuthServer();
+  }
+
   return (
     <>
       <PageHeader>{login} bookmarks</PageHeader>
-      <BookmarksFeed login={existedUser.login} />
+      <div className='flex flex-col gap-2 md:flex-row'>
+        <Search placeholder='enter title name..' paramsKey='title' className='flex-1' />
+        {currentUser && currentUser.login === existedUser.login && <BookmarksCleaning />}
+      </div>
+      <BookmarksFeed login={existedUser.login} currentUser={currentUser} />
     </>
   );
 };

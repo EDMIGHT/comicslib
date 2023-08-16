@@ -8,14 +8,18 @@ import { Bookmark } from '@/components/layouts/bookmark';
 import { BookmarkSkeletons } from '@/components/skeletons/bookmark-skeletons';
 import { useAuth } from '@/hooks/use-auth';
 import { useIntersection } from '@/hooks/use-intersection';
-import { UserService } from '@/services/users.service';
+import { IGetAllBookmarksArg, UserService } from '@/services/users.service';
+import { IUser } from '@/types/user.types';
 
-type BookmarksFeedProps = {
-  login: string;
+type BookmarksFeedProps = IGetAllBookmarksArg & {
+  currentUser: IUser | null;
 };
 
-export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
-  const { user } = useAuth();
+export const BookmarksFeed: FC<BookmarksFeedProps> = ({
+  login,
+  currentUser,
+  ...searchQuery
+}) => {
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
 
@@ -25,9 +29,10 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    ['bookmarks'],
+    ['bookmarks', searchQuery.title],
     async ({ pageParam = 1 }) => {
       return await UserService.getAllBookmarks({
+        ...searchQuery,
         login,
         page: pageParam,
       });
@@ -49,7 +54,7 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
     }
   }, [entry, fetchNextPage, hasNextPage]);
 
-  const bookmarks = data?.pages.flatMap((page) => page.history);
+  const bookmarks = data?.pages.flatMap((page) => page.bookmarks);
 
   return (
     <ul ref={parent} className='flex flex-col gap-2'>
@@ -59,13 +64,13 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({ login }) => {
             if (i === bookmarks.length - 1) {
               return (
                 <li key={hist.comicId} ref={ref}>
-                  <Bookmark {...hist} currentUser={user} />
+                  <Bookmark {...hist} currentUser={currentUser} />
                 </li>
               );
             } else {
               return (
                 <li key={hist.comicId}>
-                  <Bookmark {...hist} currentUser={user} />
+                  <Bookmark {...hist} currentUser={currentUser} />
                 </li>
               );
             }

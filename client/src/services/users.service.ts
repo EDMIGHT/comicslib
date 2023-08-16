@@ -7,6 +7,7 @@ import {
   IProfile,
   IResponseAllBookmarks,
   IResponseAllUser,
+  IResponseCleaningBookmarks,
   IUserFolder,
 } from '@/types/user.types';
 
@@ -20,6 +21,7 @@ export type IGetAllUsersArg = IPaginationArg &
 export type IGetAllBookmarksArg = IPaginationArg &
   ISortArg & {
     login: string;
+    title?: string;
   };
 
 export type IUpdateBookmarkArg = {
@@ -64,6 +66,7 @@ export class UserService {
     return data;
   }
   public static async getAllBookmarks({
+    title = '',
     login,
     page = 1,
     limit = PAGINATION_LIMIT_CONFIG.bookmarks,
@@ -88,6 +91,12 @@ export class UserService {
   public static async deleteBookmark(comicId: string) {
     const { data } = await apiAuth.delete<null>(
       `${API_USERS_ENDPOINTS.bookmarkComic}/${comicId}`
+    );
+    return data;
+  }
+  public static async cleaningBookmarks() {
+    const { data } = await apiAuth.delete<IResponseCleaningBookmarks>(
+      `${API_USERS_ENDPOINTS.bookmarkComic}/all`
     );
     return data;
   }

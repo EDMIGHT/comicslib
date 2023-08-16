@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { BookmarksCleaning } from '@/components/bookmarks-cleaning';
 import { BookmarksFeed } from '@/components/bookmarks-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
@@ -13,7 +14,13 @@ export const metadata: Metadata = {
     'Track the bookmarks of your comics on a personal bookmarks page for the user. Recall each adventure and take a look at your comic book journey.',
 };
 
-const Page = async () => {
+type PageProps = {
+  searchParams: {
+    title?: string;
+  };
+};
+
+const Page = async ({ searchParams }: PageProps) => {
   const user = await getAuthServer();
   if (!user) {
     return notFound();
@@ -22,8 +29,11 @@ const Page = async () => {
   return (
     <>
       <PageHeader>Your bookmarks</PageHeader>
-      <Search placeholder='enter title name..' paramsKey='title' />
-      <BookmarksFeed login={user.login} />
+      <div className='flex flex-col gap-2 md:flex-row'>
+        <Search placeholder='enter title name..' paramsKey='title' className='flex-1' />
+        <BookmarksCleaning />
+      </div>
+      <BookmarksFeed {...searchParams} login={user.login} currentUser={user} />
     </>
   );
 };
