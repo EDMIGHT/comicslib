@@ -30,6 +30,7 @@ export class ChapterModel {
           select: {
             id: true,
             login: true,
+            img: true,
           },
         },
       },
@@ -74,6 +75,7 @@ export class ChapterModel {
           select: {
             id: true,
             login: true,
+            img: true,
           },
         },
       },

@@ -373,3 +373,37 @@ export const clearAllBookmarks = async (req: Request, res: Response): Promise<Re
     });
   }
 };
+
+export const getAllSubscribedComics = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { title, page = 1, limit = 10, order = 'desc', sort = 'createdAt' } = req.query;
+
+  try {
+    const ComicsSubscribed = await ComicModel.getAllSubscribedComics({
+      userId: req.user.id,
+      page: Number(page),
+      limit: Number(limit),
+      sort: sort as string,
+      order: order as ISortOrder,
+      title: title as string,
+    });
+    const totalSubscribedComics = await ComicModel.getAllCountSubscribedComic({
+      userId: req.user.id,
+      title: title as string,
+    });
+
+    return CustomResponse.ok(res, {
+      comics: ComicsSubscribed,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalSubscribedComics / Number(limit)),
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when fetching comics you follow`,
+      error,
+    });
+  }
+};

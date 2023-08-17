@@ -1,7 +1,7 @@
 import { Comic } from '@prisma/client';
 
 import prisma from '@/db/prisma';
-import { IComicWithData } from '@/types/comic.types';
+import { IComicWithChapter, IComicWithData } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import {
   createQueryAllComic,
@@ -32,6 +32,12 @@ export type IGetAllQuery = {
 };
 
 type IGetAllArg = IGetAllQuery & ISortArg & IPaginationArg;
+
+type IGetAllSubscribedComics = ISortArg &
+  IPaginationArg & {
+    userId: string;
+    title?: string;
+  };
 
 export class ComicModel {
   public static async create({ authors, genres, ...data }: ICreateComic): Promise<Comic> {
@@ -152,6 +158,75 @@ export class ComicModel {
       },
       data: {
         updatedAt: new Date(),
+      },
+    });
+  }
+  public static async getAllSubscribedComics({
+    userId,
+    title,
+    page,
+    limit,
+    sort,
+    order,
+  }: IGetAllSubscribedComics): Promise<IComicWithChapter[]> {
+    const offset = (page - 1) * limit;
+
+    const today = new Date(); // Текущая дата и время
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 30); // Вычитаем 7 дней
+
+    return prisma.comic.findMany({
+      where: {
+        folders: {
+          some: {
+            userId,
+          },
+        },
+        updatedAt: {
+          gt: sevenDaysAgo,
+        },
+        title: {
+          startsWith: title,
+        },
+      },
+      include: {
+        chapters: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          take: 3,
+          include: {
+            user: {
+              select: {
+                id: true,
+                login: true,
+                img: true,
+              },
+            },
+          },
+        },
+      },
+      skip: offset,
+      take: limit,
+      orderBy: {
+        [sort]: order,
+      },
+    });
+  }
+  public static getAllCountSubscribedComic({
+    userId,
+    title,
+  }: Pick<IGetAllSubscribedComics, 'title' | 'userId'>): Promise<number> {
+    return prisma.comic.count({
+      where: {
+        folders: {
+          some: {
+            userId,
+          },
+        },
+        title: {
+          startsWith: title,
+        },
       },
     });
   }

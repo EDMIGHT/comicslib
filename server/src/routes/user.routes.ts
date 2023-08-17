@@ -4,6 +4,7 @@ import {
   clearAllBookmarks,
   createFolder,
   deleteBookmark,
+  getAllSubscribedComics,
   getAllUser,
   getBookmarks,
   getFolder,
@@ -23,12 +24,13 @@ import {
 const router = express.Router({ mergeParams: true });
 
 router.get('/all', getAllUser);
-router.get('/:login', getProfile);
 router.get('/reading-history/:login', getBookmarks);
 router.get('/reading-history/comic/:comicId', authentication, getUserBookmarkByComic);
 router.get('/folders/u/:login', getUserFolders);
 router.get('/folders/u/:login/:folderId', getFolder);
 router.get('/folders/:comicId', authentication, getUserFoldersByComic);
+router.get('/comics-subscribed', authentication, getAllSubscribedComics);
+router.get('/profiles/:login', getProfile);
 
 router.post('/folders', authentication, createFolderValidators, validation, createFolder);
 
