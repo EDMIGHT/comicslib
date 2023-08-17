@@ -42,8 +42,10 @@ export const API_COMMENTS_URL = {
 
 export const API_USERS_ENDPOINTS = {
   origin: '/users',
+  profile: '/users/profiles',
   folders: '/users/folders',
   foldersUser: '/users/folders/u',
   bookmark: '/users/reading-history',
   bookmarkComic: '/users/reading-history/comic',
+  comicsSubscribed: '/users/comics-subscribed',
 } as const;

@@ -17,7 +17,7 @@ type LayoutProps = {
 };
 
 export async function generateMetadata({ params: { login } }: LayoutProps): Promise<Metadata> {
-  const user = await UserService.get(login);
+  const user = await UserService.getProfile(login);
 
   if (!user) {
     return notFound();
@@ -29,7 +29,7 @@ export async function generateMetadata({ params: { login } }: LayoutProps): Prom
 }
 
 const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
-  const user = await UserService.get(login);
+  const user = await UserService.getProfile(login);
 
   if (!user) {
     return notFound();

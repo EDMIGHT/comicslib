@@ -7,16 +7,16 @@ import { PageHeader } from '@/components/page-header';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { UserService } from '@/services/users.service';
 
-type PageProps = {
-  searchParams: {
-    tab?: string;
-  };
-};
-
 export const metadata: Metadata = {
   title: 'Your folders',
   description:
     'User folders and the comics they have saved: an organized repository of comics that interest you',
+};
+
+type PageProps = {
+  searchParams: {
+    tab?: string;
+  };
 };
 
 const Page = async ({ searchParams: { tab } }: PageProps) => {

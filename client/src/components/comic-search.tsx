@@ -47,7 +47,7 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
     isLoading,
     isSuccess,
   } = useQuery({
-    queryKey: ['comics', debounced],
+    queryKey: ['search-comics', debounced],
     queryFn: async () => {
       if (debounced) {
         const data = await ComicsService.getAll({
@@ -116,7 +116,7 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
         )}
         {isSuccess &&
           searchedComics &&
-          (searchedComics.comics.length > 0 ? (
+          (searchedComics?.comics?.length > 0 ? (
             <ul className='flex flex-col gap-1 p-1'>
               {searchedComics?.comics.map((comic) => (
                 <li key={comic.id}>

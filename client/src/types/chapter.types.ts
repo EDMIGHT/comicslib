@@ -13,7 +13,7 @@ export type IChapter = {
 export type IShortChapter = Pick<IChapter, 'id' | 'number' | 'title'>;
 
 export type IChapterWithUser = IChapter & {
-  user: Omit<IShortUser, 'img'>;
+  user: IShortUser;
 };
 
 export type IResponseAllChapters = {
