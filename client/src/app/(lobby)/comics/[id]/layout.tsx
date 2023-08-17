@@ -3,11 +3,9 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 import { ComicCounters } from '@/components/comic-counters';
-import { ComicGenres } from '@/components/comic-genres';
 import { ComicInfo } from '@/components/comic-info';
 import { ComicMenu } from '@/components/comic-menu';
-import { ComicNavigation } from '@/components/comic-navigation';
-import { Button } from '@/components/ui/button';
+import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
 import { createTitle } from '@/lib/helpers/general.helper';
 import { ComicsService } from '@/services/comics.service';
 
@@ -40,6 +38,19 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
 
   const { img, title, desc, genres, authors, _count, avgRating, id: comicId, status } = comic;
 
+  const variants: NavigationVariants[] = [
+    {
+      title: 'Chapters',
+      href: `/comics/${comicId}`,
+      searchParams: '',
+    },
+    {
+      title: 'Comments',
+      href: `/comics/${comicId}/comments`,
+      searchParams: '',
+    },
+  ];
+
   return (
     <div className='flex flex-col gap-2 md:gap-4'>
       <div className='flex gap-2 md:gap-4'>
@@ -62,7 +73,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
       </div>
       <div className='flex gap-2'>
         <div className='flex flex-1 flex-col gap-2'>
-          <ComicNavigation comicId={comicId} />
+          <NavigationBtns variants={variants} />
           {children}
         </div>
         <ComicInfo genres={genres} authors={authors} status={status} />

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { FC } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
@@ -10,27 +11,34 @@ import { cn } from '@/lib/utils';
 export type NavigationVariants = {
   id?: string;
   href: string;
+  searchParams: string;
   title: string;
 };
 
 type NavigationBtnsProps = {
   variants: NavigationVariants[];
-  currentActive: string;
+  isFirstActive?: boolean;
 };
 
 // TODO попробовать сделать более универсальным
 
-export const NavigationBtns: FC<NavigationBtnsProps> = ({ variants, currentActive }) => {
+export const NavigationBtns: FC<NavigationBtnsProps> = ({ variants, isFirstActive }) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   return (
     <Card className='flex w-fit gap-2 border-none p-1'>
       {variants.map((v, i) => {
+        const hrefSearchParams = v.searchParams ? `?${v.searchParams}` : '';
+        console.log();
         return (
           <Link
             key={v.id ?? i}
-            href={v.href}
+            href={v.href + hrefSearchParams}
             className={cn(
               buttonVariants({ variant: 'link' }),
-              v.href === currentActive && 'bg-active text-active-foreground'
+              ((isFirstActive && i === 0) ||
+                (v.href === pathname && v.searchParams === searchParams.toString())) &&
+                'bg-active text-active-foreground'
             )}
           >
             {v.title}

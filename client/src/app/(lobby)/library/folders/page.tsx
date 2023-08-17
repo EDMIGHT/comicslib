@@ -28,19 +28,15 @@ const Page = async ({ searchParams: { tab } }: PageProps) => {
   const folders = await UserService.getAllFolders(user.login);
 
   const variants: NavigationVariants[] = folders.map((fold, i) => ({
-    href: `/library/folders?tab=${fold.id}`,
+    href: `/library/folders`,
+    searchParams: `tab=${fold.id}`,
     title: fold.title,
   }));
 
   return (
     <div className='flex flex-col gap-2'>
       <PageHeader>Your folders</PageHeader>
-      <NavigationBtns
-        variants={variants}
-        currentActive={
-          (tab && variants.find((v) => v.href.includes(tab))?.href) || variants[0].href
-        }
-      />
+      <NavigationBtns variants={variants} isFirstActive={!tab} />
       <ComicsFeed folderId={tab ?? folders[0].id} />
     </div>
   );
