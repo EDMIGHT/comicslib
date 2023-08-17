@@ -3,6 +3,7 @@ import { API_USERS_ENDPOINTS } from '@/configs/url.configs';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
   IBookmark,
+  IFolder,
   IFolderForComic,
   IProfile,
   IResponseAllBookmarks,
@@ -59,9 +60,13 @@ export class UserService {
     );
     return data;
   }
-  public static async getUserFolder(login: string, folderId: string) {
+  public static async getAllFolders(login: string) {
+    const { data } = await api.get<IFolder[]>(`${API_USERS_ENDPOINTS.foldersUser}/${login}`);
+    return data;
+  }
+  public static async getUserFolderInfo(login: string, folderId: string) {
     const { data } = await api.get<IUserFolder>(
-      `${API_USERS_ENDPOINTS.folders}/${login}/${folderId}`
+      `${API_USERS_ENDPOINTS.foldersUser}/${login}/${folderId}`
     );
     return data;
   }

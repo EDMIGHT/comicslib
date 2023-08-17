@@ -25,7 +25,7 @@ export const LIBRARY_NAVIGATION: NavigationLink[] = [
   },
   {
     title: 'folders',
-    href: '/folders',
+    href: '/library/folders',
   },
   {
     title: 'bookmarks',

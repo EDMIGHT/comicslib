@@ -22,6 +22,9 @@ export class FolderModel {
       where: {
         userId,
       },
+      orderBy: {
+        order: 'asc',
+      },
     });
   }
   public static getWithComicsIds(id: string): Promise<IFolderWithComicIds | null> {

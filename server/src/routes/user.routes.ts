@@ -10,6 +10,7 @@ import {
   getProfile,
   getUserBookmarkByComic,
   getUserFolders,
+  getUserFoldersByComic,
   updateBookmark,
   updateComicsFolder,
 } from '@/controllers/user.controllers';
@@ -25,8 +26,9 @@ router.get('/all', getAllUser);
 router.get('/:login', getProfile);
 router.get('/reading-history/:login', getBookmarks);
 router.get('/reading-history/comic/:comicId', authentication, getUserBookmarkByComic);
-router.get('/folders/:login/:folderId', getFolder);
-router.get('/folders/:comicId', authentication, getUserFolders);
+router.get('/folders/u/:login', getUserFolders);
+router.get('/folders/u/:login/:folderId', getFolder);
+router.get('/folders/:comicId', authentication, getUserFoldersByComic);
 
 router.post('/folders', authentication, createFolderValidators, validation, createFolder);
 

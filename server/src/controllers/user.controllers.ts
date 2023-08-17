@@ -100,6 +100,32 @@ export const getFolder = async (req: Request, res: Response): Promise<Response> 
 // TODO оптимизировать
 
 export const getUserFolders = async (req: Request, res: Response): Promise<Response> => {
+  const { login } = req.params;
+
+  try {
+    const existedUser = await UserModel.getByLogin(login);
+    if (!existedUser) {
+      return CustomResponse.notFound(res, {
+        message: 'the user for whom the folders were requested does not exist',
+      });
+    }
+
+    const folders = await FolderModel.getAll(existedUser.id);
+
+    return CustomResponse.ok(res, folders);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `error on server side when getting folders of user with login ${login}`,
+      error,
+    });
+  }
+};
+
+export const getUserFoldersByComic = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   const { comicId } = req.params;
   try {
     const folders = await FolderModel.getByLogin(req.user.login, comicId);
@@ -115,7 +141,7 @@ export const getUserFolders = async (req: Request, res: Response): Promise<Respo
   } catch (error) {
     return serverErrorResponse({
       res,
-      message: `server side error while getting folder contents`,
+      message: `server side error while getting your folders for comic with id ${comicId}`,
       error,
     });
   }

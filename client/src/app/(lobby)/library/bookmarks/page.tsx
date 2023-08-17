@@ -27,14 +27,14 @@ const Page = async ({ searchParams }: PageProps) => {
   }
 
   return (
-    <>
+    <div className='flex flex-col gap-2'>
       <PageHeader>Your bookmarks</PageHeader>
       <div className='flex flex-col gap-2 md:flex-row'>
         <Search placeholder='enter title name..' paramsKey='title' className='flex-1' />
         <BookmarksCleaning />
       </div>
       <BookmarksFeed {...searchParams} login={user.login} currentUser={user} />
-    </>
+    </div>
   );
 };
 
