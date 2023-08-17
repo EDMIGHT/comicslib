@@ -1,8 +1,12 @@
-import { Comic, StatusName } from '@prisma/client';
+import { Comic } from '@prisma/client';
 
 import prisma from '@/db/prisma';
 import { IComicWithData } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
+import {
+  createQueryAllComic,
+  IAllComicQuery,
+} from '@/utils/helpers/create-query-all-comic.helper';
 
 const defaultComicImg = process.env.COMIC_DEFAULT_IMG_PATH;
 const hostURL = `http://localhost:${process.env.PORT}/`;
@@ -15,49 +19,19 @@ type ICreateComic = Pick<Comic, 'title' | 'desc' | 'statusId'> &
     genres: string[];
   };
 
-interface IQuery {
-  genres?: {
-    some: {
-      title: {
-        in: string[];
-      };
-    };
-  };
-  authors?: {
-    some: {
-      login: {
-        in: string[];
-      };
-    };
-  };
-  status?: {
-    name: {
-      in: StatusName[];
-    };
-  };
-  folders?: {
-    some: {
-      id: string;
-    };
-  };
-  ratings?: {
-    some: {
-      user: {
-        login: string;
-      };
-    };
-  };
-}
-
-type IGetAllArg = {
+export type IGetAllQuery = {
   authors?: string[];
   genres?: string[];
   statuses?: string[];
   title: string;
   folderId?: string;
   ratedUser?: string;
-} & ISortArg &
-  IPaginationArg;
+  date?: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+type IGetAllArg = IGetAllQuery & ISortArg & IPaginationArg;
 
 export class ComicModel {
   public static async create({ authors, genres, ...data }: ICreateComic): Promise<Comic> {
@@ -83,62 +57,16 @@ export class ComicModel {
     });
   }
   public static async getAll({
-    authors,
-    genres,
-    statuses,
     title,
     page,
     limit,
     order,
     sort,
-    folderId,
-    ratedUser,
+    ...queryArgs
   }: IGetAllArg): Promise<IComicWithData[]> {
-    const query: IQuery = {};
+    const query: IAllComicQuery = createQueryAllComic({ ...queryArgs });
 
     const offset = (+page - 1) * +limit;
-
-    if (genres && genres.length > 0) {
-      query.genres = {
-        some: {
-          title: {
-            in: genres,
-          },
-        },
-      };
-    }
-    if (authors && authors.length > 0) {
-      query.authors = {
-        some: {
-          login: {
-            in: authors,
-          },
-        },
-      };
-    }
-    if (statuses && statuses.length > 0) {
-      query.status = {
-        name: {
-          in: statuses as StatusName[],
-        },
-      };
-    }
-    if (folderId) {
-      query.folders = {
-        some: {
-          id: folderId,
-        },
-      };
-    }
-    if (ratedUser) {
-      query.ratings = {
-        some: {
-          user: {
-            login: ratedUser,
-          },
-        },
-      };
-    }
 
     return prisma.comic.findMany({
       skip: offset,
@@ -167,48 +95,10 @@ export class ComicModel {
     });
   }
   public static async getAllCount({
-    genres,
-    authors,
-    statuses,
     title,
-    folderId,
-  }: Partial<
-    Pick<IGetAllArg, 'authors' | 'genres' | 'statuses' | 'title' | 'folderId'>
-  >): Promise<number> {
-    const query: IQuery = {};
-
-    if (genres && genres.length > 0) {
-      query.genres = {
-        some: {
-          title: {
-            in: genres,
-          },
-        },
-      };
-    }
-    if (authors && authors.length > 0) {
-      query.authors = {
-        some: {
-          login: {
-            in: authors,
-          },
-        },
-      };
-    }
-    if (statuses && statuses.length > 0) {
-      query.status = {
-        name: {
-          in: statuses as StatusName[],
-        },
-      };
-    }
-    if (folderId) {
-      query.folders = {
-        some: {
-          id: folderId,
-        },
-      };
-    }
+    ...queryArgs
+  }: Partial<IGetAllQuery>): Promise<number> {
+    const query: IAllComicQuery = createQueryAllComic({ ...queryArgs });
 
     return prisma.comic.count({
       where: {
@@ -253,6 +143,16 @@ export class ComicModel {
   public static async getComicBySkip(skip: number): Promise<Comic | null> {
     return prisma.comic.findFirst({
       skip,
+    });
+  }
+  public static async refreshUpdatedAt(comicId: string): Promise<Comic> {
+    return prisma.comic.update({
+      where: {
+        id: comicId,
+      },
+      data: {
+        updatedAt: new Date(),
+      },
     });
   }
 }

@@ -29,6 +29,9 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       title,
       folderId,
       ratedUser,
+      date,
+      startDate,
+      endDate,
       page = 1,
       limit = 10,
       order = 'desc',
@@ -50,6 +53,9 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       sort: sort as string,
       folderId: folderId as string,
       ratedUser: ratedUser as string,
+      date: date as string,
+      startDate: startDate as string,
+      endDate: endDate as string,
     });
 
     const comicsWithAvgRating = await Promise.all(
@@ -68,6 +74,10 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       statuses: statusesList,
       title: title as string,
       folderId: folderId as string,
+      ratedUser: ratedUser as string,
+      date: date as string,
+      startDate: startDate as string,
+      endDate: endDate as string,
     });
 
     return CustomResponse.ok(res, {

@@ -12,8 +12,6 @@ import { IResponseComic } from '@/types/comic.types';
 
 import { AdvancedQuerySearchParams } from './advanced-filtering';
 import { ComicSkeletons } from './skeletons/comic-skeletons';
-import { Card } from './ui/card';
-import { Skeleton } from './ui/skeleton';
 
 type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses'> & {
   initialComics?: IResponseComic[];

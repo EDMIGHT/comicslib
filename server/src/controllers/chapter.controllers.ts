@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ChapterModel } from '@/models/chapter.model';
+import { ComicModel } from '@/models/comic.model';
 import { ISortOrder } from '@/types/common.types';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -35,7 +36,7 @@ export const getChaptersByComicId = async (req: Request, res: Response): Promise
 export const createChapter = async (req: Request, res: Response): Promise<Response> => {
   try {
     const chapter = await ChapterModel.create({ ...req.body, userId: req.user.id });
-
+    await ComicModel.refreshUpdatedAt(chapter.comicId);
     return CustomResponse.created(res, chapter);
   } catch (error) {
     return serverErrorResponse({
