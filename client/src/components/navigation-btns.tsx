@@ -37,7 +37,7 @@ export const NavigationBtns: FC<NavigationBtnsProps> = ({ variants, isFirstActiv
             className={cn(
               buttonVariants({ variant: 'link' }),
               ((isFirstActive && i === 0) ||
-                (v.href === pathname && v.searchParams === searchParams.toString())) &&
+                (pathname === v.href && searchParams.toString().includes(v.searchParams))) &&
                 'bg-active text-active-foreground'
             )}
           >

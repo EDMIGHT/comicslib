@@ -7,12 +7,20 @@ import { FC, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Command, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
 
 import { Icons } from './ui/icons';
+import { ScrollArea } from './ui/scroll-area';
 
 type ComicFoldersBtnProps = {
   comicId: string;
@@ -73,6 +81,8 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
     },
   });
 
+  const isMoreThan5Folders = data && data.length > 5;
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -81,28 +91,31 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
           list
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-fit max-w-[220px] p-2'>
-        <Command>
-          <CommandEmpty>no folders found</CommandEmpty>
-          <CommandGroup>
-            {data?.map((folder) => (
-              <CommandItem key={folder.id}>
-                <label
-                  htmlFor={folder.id}
-                  className='flex max-w-[200px] cursor-pointer items-center gap-1 truncate px-1'
-                >
-                  <Checkbox
-                    id={folder.id}
-                    checked={folder.isComicExist}
-                    disabled={isLoading}
-                    onClick={() => updateFolder(folder.id)}
-                  />
-                  {folder.title}
-                </label>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </Command>
+      <PopoverContent className='w-fit max-w-[220px] p-0'>
+        <ScrollArea className={cn(' p-2', isMoreThan5Folders ? 'h-[200px]' : 'h-fit')}>
+          <Command>
+            {isMoreThan5Folders && <CommandInput placeholder='enter' className='py-1' />}
+            <CommandEmpty>no folders found</CommandEmpty>
+            <CommandGroup>
+              {data?.map((folder) => (
+                <CommandItem key={folder.id}>
+                  <label
+                    htmlFor={folder.id}
+                    className='flex max-w-[200px] cursor-pointer items-center gap-1 truncate px-1'
+                  >
+                    <Checkbox
+                      id={folder.id}
+                      checked={folder.isComicExist}
+                      disabled={isLoading}
+                      onClick={() => updateFolder(folder.id)}
+                    />
+                    {folder.title}
+                  </label>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </Command>
+        </ScrollArea>
       </PopoverContent>
     </Popover>
   );

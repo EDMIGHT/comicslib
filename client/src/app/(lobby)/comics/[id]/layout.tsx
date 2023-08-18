@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { ComicCounters } from '@/components/comic-counters';
 import { ComicInfo } from '@/components/comic-info';
 import { ComicMenu } from '@/components/comic-menu';
+import { ComicPageImg } from '@/components/comic-page-img';
 import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
 import { createTitle } from '@/lib/helpers/general.helper';
 import { ComicsService } from '@/services/comics.service';
@@ -65,9 +66,10 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
   return (
     <div className='flex flex-col gap-2 md:gap-4'>
       <div className='flex gap-2 md:gap-4'>
-        <div className='relative flex flex-col gap-1 rounded'>
-          <Image src={img} alt={title} width={200} height={200} className='rounded' />
-        </div>
+        <ComicPageImg imgSrc={img} alt={title} />
+        {/* <div className='relative flex h-[270px] w-[210px] flex-col gap-1 rounded'>
+          <Image src={img} alt={title} fill className='rounded' />
+        </div> */}
         <div className='flex w-full flex-col gap-2'>
           <div className='flex justify-between gap-2 pt-2'>
             <h1 className='text-7xl font-bold'>{title}</h1>
