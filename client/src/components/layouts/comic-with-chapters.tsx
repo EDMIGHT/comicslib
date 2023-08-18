@@ -2,16 +2,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 
+import { Card, CardTitle } from '@/components/ui/card';
 import { IComicWithChapter } from '@/types/comic.types';
 
-import { Card, CardTitle } from '../ui/card';
 import { ChapterItem } from './chapter-item';
 
 export const ComicWithChapters: FC<IComicWithChapter> = ({ id, img, title, chapters }) => {
   return (
     <Card className='flex gap-2 p-2'>
       <Link href={`/comics/${id}`}>
-        <div className='relative min-h-[200px] min-w-[160px] overflow-hidden rounded hover:opacity-80'>
+        <div className='relative h-[200px] w-[140px] overflow-hidden rounded hover:opacity-80'>
           <Image
             src={img}
             alt={title}
@@ -29,7 +29,7 @@ export const ComicWithChapters: FC<IComicWithChapter> = ({ id, img, title, chapt
           <ul className='flex w-full flex-col gap-1'>
             {chapters.map((chap) => (
               <li key={chap.id}>
-                <ChapterItem {...chap} />
+                <ChapterItem variant='transparent' {...chap} />
               </li>
             ))}
           </ul>
