@@ -130,7 +130,11 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
                     <div className='flex flex-col justify-center gap-1'>
                       <h3 className='text-xl'>{comic.title}</h3>
 
-                      <ComicCounters _count={comic._count} avgRating={comic.avgRating} />
+                      <ComicCounters
+                        _count={comic._count}
+                        avgRating={comic.avgRating}
+                        countUniqueSubscribes={comic.countUniqueSubscribes}
+                      />
                       <Badge className='w-fit'>{comic.status.name}</Badge>
                     </div>
                   </Link>

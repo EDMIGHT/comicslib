@@ -4,12 +4,16 @@ import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import { IResponseComic } from '@/types/comic.types';
 
-type ComicCountersProps = Pick<IResponseComic, 'avgRating' | '_count'> &
+type ComicCountersProps = Pick<
+  IResponseComic,
+  'avgRating' | '_count' | 'countUniqueSubscribes'
+> &
   HTMLAttributes<HTMLUListElement>;
 
 export const ComicCounters: FC<ComicCountersProps> = ({
   avgRating,
-  _count: { comments, folders },
+  _count: { comments },
+  countUniqueSubscribes,
   className,
   ...rest
 }) => {
@@ -22,12 +26,12 @@ export const ComicCounters: FC<ComicCountersProps> = ({
 
       <li className='flex items-center gap-1'>
         <Icons.bookmark className='fill-foreground' />
-        {folders || 0}
+        {countUniqueSubscribes}
       </li>
 
       <li className='flex items-center gap-1'>
         <Icons.comment className='fill-foreground' />
-        {comments || 0}
+        {comments}
       </li>
     </ul>
   );

@@ -4,9 +4,8 @@ import Image from 'next/image';
 import { FC, HTMLAttributes, useState } from 'react';
 import { createPortal } from 'react-dom';
 
+import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
-
-import { Icons } from './ui/icons';
 
 type ComicPageImgProps = {
   imgSrc: string;

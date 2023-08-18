@@ -1,5 +1,4 @@
 import { Metadata, NextPage } from 'next';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 import { ComicCounters } from '@/components/comic-counters';
@@ -48,6 +47,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     id: comicId,
     status,
     chapters,
+    countUniqueSubscribes,
   } = comic;
 
   const variants: NavigationVariants[] = [
@@ -67,13 +67,14 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     <div className='flex flex-col gap-2 md:gap-4'>
       <div className='flex gap-2 md:gap-4'>
         <ComicPageImg imgSrc={img} alt={title} />
-        {/* <div className='relative flex h-[270px] w-[210px] flex-col gap-1 rounded'>
-          <Image src={img} alt={title} fill className='rounded' />
-        </div> */}
         <div className='flex w-full flex-col gap-2'>
           <div className='flex justify-between gap-2 pt-2'>
             <h1 className='text-7xl font-bold'>{title}</h1>
-            <ComicCounters avgRating={avgRating} _count={_count} />
+            <ComicCounters
+              avgRating={avgRating}
+              _count={_count}
+              countUniqueSubscribes={countUniqueSubscribes}
+            />
           </div>
 
           <div className='mt-auto'>

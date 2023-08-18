@@ -94,7 +94,6 @@ export class ComicModel {
         _count: {
           select: {
             comments: true,
-            folders: true,
           },
         },
         chapters: {
@@ -133,8 +132,6 @@ export class ComicModel {
         _count: {
           select: {
             comments: true,
-            folders: true,
-            ratings: true,
           },
         },
         chapters: {
@@ -157,6 +154,23 @@ export class ComicModel {
     });
 
     return avgRating._avg?.value || null;
+  }
+  public static async getUniqueSubscribes(id: string): Promise<number> {
+    const uniqueUsers = await prisma.user.count({
+      where: {
+        folders: {
+          some: {
+            comics: {
+              some: {
+                id,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return uniqueUsers;
   }
   public static async getComicBySkip(skip: number): Promise<Comic | null> {
     return prisma.comic.findFirst({

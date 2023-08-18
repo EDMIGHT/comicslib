@@ -6,8 +6,6 @@ import { IStatus } from './status.types';
 
 export type IComicCount = {
   comments: number;
-  folders: number;
-  ratings: number;
 };
 
 export type IComic = {
@@ -32,9 +30,10 @@ export type IResponseComic = IComic & {
   authors: IAuthor[];
   genres: IGenre[];
   status: IStatus;
-  _count: Pick<IComicCount, 'comments' | 'folders'>;
+  _count: IComicCount;
   chapters: IChapter[];
   avgRating: number;
+  countUniqueSubscribes: number;
 };
 
 export type IResponseAllComics = {

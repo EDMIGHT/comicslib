@@ -67,6 +67,15 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
         };
       })
     );
+    const comicsWithAvgRatingAndCountUniqueSubscribes = await Promise.all(
+      comicsWithAvgRating.map(async (comic) => {
+        const countUniqueSubscribes = await ComicModel.getUniqueSubscribes(comic.id);
+        return {
+          ...comic,
+          countUniqueSubscribes,
+        };
+      })
+    );
 
     const totalComics = await ComicModel.getAllCount({
       genres: genresList,
@@ -81,7 +90,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     });
 
     return CustomResponse.ok(res, {
-      comics: comicsWithAvgRating,
+      comics: comicsWithAvgRatingAndCountUniqueSubscribes,
       currentPage: +page,
       totalPages: Math.ceil(totalComics / +limit),
     });
@@ -107,10 +116,12 @@ export const getComic = async (req: Request, res: Response): Promise<Response> =
     }
 
     const avgRating = await ComicModel.getAvgRating(existedComic.id);
+    const countUniqueSubscribes = await ComicModel.getUniqueSubscribes(existedComic.id);
 
     return CustomResponse.ok(res, {
       ...existedComic,
       avgRating: avgRating?.toFixed(1),
+      countUniqueSubscribes,
     });
   } catch (error) {
     return serverErrorResponse({

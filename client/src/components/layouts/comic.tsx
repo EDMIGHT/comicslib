@@ -16,6 +16,7 @@ export const Comic: FC<IResponseComic> = ({
   desc,
   img,
   title,
+  countUniqueSubscribes,
 }) => {
   return (
     <Card className='flex gap-2 p-2'>
@@ -34,7 +35,11 @@ export const Comic: FC<IResponseComic> = ({
         <Link href={`/comics/${id}`}>
           <CardTitle className='text-xl hover:opacity-80'>{title}</CardTitle>
         </Link>
-        <ComicCounters avgRating={avgRating} _count={_count} />
+        <ComicCounters
+          avgRating={avgRating}
+          _count={_count}
+          countUniqueSubscribes={countUniqueSubscribes}
+        />
         <ComicGenres genres={genres} />
         <p className='line-clamp-3'>{desc}</p>
       </div>
