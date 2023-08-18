@@ -1,5 +1,5 @@
 import { IAuthor } from './author.types';
-import { IChapterWithUser } from './chapter.types';
+import { IChapter, IChapterWithUser } from './chapter.types';
 import { IGenre } from './genre.types';
 import { IPagination } from './response.types';
 import { IStatus } from './status.types';
@@ -33,6 +33,7 @@ export type IResponseComic = IComic & {
   genres: IGenre[];
   status: IStatus;
   _count: Pick<IComicCount, 'comments' | 'folders'>;
+  chapters: IChapter[];
   avgRating: number;
 };
 

@@ -97,6 +97,12 @@ export class ComicModel {
             folders: true,
           },
         },
+        chapters: {
+          orderBy: {
+            number: 'asc',
+          },
+          take: 1,
+        },
       },
     });
   }
@@ -130,6 +136,12 @@ export class ComicModel {
             folders: true,
             ratings: true,
           },
+        },
+        chapters: {
+          orderBy: {
+            number: 'asc',
+          },
+          take: 1,
         },
       },
     });

@@ -45,6 +45,7 @@ const Page = async ({ searchParams }: PageProps) => {
         initialSort={searchParams.sort}
         initialOrder={searchParams.order}
         variants={SORT_VARIANTS.comics}
+        contentWidth='170px'
       />
       <ComicsFeed {...searchParams} />
     </div>

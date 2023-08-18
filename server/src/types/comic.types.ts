@@ -1,4 +1,4 @@
-import { Author, Comic, Comment, Genre, Status } from '@prisma/client';
+import { Author, Chapter, Comic, Comment, Genre, Status } from '@prisma/client';
 
 import { IChapterWithUser } from './chapter.types';
 
@@ -15,6 +15,7 @@ export type IComicWithData = Comic & {
   genres: Genre[];
   status: Status;
   _count: Pick<IComicCount, 'comments' | 'folders'>;
+  chapters: Chapter[];
 };
 
 export type IComicWithDataSingle = IComicWithData & {

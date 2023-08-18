@@ -36,7 +36,18 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     notFound();
   }
 
-  const { img, title, desc, genres, authors, _count, avgRating, id: comicId, status } = comic;
+  const {
+    img,
+    title,
+    desc,
+    genres,
+    authors,
+    _count,
+    avgRating,
+    id: comicId,
+    status,
+    chapters,
+  } = comic;
 
   const variants: NavigationVariants[] = [
     {
@@ -64,7 +75,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
           </div>
 
           <div className='mt-auto'>
-            <ComicMenu comicId={comicId} />
+            <ComicMenu comicId={comicId} chapters={chapters} />
           </div>
         </div>
       </div>

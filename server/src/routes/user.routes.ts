@@ -24,8 +24,8 @@ import {
 const router = express.Router({ mergeParams: true });
 
 router.get('/all', getAllUser);
-router.get('/reading-history/:login', getBookmarks);
-router.get('/reading-history/comic/:comicId', authentication, getUserBookmarkByComic);
+router.get('/bookmarks/:login', getBookmarks);
+router.get('/bookmarks/comic/:comicId', authentication, getUserBookmarkByComic);
 router.get('/folders/u/:login', getUserFolders);
 router.get('/folders/u/:login/:folderId', getFolder);
 router.get('/folders/:comicId', authentication, getUserFoldersByComic);
@@ -35,7 +35,7 @@ router.get('/profiles/:login', getProfile);
 router.post('/folders', authentication, createFolderValidators, validation, createFolder);
 
 router.patch(
-  '/reading-history',
+  '/bookmarks',
   authentication,
   updateBookmarkValidators,
   validation,
@@ -43,7 +43,7 @@ router.patch(
 );
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
 
-router.delete('/reading-history/comic/all', authentication, clearAllBookmarks);
-router.delete('/reading-history/comic/:comicId', authentication, deleteBookmark);
+router.delete('/bookmarks/comic/all', authentication, clearAllBookmarks);
+router.delete('/bookmarks/comic/:comicId', authentication, deleteBookmark);
 
 export default router;

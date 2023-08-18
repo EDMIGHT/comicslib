@@ -45,7 +45,7 @@ export const API_USERS_ENDPOINTS = {
   profile: '/users/profiles',
   folders: '/users/folders',
   foldersUser: '/users/folders/u',
-  bookmark: '/users/reading-history',
-  bookmarkComic: '/users/reading-history/comic',
+  bookmark: '/users/bookmarks',
+  bookmarkComic: '/users/bookmarks/comic',
   comicsSubscribed: '/users/comics-subscribed',
 } as const;

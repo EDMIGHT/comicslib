@@ -19,7 +19,7 @@ export const ChapterItem: FC<ChapterItemProps> = ({
   createdAt,
   variant = 'default',
 }) => {
-  // TODO найти причину гидратации при вложенной ссылке в ссылку
+  // TODO найти причину гидратации при вложенной ссылке в ссылку (ChapterUserInfo)
   return (
     <div
       className={cn(

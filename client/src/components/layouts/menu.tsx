@@ -56,7 +56,12 @@ export const Menu: FC<MenuProps> = ({ navigation, user }) => {
                       <li key={'navItemLink' + i}>
                         <Link
                           href={navItemLink.href}
-                          className='flex items-center gap-1 rounded px-4 py-1 text-base hover:bg-background/30 focus:bg-background/30'
+                          className={cn(
+                            'flex items-center gap-1 rounded px-4 py-1 text-base',
+                            pathname === navItemLink.href
+                              ? 'bg-active text-active-foreground'
+                              : 'hover:bg-background/30 focus:bg-background/30'
+                          )}
                         >
                           {navItemLink.title}
                         </Link>
