@@ -25,7 +25,12 @@ export const ComicPageImg: FC<ComicPageImgProps> = ({ imgSrc, alt, className, ..
         )}
         onClick={() => setOpen(true)}
       >
-        <Image src={imgSrc} alt={alt} fill className='rounded group-hover:brightness-50' />
+        <Image
+          src={imgSrc}
+          alt={alt}
+          fill
+          className='rounded transition-all group-hover:brightness-50'
+        />
         <span className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 group-hover:block'>
           <Icons.maximize className=' z-20 h-12 w-12 stroke-white' />
         </span>

@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
+import { Card } from '@/components/ui/card';
 import { Time } from '@/components/ui/time';
+import { UserAvatar } from '@/components/user-avatar';
 import { IResponseComment } from '@/types/comment.types';
-
-import { Card } from '../ui/card';
-import { UserAvatar } from '../user-avatar';
 
 type CommentProps = IResponseComment;
 
@@ -17,7 +16,7 @@ export const Comment: FC<CommentProps> = ({ text, user, createdAt }) => {
           href={`/profile/${user.login}`}
           className='flex items-center gap-2 hover:opacity-75 focus:opacity-75'
         >
-          <UserAvatar user={user} />
+          <UserAvatar img={user.img} login={user.login} />
           <h3 className=''>{user.login}</h3>
         </Link>
 

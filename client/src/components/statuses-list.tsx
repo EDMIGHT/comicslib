@@ -6,7 +6,7 @@ import { IStatus } from '@/types/status.types';
 type StatusesListProps = {
   statuses: IStatus[];
   activeStatuses?: string[];
-  onClick?: (genre: IStatus) => any;
+  onClick?: (statusName: string) => any;
 };
 
 export const StatusesList: FC<StatusesListProps> = ({ statuses, onClick, activeStatuses }) => {
@@ -17,7 +17,8 @@ export const StatusesList: FC<StatusesListProps> = ({ statuses, onClick, activeS
           {statuses.map((status) => (
             <li key={status.id}>
               <Badge
-                onClick={() => onClick && onClick(status)}
+                onClick={() => onClick && onClick(status.name)}
+                className='uppercase'
                 variant={
                   activeStatuses?.some((activeStat) => activeStat === status.name)
                     ? 'active'

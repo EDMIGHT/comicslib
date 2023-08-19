@@ -6,7 +6,7 @@ import { IGenre } from '@/types/genre.types';
 type GenresListProps = {
   genres: IGenre[];
   activeGenres?: string[];
-  onClick?: (genre: IGenre) => any;
+  onClick?: (genreTitle: string) => any;
 };
 
 export const GenresList: FC<GenresListProps> = ({ genres, onClick, activeGenres }) => {
@@ -17,7 +17,8 @@ export const GenresList: FC<GenresListProps> = ({ genres, onClick, activeGenres 
           {genres.map((genre) => (
             <li key={genre.id}>
               <Badge
-                onClick={() => onClick && onClick(genre)}
+                onClick={() => onClick && onClick(genre.title)}
+                className='uppercase'
                 variant={
                   activeGenres?.some((activeGen) => activeGen === genre.title)
                     ? 'active'

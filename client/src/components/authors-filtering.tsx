@@ -1,17 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useClickOutside } from '@/hooks/use-click-outside';
 import { useDebounce } from '@/hooks/use-debounce';
 import { cn } from '@/lib/utils';
 import { AuthorsService } from '@/services/authors.service';
-import { IAuthor } from '@/types/author.types';
-
-import { Input } from './ui/input';
-import { Skeleton } from './ui/skeleton';
 
 type AuthorsFilteringProps = {
-  onClick: (genre: IAuthor) => any;
+  onClick: (authorLogin: string) => any;
   activeAuthors: string[];
 };
 
@@ -66,7 +64,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
               {authors.map((author) => (
                 <li key={author.id}>
                   <button
-                    onClick={() => onClick(author)}
+                    onClick={() => onClick(author.login)}
                     className={cn(
                       'w-full cursor-pointer rounded p-1 px-2 text-start text-sm font-medium transition-colors ',
                       activeAuthors.some((activeAuthor) => activeAuthor === author.login)
