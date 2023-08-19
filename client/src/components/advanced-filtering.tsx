@@ -19,6 +19,7 @@ import { IGenre } from '@/types/genre.types';
 import { IStatus } from '@/types/status.types';
 
 import { AuthorsFiltering } from './authors-filtering';
+import { DateFilter, DateFilterSearchParams } from './date-filter';
 import { GenresList } from './genres-list';
 import { StatusesList } from './statuses-list';
 
@@ -95,7 +96,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({ genres, statuses
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant='outline' className=' w-fit justify-between gap-1 bg-secondary'>
-          <span className='hidden md:block'>Advanced filters</span>
+          <span className='hidden md:block'>Filters</span>
           <Icons.filter className='h-5 w-5 md:ml-1' />
         </Button>
       </DialogTrigger>
@@ -181,10 +182,21 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({ genres, statuses
         </div>
         <Separator />
         <div className='space-y-1 md:space-y-2'>
-          <div>
-            <h3 className='ml-2 text-base font-medium'>Authors</h3>
-            <AuthorsFiltering onClick={onClickAuthor} activeAuthors={activeAuthors} />
+          <div className='flex gap-2'>
+            <div>
+              <h3 className='ml-2 text-base font-medium'>Authors</h3>
+              <AuthorsFiltering onClick={onClickAuthor} activeAuthors={activeAuthors} />
+            </div>
+            <div>
+              <h3 className='ml-2 text-base font-medium'>By date</h3>
+              <DateFilter
+                initialVariant={searchParams.get(DateFilterSearchParams.DATE)}
+                initialDateFrom={searchParams.get(DateFilterSearchParams.START_DATE)}
+                initialDateTo={searchParams.get(DateFilterSearchParams.END_DATE)}
+              />
+            </div>
           </div>
+
           <div>
             <h3 className='ml-2 text-base font-medium'>Statuses</h3>
             <StatusesList

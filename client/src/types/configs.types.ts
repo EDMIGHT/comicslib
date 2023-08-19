@@ -33,6 +33,11 @@ export type ISortVariant = {
   order: 'asc' | 'desc';
 };
 
+export type IConfigVariant = {
+  title: string;
+  field: string;
+};
+
 export type ISortVariants = {
   comics: ISortVariant[];
   users: ISortVariant[];

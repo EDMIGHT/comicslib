@@ -86,9 +86,12 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className='flex w-[140px] gap-1 font-semibold md:gap-2'>
-          <Icons.listPlus className='h-5 w-5' role='combobox' aria-expanded={open} /> Add to
-          list
+        <Button
+          role='combobox'
+          aria-expanded={open}
+          className='flex w-[140px] gap-1 font-semibold md:gap-2'
+        >
+          <Icons.listPlus className='h-5 w-5' /> Add to list
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-fit max-w-[220px] p-0'>

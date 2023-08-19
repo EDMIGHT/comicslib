@@ -18,6 +18,9 @@ type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses'> & 
   genre?: string[];
   author?: string[];
   status?: string[];
+  date?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions }) => {
@@ -40,6 +43,10 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
       queryOptions.title,
       queryOptions.sort,
       queryOptions.order,
+      queryOptions.date,
+      queryOptions.startDate,
+      queryOptions.endDate,
+      queryOptions,
       genresList,
       authorsList,
       statusesList,
