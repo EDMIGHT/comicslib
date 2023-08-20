@@ -35,10 +35,10 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
           </ul>
           {response.totalPages > 1 && (
             <Pagination
-              initialLimit={PAGINATION_LIMIT_CONFIG.chapters}
+              currentPage={response.currentPage}
               totalPages={response.totalPages}
-              hasNextPage={response.currentPage < response.totalPages}
-              hasPrevPage={response.currentPage > 1}
+              initialLimit={PAGINATION_LIMIT_CONFIG.chapters}
+              className='justify-center'
             />
           )}
         </>
