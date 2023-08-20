@@ -2,7 +2,7 @@ import { Comic } from '@prisma/client';
 
 import prisma from '@/db/prisma';
 import { IComicWithChapter, IComicWithData } from '@/types/comic.types';
-import { IPaginationArg, ISortArg } from '@/types/common.types';
+import { IPaginationArg, ISortArg, ISortOrder } from '@/types/common.types';
 import {
   createQueryAllComic,
   IAllComicQuery,
@@ -70,18 +70,51 @@ export class ComicModel {
     sort,
     ...queryArgs
   }: IGetAllArg): Promise<IComicWithData[]> {
-    const query: IAllComicQuery = createQueryAllComic({ ...queryArgs });
+    const whereQuery: IAllComicQuery = createQueryAllComic({ ...queryArgs });
+
+    const sortQuery = [];
+
+    if (sort === 'best') {
+      sortQuery.push({
+        // id: 'desc',
+        readingHistory: {
+          _count: 'desc' as ISortOrder,
+        },
+      });
+    } else if (sort === 'title') {
+      sortQuery.push(
+        {
+          title: order,
+        },
+        {
+          id: 'desc' as ISortOrder,
+        }
+      );
+    } else {
+      sortQuery.push({
+        [sort]: order,
+      });
+    }
 
     const offset = (+page - 1) * +limit;
 
     return prisma.comic.findMany({
       skip: offset,
       take: limit,
-      orderBy: {
-        [sort as string]: order,
-      },
+      orderBy: sortQuery,
+      // orderBy: [
+      //   // {
+      //   //   [sort as string]: order,
+      //   // },
+      //   {
+      //     // id: 'desc',
+      //     readingHistory: {
+      //       _count: 'desc',
+      //     },
+      //   },
+      // ],
       where: {
-        ...query,
+        ...whereQuery,
         title: {
           startsWith: title,
         },

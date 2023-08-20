@@ -241,3 +241,16 @@ export const getRandom = async (req: Request, res: Response): Promise<Response> 
     });
   }
 };
+
+// export const getTopComics = async (req: Request, res: Response): Promise<Response> => {
+//   const { page = 1, limit = 6, genres, statuses } = req.query;
+
+//   try {
+//   } catch (error) {
+//     return serverErrorResponse({
+//       res,
+//       message: `server side error when fetching top comics`,
+//       error,
+//     });
+//   }
+// };

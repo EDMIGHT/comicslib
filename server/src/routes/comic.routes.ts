@@ -19,6 +19,7 @@ router.get('/random', getRandom);
 router.get('/:id', getComic);
 router.get('/rating/:id', getRatings);
 router.get('/rating/me/:id', authentication, getUserRating);
+router.get('/top-reading');
 
 router.post('/', authentication, createComicValidators, validation, createComic);
 
