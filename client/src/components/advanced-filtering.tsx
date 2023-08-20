@@ -189,11 +189,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({ genres, statuses
             </div>
             <div>
               <h3 className='ml-2 text-base font-medium'>By date</h3>
-              <DateFilter
-                initialVariant={searchParams.get(DateFilterSearchParams.DATE)}
-                initialDateFrom={searchParams.get(DateFilterSearchParams.START_DATE)}
-                initialDateTo={searchParams.get(DateFilterSearchParams.END_DATE)}
-              />
+              <DateFilter />
             </div>
           </div>
 

@@ -1,4 +1,4 @@
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { PAGINATION_LIMIT_CONFIG, SORT_VARIANTS } from '@/configs/site.configs';
 import { API_COMICS_URL } from '@/configs/url.configs';
 import { IResponseAllComics, IResponseComic, IResponseRandomComic } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
@@ -24,8 +24,8 @@ export class ComicsService {
   public static async getAll({
     page = 1,
     limit = PAGINATION_LIMIT_CONFIG.comics,
-    sort = 'title',
-    order = 'desc',
+    sort = SORT_VARIANTS.comics[0].field,
+    order = SORT_VARIANTS.comics[0].order,
     title = '',
     folderId = '',
     ratedUser = '',

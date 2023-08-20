@@ -210,10 +210,10 @@ export const SORT_VARIANTS: ISortVariants = {
 
 export const PAGINATION_LIMIT_CONFIG = {
   chapters: 1,
-  comics: 5,
+  comics: 6,
   comments: 5,
-  bookmarks: 5,
-  users: 4,
+  bookmarks: 6,
+  users: 12,
 } as const;
 
 export const COMIC_RATING_CONFIG = {

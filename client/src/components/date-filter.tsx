@@ -13,11 +13,7 @@ import { COMIC_DATE_FIELDS } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 import { IConfigVariant } from '@/types/configs.types';
 
-type DatesFilterProps = HTMLAttributes<HTMLDivElement> & {
-  initialVariant: string | null;
-  initialDateFrom: string | null;
-  initialDateTo: string | null;
-};
+type DatesFilterProps = HTMLAttributes<HTMLDivElement>;
 
 export enum DateFilterSearchParams {
   DATE = 'date',
@@ -25,16 +21,14 @@ export enum DateFilterSearchParams {
   END_DATE = 'endDate',
 }
 
-export const DateFilter: FC<DatesFilterProps> = ({
-  initialVariant,
-  initialDateTo,
-  initialDateFrom,
-  className,
-  ...rest
-}) => {
+export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const initialVariant = searchParams.get(DateFilterSearchParams.DATE);
+  const initialDateFrom = searchParams.get(DateFilterSearchParams.START_DATE);
+  const initialDateTo = searchParams.get(DateFilterSearchParams.END_DATE);
 
   const [dateFrom, setDateFrom] = useState<Date | undefined>(
     typeof initialDateFrom === 'string' ? new Date(initialDateFrom) : undefined
@@ -66,7 +60,11 @@ export const DateFilter: FC<DatesFilterProps> = ({
   const onClickDateFrom = (selectedDate: Date | undefined) => {
     setDateFrom(selectedDate);
 
-    const formattedDate = selectedDate?.toISOString().split('T')[0]; // yyyy-mm-dd
+    let formattedDate;
+
+    if (selectedDate) {
+      formattedDate = format(selectedDate, 'yyyy-MM-dd');
+    }
 
     router.push(
       pathname +
@@ -77,7 +75,11 @@ export const DateFilter: FC<DatesFilterProps> = ({
   const onClickDateTo = (selectedDate: Date | undefined) => {
     setDateTo(selectedDate);
 
-    const formattedDate = selectedDate?.toISOString().split('T')[0]; // yyyy-mm-dd
+    let formattedDate;
+
+    if (selectedDate) {
+      formattedDate = format(selectedDate, 'yyyy-MM-dd');
+    }
 
     router.push(
       pathname +
