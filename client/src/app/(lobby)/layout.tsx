@@ -5,11 +5,10 @@ import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
 interface LobbyLayoutProps {
   children: React.ReactNode;
+  modals: React.ReactNode;
 }
 
-// TODO найти способ избежать пропс дрилинга и не делать миллион запросов в обход его
-
-const LobbyLayout = async ({ children }: LobbyLayoutProps) => {
+const LobbyLayout = async ({ children, modals }: LobbyLayoutProps) => {
   const user = await getAuthServer();
 
   return (
@@ -20,7 +19,10 @@ const LobbyLayout = async ({ children }: LobbyLayoutProps) => {
 
       <div className='flex-1'>
         <Header user={user} />
-        <main className='container py-2'>{children}</main>
+        <main className='container py-2'>
+          {children}
+          {modals}
+        </main>
       </div>
     </div>
   );

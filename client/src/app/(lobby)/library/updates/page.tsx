@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { ComicsWithChaptersFeed } from '@/components/comics-with-chapters-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
-import { createTitle } from '@/lib/helpers/general.helper';
+import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: createTitle('Updates'),

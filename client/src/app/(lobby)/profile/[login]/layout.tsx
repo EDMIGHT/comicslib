@@ -5,8 +5,7 @@ import { FC, ReactNode } from 'react';
 
 import { ProfileFolders } from '@/components/profile-folders';
 import { ProfileMenu } from '@/components/profile-menu';
-import { Card } from '@/components/ui/card';
-import { createTitle } from '@/lib/helpers/general.helper';
+import { createTitle } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
 
 type LayoutProps = {

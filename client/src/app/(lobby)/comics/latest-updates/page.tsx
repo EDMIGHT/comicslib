@@ -4,8 +4,7 @@ import { AdvancedFiltering } from '@/components/advanced-filtering';
 import { ComicsFeed } from '@/components/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
-import { BackBtn } from '@/components/ui/back-btn';
-import { createTitle } from '@/lib/helpers/general.helper';
+import { createTitle } from '@/lib/utils';
 import { GenresService } from '@/services/genres.service';
 import { StatusesService } from '@/services/statuses.service';
 

@@ -6,8 +6,8 @@ import { notFound } from 'next/navigation';
 import { BookmarkComicControl } from '@/components/bookmark-comic-control';
 import { ChapterControl } from '@/components/chapter-control';
 import { PageBackground } from '@/components/page-background';
-import { createTitle } from '@/lib/helpers/general.helper';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
+import { createTitle } from '@/lib/utils';
 import { PagesService } from '@/services/pages.service';
 import { UserService } from '@/services/users.service';
 

@@ -6,7 +6,7 @@ import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
 import { UsersFeed } from '@/components/users-feed';
 import { SORT_VARIANTS } from '@/configs/site.configs';
-import { createTitle } from '@/lib/helpers/general.helper';
+import { createTitle } from '@/lib/utils';
 
 type PageProps = {
   searchParams: {

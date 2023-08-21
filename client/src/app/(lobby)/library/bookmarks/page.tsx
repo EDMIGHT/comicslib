@@ -5,8 +5,8 @@ import { BookmarksCleaning } from '@/components/bookmarks-cleaning';
 import { BookmarksFeed } from '@/components/bookmarks-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
-import { createTitle } from '@/lib/helpers/general.helper';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: createTitle('Your bookmarks'),

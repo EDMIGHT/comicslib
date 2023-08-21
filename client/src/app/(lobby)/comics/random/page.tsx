@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import { createTitle } from '@/lib/helpers/general.helper';
+import { createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 export const metadata: Metadata = {
