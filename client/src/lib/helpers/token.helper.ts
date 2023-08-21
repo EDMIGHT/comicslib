@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { ITokens } from '@/types/response.types';
 import { IResponseAuth } from '@/types/user.types';
 
-import { isServer } from './general.helper';
+import { isServer } from '../utils';
 
 export enum Tokens {
   ACCESS = 'accessToken',

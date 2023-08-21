@@ -6,7 +6,7 @@ import { FC, useEffect, useRef } from 'react';
 
 import { Comic } from '@/components/layouts/comic';
 import { useIntersection } from '@/hooks/use-intersection';
-import { combineString } from '@/lib/helpers/combine-string.helper';
+import { combineString } from '@/lib/utils';
 import { ComicsService, IGetAllComicsArg } from '@/services/comics.service';
 import { IResponseComic } from '@/types/comic.types';
 

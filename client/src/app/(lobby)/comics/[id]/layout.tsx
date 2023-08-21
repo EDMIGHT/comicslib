@@ -6,7 +6,7 @@ import { ComicInfo } from '@/components/comic-info';
 import { ComicMenu } from '@/components/comic-menu';
 import { ComicPageImg } from '@/components/comic-page-img';
 import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
-import { createTitle } from '@/lib/helpers/general.helper';
+import { createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 type PageProps = {

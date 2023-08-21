@@ -2,8 +2,8 @@ import axios from 'axios';
 
 import { ISignInFields } from '@/components/forms/sign-in-form';
 import { API_AUTH_URL } from '@/configs/url.configs';
-import { isServer } from '@/lib/helpers/general.helper';
 import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
+import { isServer } from '@/lib/utils';
 import { ITokens } from '@/types/response.types';
 import { IResponseAuth, IUser } from '@/types/user.types';
 

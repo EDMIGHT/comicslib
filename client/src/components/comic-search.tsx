@@ -12,7 +12,7 @@ import { Icons } from '@/components/ui/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDebounce } from '@/hooks/use-debounce';
 import { toast } from '@/hooks/use-toast';
-import { isMacOS } from '@/lib/helpers/general.helper';
+import { isMacOS } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 import { ComicCounters } from './comic-counters';

@@ -40,16 +40,18 @@ export const GenresList: FC<GenresListProps> = ({
                 }
               >
                 {type === 'link' && (
-                  <Link href={`/genre/${genre.title}`}>{genre.title.toLowerCase()}</Link>
+                  <Link href={`/genre/${genre.title}`}>
+                    <h4>{genre.title.toLowerCase()}</h4>
+                  </Link>
                 )}
-                {type === 'default' && genre.title.toLowerCase()}
+                {type === 'default' && <h4>{genre.title.toLowerCase()}</h4>}
               </Badge>
             </li>
           ))}
         </ul>
       ) : (
         <div>
-          <h4 className='text-base'>empty</h4>
+          <h4 className='text-base'>no genres</h4>
         </div>
       )}
     </>

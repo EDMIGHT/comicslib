@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { isServer } from '@/lib/helpers/general.helper';
 import { getAccessToken, getServerAccessToken } from '@/lib/helpers/token.helper';
+import { isServer } from '@/lib/utils';
 
 export const getContentType = () => ({
   'Content-Type': 'application/json',

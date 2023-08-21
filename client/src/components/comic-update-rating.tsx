@@ -9,8 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { COMIC_RATING_CONFIG } from '@/configs/site.configs';
 import { toast } from '@/hooks/use-toast';
-import { arrayFromRange } from '@/lib/helpers/arrayFromRange.helper';
-import { cn } from '@/lib/utils';
+import { arrayFromRange, cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { IRating } from '@/types/review.types';
 
