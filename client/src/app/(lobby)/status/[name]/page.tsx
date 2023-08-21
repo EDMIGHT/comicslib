@@ -12,19 +12,19 @@ import { ComicsService } from '@/services/comics.service';
 
 type PageProps = {
   params: {
-    title: string;
+    name: string;
   };
 };
 
-export async function generateMetadata({ params: { title } }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: { name } }: PageProps): Promise<Metadata> {
   return {
-    title: createTitle(capitalizeFirstLetter(title)),
+    title: createTitle(capitalizeFirstLetter(name)),
   };
 }
 
-const Page = async ({ params: { title } }: PageProps) => {
+const Page = async ({ params: { name } }: PageProps) => {
   const topComics = await ComicsService.getAll({
-    genres: title,
+    statuses: name,
     limit: 9,
   });
 
@@ -32,17 +32,17 @@ const Page = async ({ params: { title } }: PageProps) => {
     return notFound();
   }
 
-  const capitalizedTitle = capitalizeFirstLetter(title!);
+  const capitalizedTitle = capitalizeFirstLetter(name);
 
   return (
     <div className='space-y-4'>
       <PageHeader>{capitalizedTitle}</PageHeader>
       <div className='space-y-1'>
-        <SectionHeader>Trending this year with genre {capitalizedTitle}</SectionHeader>
+        <SectionHeader>Trending this year with status {capitalizedTitle}</SectionHeader>
         <TopComics comics={topComics.comics} />
         <div className='flex w-full items-center justify-center'>
           <Link
-            href={`/comics?genre=${title}`}
+            href={`/comics?status=${name}`}
             className={cn(buttonVariants({ variant: 'link' }))}
           >
             <h3 className='text-center text-xl'>
@@ -53,8 +53,8 @@ const Page = async ({ params: { title } }: PageProps) => {
         </div>
       </div>
       <div>
-        <SectionHeader>All comics with genre {capitalizedTitle}</SectionHeader>
-        <ComicsFeed genre={[title]} />
+        <SectionHeader>All comics with status {capitalizedTitle}</SectionHeader>
+        <ComicsFeed status={[name]} />
       </div>
     </div>
   );
