@@ -102,17 +102,6 @@ export class ComicModel {
       skip: offset,
       take: limit,
       orderBy: sortQuery,
-      // orderBy: [
-      //   // {
-      //   //   [sort as string]: order,
-      //   // },
-      //   {
-      //     // id: 'desc',
-      //     readingHistory: {
-      //       _count: 'desc',
-      //     },
-      //   },
-      // ],
       where: {
         ...whereQuery,
         title: {

@@ -6,7 +6,7 @@ import {
   SocialLink,
 } from '@/types/configs.types';
 
-export const SITE_SOCIAL_LINKS: SocialLink[] = [
+export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
   {
     title: 'github',
     icon: 'github',
@@ -110,11 +110,11 @@ export const SITE_CONFIG: SiteConfig = {
       links: SITE_RULES_NAVIGATION,
       icon: 'rules',
     },
-  ],
+  ] as const,
   socials: SITE_SOCIAL_LINKS,
 };
 
-export const PROFILE_NAVIGATION: NavigationLink[] = [
+export const PROFILE_NAVIGATION: readonly NavigationLink[] = [
   {
     title: 'Rated',
     href: '',

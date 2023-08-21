@@ -23,8 +23,8 @@ export type NavigationItem = {
 export type SiteConfig = {
   name: string;
   logo: string;
-  navigation: NavigationItem[];
-  socials: SocialLink[];
+  navigation: readonly NavigationItem[];
+  socials: readonly SocialLink[];
 };
 
 export type ISortVariant = {
