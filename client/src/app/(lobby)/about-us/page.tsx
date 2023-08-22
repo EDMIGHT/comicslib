@@ -14,6 +14,8 @@ const getAboutUsContent = async () => {
   return article;
 };
 
+// https://github.com/vercel/next.js/issues/49662
+
 const Page = async ({}) => {
   const aboutUsContent = await getAboutUsContent();
 
