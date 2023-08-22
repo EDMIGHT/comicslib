@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Mdx } from '@/components/mdx/mdx-components';
 import { PageHeader } from '@/components/page-header';
 
-async function getAboutUsContent() {
+const getAboutUsContent = async () => {
   const article = allPages.find((doc) => doc.slugAsParams === 'about-us');
 
   if (!article) {
@@ -12,7 +12,7 @@ async function getAboutUsContent() {
   }
 
   return article;
-}
+};
 
 const Page = async ({}) => {
   const aboutUsContent = await getAboutUsContent();

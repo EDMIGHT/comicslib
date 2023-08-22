@@ -7,6 +7,8 @@ import { createPortal } from 'react-dom';
 import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 
+import { OverlayModal } from './overlay-modal';
+
 type ComicPageImgProps = {
   imgSrc: string;
   alt: string;
@@ -37,14 +39,11 @@ export const ComicPageImg: FC<ComicPageImgProps> = ({ imgSrc, alt, className, ..
       </div>
       {open &&
         createPortal(
-          <div
-            onClick={() => setOpen(false)}
-            className='fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/70'
-          >
+          <OverlayModal onClick={() => setOpen(false)}>
             <div className={cn('relative h-[80vh] w-[80vw] max-w-[90vw]', className)}>
               <Image src={imgSrc} alt={alt} fill className=' object-contain object-center' />
             </div>
-          </div>,
+          </OverlayModal>,
           document.body
         )}
     </>

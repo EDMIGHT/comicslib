@@ -1,13 +1,21 @@
-import { cn } from '@/lib/utils';
+import { allPages } from 'contentlayer/generated';
+import { notFound } from 'next/navigation';
 
-const Page = () => {
-  return (
-    <div className='fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/70'>
-      <div className={cn('relative h-[80vh] w-[80vw] max-w-[90vw]')}>
-        <h2>123</h2>
-      </div>
-    </div>
-  );
+import { DocsModal } from '@/components/docs-modal';
+
+const getAboutUsContent = async () => {
+  const article = allPages.find((doc) => doc.slugAsParams === 'about-us');
+
+  if (!article) {
+    return notFound();
+  }
+
+  return article;
+};
+
+const Page = async () => {
+  const aboutUsContent = await getAboutUsContent();
+  return <DocsModal content={aboutUsContent} />;
 };
 
 export default Page;
