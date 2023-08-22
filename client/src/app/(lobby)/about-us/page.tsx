@@ -18,8 +18,6 @@ const getAboutUsContent = async () => {
   return article;
 };
 
-export const dynamic = 'force-static';
-
 export const metadata: Metadata = {
   title: createTitle('About Us'),
   description:

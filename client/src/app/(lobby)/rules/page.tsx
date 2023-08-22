@@ -7,13 +7,13 @@ import { PageHeader } from '@/components/page-header';
 import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: createTitle('Privacy policy'),
+  title: createTitle('Rules'),
   description:
-    'Your privacy matters. Learn how we safeguard your data and ensure a secure online experience. Explore our commitment to your information.',
+    'Guidelines for site usage explained. Familiarize yourself with our terms to ensure a respectful and enriching experience for all users',
 };
 
-const getPrivacyPolicyContent = async () => {
-  const article = allPages.find((doc) => doc.slugAsParams === 'privacy-policy');
+const getRulesContent = async () => {
+  const article = allPages.find((doc) => doc.slugAsParams === 'rules');
 
   if (!article) {
     return notFound();
@@ -23,17 +23,15 @@ const getPrivacyPolicyContent = async () => {
 };
 
 const Page = async () => {
-  const privacyPolicyContent = await getPrivacyPolicyContent();
+  const rulesContent = await getRulesContent();
 
   return (
     <div className='space-y-4'>
       <PageHeader>
         Privacy policy{' '}
-        <span className='text-end text-base'>
-          ({privacyPolicyContent.readingTime} min read)
-        </span>
+        <span className='text-end text-base'>({rulesContent.readingTime} min read)</span>
       </PageHeader>
-      <Mdx code={privacyPolicyContent.body.code} />
+      <Mdx code={rulesContent.body.code} />
     </div>
   );
 };
