@@ -1,4 +1,4 @@
-import { Comic } from '@prisma/client';
+import { Comic, Prisma } from '@prisma/client';
 
 import prisma from '@/db/prisma';
 import { IComicWithChapter, IComicWithData } from '@/types/comic.types';
@@ -13,7 +13,7 @@ const hostURL = `http://localhost:${process.env.PORT}/`;
 
 const hostWithImgPath = hostURL + defaultComicImg;
 
-type ICreateComic = Pick<Comic, 'title' | 'desc' | 'statusId'> &
+type ICreateComic = Pick<Comic, 'title' | 'desc' | 'statusId' | 'releasedAt'> &
   Partial<Pick<Comic, 'img'>> & {
     authors: string[];
     genres: string[];
@@ -72,12 +72,12 @@ export class ComicModel {
   }: IGetAllArg): Promise<IComicWithData[]> {
     const whereQuery: IAllComicQuery = createQueryAllComic({ ...queryArgs });
 
-    const sortQuery = [];
+    const sortQuery: Prisma.ComicOrderByWithRelationInput[] = [];
 
     if (sort === 'best') {
       sortQuery.push({
         // id: 'desc',
-        readingHistory: {
+        bookmarks: {
           _count: 'desc' as ISortOrder,
         },
       });

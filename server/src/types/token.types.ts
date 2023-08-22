@@ -1,7 +1,7 @@
-import { Token } from '@prisma/client';
+import { Session } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 
-export type CreationToken = Pick<Token, 'userId' | 'refreshToken'>;
+export type CreationSession = Pick<Session, 'userId' | 'refreshToken'>;
 
 export interface TokenPayload {
   id: string;

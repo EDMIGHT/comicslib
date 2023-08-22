@@ -23,19 +23,19 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  token          Token?
-  ratings        Rating[]
-  folders        Folder[]
-  comments       Comment[]
-  readingHistory ReadingHistory[]
-  chapters       Chapter[]
+  session   Session?
+  ratings   Rating[]
+  folders   Folder[]
+  comments  Comment[]
+  bookmarks Bookmark[]
+  chapters  Chapter[]
 
   @@index([login])
 }
 
-model Token {
+model Session {
   userId       String   @id @map("user_id")
-  refreshToken String   @map("refresh_token") @db.VarChar(255)
+  refreshToken String   @unique @map("refresh_token") @db.VarChar(255)
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
@@ -75,8 +75,8 @@ model Page {
   number    Int    @db.UnsignedTinyInt
   img       String
 
-  chapter        Chapter          @relation(fields: [chapterId], references: [id])
-  readingHistory ReadingHistory[]
+  chapter   Chapter    @relation(fields: [chapterId], references: [id])
+  bookmarks Bookmark[]
 
   @@id([chapterId, number])
 }
@@ -89,33 +89,33 @@ model Chapter {
   title     String?
   createdAt DateTime @default(now()) @map("created_at")
 
-  pages          Page[]
-  readingHistory ReadingHistory[]
-  comic          Comic            @relation(fields: [comicId], references: [id])
-  user           User             @relation(fields: [userId], references: [id])
+  pages     Page[]
+  bookmarks Bookmark[]
+  comic     Comic      @relation(fields: [comicId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
 
   @@index([title])
 }
 
 model Comic {
-  id         String   @id @default(uuid())
-  statusId   String   @map("status_id")
+  id         String    @id @default(uuid())
+  statusId   String    @map("status_id")
   title      String
-  desc       String?  @db.Text
+  desc       String?   @db.Text
   img        String
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  releasedAt DateTime @map("released_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  releasedAt DateTime? @map("released_at")
 
-  authors        Author[]
-  ratings        Rating[]
-  genres         Genre[]
-  themes         Theme[]
-  folders        Folder[]
-  comments       Comment[]
-  chapters       Chapter[]
-  status         Status           @relation(fields: [statusId], references: [id])
-  readingHistory ReadingHistory[]
+  authors   Author[]
+  ratings   Rating[]
+  genres    Genre[]
+  themes    Theme[]
+  folders   Folder[]
+  comments  Comment[]
+  chapters  Chapter[]
+  status    Status     @relation(fields: [statusId], references: [id])
+  bookmarks Bookmark[]
 
   @@index([title])
 }
@@ -164,7 +164,7 @@ model Comment {
   user  User  @relation(fields: [userId], references: [id])
 }
 
-model ReadingHistory {
+model Bookmark {
   userId     String   @map("user_id")
   comicId    String   @map("comic_id")
   chapterId  String   @map("chapter_id")

@@ -1,12 +1,13 @@
 import { Page } from '@prisma/client';
 
 import prisma from '@/db/prisma';
+import { IResponsePage } from '@/types/page.types';
 
 type ICreateGenreArg = Page;
 type IGetPageArg = Pick<Page, 'chapterId' | 'number'>;
 
 export class PageModel {
-  public static async get(data: IGetPageArg) {
+  public static async get(data: IGetPageArg): Promise<IResponsePage | null> {
     return prisma.page.findFirst({
       where: data,
       include: {

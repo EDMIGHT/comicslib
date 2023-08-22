@@ -288,7 +288,7 @@ export const updateBookmark = async (req: Request, res: Response): Promise<Respo
     if (
       existedBookmark &&
       existedBookmark.chapterId === chapterId &&
-      existedBookmark.pageId === Number(pageNumber)
+      existedBookmark.pageNumber === Number(pageNumber)
     ) {
       if (existedBookmark.userId !== req.user.id) {
         return CustomResponse.conflict(res, {
@@ -307,7 +307,7 @@ export const updateBookmark = async (req: Request, res: Response): Promise<Respo
     const updatedBookmark = await BookmarksModel.create({
       chapterId,
       comicId,
-      pageId: Number(pageNumber),
+      pageNumber: Number(pageNumber),
       userId: req.user.id,
     });
     return CustomResponse.ok(res, updatedBookmark);

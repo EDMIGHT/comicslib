@@ -1,9 +1,9 @@
-import { Token } from '@prisma/client';
+import { Session } from '@prisma/client';
 import env from 'dotenv';
 import jwt from 'jsonwebtoken';
 
-import { TokenModel } from '@/models/token.model';
-import { CreationToken, TokenPayload, VerifiedTokenPayload } from '@/types/token.types';
+import { SessionModel } from '@/models/session.model';
+import { CreationSession, TokenPayload, VerifiedTokenPayload } from '@/types/token.types';
 
 env.config();
 
@@ -42,24 +42,24 @@ class TokenService {
       return null;
     }
   }
-  public async save({ userId, refreshToken }: CreationToken): Promise<Token | null> {
+  public async save({ userId, refreshToken }: CreationSession): Promise<Session | null> {
     try {
-      const foundToken = await TokenModel.getByUserId(userId);
+      const foundToken = await SessionModel.getByUserId(userId);
       if (foundToken) {
-        return await TokenModel.update({
+        return await SessionModel.update({
           userId,
           refreshToken,
         });
       }
-      return await TokenModel.create({ userId, refreshToken });
+      return await SessionModel.create({ userId, refreshToken });
     } catch (error) {
       console.error('token save: ', error);
       return null;
     }
   }
-  public async findRefreshToken(refreshToken: string): Promise<Token | null> {
+  public async findRefreshToken(refreshToken: string): Promise<Session | null> {
     try {
-      return TokenModel.getByRefreshToken(refreshToken);
+      return SessionModel.getByRefreshToken(refreshToken);
     } catch (error) {
       return null;
     }

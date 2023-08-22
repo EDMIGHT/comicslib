@@ -1,10 +1,10 @@
-import { Prisma, ReadingHistory } from '@prisma/client';
+import { Bookmark, Prisma } from '@prisma/client';
 
 import prisma from '@/db/prisma';
 import { IResponseBookmark } from '@/types/bookmark.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 
-type IUpdateBookmark = Pick<ReadingHistory, 'comicId' | 'pageId' | 'userId' | 'chapterId'>;
+type IUpdateBookmark = Pick<Bookmark, 'comicId' | 'pageNumber' | 'userId' | 'chapterId'>;
 
 type IGetAllBookmarksArg = IPaginationArg &
   ISortArg & {
@@ -24,10 +24,10 @@ export class BookmarksModel {
   public static async create({
     userId,
     comicId,
-    pageId,
+    pageNumber,
     chapterId,
-  }: IUpdateBookmark): Promise<ReadingHistory> {
-    return prisma.readingHistory.upsert({
+  }: IUpdateBookmark): Promise<Bookmark> {
+    return prisma.bookmark.upsert({
       where: {
         userId_comicId: {
           comicId,
@@ -38,11 +38,11 @@ export class BookmarksModel {
         userId,
         comicId,
         chapterId,
-        pageId,
+        pageNumber,
       },
       update: {
         chapterId,
-        pageId,
+        pageNumber,
       },
     });
   }
@@ -56,7 +56,7 @@ export class BookmarksModel {
   }: IGetAllBookmarksArg): Promise<IResponseBookmark[]> {
     const offset = (page - 1) * limit;
 
-    return prisma.readingHistory.findMany({
+    return prisma.bookmark.findMany({
       take: limit,
       skip: offset,
       where: {
@@ -96,7 +96,7 @@ export class BookmarksModel {
     });
   }
   public static async getAllCount(login: string): Promise<number> {
-    return prisma.readingHistory.count({
+    return prisma.bookmark.count({
       where: {
         user: {
           login,
@@ -107,8 +107,8 @@ export class BookmarksModel {
   public static async getUserBookmark({
     comicId,
     userId,
-  }: IGetUserBookmarkArg): Promise<ReadingHistory | null> {
-    return prisma.readingHistory.findFirst({
+  }: IGetUserBookmarkArg): Promise<Bookmark | null> {
+    return prisma.bookmark.findFirst({
       where: {
         userId,
         comicId,
@@ -118,8 +118,8 @@ export class BookmarksModel {
   public static async deleteUserBookmark({
     comicId,
     userId,
-  }: IDeleteUserBookmarkArg): Promise<ReadingHistory | null> {
-    return prisma.readingHistory.delete({
+  }: IDeleteUserBookmarkArg): Promise<Bookmark | null> {
+    return prisma.bookmark.delete({
       where: {
         userId_comicId: {
           comicId,
@@ -129,7 +129,7 @@ export class BookmarksModel {
     });
   }
   public static async deleteAllUserBookmarks(userId: string): Promise<Prisma.BatchPayload> {
-    return prisma.readingHistory.deleteMany({
+    return prisma.bookmark.deleteMany({
       where: {
         userId,
       },

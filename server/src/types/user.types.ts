@@ -7,6 +7,6 @@ export type IProfile = Omit<User, 'password'> & {
   _count: {
     ratings: number;
     chapters: number;
-    readingHistory: number;
+    bookmarks: number;
   };
 };

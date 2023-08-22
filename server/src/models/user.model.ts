@@ -78,7 +78,7 @@ export class UserModel {
           select: {
             ratings: true,
             chapters: true,
-            readingHistory: true,
+            bookmarks: true,
           },
         },
       },
