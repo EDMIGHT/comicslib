@@ -1,13 +1,13 @@
 import express from 'express';
 
-import { createStatus, getAllStatuses } from '@/controllers/status.controllers';
+import { createTheme, getAllThemes } from '@/controllers/theme.controllers';
 import { authentication, validation } from '@/middleware';
-import { createStatusValidators } from '@/utils/validations/status.validators';
+import { createThemeValidators } from '@/utils/validations/theme.validators';
 
 const router = express.Router({ mergeParams: true });
 
-router.get('/', getAllStatuses);
+router.get('/', getAllThemes);
 
-router.post('/', authentication, createStatusValidators, validation, createStatus);
+router.post('/', authentication, createThemeValidators, validation, createTheme);
 
 export default router;
