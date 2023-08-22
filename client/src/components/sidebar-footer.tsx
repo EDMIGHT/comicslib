@@ -5,7 +5,7 @@ import { Icons } from '@/components/ui/icons';
 import { SocialLink } from '@/types/configs.types';
 
 type SidebarFooterProps = {
-  socialLinks: SocialLink[];
+  socialLinks: readonly SocialLink[];
 };
 
 export const SidebarFooter: FC<SidebarFooterProps> = ({ socialLinks }) => {

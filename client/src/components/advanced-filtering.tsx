@@ -203,7 +203,11 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({ genres, statuses
           </div>
           <div>
             <h3 className='ml-2 text-base font-medium'>Genres</h3>
-            <GenresList genres={genres} onClick={onClickGenre} activeGenres={activeGenres} />
+            <GenresList
+              genres={genres}
+              onClickItem={onClickGenre}
+              activeGenres={activeGenres}
+            />
           </div>
         </div>
       </DialogContent>

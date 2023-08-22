@@ -11,7 +11,7 @@ import { IUser } from '@/types/user.types';
 
 export type MenuProps = {
   user: IUser | null;
-  navigation: NavigationItem[];
+  navigation: readonly NavigationItem[];
 };
 
 const navItemStyles = 'flex items-center gap-1 font-semibold py-1 px-2';

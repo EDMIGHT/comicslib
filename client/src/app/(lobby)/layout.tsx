@@ -5,10 +5,9 @@ import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
 interface LobbyLayoutProps {
   children: React.ReactNode;
-  modals: React.ReactNode;
 }
 
-const LobbyLayout = async ({ children, modals }: LobbyLayoutProps) => {
+const LobbyLayout = async ({ children }: LobbyLayoutProps) => {
   const user = await getAuthServer();
 
   return (
@@ -19,10 +18,7 @@ const LobbyLayout = async ({ children, modals }: LobbyLayoutProps) => {
 
       <div className='flex-1'>
         <Header user={user} />
-        <main className='container py-2'>
-          {children}
-          {modals}
-        </main>
+        <main className='container py-2'>{children}</main>
       </div>
     </div>
   );

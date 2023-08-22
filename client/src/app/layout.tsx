@@ -6,6 +6,7 @@ import { AuthProvider } from '@/components/providers/auth-provider';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { ReduxProvider } from '@/components/providers/redux-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { Toaster } from '@/components/ui/toaster';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
                 {children}
                 <Toaster />
+                <TailwindIndicator />
               </ThemeProvider>
             </AuthProvider>
           </ReduxProvider>
