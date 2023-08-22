@@ -32,6 +32,10 @@ export const API_STATUSES_URL = {
   origin: '/statuses',
 };
 
+export const API_THEMES_URL = {
+  origin: '/themes',
+};
+
 export const API_PAGES_URL = {
   origin: '/pages',
 };

@@ -13,6 +13,7 @@ export type IGetAllComicsArg = IPaginationArg &
     ratedUser?: string;
     title?: string;
     genres?: string;
+    themes?: string;
     authors?: string;
     statuses?: string;
     date?: string;
@@ -31,13 +32,14 @@ export class ComicsService {
     ratedUser = '',
     authors = '',
     genres = '',
+    themes = '',
     statuses = '',
     date = '',
     startDate = '',
     endDate = '',
   }: IGetAllComicsArg) {
     const paginationANDsortQuery = `page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
-    const searchQuery = `title=${title}&folderId=${folderId}&ratedUser=${ratedUser}&authors=${authors}&genres=${genres}&statuses=${statuses}`;
+    const searchQuery = `title=${title}&folderId=${folderId}&ratedUser=${ratedUser}&authors=${authors}&genres=${genres}&themes=${themes}&statuses=${statuses}`;
     const dateSearchQuery = `date=${date}&startDate=${startDate}&endDate=${endDate}`;
 
     const { data } = await api.get<IResponseAllComics>(

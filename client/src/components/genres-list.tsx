@@ -32,7 +32,7 @@ export const GenresList: FC<GenresListProps> = ({
                   // onClick ? onClick(genre.title) : redirect(`/genre/${genre.title}`)
                   onClickItem && onClickItem(genre.title)
                 }
-                className='uppercase'
+                className='capitalize'
                 variant={
                   activeGenres?.some((activeGen) => activeGen === genre.title)
                     ? 'active'
@@ -41,10 +41,10 @@ export const GenresList: FC<GenresListProps> = ({
               >
                 {type === 'link' && (
                   <Link href={`/genre/${genre.title}`}>
-                    <h4>{genre.title.toLowerCase()}</h4>
+                    <h4>{genre.title}</h4>
                   </Link>
                 )}
-                {type === 'default' && <h4>{genre.title.toLowerCase()}</h4>}
+                {type === 'default' && <h4>{genre.title}</h4>}
               </Badge>
             </li>
           ))}

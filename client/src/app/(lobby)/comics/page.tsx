@@ -9,6 +9,7 @@ import { SORT_VARIANTS } from '@/configs/site.configs';
 import { createTitle } from '@/lib/utils';
 import { GenresService } from '@/services/genres.service';
 import { StatusesService } from '@/services/statuses.service';
+import { ThemesService } from '@/services/themes.service';
 
 type PageProps = {
   searchParams: {
@@ -27,6 +28,7 @@ export const metadata: Metadata = {
 const Page = async ({ searchParams }: PageProps) => {
   const genres = await GenresService.getAll();
   const statuses = await StatusesService.getAll();
+  const themes = await ThemesService.getAll();
 
   return (
     <div className='flex flex-col gap-2'>
@@ -38,7 +40,7 @@ const Page = async ({ searchParams }: PageProps) => {
           placeholder='enter name of title..'
           paramsKey='title'
         />
-        <AdvancedFiltering genres={genres} statuses={statuses} />
+        <AdvancedFiltering genres={genres} statuses={statuses} themes={themes} />
       </div>
       <Sort
         initialSort={searchParams.sort}

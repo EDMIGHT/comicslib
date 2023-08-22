@@ -13,8 +13,9 @@ import { IResponseComic } from '@/types/comic.types';
 import { AdvancedQuerySearchParams } from './advanced-filtering';
 import { ComicSkeletons } from './skeletons/comic-skeletons';
 
-type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses'> & {
+type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses' | 'themes'> & {
   initialComics?: IResponseComic[];
+  theme?: string[];
   genre?: string[];
   author?: string[];
   status?: string[];
@@ -35,6 +36,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
   const genresList = combineString(queryOptions[AdvancedQuerySearchParams.GENRE]);
   const authorsList = combineString(queryOptions[AdvancedQuerySearchParams.AUTHOR]);
   const statusesList = combineString(queryOptions[AdvancedQuerySearchParams.STATUS]);
+  const themesList = combineString(queryOptions[AdvancedQuerySearchParams.THEME]);
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
     [
@@ -46,7 +48,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
       queryOptions.date,
       queryOptions.startDate,
       queryOptions.endDate,
-      queryOptions,
+      queryOptions.theme,
       genresList,
       authorsList,
       statusesList,
@@ -58,6 +60,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
         genres: genresList,
         authors: authorsList,
         statuses: statusesList,
+        themes: themesList,
       });
     },
     {

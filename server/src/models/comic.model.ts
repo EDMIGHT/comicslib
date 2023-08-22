@@ -17,10 +17,12 @@ type ICreateComic = Pick<Comic, 'title' | 'desc' | 'statusId' | 'releasedAt'> &
   Partial<Pick<Comic, 'img'>> & {
     authors: string[];
     genres: string[];
+    themes: string[];
   };
 
 export type IGetAllQuery = {
   authors?: string[];
+  themes?: string[];
   genres?: string[];
   statuses?: string[];
   title: string;
@@ -40,9 +42,15 @@ type IGetAllSubscribedComics = ISortArg &
   };
 
 export class ComicModel {
-  public static async create({ authors, genres, ...data }: ICreateComic): Promise<Comic> {
+  public static async create({
+    authors,
+    genres,
+    themes,
+    ...data
+  }: ICreateComic): Promise<Comic> {
     const authorsConnect = authors && authors.map((authorId) => ({ id: authorId }));
     const genresConnect = genres && genres.map((genreId) => ({ id: genreId }));
+    const themesConnect = themes && themes.map((themeId) => ({ id: themeId }));
 
     return prisma.comic.create({
       data: {
@@ -54,6 +62,9 @@ export class ComicModel {
         },
         genres: {
           connect: genresConnect,
+        },
+        themes: {
+          connect: themesConnect,
         },
       },
       include: {
@@ -76,7 +87,6 @@ export class ComicModel {
 
     if (sort === 'best') {
       sortQuery.push({
-        // id: 'desc',
         bookmarks: {
           _count: 'desc' as ISortOrder,
         },

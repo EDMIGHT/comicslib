@@ -12,19 +12,19 @@ import { ComicsService } from '@/services/comics.service';
 
 type PageProps = {
   params: {
-    title: string;
+    slug: string;
   };
 };
 
-export async function generateMetadata({ params: { title } }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: { slug } }: PageProps): Promise<Metadata> {
   return {
-    title: createTitle(capitalizeFirstLetter(title)),
+    title: createTitle(capitalizeFirstLetter(slug)),
   };
 }
 
-const Page = async ({ params: { title } }: PageProps) => {
+const Page = async ({ params: { slug } }: PageProps) => {
   const topComics = await ComicsService.getAll({
-    genres: title,
+    genres: slug,
     limit: 9,
   });
 
@@ -32,7 +32,7 @@ const Page = async ({ params: { title } }: PageProps) => {
     return notFound();
   }
 
-  const capitalizedTitle = capitalizeFirstLetter(title!);
+  const capitalizedTitle = capitalizeFirstLetter(slug);
 
   return (
     <div className='space-y-4'>
@@ -42,7 +42,7 @@ const Page = async ({ params: { title } }: PageProps) => {
         <TopComics comics={topComics.comics} />
         <div className='flex w-full items-center justify-center'>
           <Link
-            href={`/comics?genre=${title}`}
+            href={`/comics?genre=${slug}`}
             className={cn(buttonVariants({ variant: 'link' }))}
           >
             <h3 className='text-center text-xl'>
@@ -54,7 +54,7 @@ const Page = async ({ params: { title } }: PageProps) => {
       </div>
       <div>
         <SectionHeader>All comics with genre {capitalizedTitle}</SectionHeader>
-        <ComicsFeed genre={[title]} />
+        <ComicsFeed genre={[slug]} />
       </div>
     </div>
   );

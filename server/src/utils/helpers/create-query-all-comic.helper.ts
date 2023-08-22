@@ -10,6 +10,13 @@ export type IAllComicQuery = {
       };
     };
   };
+  themes?: {
+    some: {
+      title: {
+        in: string[];
+      };
+    };
+  };
   authors?: {
     some: {
       login: {
@@ -46,6 +53,7 @@ export type IAllComicQuery = {
 
 export const createQueryAllComic = ({
   genres,
+  themes,
   authors,
   statuses,
   folderId,
@@ -70,6 +78,15 @@ export const createQueryAllComic = ({
       some: {
         login: {
           in: authors,
+        },
+      },
+    };
+  }
+  if (themes && themes.length > 0) {
+    query.themes = {
+      some: {
+        title: {
+          in: themes,
         },
       },
     };
