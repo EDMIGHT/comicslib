@@ -3,6 +3,7 @@ import { IChapter, IChapterWithUser } from './chapter.types';
 import { IGenre } from './genre.types';
 import { IPagination } from './response.types';
 import { IStatus } from './status.types';
+import { ITheme } from './theme.types';
 
 export type IComicCount = {
   comments: number;
@@ -29,6 +30,7 @@ export type IShortWithImgComic = IShortComic & {
 export type IResponseComic = IComic & {
   authors: IAuthor[];
   genres: IGenre[];
+  themes: ITheme[];
   status: IStatus;
   _count: IComicCount;
   chapters: IChapter[];

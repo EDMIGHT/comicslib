@@ -121,6 +121,7 @@ export class ComicModel {
 
       include: {
         genres: true,
+        themes: true,
         authors: true,
         status: true,
         _count: {
@@ -159,6 +160,7 @@ export class ComicModel {
       },
       include: {
         authors: true,
+        themes: true,
         genres: true,
         status: true,
         _count: {

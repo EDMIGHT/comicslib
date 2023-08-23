@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 
+import { ComicAttributes } from '@/components/comic-attributes';
 import { ComicCounters } from '@/components/comic-counters';
-import { ComicGenres } from '@/components/comic-genres';
 import { Card, CardTitle } from '@/components/ui/card';
 import { IResponseComic } from '@/types/comic.types';
 
@@ -12,6 +12,7 @@ export const Comic: FC<IResponseComic> = ({
   _count,
   avgRating,
   genres,
+  themes,
   desc,
   img,
   title,
@@ -33,7 +34,7 @@ export const Comic: FC<IResponseComic> = ({
           _count={_count}
           countUniqueSubscribes={countUniqueSubscribes}
         />
-        <ComicGenres genres={genres} />
+        <ComicAttributes genres={genres} themes={themes} />
         <p className='line-clamp-3'>{desc}</p>
       </div>
     </Card>
