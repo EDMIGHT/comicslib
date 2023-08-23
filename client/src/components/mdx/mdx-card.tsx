@@ -17,6 +17,7 @@ export function MdxCard({ href, className, children, disabled, ...props }: CardP
       className={cn(
         'group relative rounded-lg border p-6 shadow-md transition-shadow hover:shadow-lg',
         disabled && 'cursor-not-allowed opacity-60',
+        href && 'hover:bg-accent hover:text-accent-foreground',
         className
       )}
       {...props}
@@ -27,7 +28,7 @@ export function MdxCard({ href, className, children, disabled, ...props }: CardP
         </div>
       </div>
       {href && (
-        <Link href={disabled ? '#' : href} className='absolute inset-0'>
+        <Link href={disabled ? '#' : href} className='absolute inset-0 '>
           <span className='sr-only'>View</span>
         </Link>
       )}

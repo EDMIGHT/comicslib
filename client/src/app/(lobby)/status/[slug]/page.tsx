@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { ComicsFeed } from '@/components/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { SectionHeader } from '@/components/section-header';
-import { TopComics } from '@/components/top-comics';
+import { TopComicsCarousel } from '@/components/top-comics-carousel';
 import { buttonVariants } from '@/components/ui/button';
 import { capitalizeFirstLetter, cn, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
@@ -39,7 +39,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
       <PageHeader>{capitalizedTitle}</PageHeader>
       <div className='space-y-1'>
         <SectionHeader>Trending this year with status {capitalizedTitle}</SectionHeader>
-        <TopComics comics={topComics.comics} />
+        <TopComicsCarousel comics={topComics.comics} />
         <div className='flex w-full items-center justify-center'>
           <Link
             href={`/comics?status=${slug}`}

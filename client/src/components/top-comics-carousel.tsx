@@ -10,11 +10,11 @@ import { IResponseComic } from '@/types/comic.types';
 
 import { GenresList } from './genres-list';
 
-type TopComicsProps = {
+type TopComicsCarouselProps = {
   comics: IResponseComic[];
 };
 
-export const TopComics: FC<TopComicsProps> = ({ comics }) => {
+export const TopComicsCarousel: FC<TopComicsCarouselProps> = ({ comics }) => {
   const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', dragFree: true }, [
     Autoplay({ delay: 8000 }),
   ]);

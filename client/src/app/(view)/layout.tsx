@@ -1,7 +1,6 @@
 import { Header } from '@/components/layouts/header';
 import { Sidebar } from '@/components/layouts/sidebar';
 import { MenuSetter } from '@/components/menu-setter';
-import { SidebarServer } from '@/components/sidebar-server';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
 interface LayoutProps {
