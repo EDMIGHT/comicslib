@@ -58,7 +58,7 @@ export type IBookmark = {
   userId: string;
   comicId: string;
   chapterId: string;
-  pageId: number;
+  pageNumber: number;
   updatedAt: string;
 };
 

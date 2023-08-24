@@ -1,28 +1,30 @@
 import { LucideProps } from 'lucide-react';
 
+import { Icons } from '@/components/ui/icons';
+
 export type SocialLink = {
   title: string;
-  icon: string;
+  icon: keyof typeof Icons;
   href: string;
 };
 
 export type NavigationLink = {
   title: string;
   href: string;
-  icon?: string;
+  icon?: keyof typeof Icons;
 };
 
 export type NavigationItem = {
   title: string;
   href?: string;
   isPrivate?: boolean;
-  icon: string;
+  icon: keyof typeof Icons;
   links?: NavigationLink[];
 };
 
 export type SiteConfig = {
   name: string;
-  logo: string;
+  logo: keyof typeof Icons;
   navigation: readonly NavigationItem[];
   socials: readonly SocialLink[];
 };

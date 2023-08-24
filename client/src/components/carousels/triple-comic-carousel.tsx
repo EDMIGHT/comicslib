@@ -8,13 +8,13 @@ import { FC } from 'react';
 
 import { IResponseComic } from '@/types/comic.types';
 
-import { GenresList } from './genres-list';
+import { GenresList } from '../genres-list';
 
-type TopComicsCarouselProps = {
+type TripleComicCarouselProps = {
   comics: IResponseComic[];
 };
 
-export const TopComicsCarousel: FC<TopComicsCarouselProps> = ({ comics }) => {
+export const TripleComicCarousel: FC<TripleComicCarouselProps> = ({ comics }) => {
   const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start', dragFree: true }, [
     Autoplay({ delay: 8000 }),
   ]);

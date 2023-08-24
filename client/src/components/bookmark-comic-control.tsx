@@ -59,7 +59,7 @@ export const BookmarkComicControl: FC<BookmarkComicControlProps> = ({
         className={cn(
           'h-7 w-7',
           bookmark?.chapterId === chapterId &&
-            bookmark.pageId == pageNumber &&
+            bookmark.pageNumber == pageNumber &&
             'fill-foreground',
           isLoading && 'fill-muted'
         )}

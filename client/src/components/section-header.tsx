@@ -8,7 +8,7 @@ type SectionHeaderProps = HTMLAttributes<HTMLHeadingElement> & {
 
 export const SectionHeader: FC<SectionHeaderProps> = ({ children, className, ...rest }) => {
   return (
-    <h2 {...rest} className={cn('text-2xl font-medium', className)}>
+    <h2 {...rest} className={cn('text-2xl font-medium pl-2', className)}>
       {children}
     </h2>
   );
