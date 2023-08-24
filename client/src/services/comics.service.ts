@@ -16,7 +16,7 @@ export type IGetAllComicsArg = IPaginationArg &
     themes?: string;
     authors?: string;
     statuses?: string;
-    date?: 'createdAt' | 'updatedAt' | 'releasedAt';
+    date?: 'createdAt' | 'updatedAt' | 'releasedAt' | '';
     startDate?: string;
     endDate?: string;
   };
@@ -34,7 +34,7 @@ export class ComicsService {
     genres = '',
     themes = '',
     statuses = '',
-    date = 'createdAt',
+    date = '',
     startDate = '',
     endDate = '',
   }: IGetAllComicsArg) {

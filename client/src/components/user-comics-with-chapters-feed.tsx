@@ -6,13 +6,25 @@ import { FC, useEffect, useRef } from 'react';
 
 import { ComicWithChapters } from '@/components/layouts/comic-with-chapters';
 import { useIntersection } from '@/hooks/use-intersection';
+import { IGetAllComicsArg } from '@/services/comics.service';
 import { UserService } from '@/services/users.service';
+import { IResponseComic } from '@/types/comic.types';
 
-type ComicsWithChaptersFeedProps = {
-  title?: string;
+type ComicsWithChaptersFeedProps = Omit<
+  IGetAllComicsArg,
+  'genres' | 'authors' | 'statuses' | 'themes'
+> & {
+  initialComics?: IResponseComic[];
+  theme?: string[];
+  genre?: string[];
+  author?: string[];
+  status?: string[];
+  date?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
-export const ComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({ title }) => {
+export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({ title }) => {
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
 

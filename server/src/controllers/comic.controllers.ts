@@ -3,12 +3,23 @@ import { Request, Response } from 'express';
 import { ComicModel } from '@/models/comic.model';
 import { RatingModel } from '@/models/rating.model';
 import { ISortOrder } from '@/types/common.types';
+import cloudinary from '@/utils/cloudinary';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const createComic = async (req: Request, res: Response): Promise<Response> => {
+  const { img, ...rest } = req.body;
+
   try {
-    const comic = await ComicModel.create({ ...req.body });
+    const uploadedImg = await cloudinary.uploader.upload(img, {
+      folder: 'comics',
+    });
+    // .then((result) => {
+    //   console.log(result);
+    //   return result;
+    // });
+
+    const comic = await ComicModel.create({ ...rest, img: uploadedImg.secure_url });
 
     return CustomResponse.created(res, comic);
   } catch (error) {
