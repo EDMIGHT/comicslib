@@ -7,6 +7,7 @@ import { ComicsFeed } from '@/components/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { SectionHeader } from '@/components/section-header';
 import { buttonVariants } from '@/components/ui/button';
+import { TITLE_HREFS } from '@/configs/href.configs';
 import { capitalizeFirstLetter, cn, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
@@ -18,7 +19,7 @@ type PageProps = {
 
 export async function generateMetadata({ params: { slug } }: PageProps): Promise<Metadata> {
   return {
-    title: createTitle(capitalizeFirstLetter(slug)),
+    title: createTitle(capitalizeFirstLetter(decodeURIComponent(slug))),
   };
 }
 
@@ -32,7 +33,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
     return notFound();
   }
 
-  const capitalizedTitle = capitalizeFirstLetter(slug);
+  const capitalizedTitle = capitalizeFirstLetter(decodeURIComponent(slug));
 
   return (
     <div className='space-y-4'>
@@ -42,7 +43,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
         <TripleComicCarousel comics={topComics.comics} />
         <div className='flex w-full items-center justify-center'>
           <Link
-            href={`/comics?theme=${slug}`}
+            href={`${TITLE_HREFS.advancedSearch}?theme=${slug}`}
             className={cn(buttonVariants({ variant: 'link' }))}
           >
             <h3 className='text-center text-xl'>

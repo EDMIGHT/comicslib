@@ -48,7 +48,7 @@ export class ComicModel {
     themes,
     ...data
   }: ICreateComic): Promise<Comic> {
-    const authorsConnect = authors && authors.map((authorId) => ({ id: authorId }));
+    const authorsConnect = authors && authors.map((authorLogin) => ({ login: authorLogin }));
     const genresConnect = genres && genres.map((genreId) => ({ id: genreId }));
     const themesConnect = themes && themes.map((themeId) => ({ id: themeId }));
 

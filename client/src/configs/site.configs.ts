@@ -6,77 +6,83 @@ import {
   SocialLink,
 } from '@/types/configs.types';
 
+import { HREFS } from './href.configs';
+
 export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
   {
     title: 'github',
     icon: 'github',
-    href: 'https://github.com/EDMIGHT/comicslib',
+    href: HREFS.socials.github,
   },
   {
     title: 'discord',
     icon: 'discord',
-    href: 'https://discord.com/',
+    href: HREFS.socials.discord,
   },
   {
     title: 'twitter',
     icon: 'twitter',
-    href: 'https://twitter.com/home',
+    href: HREFS.socials.twitter,
   },
 ];
 
 export const LIBRARY_NAVIGATION: NavigationLink[] = [
   {
     title: 'updates',
-    href: '/library/updates',
+    href: HREFS.library.updates,
   },
   {
     title: 'folders',
-    href: '/library/folders',
+    href: HREFS.library.folders,
   },
   {
     title: 'bookmarks',
-    href: '/library/bookmarks',
+    href: HREFS.library.bookmarks,
   },
 ];
 
 export const TITLES_NAVIGATION: NavigationLink[] = [
   {
-    title: 'advanced search',
-    href: '/comics',
+    title: 'Advanced Search',
+    href: HREFS.titles.advancedSearch,
   },
   {
-    title: 'recently added',
-    href: '/comics/recently-added',
+    title: 'Recently Added',
+    href: HREFS.titles.recentlyAdded,
   },
   {
-    title: 'latest updates',
-    href: '/comics/latest-updates',
+    title: 'Latest Updates',
+    href: HREFS.titles.latestUpdates,
   },
   {
-    title: 'random',
-    href: '/comics/random',
+    title: 'Random',
+    href: HREFS.titles.random,
+  },
+  {
+    title: 'Create Title',
+    href: HREFS.titles.createTitle,
   },
 ];
 
 export const COMMUNITY_NAVIGATION: NavigationLink[] = [
   {
     title: 'users',
-    href: '/users',
+    href: HREFS.community.users,
   },
 ];
 
-export const SITE_RULES_NAVIGATION: NavigationLink[] = [
+export const INFO_PAGE_NAVIGATION: NavigationLink[] = [
   {
     title: 'rules',
-    href: '/rules',
+    href: HREFS.infoPage.rules,
   },
   {
     title: 'privacy policy',
-    href: '/privacy-policy',
+    href: HREFS.infoPage.privacyPolicy,
   },
   {
     title: 'about us',
-    href: '/about-us',
+    href: HREFS.infoPage.aboutUs,
   },
 ];
 
@@ -107,7 +113,7 @@ export const SITE_CONFIG: SiteConfig = {
     },
     {
       title: 'comicslib',
-      links: SITE_RULES_NAVIGATION,
+      links: INFO_PAGE_NAVIGATION,
       icon: 'rules',
     },
   ] as const,
@@ -135,12 +141,12 @@ export const PROFILE_NAVIGATION: readonly NavigationLink[] = [
 export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
   {
     title: 'My folders',
-    href: '/folders',
+    href: HREFS.library.folders,
     icon: 'folder',
   },
   {
     title: 'My bookmarks',
-    href: '/library/bookmarks',
+    href: HREFS.library.bookmarks,
     icon: 'history',
   },
 ];
@@ -225,23 +231,3 @@ export const PAGINATION_LIMIT_CONFIG = {
   bookmarks: 6,
   users: 12,
 } as const;
-
-export const COMIC_RATING_CONFIG = {
-  min: 1,
-  max: 10,
-} as const;
-
-export const COMIC_DATE_FIELDS: readonly IConfigVariant[] = [
-  {
-    title: 'Added',
-    field: 'createdAt',
-  },
-  {
-    title: 'Updated',
-    field: 'updatedAt',
-  },
-  {
-    title: 'Published',
-    field: 'publishedAt',
-  },
-];

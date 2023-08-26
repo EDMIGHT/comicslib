@@ -7,9 +7,10 @@ import { useClickOutside } from '@/hooks/use-click-outside';
 import { useDebounce } from '@/hooks/use-debounce';
 import { cn } from '@/lib/utils';
 import { AuthorsService } from '@/services/authors.service';
+import { IAuthor } from '@/types/author.types';
 
 type AuthorsFilteringProps = {
-  onClick: (authorLogin: string) => any;
+  onClick: (author: IAuthor) => any;
   activeAuthors: string[];
 };
 
@@ -39,7 +40,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
       <Input
         placeholder='enter login author..'
         value={value}
-        autoFocus={false}
+        // autoFocus={false}
         className='w-[200px] bg-secondary text-secondary-foreground'
         onClick={() => {
           if (!open) {
@@ -64,7 +65,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
               {authors.map((author) => (
                 <li key={author.id}>
                   <button
-                    onClick={() => onClick(author.login)}
+                    onClick={() => onClick(author)}
                     className={cn(
                       'w-full cursor-pointer rounded p-1 px-2 text-start text-sm font-medium transition-colors ',
                       activeAuthors.some((activeAuthor) => activeAuthor === author.login)

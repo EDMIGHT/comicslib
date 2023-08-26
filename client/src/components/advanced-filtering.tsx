@@ -223,7 +223,10 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
               <div className='flex gap-2'>
                 <div>
                   <h3 className='ml-2 text-base font-medium'>Authors</h3>
-                  <AuthorsFiltering onClick={onClickAuthor} activeAuthors={activeAuthors} />
+                  <AuthorsFiltering
+                    onClick={(author) => onClickAuthor(author.login)}
+                    activeAuthors={activeAuthors}
+                  />
                 </div>
                 <div>
                   <h3 className='ml-2 text-base font-medium'>By date</h3>
@@ -243,7 +246,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
                 <h3 className='ml-2 text-base font-medium'>Genres</h3>
                 <GenresList
                   genres={genres}
-                  onClickItem={onClickGenre}
+                  onClickItem={(genre) => onClickGenre(genre.title)}
                   activeGenres={activeGenres}
                 />
               </div>

@@ -18,7 +18,7 @@ type PageProps = {
 
 export async function generateMetadata({ params: { slug } }: PageProps): Promise<Metadata> {
   return {
-    title: createTitle(capitalizeFirstLetter(slug)),
+    title: createTitle(capitalizeFirstLetter(decodeURIComponent(slug))),
   };
 }
 
@@ -32,7 +32,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
     return notFound();
   }
 
-  const capitalizedTitle = capitalizeFirstLetter(slug);
+  const capitalizedTitle = capitalizeFirstLetter(decodeURIComponent(slug));
 
   return (
     <div className='space-y-4'>

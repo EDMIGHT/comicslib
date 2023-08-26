@@ -4,7 +4,7 @@ const nextConfig = {
     API_HOST: process.env.API_HOST,
   },
   images: {
-    domains: ['localhost', 'mangadex.org'],
+    domains: ['localhost', 'mangadex.org', 'res.cloudinary.com'],
   },
 };
 

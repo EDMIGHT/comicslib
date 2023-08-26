@@ -7,7 +7,7 @@ import { FC, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { COMIC_RATING_CONFIG } from '@/configs/site.configs';
+import { COMIC_RATING_CONFIG } from '@/configs/comic.configs';
 import { toast } from '@/hooks/use-toast';
 import { arrayFromRange, cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';

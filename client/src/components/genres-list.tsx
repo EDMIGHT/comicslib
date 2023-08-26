@@ -9,7 +9,7 @@ import { IGenre } from '@/types/genre.types';
 type GenresListProps = HTMLAttributes<HTMLUListElement> & {
   genres: IGenre[];
   activeGenres?: string[];
-  onClickItem?: (genreTitle: string) => void;
+  onClickItem?: (genre: IGenre) => void;
   type?: 'default' | 'link';
 };
 
@@ -30,7 +30,7 @@ export const GenresList: FC<GenresListProps> = ({
               <Badge
                 onClick={() =>
                   // onClick ? onClick(genre.title) : redirect(`/genre/${genre.title}`)
-                  onClickItem && onClickItem(genre.title)
+                  onClickItem && onClickItem(genre)
                 }
                 className='capitalize'
                 variant={

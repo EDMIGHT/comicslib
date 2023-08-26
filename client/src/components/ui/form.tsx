@@ -83,17 +83,27 @@ FormItem.displayName = 'FormItem';
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
+    isRequired?: boolean;
+  }
+>(({ className, isRequired = false, children, ...props }, ref) => {
   const { error, formItemId } = useFormField();
 
   return (
     <Label
       ref={ref}
-      className={cn(error && 'text-destructive', className)}
+      className={cn(error && 'text-destructive', 'pl-2', className)}
       htmlFor={formItemId}
       {...props}
-    />
+    >
+      {isRequired ? (
+        <>
+          {children} <span className='text-red-700'>*</span>
+        </>
+      ) : (
+        children
+      )}
+    </Label>
   );
 });
 FormLabel.displayName = 'FormLabel';
@@ -150,7 +160,7 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn('text-[0.8rem] font-medium text-destructive', className)}
+      className={cn('text-[0.8rem] font-medium text-destructive pl-2', className)}
       {...props}
     >
       {body}
@@ -158,6 +168,32 @@ const FormMessage = React.forwardRef<
   );
 });
 FormMessage.displayName = 'FormMessage';
+
+const UncontrolledFormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement> & {
+    message?: string;
+  }
+>(({ className, children, message, ...props }, ref) => {
+  const { formMessageId } = useFormField();
+  const body = message ? String(message) : children;
+
+  if (!body) {
+    return null;
+  }
+
+  return (
+    <p
+      ref={ref}
+      id={formMessageId}
+      className={cn('text-sm font-medium text-destructive', className)}
+      {...props}
+    >
+      {body}
+    </p>
+  );
+});
+UncontrolledFormMessage.displayName = 'UncontrolledFormMessage';
 
 export {
   Form,
@@ -167,5 +203,6 @@ export {
   FormItem,
   FormLabel,
   FormMessage,
+  UncontrolledFormMessage,
   useFormField,
 };

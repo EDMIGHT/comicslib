@@ -1,6 +1,12 @@
 import { PAGINATION_LIMIT_CONFIG, SORT_VARIANTS } from '@/configs/site.configs';
 import { API_COMICS_URL } from '@/configs/url.configs';
-import { IResponseAllComics, IResponseComic, IResponseRandomComic } from '@/types/comic.types';
+import { ICreateComicFields } from '@/lib/validators/comic.validators';
+import {
+  IComic,
+  IResponseAllComics,
+  IResponseComic,
+  IResponseRandomComic,
+} from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import { IRating } from '@/types/review.types';
 
@@ -58,6 +64,10 @@ export class ComicsService {
   }
   public static async getRandomId() {
     const { data } = await api.get<IResponseRandomComic>(API_COMICS_URL.random);
+    return data;
+  }
+  public static async create(payload: ICreateComicFields) {
+    const { data } = await apiAuth.post<IComic>(API_COMICS_URL.origin, payload);
     return data;
   }
   public static async updateRating(id: string | number, value: number) {

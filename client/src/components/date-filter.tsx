@@ -9,7 +9,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Command, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { COMIC_DATE_FIELDS } from '@/configs/site.configs';
+import { COMIC_DATE_FIELDS } from '@/configs/comic.configs';
 import { cn } from '@/lib/utils';
 import { IConfigVariant } from '@/types/configs.types';
 
