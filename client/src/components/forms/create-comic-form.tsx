@@ -11,7 +11,6 @@ import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FileDialog } from '@/components/file-dialog';
-import { AuthorSearchSkeletons } from '@/components/skeletons/author-search-skeletons';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,7 +32,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  UncontrolledFormMessage,
 } from '@/components/ui/form';
 import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
@@ -48,7 +46,6 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { HREFS } from '@/configs/href.configs';
-import { useClickOutside } from '@/hooks/use-click-outside';
 import { useDebounce } from '@/hooks/use-debounce';
 import { toast } from '@/hooks/use-toast';
 import { convertFileToBase64 } from '@/lib/helpers/convertToBase64';
@@ -60,6 +57,10 @@ import { IGenre } from '@/types/genre.types';
 import { IStatus } from '@/types/status.types';
 import { ITheme } from '@/types/theme.types';
 
+import { AuthorsFiltering } from '../authors-filtering';
+import { GenresList } from '../genres-list';
+import { ThemesList } from '../themes-list';
+
 type CreateComicFormProps = {
   statuses: IStatus[];
   genres: IGenre[];
@@ -68,10 +69,6 @@ type CreateComicFormProps = {
 
 export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, themes }) => {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const [debounced] = useDebounce(value, 500);
-  const searchAuthorContentRef = useClickOutside(() => setOpen(false));
 
   const form = useForm<ICreateComicFields>({
     resolver: zodResolver(createComicSchema),
@@ -82,30 +79,6 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
       authors: [],
       genres: [],
       themes: [],
-    },
-  });
-
-  const {
-    data: authors,
-    isLoading: isLoadingAuthors,
-    isError: isErrorAuthors,
-    isSuccess: isSuccessAuthors,
-  } = useQuery({
-    queryKey: ['authors', debounced],
-    queryFn: async () => {
-      if (debounced) {
-        const { authors } = await AuthorsService.getAll({ limit: 5, login: debounced });
-        return authors;
-      }
-      return [];
-    },
-    onError: () => {
-      return toast({
-        title: 'Oops. Something went wrong!',
-        description:
-          'An error occurred while trying to search for the author behind your entered values, please try again later',
-        variant: 'destructive',
-      });
     },
   });
 
@@ -218,7 +191,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                 name='releasedAt'
                 render={({ field }) => (
                   <FormItem className='flex flex-col'>
-                    <FormLabel>Publication Date</FormLabel>
+                    <FormLabel>Release Date</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -232,7 +205,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                             {field.value ? (
                               format(field.value, 'PPP')
                             ) : (
-                              <span>Pick a date</span>
+                              <span>pick a release date</span>
                             )}
                             <Icons.calendar className='ml-auto h-4 w-4 opacity-50' />
                           </Button>
@@ -296,70 +269,16 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                   <FormItem>
                     <FormLabel>Authors</FormLabel>
 
-                    <FormControl>
-                      <Input
-                        placeholder='enter login author..'
-                        value={value}
-                        className='w-[240px]'
-                        onClick={() => {
-                          if (!open) {
-                            setOpen(true);
-                          }
-                        }}
-                        onChange={(e) => {
-                          setValue(e.target.value);
-                          setOpen(true);
-                        }}
-                      />
-                    </FormControl>
-
-                    {open && debounced && (
-                      <div
-                        ref={searchAuthorContentRef}
-                        className={cn(
-                          'absolute z-50 min-w-[240px] rounded-md border bg-popover p-1 px-2 text-popover-foreground shadow-md outline-none '
-                        )}
-                      >
-                        <ul className='flex flex-col gap-1'>
-                          {isSuccessAuthors &&
-                            (authors && authors.length > 0 ? (
-                              authors.map((author) => (
-                                <li key={author.id}>
-                                  <button
-                                    onClick={() => {
-                                      if (field.value?.some((val) => val === author.login)) {
-                                        field.onChange(
-                                          field.value.filter((val) => val !== author.login)
-                                        );
-                                      } else {
-                                        field.onChange([...field.value, author.login]);
-                                      }
-                                      setOpen(false);
-                                    }}
-                                    className={cn(
-                                      'w-full cursor-pointer rounded p-1 px-2 text-start text-sm font-medium transition-colors ',
-                                      field.value?.some(
-                                        (activeAuthor) => activeAuthor === author.login
-                                      )
-                                        ? 'bg-active text-active-foreground'
-                                        : 'hover:bg-muted/80 '
-                                    )}
-                                  >
-                                    {author.login}
-                                  </button>
-                                </li>
-                              ))
-                            ) : (
-                              <li>
-                                <h4 className='text-center text-base'>empty</h4>
-                              </li>
-                            ))}
-                          {(isLoadingAuthors || isErrorAuthors) && (
-                            <AuthorSearchSkeletons count={5} />
-                          )}
-                        </ul>
-                      </div>
-                    )}
+                    <AuthorsFiltering
+                      activeAuthors={field.value}
+                      onClick={(author) => {
+                        if (field.value?.some((val) => val === author.login)) {
+                          field.onChange(field.value.filter((val) => val !== author.login));
+                        } else {
+                          field.onChange([...field.value, author.login]);
+                        }
+                      }}
+                    />
 
                     {field.value.length > 0 && (
                       <ul className='flex flex-wrap gap-1'>
@@ -405,39 +324,17 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
             render={({ field }) => (
               <FormItem>
                 <FormLabel isRequired>Genres</FormLabel>
-                <div className='flex gap-1'>
-                  {genres.map((gen) => (
-                    <FormField
-                      key={gen.id}
-                      control={form.control}
-                      name='genres'
-                      render={({ field }) => (
-                        <FormItem key={gen.id}>
-                          <FormControl>
-                            <Badge
-                              variant={
-                                field.value?.some((val) => val === gen.id)
-                                  ? 'active'
-                                  : 'default'
-                              }
-                              onClick={() => {
-                                if (field.value?.some((val) => val === gen.id)) {
-                                  return field.onChange(
-                                    field.value.filter((val) => val !== gen.id)
-                                  );
-                                } else {
-                                  return field.onChange([...field.value, gen.id]);
-                                }
-                              }}
-                            >
-                              {gen.title}
-                            </Badge>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
-                </div>
+                <GenresList
+                  genres={genres}
+                  activeGenres={field.value}
+                  onClickItem={(gen) => {
+                    if (field.value?.some((val) => val === gen.title)) {
+                      return field.onChange(field.value.filter((val) => val !== gen.title));
+                    } else {
+                      return field.onChange([...field.value, gen.title]);
+                    }
+                  }}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -448,39 +345,17 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
             render={({ field }) => (
               <FormItem>
                 <FormLabel isRequired>Themes</FormLabel>
-                <div className='flex gap-1'>
-                  {themes.map((them) => (
-                    <FormField
-                      key={them.id}
-                      control={form.control}
-                      name='themes'
-                      render={({ field }) => (
-                        <FormItem key={them.id}>
-                          <FormControl>
-                            <Badge
-                              variant={
-                                field.value?.some((val) => val === them.id)
-                                  ? 'active'
-                                  : 'default'
-                              }
-                              onClick={() => {
-                                if (field.value?.some((val) => val === them.id)) {
-                                  return field.onChange(
-                                    field.value.filter((val) => val !== them.id)
-                                  );
-                                } else {
-                                  return field.onChange([...field.value, them.id]);
-                                }
-                              }}
-                            >
-                              {them.title}
-                            </Badge>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
-                </div>
+                <ThemesList
+                  themes={themes}
+                  activeThemes={field.value}
+                  onClickItem={(them) => {
+                    if (field.value?.some((val) => val === them.title)) {
+                      return field.onChange(field.value.filter((val) => val !== them.title));
+                    } else {
+                      return field.onChange([...field.value, them.title]);
+                    }
+                  }}
+                />
                 <FormMessage />
               </FormItem>
             )}

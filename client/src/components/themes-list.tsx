@@ -9,7 +9,7 @@ import { ITheme } from '@/types/theme.types';
 type ThemesListProps = HTMLAttributes<HTMLUListElement> & {
   themes: ITheme[];
   activeThemes?: string[];
-  onClickItem?: (genreTitle: string) => void;
+  onClickItem?: (theme: ITheme) => void;
   type?: 'default' | 'link';
 };
 
@@ -25,18 +25,18 @@ export const ThemesList: FC<ThemesListProps> = ({
     <>
       {themes.length > 0 ? (
         <ul {...rest} className='flex gap-1'>
-          {themes.map(({ id, title }) => (
-            <li key={id}>
+          {themes.map((theme) => (
+            <li key={theme.id}>
               <Badge
-                onClick={() => onClickItem && onClickItem(title)}
+                onClick={() => onClickItem && onClickItem(theme)}
                 className='capitalize'
                 variant={
-                  activeThemes?.some((activeTheme) => activeTheme === title)
+                  activeThemes?.some((activeTheme) => activeTheme === theme.title)
                     ? 'active'
                     : 'default'
                 }
               >
-                {title}
+                {theme.title}
               </Badge>
             </li>
           ))}

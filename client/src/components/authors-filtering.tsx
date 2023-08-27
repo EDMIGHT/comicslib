@@ -2,12 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import { FC, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useClickOutside } from '@/hooks/use-click-outside';
 import { useDebounce } from '@/hooks/use-debounce';
+import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { AuthorsService } from '@/services/authors.service';
 import { IAuthor } from '@/types/author.types';
+
+import { AuthorSearchSkeletons } from './skeletons/author-search-skeletons';
 
 type AuthorsFilteringProps = {
   onClick: (author: IAuthor) => any;
@@ -23,8 +25,9 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
 
   const {
     data: authors,
-    isLoading: isLoadingAuthors,
-    isSuccess: isSuccessAuthors,
+    isLoading,
+    isError,
+    isSuccess,
   } = useQuery({
     queryKey: ['authors', debounced],
     queryFn: async () => {
@@ -33,6 +36,14 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
         return authors;
       } else return [];
     },
+    onError: () => {
+      return toast({
+        title: 'Oops. Something went wrong!',
+        description:
+          'An error occurred while trying to search for the author behind your entered values, please try again later',
+        variant: 'destructive',
+      });
+    },
   });
 
   return (
@@ -40,8 +51,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
       <Input
         placeholder='enter login author..'
         value={value}
-        // autoFocus={false}
-        className='w-[200px] bg-secondary text-secondary-foreground'
+        className='w-[240px]'
         onClick={() => {
           if (!open) {
             setOpen(true);
@@ -60,42 +70,35 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
             'absolute left-0 top-[110%] w-[200px] rounded bg-secondary text-secondary-foreground p-1'
           )}
         >
-          {isSuccessAuthors && authors && authors.length > 0 ? (
-            <ul>
-              {authors.map((author) => (
-                <li key={author.id}>
-                  <button
-                    onClick={() => onClick(author)}
-                    className={cn(
-                      'w-full cursor-pointer rounded p-1 px-2 text-start text-sm font-medium transition-colors ',
-                      activeAuthors.some((activeAuthor) => activeAuthor === author.login)
-                        ? 'bg-active text-active-foreground'
-                        : 'hover:bg-background/80 focus:bg-background/80'
-                    )}
-                  >
-                    {author.login}
-                  </button>
+          <ul className='flex flex-col gap-1'>
+            {isSuccess &&
+              (authors && authors.length > 0 ? (
+                authors.map((author) => (
+                  <li key={author.id}>
+                    <button
+                      type='button'
+                      onClick={() => {
+                        onClick(author);
+                        setOpen(false);
+                      }}
+                      className={cn(
+                        'w-full cursor-pointer rounded p-1 px-2 text-start text-sm font-medium transition-colors ',
+                        activeAuthors.some((activeAuthor) => activeAuthor === author.login)
+                          ? 'bg-active text-active-foreground'
+                          : 'hover:bg-background/80 focus:bg-background/80'
+                      )}
+                    >
+                      {author.login}
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li>
+                  <h4 className='text-center text-base'>empty</h4>
                 </li>
               ))}
-            </ul>
-          ) : (
-            <div className='p-2'>
-              <h4 className='text-center text-base'>empty</h4>
-            </div>
-          )}
-          {isLoadingAuthors && (
-            <ul className='space-y-1'>
-              <li>
-                <Skeleton className='h-6 w-full' />
-              </li>
-              <li>
-                <Skeleton className='h-6 w-full' />
-              </li>
-              <li>
-                <Skeleton className='h-6 w-full' />
-              </li>
-            </ul>
-          )}
+            {(isLoading || isError) && <AuthorSearchSkeletons count={5} />}
+          </ul>
         </div>
       )}
     </div>

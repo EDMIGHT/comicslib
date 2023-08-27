@@ -11,7 +11,7 @@ export const createComicSchema = z.object({
   desc: z
     .string()
     .trim()
-    .max(500, 'The maximum description length is 500 characters')
+    .max(2000, 'The maximum description length is 2000 characters')
     .optional(),
   img: z.string({
     required_error: 'You must upload a picture for the cover of the comic',

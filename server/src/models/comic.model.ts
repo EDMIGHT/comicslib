@@ -49,8 +49,8 @@ export class ComicModel {
     ...data
   }: ICreateComic): Promise<Comic> {
     const authorsConnect = authors && authors.map((authorLogin) => ({ login: authorLogin }));
-    const genresConnect = genres && genres.map((genreId) => ({ id: genreId }));
-    const themesConnect = themes && themes.map((themeId) => ({ id: themeId }));
+    const genresConnect = genres && genres.map((genreId) => ({ title: genreId }));
+    const themesConnect = themes && themes.map((themeId) => ({ title: themeId }));
 
     return prisma.comic.create({
       data: {

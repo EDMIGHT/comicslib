@@ -11,11 +11,7 @@ export const createComicValidators = [
   check('desc')
     .optional()
     .trim()
-    .isLength({ max: 500 })
-    .withMessage('The maximum desc length is 500 characters'),
-  check('img')
-    .optional()
-    .isString()
-    .withMessage('img must be a string')
-    .trim()
+    .isLength({ max: 2000 })
+    .withMessage('The maximum desc length is 2000 characters'),
+  check('img').optional().isString().withMessage('img must be a string').trim(),
 ];

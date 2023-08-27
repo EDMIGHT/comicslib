@@ -154,22 +154,22 @@ export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
 export const SORT_VARIANTS: ISortVariants = {
   comics: [
     {
-      label: 'Date Added: Old to new',
+      label: 'Date Added: New to old',
       field: 'createdAt',
       order: 'desc',
     },
     {
-      label: 'Date Added: New to old',
+      label: 'Date Added: Old to new',
       field: 'createdAt',
       order: 'asc',
     },
     {
-      label: 'Update Date: Old to new',
+      label: 'Update Date: New to old',
       field: 'updatedAt',
       order: 'desc',
     },
     {
-      label: 'Update Date: New to old',
+      label: 'Update Date: Old to new',
       field: 'updatedAt',
       order: 'asc',
     },
