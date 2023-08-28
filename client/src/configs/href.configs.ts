@@ -24,6 +24,7 @@ export const LIBRARY_HREFS = {
 export const CREATE_HREFS = {
   title: '/create/title',
   author: '/create/author',
+  chapter: '/create/chapter',
 };
 
 export const SOCIAL_HREFS = {

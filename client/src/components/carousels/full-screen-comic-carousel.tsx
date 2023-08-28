@@ -6,10 +6,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useCallback } from 'react';
 
+import {
+  NextButton,
+  PrevButton,
+  usePrevNextButtons,
+} from '@/components/carousel-arrow-buttons';
+import { ComicAttributes } from '@/components/comic-attributes';
 import { IResponseComic } from '@/types/comic.types';
-
-import { NextButton, PrevButton, usePrevNextButtons } from '../carousel-arrow-buttons';
-import { ComicAttributes } from '../comic-attributes';
 
 type FullScreenComicCarouselProps = {
   comics: IResponseComic[];
@@ -44,13 +47,13 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
               className='relative mr-2 min-w-0 flex-[0_0_100%] overflow-hidden  p-4'
               key={comic.id}
             >
-              <div className='relative h-[300px] w-full'>
+              <div className='relative h-[260px] w-full'>
                 <div className='grid h-full grid-cols-[auto_1fr] gap-2'>
-                  <div className='relative h-full w-[240px] overflow-hidden rounded'>
+                  <div className='relative h-full w-[190px] overflow-hidden rounded'>
                     <Image
                       src={comic.img}
                       alt={comic.title}
-                      sizes='300px'
+                      sizes='190px'
                       fill
                       className='object-cover'
                     />
@@ -66,9 +69,7 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
                     />
                     <p className='line-clamp-5 text-sm'>{comic.desc}</p>
                     <h4 className='mt-auto w-[90%] truncate font-medium italic'>
-                      {comic.authors.length > 1
-                        ? comic.authors.map((author) => `,${author.login}`)
-                        : comic.authors[0].login}
+                      {comic.authors.map((author) => author.login).join(', ')}
                     </h4>
                   </div>
                 </div>

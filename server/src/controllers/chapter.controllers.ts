@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 import { ChapterModel } from '@/models/chapter.model';
 import { ComicModel } from '@/models/comic.model';
+import { PageModel } from '@/models/page.model';
+import { IRequestChapter } from '@/types/chapter.types';
 import { ISortOrder } from '@/types/common.types';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -34,10 +36,19 @@ export const getChaptersByComicId = async (req: Request, res: Response): Promise
 };
 
 export const createChapter = async (req: Request, res: Response): Promise<Response> => {
+  const { pages, ...chapterData } = req.body as IRequestChapter;
   try {
-    const chapter = await ChapterModel.create({ ...req.body, userId: req.user.id });
+    const chapter = await ChapterModel.create({ ...chapterData, userId: req.user.id });
+    const createdPages = await Promise.all(
+      pages.map(async (pageData) => {
+        return await PageModel.create({
+          ...pageData,
+          chapterId: chapter.id,
+        });
+      })
+    );
     await ComicModel.refreshUpdatedAt(chapter.comicId);
-    return CustomResponse.created(res, chapter);
+    return CustomResponse.created(res, { chapter, createdPages });
   } catch (error) {
     return serverErrorResponse({
       res,

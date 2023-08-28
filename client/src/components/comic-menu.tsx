@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
+import { HREFS } from '@/configs/href.configs';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
@@ -34,7 +35,7 @@ export const ComicMenu = async ({ comicId, chapters }: ComicMenuProps) => {
       {firstChapter &&
         (bookmark ? (
           <Link
-            href={`/chapter/${bookmark.chapterId}/${bookmark.pageId}`}
+            href={`/chapter/${bookmark.chapterId}/${bookmark.pageNumber}`}
             className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
           >
             <Icons.read className='h-5 w-5' /> Continue
@@ -47,8 +48,18 @@ export const ComicMenu = async ({ comicId, chapters }: ComicMenuProps) => {
             <Icons.read className='h-5 w-5' /> Read
           </Link>
         ))}
-      {accessToken && <ComicFoldersBtn comicId={comicId} />}
-      {accessToken && <ComicUpdateRating comicId={comicId} rating={rating} />}
+      {accessToken && (
+        <>
+          <ComicFoldersBtn comicId={comicId} />
+          <ComicUpdateRating comicId={comicId} rating={rating} />
+          <Link
+            href={`${HREFS.create.chapter}/${comicId}`}
+            className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
+          >
+            <Icons.upload className='h-5 w-5' /> Upload Chapter
+          </Link>
+        </>
+      )}
     </div>
   );
 };

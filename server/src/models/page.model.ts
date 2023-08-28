@@ -3,7 +3,7 @@ import { Page } from '@prisma/client';
 import prisma from '@/db/prisma';
 import { IResponsePage } from '@/types/page.types';
 
-type ICreateGenreArg = Page;
+type ICreatePageArg = Page;
 type IGetPageArg = Pick<Page, 'chapterId' | 'number'>;
 
 export class PageModel {
@@ -30,7 +30,7 @@ export class PageModel {
       },
     });
   }
-  public static async create(data: ICreateGenreArg): Promise<Page> {
+  public static async create(data: ICreatePageArg): Promise<Page> {
     return prisma.page.create({
       data,
     });

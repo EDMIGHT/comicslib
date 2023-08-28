@@ -28,7 +28,7 @@ export const FileDialog: FC<FileDialogProps> = ({ children, onSelectFile }) => {
         </DialogHeader>
         <label htmlFor='image'>
           <div className=' relative flex h-[270px] w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border border-dashed transition-colors hover:bg-muted'>
-            <Icons.upload className='h-10 w-10' />
+            <Icons.uploadCloud className='h-10 w-10' />
 
             <span className='text-sm font-medium'>Click to upload</span>
             <input

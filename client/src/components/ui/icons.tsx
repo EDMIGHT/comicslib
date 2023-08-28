@@ -34,6 +34,7 @@ import {
   Star,
   Trash2,
   Twitter,
+  Upload,
   UploadCloud,
   User2,
   Users,
@@ -124,7 +125,8 @@ export const Icons = {
   star: Star,
   titles: BookCopy,
   twitter: Twitter,
-  upload: UploadCloud,
+  uploadCloud: UploadCloud,
+  upload: Upload,
   user: User2,
   warning: AlertTriangle,
 };

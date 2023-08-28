@@ -1,7 +1,11 @@
-import { Chapter } from '@prisma/client';
+import { Chapter, Page } from '@prisma/client';
 
 import { IShortComic } from './comic.types';
 import { IShortUser } from './user.types';
+
+export type IRequestChapter = Pick<Chapter, 'comicId' | 'title' | 'number'> & {
+  pages: Omit<Page, 'chapterId'>[];
+};
 
 export type IChapterWithUser = Chapter & {
   user: IShortUser;
