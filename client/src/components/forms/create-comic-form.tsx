@@ -1,16 +1,18 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { AuthorsFiltering } from '@/components/authors-filtering';
 import { FileDialog } from '@/components/file-dialog';
+import { GenresList } from '@/components/genres-list';
+import { ThemesList } from '@/components/themes-list';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,20 +48,15 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { HREFS } from '@/configs/href.configs';
-import { useDebounce } from '@/hooks/use-debounce';
 import { toast } from '@/hooks/use-toast';
 import { convertFileToBase64 } from '@/lib/helpers/convertToBase64';
+import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { createComicSchema, ICreateComicFields } from '@/lib/validators/comic.validators';
-import { AuthorsService } from '@/services/authors.service';
 import { ComicsService } from '@/services/comics.service';
 import { IGenre } from '@/types/genre.types';
 import { IStatus } from '@/types/status.types';
 import { ITheme } from '@/types/theme.types';
-
-import { AuthorsFiltering } from '../authors-filtering';
-import { GenresList } from '../genres-list';
-import { ThemesList } from '../themes-list';
 
 type CreateComicFormProps = {
   statuses: IStatus[];
@@ -95,27 +92,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
       router.replace(`${HREFS.comics}/${id}`);
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          return toast({
-            variant: 'destructive',
-            title: 'Authorization Error',
-            description: 'Please login or refresh the page',
-          });
-        } else if (err.response?.status === 400) {
-          return toast({
-            variant: 'destructive',
-            title: 'Incorrectly entered data',
-            description:
-              'An error occurred while validating the data you entered, please check that you entered for correctness',
-          });
-        }
-      }
-      return toast({
-        variant: 'destructive',
-        title: 'Oops. Something went wrong!',
-        description: 'Something went wrong, please try again later',
-      });
+      handleErrorMutation(err);
     },
   });
 
@@ -191,7 +168,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                 name='releasedAt'
                 render={({ field }) => (
                   <FormItem className='flex flex-col'>
-                    <FormLabel>Release Date</FormLabel>
+                    <FormLabel isRequired>Release Date</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -267,9 +244,10 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                 name='authors'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Authors</FormLabel>
+                    <FormLabel isRequired>Authors</FormLabel>
 
                     <AuthorsFiltering
+                      createAuthorAbility
                       activeAuthors={field.value}
                       onClick={(author) => {
                         if (field.value?.some((val) => val === author.login)) {

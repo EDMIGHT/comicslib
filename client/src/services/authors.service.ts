@@ -1,8 +1,10 @@
-import { API_AUTHORS_URL, API_GENRES_URL } from '@/configs/url.configs';
-import { IResponseAllAuthors } from '@/types/author.types';
+import { API_AUTHORS_URL } from '@/configs/url.configs';
+import { ICreateAuthorFields } from '@/lib/validators/author.validators';
+import { IAuthor, IResponseAllAuthors } from '@/types/author.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 
 import { api } from './api';
+import { apiAuth } from './apiAuth';
 
 export type IGetAllAuthorsArg = IPaginationArg &
   ISortArg & {
@@ -21,6 +23,10 @@ export class AuthorsService {
       API_AUTHORS_URL.origin +
         `?page=${page}&limit=${limit}&sort=${sort}&order=${order}&login=${login}`
     );
+    return data;
+  }
+  public static async create(payload: ICreateAuthorFields) {
+    const { data } = await apiAuth.post<IAuthor>(API_AUTHORS_URL.origin, payload);
     return data;
   }
 }

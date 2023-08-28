@@ -60,7 +60,7 @@ export const TITLES_NAVIGATION: NavigationLink[] = [
   },
   {
     title: 'Create Title',
-    href: HREFS.titles.createTitle,
+    href: HREFS.create.title,
   },
 ];
 

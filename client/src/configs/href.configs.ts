@@ -3,7 +3,6 @@ export const TITLE_HREFS = {
   recentlyAdded: '/titles/recently-added',
   latestUpdates: '/titles/latest-updates',
   random: '/titles/random',
-  createTitle: '/create/title',
 };
 
 export const INFO_PAGE_HREFS = {
@@ -22,6 +21,11 @@ export const LIBRARY_HREFS = {
   bookmarks: '/library/bookmarks',
 };
 
+export const CREATE_HREFS = {
+  title: '/create/title',
+  author: '/create/author',
+};
+
 export const SOCIAL_HREFS = {
   github: 'https://github.com/EDMIGHT/comicslib',
   discord: 'https://discord.com/',
@@ -35,4 +39,5 @@ export const HREFS = {
   community: COMMUNITY_HREFS,
   library: LIBRARY_HREFS,
   socials: SOCIAL_HREFS,
+  create: CREATE_HREFS,
 };

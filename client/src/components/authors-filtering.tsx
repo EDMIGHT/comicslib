@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { FC, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
+import { HREFS } from '@/configs/href.configs';
 import { useClickOutside } from '@/hooks/use-click-outside';
 import { useDebounce } from '@/hooks/use-debounce';
 import { toast } from '@/hooks/use-toast';
@@ -9,14 +11,21 @@ import { cn } from '@/lib/utils';
 import { AuthorsService } from '@/services/authors.service';
 import { IAuthor } from '@/types/author.types';
 
+import { CreateAuthorDialog } from './create-author-dialog';
 import { AuthorSearchSkeletons } from './skeletons/author-search-skeletons';
+import { buttonVariants } from './ui/button';
 
 type AuthorsFilteringProps = {
   onClick: (author: IAuthor) => any;
   activeAuthors: string[];
+  createAuthorAbility?: boolean;
 };
 
-export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAuthors }) => {
+export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({
+  onClick,
+  activeAuthors,
+  createAuthorAbility,
+}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
   const [debounced] = useDebounce(value, 500);
@@ -67,7 +76,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
         <div
           ref={handlerRefPopup}
           className={cn(
-            'absolute left-0 top-[110%] w-[200px] rounded bg-secondary text-secondary-foreground p-1'
+            'absolute left-0 top-[110%] w-[240px] rounded border text-secondary-foreground py-1 px-2 bg-background'
           )}
         >
           <ul className='flex flex-col gap-1'>
@@ -85,7 +94,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
                         'w-full cursor-pointer rounded p-1 px-2 text-start text-sm font-medium transition-colors ',
                         activeAuthors.some((activeAuthor) => activeAuthor === author.login)
                           ? 'bg-active text-active-foreground'
-                          : 'hover:bg-background/80 focus:bg-background/80'
+                          : 'hover:bg-muted/80 focus:bg-muted/80'
                       )}
                     >
                       {author.login}
@@ -94,7 +103,18 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({ onClick, activeAut
                 ))
               ) : (
                 <li>
-                  <h4 className='text-center text-base'>empty</h4>
+                  <h4 className=' text-center text-base'>
+                    {createAuthorAbility ? (
+                      <Link
+                        href={`${HREFS.create.author}?login=${debounced}`}
+                        className={buttonVariants({ variant: 'link' })}
+                      >
+                        Author not found, you can add it yourself
+                      </Link>
+                    ) : (
+                      'not found'
+                    )}
+                  </h4>
                 </li>
               ))}
             {(isLoading || isError) && <AuthorSearchSkeletons count={5} />}

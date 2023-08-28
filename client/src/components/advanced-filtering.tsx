@@ -254,7 +254,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
                 <h3 className='ml-2 text-base font-medium'>Themes</h3>
                 <ThemesList
                   themes={themes}
-                  onClickItem={onClickTheme}
+                  onClickItem={(theme) => onClickTheme(theme.title)}
                   activeThemes={activeThemes}
                 />
               </div>

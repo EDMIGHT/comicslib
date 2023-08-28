@@ -83,7 +83,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
         </div>
       </div>
       <div>
-        <p>{desc}</p>
+        <p className='text-sm '>{desc}</p>
       </div>
       <div className='flex gap-2'>
         <div className='flex flex-1 flex-col gap-2'>
