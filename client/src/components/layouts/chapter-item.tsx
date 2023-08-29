@@ -24,23 +24,23 @@ export const ChapterItem: FC<ChapterItemProps> = ({
   return (
     <div
       className={cn(
-        'flex items-center justify-between gap-2 shadow-sm transition-colors ',
+        'grid grid-cols-[minmax(250px,_1fr)_auto_150px] items-center justify-between gap-2 shadow-sm transition-colors ',
         variant === 'default' &&
           'rounded border bg-card text-card-foreground hover:bg-card/80',
         variant === 'transparent' && 'border-l-8 border-active hover:bg-active/20'
       )}
     >
-      <Link href={`${HREFS.chapter}/${id}`} className='flex-1 p-2'>
+      <Link href={`${HREFS.chapter}/${id}`} className=' p-2'>
         <h3 className='w-[250px] truncate'>
           Ch. {number} {title && `- ${title}`}
         </h3>
       </Link>
-      <div className='flex items-center gap-1'>
-        <ChapterUserInfo {...user} />
-        <Link href={`${HREFS.chapter}/${id}`} className='p-2'>
-          {createdAt && <Time time={new Date(createdAt)} />}
-        </Link>
-      </div>
+
+      <ChapterUserInfo {...user} />
+
+      <Link href={`${HREFS.chapter}/${id}`} className=' p-2'>
+        {createdAt && <Time time={new Date(createdAt)} />}
+      </Link>
     </div>
   );
 };

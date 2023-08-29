@@ -44,7 +44,7 @@ export const createChapter = async (req: Request, res: Response): Promise<Respon
     await Promise.all(
       pages.map(async ({ img, number }) => {
         const uploadedImg = await cloudinary.uploader.upload(img, {
-          folder: 'comics',
+          folder: 'pages',
         });
         return await PageModel.create({
           number,

@@ -100,9 +100,9 @@ export const SignInForm = () => {
           name='login'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>login</FormLabel>
+              <FormLabel>Login</FormLabel>
               <FormControl>
-                <Input placeholder='write login here..' {...field} />
+                <Input placeholder='email@gmail.com' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -113,9 +113,9 @@ export const SignInForm = () => {
           name='password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>password</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder='write password here..' {...field} />
+                <Input placeholder='*******' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
