@@ -46,6 +46,8 @@ const Page = async ({ params: { slug } }: PageProps) => {
     return notFound();
   }
 
+  console.log('res', response);
+
   let bookmark;
   if (isAuth) {
     bookmark = await UserService.getComicBookmark(chapter.comicId);

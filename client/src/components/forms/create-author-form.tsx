@@ -33,6 +33,7 @@ export const CreateAuthorForm: FC<CreateAuthorFormProps> = ({
     resolver: zodResolver(createAuthorSchema),
     defaultValues: {
       login: initialLogin,
+      name: '',
     },
   });
 
@@ -57,7 +58,6 @@ export const CreateAuthorForm: FC<CreateAuthorFormProps> = ({
   });
 
   const onSubmit = (data: ICreateAuthorFields) => {
-    console.log(data);
     createAuthor(data);
   };
 
@@ -90,7 +90,7 @@ export const CreateAuthorForm: FC<CreateAuthorFormProps> = ({
             </FormItem>
           )}
         />
-        <Button isLoading={isLoading} className='ml-auto'>
+        <Button type='submit' isLoading={isLoading} className='ml-auto'>
           Create
         </Button>
       </form>

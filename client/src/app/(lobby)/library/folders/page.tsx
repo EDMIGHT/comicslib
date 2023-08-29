@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ComicsFeed } from '@/components/comics-feed';
 import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
 import { PageHeader } from '@/components/page-header';
+import { HREFS } from '@/configs/href.configs';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { UserService } from '@/services/users.service';
 
@@ -28,7 +29,7 @@ const Page = async ({ searchParams: { tab } }: PageProps) => {
   const folders = await UserService.getAllFolders(user.login);
 
   const variants: NavigationVariants[] = folders.map((fold, i) => ({
-    href: `/library/folders`,
+    href: HREFS.library.folders,
     searchParams: `tab=${fold.id}`,
     title: fold.title,
   }));

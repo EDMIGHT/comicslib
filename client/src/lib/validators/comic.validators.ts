@@ -3,6 +3,7 @@ import * as z from 'zod';
 export const createComicSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(2, 'The minimum title length is 2 characters')
     .max(190, 'The maximum title length is 190 characters'),
   statusId: z.string({
@@ -26,7 +27,7 @@ export const createComicSchema = z.object({
     message: 'You have to select at least one theme',
   }),
   releasedAt: z.date({
-    required_error: 'A date of birth is required.',
+    required_error: 'A date of release is required.',
   }),
 });
 

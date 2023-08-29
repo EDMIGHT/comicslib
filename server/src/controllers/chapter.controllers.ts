@@ -5,6 +5,7 @@ import { ComicModel } from '@/models/comic.model';
 import { PageModel } from '@/models/page.model';
 import { IRequestChapter } from '@/types/chapter.types';
 import { ISortOrder } from '@/types/common.types';
+import cloudinary from '@/utils/cloudinary';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
@@ -39,16 +40,21 @@ export const createChapter = async (req: Request, res: Response): Promise<Respon
   const { pages, ...chapterData } = req.body as IRequestChapter;
   try {
     const chapter = await ChapterModel.create({ ...chapterData, userId: req.user.id });
-    const createdPages = await Promise.all(
-      pages.map(async (pageData) => {
+
+    await Promise.all(
+      pages.map(async ({ img, number }) => {
+        const uploadedImg = await cloudinary.uploader.upload(img, {
+          folder: 'comics',
+        });
         return await PageModel.create({
-          ...pageData,
+          number,
+          img: uploadedImg.secure_url,
           chapterId: chapter.id,
         });
       })
     );
     await ComicModel.refreshUpdatedAt(chapter.comicId);
-    return CustomResponse.created(res, { chapter, createdPages });
+    return CustomResponse.created(res, chapter);
   } catch (error) {
     return serverErrorResponse({
       res,

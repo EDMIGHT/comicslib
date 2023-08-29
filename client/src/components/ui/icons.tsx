@@ -28,6 +28,7 @@ import {
   MoreHorizontal,
   Orbit,
   Palette,
+  Pencil,
   PlusCircle,
   Scale,
   Search,
@@ -77,6 +78,7 @@ export const Icons = {
     </svg>
   ),
   delete: Trash2,
+  edit: Pencil,
   logOut: LogOut,
   listPlus: ListPlus,
   filter: Filter,

@@ -36,6 +36,7 @@ export const SOCIAL_HREFS = {
 export const HREFS = {
   titles: TITLE_HREFS,
   comics: '/comics',
+  chapter: '/chapter',
   infoPage: INFO_PAGE_HREFS,
   community: COMMUNITY_HREFS,
   library: LIBRARY_HREFS,

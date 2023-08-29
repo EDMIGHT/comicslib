@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 
 import { Time } from '@/components/ui/time';
+import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 import { IChapterWithUser } from '@/types/chapter.types';
 
@@ -29,14 +30,14 @@ export const ChapterItem: FC<ChapterItemProps> = ({
         variant === 'transparent' && 'border-l-8 border-active hover:bg-active/20'
       )}
     >
-      <Link href={`/chapter/${id}`} className='flex-1 p-2'>
+      <Link href={`${HREFS.chapter}/${id}`} className='flex-1 p-2'>
         <h3 className='w-[250px] truncate'>
           Ch. {number} {title && `- ${title}`}
         </h3>
       </Link>
       <div className='flex items-center gap-1'>
         <ChapterUserInfo {...user} />
-        <Link href={`/chapter/${id}`} className='p-2'>
+        <Link href={`${HREFS.chapter}/${id}`} className='p-2'>
           {createdAt && <Time time={new Date(createdAt)} />}
         </Link>
       </div>

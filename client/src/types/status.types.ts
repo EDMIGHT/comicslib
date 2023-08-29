@@ -1,4 +1,4 @@
 export type IStatus = {
   id: string;
-  name: string;
+  name: 'ongoing' | 'completed' | 'hiatus' | 'cancelled';
 };

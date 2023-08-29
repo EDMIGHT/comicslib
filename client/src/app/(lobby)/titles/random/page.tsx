@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import { HREFS } from '@/configs/href.configs';
 import { createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
@@ -20,7 +21,7 @@ const Page = () => {
   useEffect(() => {
     const redirectToRandomComic = async () => {
       const { randomId } = await ComicsService.getRandomId();
-      router.push(`/comics/${randomId}`);
+      router.push(`${HREFS.comics}/${randomId}`);
     };
 
     redirectToRandomComic();
