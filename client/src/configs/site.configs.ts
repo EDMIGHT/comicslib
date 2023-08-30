@@ -8,6 +8,8 @@ import {
 
 import { HREFS } from './href.configs';
 
+export const SITE_THEMES: string[] = ['light', 'dark', 'gray'];
+
 export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
   {
     title: 'github',

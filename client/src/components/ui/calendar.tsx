@@ -73,7 +73,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                 handleChange(value);
               }}
             >
-              <SelectTrigger className='border-none pr-1.5 focus:ring-0'>
+              <SelectTrigger className='border-none p-1 focus:ring-0'>
                 <SelectValue>{selected?.props?.children}</SelectValue>
               </SelectTrigger>
               <SelectContent position='popper'>
