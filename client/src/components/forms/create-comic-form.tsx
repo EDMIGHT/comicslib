@@ -171,32 +171,33 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                     <FormLabel isRequired>Release Date</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'w-[240px] pl-3 text-left font-normal',
-                              !field.value && 'text-muted-foreground'
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, 'PPP')
-                            ) : (
-                              <span>pick a release date</span>
-                            )}
-                            <Icons.calendar className='ml-auto h-4 w-4 opacity-50' />
-                          </Button>
-                        </FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn(
+                            'w-[260px] pl-3 text-left font-normal',
+                            !field.value && 'text-muted-foreground'
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, 'PPP')
+                          ) : (
+                            <span>pick a release date</span>
+                          )}
+                          <Icons.calendar className='ml-auto h-4 w-4 opacity-50' />
+                        </Button>
                       </PopoverTrigger>
-                      <PopoverContent className='w-auto p-0' align='start'>
+                      <PopoverContent align='start' className=' w-auto p-0'>
                         <Calendar
                           mode='single'
+                          captionLayout='dropdown-buttons'
                           selected={field.value}
                           onSelect={field.onChange}
                           disabled={(date) =>
                             date > new Date() || date < new Date('1900-01-01')
                           }
                           initialFocus
+                          fromYear={1960}
+                          toYear={2030}
                         />
                       </PopoverContent>
                     </Popover>

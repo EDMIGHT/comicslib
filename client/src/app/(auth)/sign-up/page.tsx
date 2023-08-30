@@ -1,5 +1,5 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { FC } from 'react';
 
 import { SignUpForm } from '@/components/forms/sign-up-form';
 import { buttonVariants } from '@/components/ui/button';
@@ -14,9 +14,12 @@ import {
 import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 
-type PageProps = {};
+export const metadata: Metadata = {
+  title: 'Sign Up',
+  description: 'Page for user registration',
+};
 
-const Page: FC<PageProps> = ({}) => {
+const Page = () => {
   return (
     <Card className='w-[400px]' variant='transparent'>
       <CardHeader>

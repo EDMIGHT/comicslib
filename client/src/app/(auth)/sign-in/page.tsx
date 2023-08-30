@@ -1,4 +1,4 @@
-import { Metadata, NextPage } from 'next';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { SignInForm } from '@/components/forms/sign-in-form';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: 'Page for user authorization',
 };
 
-const SignInPage: NextPage = () => {
+const Page = () => {
   return (
     <Card className='w-[400px]' variant='transparent'>
       <CardHeader>
@@ -43,4 +43,4 @@ const SignInPage: NextPage = () => {
   );
 };
 
-export default SignInPage;
+export default Page;
