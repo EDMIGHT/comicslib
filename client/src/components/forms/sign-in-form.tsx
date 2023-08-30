@@ -5,8 +5,8 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
+import { PasswordInput } from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -17,19 +17,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useAppDispatch } from '@/hooks/reduxHooks';
-import { useActions } from '@/hooks/use-actions';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { saveTokens } from '@/lib/helpers/token.helper';
-import { signInValidation } from '@/lib/validators/auth.validators';
+import { ISignInFields, signInValidation } from '@/lib/validators/auth.validators';
 import { AuthService } from '@/services/auth.service';
-
-export type ISignInFields = z.infer<typeof signInValidation>;
 
 export const SignInForm = () => {
   const router = useRouter();
-  const { setUser } = useActions();
-  const { toast } = useToast();
+
   const form = useForm<ISignInFields>({
     resolver: zodResolver(signInValidation),
     defaultValues: {
@@ -52,13 +47,12 @@ export const SignInForm = () => {
           refreshToken: data.refreshToken,
           expiresIn: data.expiresIn,
         });
-        setUser(data.user);
       }
 
       return data;
     },
     onSuccess: () => {
-      router.back();
+      router.replace('/');
       router.refresh();
     },
     onError: (err) => {
@@ -102,7 +96,7 @@ export const SignInForm = () => {
             <FormItem>
               <FormLabel>Login</FormLabel>
               <FormControl>
-                <Input placeholder='email@gmail.com' {...field} />
+                <Input placeholder='alex123' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -115,7 +109,7 @@ export const SignInForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder='*******' {...field} />
+                <PasswordInput placeholder='*******' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

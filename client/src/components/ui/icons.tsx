@@ -10,6 +10,8 @@ import {
   ChevronsRight,
   ChevronsUpDown,
   Eraser,
+  Eye,
+  EyeOff,
   Filter,
   FolderOpen,
   Github,
@@ -103,6 +105,7 @@ export const Icons = {
     </svg>
   ),
   history: History,
+  hide: EyeOff,
   home: Home,
   library: Library,
   link: ChevronsRight,
@@ -130,5 +133,6 @@ export const Icons = {
   uploadCloud: UploadCloud,
   upload: Upload,
   user: User2,
+  view: Eye,
   warning: AlertTriangle,
 };

@@ -1,3 +1,8 @@
+export const AUTH_HREFS = {
+  signIn: 'sign-in',
+  signUp: 'sign-up',
+};
+
 export const TITLE_HREFS = {
   advancedSearch: '/titles',
   recentlyAdded: '/titles/recently-added',
@@ -34,6 +39,7 @@ export const SOCIAL_HREFS = {
 };
 
 export const HREFS = {
+  auth: AUTH_HREFS,
   titles: TITLE_HREFS,
   comics: '/comics',
   chapter: '/chapter',
@@ -42,4 +48,5 @@ export const HREFS = {
   library: LIBRARY_HREFS,
   socials: SOCIAL_HREFS,
   create: CREATE_HREFS,
+  profile: '/profile',
 };

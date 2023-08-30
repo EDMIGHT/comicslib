@@ -40,11 +40,7 @@ export const generateStaticParams = async () => {
 const Page = async ({ params }: PageProps) => {
   const content = await getPageContentFromParams(params);
 
-  console.log(123);
-
   if (!content) {
-    console.log(321);
-
     notFound();
   }
 

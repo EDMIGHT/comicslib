@@ -1,18 +1,21 @@
 import axios from 'axios';
 
-import { ISignInFields } from '@/components/forms/sign-in-form';
 import { API_AUTH_URL } from '@/configs/url.configs';
 import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
 import { isServer } from '@/lib/utils';
+import { ISignInFields, ISignUpFields } from '@/lib/validators/auth.validators';
 import { ITokens } from '@/types/response.types';
 import { IResponseAuth, IUser } from '@/types/user.types';
 
 import { apiAuth } from './apiAuth';
 
-type ISignUpFields = {};
+export type IRequestSignUpBody = Pick<ISignUpFields, 'login' | 'password' | 'name'>;
 
 export class AuthService {
-  public static async auth(type: 'signIn' | 'signUp', data: ISignInFields | ISignUpFields) {
+  public static async auth(
+    type: 'signIn' | 'signUp',
+    data: ISignInFields | IRequestSignUpBody
+  ) {
     const response = await apiAuth<IResponseAuth>({
       url: API_AUTH_URL[type],
       method: 'POST',

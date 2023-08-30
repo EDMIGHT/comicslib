@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 
 import { Icons } from '@/components/ui/icons';
+import { HREFS } from '@/configs/href.configs';
 import { PROFILE_NAVIGATION } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 
@@ -23,10 +24,10 @@ export const ProfileMenu: FC<IProfileMenuProps> = ({ login }) => {
           <li key={i + 'profile'} className=''>
             <h3>
               <Link
-                href={`/profile/${login}${navItem.href}`}
+                href={`${HREFS.profile}/${login}${navItem.href}`}
                 className={cn(
                   'w-full text-base justify-start hover:no-underline flex gap-1 py-1 px-2 rounded font-semibold',
-                  pathname === `/profile/${login}${navItem.href}`
+                  pathname === `${HREFS.profile}/${login}${navItem.href}`
                     ? 'bg-active text-active-foreground'
                     : 'hover:bg-background/30 focus:bg-background/30'
                 )}

@@ -9,6 +9,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { HREFS } from '@/configs/href.configs';
 import { AUTH_MENU_NAVIGATION } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 import { IUser } from '@/types/user.types';
@@ -83,7 +84,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
             <ul className='flex w-full flex-col space-y-1'>
               <li>
                 <Link
-                  href='/sign-in'
+                  href={HREFS.auth.signIn}
                   className={cn(buttonVariants({ variant: 'ghost' }), 'w-full')}
                   onClick={() => setOpen(false)}
                 >
@@ -92,7 +93,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
               </li>
               <li>
                 <Link
-                  href='/sign-in'
+                  href={HREFS.auth.signUp}
                   className={cn(buttonVariants({ variant: 'ghost' }), 'w-full')}
                   onClick={() => setOpen(false)}
                 >

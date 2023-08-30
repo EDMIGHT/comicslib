@@ -1,7 +1,7 @@
-import { Metadata, NextPage } from 'next';
 import Link from 'next/link';
+import { FC } from 'react';
 
-import { SignInForm } from '@/components/forms/sign-in-form';
+import { SignUpForm } from '@/components/forms/sign-up-form';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Card,
@@ -14,28 +14,25 @@ import {
 import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 
-export const metadata: Metadata = {
-  title: 'Sign In',
-  description: 'Page for user authorization',
-};
+type PageProps = {};
 
-const SignInPage: NextPage = () => {
+const Page: FC<PageProps> = ({}) => {
   return (
     <Card className='w-[400px]' variant='transparent'>
       <CardHeader>
-        <CardTitle className='text-2xl'>Sign In</CardTitle>
+        <CardTitle className='text-2xl'>Sign Up</CardTitle>
       </CardHeader>
       <CardContent>
-        <SignInForm />
+        <SignUpForm />
       </CardContent>
       <CardFooter>
         <CardDescription>
-          Don&apos;t have an account?{' '}
+          Already have an account?{' '}
           <Link
-            href={HREFS.auth.signUp}
+            href={HREFS.auth.signIn}
             className={cn(buttonVariants({ variant: 'link' }), 'p-0')}
           >
-            Sign up
+            Sign in
           </Link>
         </CardDescription>
       </CardFooter>
@@ -43,4 +40,4 @@ const SignInPage: NextPage = () => {
   );
 };
 
-export default SignInPage;
+export default Page;
