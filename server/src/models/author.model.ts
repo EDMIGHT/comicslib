@@ -43,6 +43,13 @@ export class AuthorModel {
       },
     });
   }
+  public static async getByLogin(login: string): Promise<Author | null> {
+    return prisma.author.findFirst({
+      where: {
+        login,
+      },
+    });
+  }
   public static async create(data: ICreateAuthorArg): Promise<Author> {
     return prisma.author.create({
       data,

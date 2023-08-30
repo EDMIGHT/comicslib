@@ -8,7 +8,7 @@ import { ChapterControl } from '@/components/chapter-control';
 import { PageBackground } from '@/components/page-background';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { createTitle } from '@/lib/utils';
-import { PagesService } from '@/services/pages.service';
+import { ChaptersService } from '@/services/chapters.service';
 import { UserService } from '@/services/users.service';
 
 type PageProps = {
@@ -21,7 +21,7 @@ export async function generateMetadata({ params: { slug } }: PageProps): Promise
   const chapterId = slug[0];
   const page = slug[1] ?? '1';
 
-  const { chapter } = await PagesService.get({ chapterId, page });
+  const { chapter } = await ChaptersService.getPage({ chapterId, page });
 
   if (!chapter) {
     return notFound();
@@ -38,15 +38,13 @@ const Page = async ({ params: { slug } }: PageProps) => {
   const chapterId = slug[0];
   const page = slug[1] ?? '1';
 
-  const response = await PagesService.get({ chapterId, page });
+  const response = await ChaptersService.getPage({ chapterId, page });
   const { chapter } = response;
   const isAuth = getServerAccessToken();
 
   if (!response) {
     return notFound();
   }
-
-  console.log('res', response);
 
   let bookmark;
   if (isAuth) {

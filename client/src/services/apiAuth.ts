@@ -3,15 +3,7 @@ import axios from 'axios';
 import { getAccessToken, getServerAccessToken } from '@/lib/helpers/token.helper';
 import { isServer } from '@/lib/utils';
 
-export const getContentType = () => ({
-  'Content-Type': 'application/json',
-});
-
-export const errorCatch = (error: any): string => {
-  const message = error?.response?.data?.message;
-
-  return message ? message : error.message;
-};
+import { getContentType } from './api';
 
 export const apiAuth = axios.create({
   baseURL: process.env.API_HOST,

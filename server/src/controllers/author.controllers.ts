@@ -28,7 +28,23 @@ export const getAllAuthors = async (req: Request, res: Response): Promise<Respon
   } catch (error) {
     return serverErrorResponse({
       res,
-      message: 'error while receiving genres on server side',
+      message: 'error while receiving authors on server side',
+      error,
+    });
+  }
+};
+
+export const getAuthor = async (req: Request, res: Response): Promise<Response> => {
+  const { title } = req.params;
+
+  try {
+    const author = await AuthorModel.getByLogin(title);
+
+    return CustomResponse.ok(res, author);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'error while receiving author on server side',
       error,
     });
   }

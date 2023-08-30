@@ -31,7 +31,3 @@ dist-ssr
 *.sln
 *.sw?
 
-# other
-/uploads/*
-!/uploads/default-avatar.jpg
-!/uploads/default-comics.jpg

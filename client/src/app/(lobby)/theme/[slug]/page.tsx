@@ -10,6 +10,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { TITLE_HREFS } from '@/configs/href.configs';
 import { capitalizeFirstLetter, cn, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
+import { ThemesService } from '@/services/themes.service';
 
 type PageProps = {
   params: {
@@ -18,14 +19,26 @@ type PageProps = {
 };
 
 export async function generateMetadata({ params: { slug } }: PageProps): Promise<Metadata> {
+  const theme = await ThemesService.getByTitle(slug);
+
+  if (!theme) {
+    return {};
+  }
+
   return {
-    title: createTitle(capitalizeFirstLetter(decodeURIComponent(slug))),
+    title: createTitle(capitalizeFirstLetter(theme.title)),
   };
 }
 
 const Page = async ({ params: { slug } }: PageProps) => {
+  const theme = await ThemesService.getByTitle(slug);
+
+  if (!theme) {
+    notFound();
+  }
+
   const topComics = await ComicsService.getAll({
-    themes: slug,
+    themes: theme.title,
     limit: 9,
   });
 
@@ -33,7 +46,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
     return notFound();
   }
 
-  const capitalizedTitle = capitalizeFirstLetter(decodeURIComponent(slug));
+  const capitalizedTitle = capitalizeFirstLetter(theme.title);
 
   return (
     <div className='space-y-4'>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_AUTH_URL } from '@/configs/url.configs';
+import { API_AUTH_URL } from '@/configs/endpoint.configs';
 import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
 import { isServer } from '@/lib/utils';
 import { ISignInFields, ISignUpFields } from '@/lib/validators/auth.validators';

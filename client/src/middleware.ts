@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { API_AUTH_URL, PUBLIC_URL } from '@/configs/url.configs';
+import { API_AUTH_URL } from '@/configs/endpoint.configs';
 import { Tokens } from '@/lib/helpers/token.helper';
+
+import { HREFS } from './configs/href.configs';
 
 // '/library/:path*'
 export const config = {
@@ -13,7 +15,7 @@ export async function middleware(req: NextRequest) {
   const refreshToken = req.cookies.get(Tokens.REFRESH)?.value;
 
   if (!refreshToken) {
-    return NextResponse.redirect(new URL(PUBLIC_URL.signIn, req.url));
+    return NextResponse.redirect(new URL(HREFS.auth.signIn, req.url));
   }
 
   const fetchUrl = process.env.API_HOST + API_AUTH_URL.tokens;
@@ -38,7 +40,7 @@ export async function middleware(req: NextRequest) {
       return newResponse;
     } else {
       req.cookies.delete(Tokens.REFRESH);
-      return NextResponse.redirect(new URL(PUBLIC_URL.signIn, req.url));
+      return NextResponse.redirect(new URL(HREFS.auth.signIn, req.url));
     }
   }
 

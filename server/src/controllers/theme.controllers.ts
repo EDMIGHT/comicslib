@@ -18,6 +18,22 @@ export const getAllThemes = async (req: Request, res: Response): Promise<Respons
   }
 };
 
+export const getTheme = async (req: Request, res: Response): Promise<Response> => {
+  const { title } = req.params;
+
+  try {
+    const theme = await ThemeModel.getByTitle(title);
+
+    return CustomResponse.ok(res, theme);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'error while receiving theme on server side',
+      error,
+    });
+  }
+};
+
 export const createTheme = async (req: Request, res: Response): Promise<Response> => {
   try {
     const status = await ThemeModel.create({ ...req.body });

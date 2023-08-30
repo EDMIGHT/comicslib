@@ -1,3 +1,4 @@
+import { StatusName } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import { StatusModel } from '@/models/status.model';
@@ -13,6 +14,22 @@ export const getAllStatuses = async (req: Request, res: Response): Promise<Respo
     return serverErrorResponse({
       res,
       message: 'error while receiving statuses on server side',
+      error,
+    });
+  }
+};
+
+export const getStatus = async (req: Request, res: Response): Promise<Response> => {
+  const { name } = req.params;
+
+  try {
+    const status = await StatusModel.getByName(name as StatusName);
+
+    return CustomResponse.ok(res, status);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'error while receiving status on server side',
       error,
     });
   }

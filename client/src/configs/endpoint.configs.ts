@@ -20,20 +20,16 @@ export const API_AUTHORS_URL = {
   origin: '/authors',
 };
 
-export const API_CHAPTERS_URL = {
+export const API_CHAPTERS_ENDPOINTS = {
   origin: '/chapters',
 };
 
-export const API_STATUSES_URL = {
+export const API_STATUSES_ENDPOINTS = {
   origin: '/statuses',
 };
 
-export const API_THEMES_URL = {
+export const API_THEMES_ENDPOINTS = {
   origin: '/themes',
-};
-
-export const API_PAGES_URL = {
-  origin: '/pages',
 };
 
 export const API_COMMENTS_URL = {

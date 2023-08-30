@@ -1,5 +1,5 @@
 import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
-import { API_USERS_ENDPOINTS } from '@/configs/url.configs';
+import { API_USERS_ENDPOINTS } from '@/configs/endpoint.configs';
 import { IResponseAllSubscribedComics } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {

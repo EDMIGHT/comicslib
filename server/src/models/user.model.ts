@@ -4,12 +4,9 @@ import prisma from '@/db/prisma';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { IProfile } from '@/types/user.types';
 
-type ICreateUserArg = Omit<User, 'id'>;
+type ICreateUserArg = Pick<User, 'login' | 'password' | 'name'>;
 
-const defaultUserImg = process.env.USER_DEFAULT_IMG_PATH;
-const hostURL = `http://localhost:${process.env.PORT}/`;
-
-const hostWithImgPath = hostURL + defaultUserImg;
+const defaultUserImg = process.env.USER_DEFAULT_IMG_PATH!;
 
 type IGetAllArg = ISortArg &
   IPaginationArg & {
@@ -88,7 +85,7 @@ export class UserModel {
     return prisma.user.create({
       data: {
         ...data,
-        img: data.img || hostWithImgPath,
+        img: defaultUserImg,
       },
     });
   }

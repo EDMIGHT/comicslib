@@ -14,7 +14,6 @@ const app = express();
 app.use(express.json({ limit: '55mb' }));
 app.use(cors());
 app.use('/api', routes);
-app.use('/uploads', express.static('uploads'));
 
 const main = async (): Promise<void> => {
   app.listen(PORT, () => {

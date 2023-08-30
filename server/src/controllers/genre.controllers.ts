@@ -18,6 +18,22 @@ export const getAllGenres = async (req: Request, res: Response): Promise<Respons
   }
 };
 
+export const getGenre = async (req: Request, res: Response): Promise<Response> => {
+  const { title } = req.params;
+
+  try {
+    const genre = await GenreModel.getByTitle(title);
+
+    return CustomResponse.ok(res, genre);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'error while receiving genre on server side',
+      error,
+    });
+  }
+};
+
 export const createGenre = async (req: Request, res: Response): Promise<Response> => {
   try {
     const genre = await GenreModel.create({ ...req.body });

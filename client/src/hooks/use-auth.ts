@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { API_AUTH_URL } from '@/configs/url.configs';
+import { API_AUTH_URL } from '@/configs/endpoint.configs';
 import { getAccessToken } from '@/lib/helpers/token.helper';
 import { apiAuth } from '@/services/apiAuth';
 import { IUser } from '@/types/user.types';

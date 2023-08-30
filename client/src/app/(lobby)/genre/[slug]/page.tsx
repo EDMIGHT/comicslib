@@ -7,8 +7,10 @@ import { ComicsFeed } from '@/components/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { SectionHeader } from '@/components/section-header';
 import { buttonVariants } from '@/components/ui/button';
+import { HREFS } from '@/configs/href.configs';
 import { capitalizeFirstLetter, cn, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
+import { GenresService } from '@/services/genres.service';
 
 type PageProps = {
   params: {
@@ -17,22 +19,30 @@ type PageProps = {
 };
 
 export async function generateMetadata({ params: { slug } }: PageProps): Promise<Metadata> {
+  const genre = await GenresService.getByTitle(slug);
+
+  if (!genre) {
+    return {};
+  }
+
   return {
-    title: createTitle(capitalizeFirstLetter(decodeURIComponent(slug))),
+    title: createTitle(capitalizeFirstLetter(genre.title)),
   };
 }
 
 const Page = async ({ params: { slug } }: PageProps) => {
+  const genre = await GenresService.getByTitle(slug);
+
+  if (!genre) {
+    notFound();
+  }
+
   const topComics = await ComicsService.getAll({
-    genres: slug,
+    genres: genre.title,
     limit: 9,
   });
 
-  if (!topComics) {
-    return notFound();
-  }
-
-  const capitalizedTitle = capitalizeFirstLetter(decodeURIComponent(slug));
+  const capitalizedTitle = capitalizeFirstLetter(genre.title);
 
   return (
     <div className='space-y-4'>
@@ -42,7 +52,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
         <TripleComicCarousel comics={topComics.comics} />
         <div className='flex w-full items-center justify-center'>
           <Link
-            href={`/comics?genre=${slug}`}
+            href={`${HREFS.titles.advancedSearch}?genre=${slug}`}
             className={cn(buttonVariants({ variant: 'link' }))}
           >
             <h3 className='text-center text-xl'>

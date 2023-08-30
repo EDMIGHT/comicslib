@@ -1,4 +1,4 @@
-import { API_AUTHORS_URL } from '@/configs/url.configs';
+import { API_AUTHORS_URL } from '@/configs/endpoint.configs';
 import { ICreateAuthorFields } from '@/lib/validators/author.validators';
 import { IAuthor, IResponseAllAuthors } from '@/types/author.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';

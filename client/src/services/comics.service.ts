@@ -1,5 +1,5 @@
 import { PAGINATION_LIMIT_CONFIG, SORT_VARIANTS } from '@/configs/site.configs';
-import { API_COMICS_URL } from '@/configs/url.configs';
+import { API_COMICS_URL } from '@/configs/endpoint.configs';
 import { ICreateComicFields } from '@/lib/validators/comic.validators';
 import {
   IComic,
