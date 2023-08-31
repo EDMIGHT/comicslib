@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { FC, HTMLAttributes } from 'react';
@@ -24,14 +26,11 @@ export const GenresList: FC<GenresListProps> = ({
   return (
     <>
       {genres.length > 0 ? (
-        <ul {...rest} className={cn('flex gap-1', className)}>
+        <ul {...rest} className={cn('flex flex-wrap gap-1', className)}>
           {genres.map((genre) => (
             <li key={genre.id}>
               <Badge
-                onClick={() =>
-                  // onClick ? onClick(genre.title) : redirect(`/genre/${genre.title}`)
-                  onClickItem && onClickItem(genre)
-                }
+                onClick={() => onClickItem && onClickItem(genre)}
                 className='capitalize'
                 variant={
                   activeGenres?.some((activeGen) => activeGen === genre.title)

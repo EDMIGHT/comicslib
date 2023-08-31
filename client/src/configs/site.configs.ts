@@ -88,8 +88,15 @@ export const INFO_PAGE_NAVIGATION: NavigationLink[] = [
   },
 ];
 
+export const SITE_META = {
+  og: {
+    page: '/api/meta/og',
+  },
+};
+
 export const SITE_CONFIG: SiteConfig = {
   name: 'comicslib',
+  desc: 'web application whose purpose is to provide comics viewing services',
   logo: 'logo',
   navigation: [
     {

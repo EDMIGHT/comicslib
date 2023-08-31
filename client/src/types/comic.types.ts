@@ -14,9 +14,9 @@ export type IComic = {
   title: string;
   desc: string | null;
   img: string;
-  createdAt: Date;
-  updatedAt: Date;
-  releasedAt: Date;
+  createdAt: string;
+  updatedAt: string;
+  releasedAt: string;
 };
 
 export type IShortComic = {

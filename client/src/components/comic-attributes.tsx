@@ -3,18 +3,18 @@
 import Link from 'next/link';
 import { FC, useState } from 'react';
 
+import { Badge } from '@/components/ui/badge';
+import { ButtonProps, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { IGenre } from '@/types/genre.types';
 import { ITheme } from '@/types/theme.types';
-
-import { Badge } from './ui/badge';
-import { Button, buttonVariants } from './ui/button';
 
 type ComicAttributesProps = {
   genres: IGenre[];
   themes: ITheme[];
   limit?: number;
   isLink?: boolean;
+  variant?: ButtonProps['variant'];
 };
 
 export const ComicAttributes: FC<ComicAttributesProps> = ({
@@ -22,6 +22,7 @@ export const ComicAttributes: FC<ComicAttributesProps> = ({
   themes,
   limit = 5,
   isLink = true,
+  variant,
 }) => {
   const [showAll, setShowAll] = useState(false);
 
@@ -52,15 +53,20 @@ export const ComicAttributes: FC<ComicAttributesProps> = ({
             {isLink ? (
               <Link
                 className={cn(
-                  buttonVariants({ variant: 'ghost' }),
-                  'py-1 h-fit px-1 text-xs font-semibold uppercase'
+                  buttonVariants({ variant: variant ?? 'ghost' }),
+                  'h-fit px-1 py-0 text-xs font-semibold uppercase'
                 )}
                 href={attr.href}
               >
                 {attr.title}
               </Link>
             ) : (
-              <Badge className='h-fit px-1 py-0 text-xs font-semibold uppercase'>
+              <Badge
+                className={cn(
+                  buttonVariants({ variant: variant ?? 'default' }),
+                  'px-1 py-0 h-fit text-xs font-semibold uppercase'
+                )}
+              >
                 {attr.title}
               </Badge>
             )}

@@ -48,6 +48,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     status,
     chapters,
     countUniqueSubscribes,
+    releasedAt,
   } = comic;
 
   const variants: NavigationVariants[] = [
@@ -85,12 +86,12 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
       <div>
         <p className='text-sm '>{desc}</p>
       </div>
-      <div className='flex gap-2'>
+      <div className='grid grid-cols-[1fr_auto] gap-4'>
         <div className='flex flex-1 flex-col gap-2'>
           <NavigationBtns variants={variants} />
           {children}
         </div>
-        <ComicInfo genres={genres} authors={authors} status={status} />
+        <ComicInfo genres={genres} authors={authors} status={status} releasedAt={releasedAt} />
       </div>
     </div>
   );

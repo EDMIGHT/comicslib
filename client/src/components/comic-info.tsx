@@ -1,23 +1,27 @@
+import { format } from 'date-fns';
 import { FC } from 'react';
 
 import { Badge } from '@/components/ui/badge';
-import { IAuthor } from '@/types/author.types';
-import { IGenre } from '@/types/genre.types';
-import { IStatus } from '@/types/status.types';
+import { IResponseComic } from '@/types/comic.types';
 
-type ComicInfoProps = {
-  genres: IGenre[];
-  authors: IAuthor[];
-  status: IStatus;
-};
+import { GenresList } from './genres-list';
+import { StatusBadge } from './status-badge';
 
-export const ComicInfo: FC<ComicInfoProps> = ({ authors, genres, status }) => {
+type ComicInfoProps = Pick<IResponseComic, 'genres' | 'authors' | 'status' | 'releasedAt'>;
+
+export const ComicInfo: FC<ComicInfoProps> = ({ authors, genres, status, releasedAt }) => {
   return (
-    <div className='flex min-w-[25%] max-w-[400px] flex-col gap-2'>
+    <div className='flex min-w-[30%] max-w-[300px] flex-col gap-2'>
       {status && (
         <div className='flex items-center gap-1'>
           <h2 className='text-xl font-semibold'>Status:</h2>
-          <Badge className='h-fit uppercase'>{status.name}</Badge>
+          <StatusBadge status={status.name} />
+        </div>
+      )}
+      {releasedAt && (
+        <div>
+          <h2 className='text-xl font-semibold'>Released At:</h2>
+          <span className='text-sm'>{format(new Date(releasedAt), 'PPP')}</span>
         </div>
       )}
       {authors && (
@@ -35,13 +39,7 @@ export const ComicInfo: FC<ComicInfoProps> = ({ authors, genres, status }) => {
       {genres && (
         <div>
           <h2 className='text-xl font-semibold'>Genres:</h2>
-          <ul className='flex flex-wrap gap-1'>
-            {genres.map(({ id, title }) => (
-              <li key={id}>
-                <Badge className='uppercase'>{title}</Badge>
-              </li>
-            ))}
-          </ul>
+          <GenresList genres={genres} />
         </div>
       )}
     </div>

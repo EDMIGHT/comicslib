@@ -30,3 +30,7 @@ export const combineString = (value: string | string[] | unknown) => {
 
 export const capitalizeFirstLetter = (word: string): string =>
   word.charAt(0).toUpperCase() + word.slice(1);
+
+export const absoluteUrl = (path: string) => {
+  return `${process.env.APP_URL}${path}`;
+};

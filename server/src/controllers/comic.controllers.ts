@@ -14,10 +14,6 @@ export const createComic = async (req: Request, res: Response): Promise<Response
     const uploadedImg = await cloudinary.uploader.upload(img, {
       folder: 'comics',
     });
-    // .then((result) => {
-    //   console.log(result);
-    //   return result;
-    // });
 
     const comic = await ComicModel.create({ ...rest, img: uploadedImg.secure_url });
 

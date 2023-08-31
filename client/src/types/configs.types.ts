@@ -24,6 +24,7 @@ export type NavigationItem = {
 
 export type SiteConfig = {
   name: string;
+  desc: string;
   logo: keyof typeof Icons;
   navigation: readonly NavigationItem[];
   socials: readonly SocialLink[];
