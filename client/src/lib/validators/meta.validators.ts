@@ -6,3 +6,7 @@ export const ogImageSchema = z.object({
   type: z.string().optional(),
   mode: z.enum(['light', 'dark']).default('dark'),
 });
+
+export const comicOgImageSchema = z.object({
+  comicId: z.string(),
+});

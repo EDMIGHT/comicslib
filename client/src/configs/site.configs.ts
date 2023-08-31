@@ -91,6 +91,7 @@ export const INFO_PAGE_NAVIGATION: NavigationLink[] = [
 export const SITE_META = {
   og: {
     page: '/api/meta/og',
+    comic: '/api/meta/comic-og',
   },
 };
 
