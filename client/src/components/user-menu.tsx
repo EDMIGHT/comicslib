@@ -1,12 +1,11 @@
 'use client';
 
 import { UserCircle2 } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 
 import { Avatar } from '@/components/ui/avatar';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { HREFS } from '@/configs/href.configs';
@@ -17,11 +16,11 @@ import { IUser } from '@/types/user.types';
 import { ThemeSwitcher } from './theme-switcher';
 import { UserAvatar } from './user-avatar';
 
-type AuthMenuProps = {
+type UserMenuProps = {
   user: IUser | null;
 };
 
-export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
+export const UserMenu: FC<UserMenuProps> = ({ user }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -38,9 +37,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
       <PopoverContent className={cn('w-fit min-w-[150px] space-y-2 p-5')}>
         <div className='flex flex-col items-center justify-center gap-1'>
           {user ? (
-            <div className='relative h-12 w-12 overflow-hidden rounded-full'>
-              <Image src={user.img} alt={user.login} fill />
-            </div>
+            <UserAvatar img={user.img} login={user.login} className='h-12 w-12' />
           ) : (
             <UserCircle2 className='h-12 w-12 stroke-1' />
           )}
@@ -51,10 +48,10 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
             <ul className='space-y-1'>
               <li>
                 <Link
-                  href={`/profile/${user.login}`}
+                  href={`${HREFS.profile}/${user.login}`}
                   className={cn(
                     buttonVariants({ variant: 'ghost' }),
-                    'flex justify-start gap-1 hover:opacity-80'
+                    'flex justify-start gap-1 hover:bg-muted'
                   )}
                   onClick={() => setOpen(false)}
                 >
@@ -69,7 +66,7 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
                       href={nav.href}
                       className={cn(
                         buttonVariants({ variant: 'ghost' }),
-                        'flex justify-start gap-1 hover:opacity-80'
+                        'flex justify-start gap-1 hover:bg-muted'
                       )}
                       onClick={() => setOpen(false)}
                     >
@@ -103,24 +100,26 @@ export const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
             </ul>
           )}
         </div>
-        <div className='flex flex-col items-center p-1 '>
-          <ul className='space-y-1'>
+
+        <ul className='space-y-1 p-1'>
+          <li>
+            <ThemeSwitcher className='text-sm font-medium' />
+          </li>
+          {user && (
             <li>
-              <ThemeSwitcher className='text-sm font-medium' />
+              <Link
+                href={HREFS.auth.signOut}
+                className={cn(
+                  buttonVariants({ variant: 'ghost' }),
+                  'flex justify-start gap-1 hover:bg-muted p-1'
+                )}
+                onClick={() => setOpen(false)}
+              >
+                <Icons.logOut /> Sign Out
+              </Link>
             </li>
-            {user && (
-              <li>
-                <Button
-                  variant='ghost'
-                  className='w-full justify-start border-none p-1'
-                  onClick={() => setOpen(false)}
-                >
-                  <Icons.logOut className='mr-1' /> Sign Out
-                </Button>
-              </li>
-            )}
-          </ul>
-        </div>
+          )}
+        </ul>
       </PopoverContent>
     </Popover>
   );

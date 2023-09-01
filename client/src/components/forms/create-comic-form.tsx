@@ -49,9 +49,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
-import { convertFileToBase64 } from '@/lib/helpers/convertToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
-import { cn } from '@/lib/utils';
+import { cn, convertFileToBase64 } from '@/lib/utils';
 import { createComicSchema, ICreateComicFields } from '@/lib/validators/comic.validators';
 import { ComicsService } from '@/services/comics.service';
 import { IGenre } from '@/types/genre.types';
@@ -128,15 +127,18 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                   <FileDialog
                     onSelectFile={(selectedFile) => onSelectFile(field.onChange, selectedFile)}
                   >
-                    <div className='relative flex h-[270px] w-[200px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border p-2 transition-colors hover:bg-muted'>
+                    <div className='group relative flex h-[270px] w-[200px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border p-2 transition-colors hover:bg-muted'>
                       <Icons.uploadCloud className='h-10 w-10' />
                       {field.value && (
-                        <Image
-                          src={field.value}
-                          alt='uploaded img'
-                          className='z-10 object-cover'
-                          fill
-                        />
+                        <>
+                          <Image
+                            src={field.value}
+                            alt='uploaded img'
+                            className='z-10 object-cover  transition-all group-hover:brightness-75'
+                            fill
+                          />
+                          <Icons.edit className='absolute left-1/2 top-1/2 z-20 h-10 w-10 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100' />
+                        </>
                       )}
                       <span className='text-center text-sm font-medium'>
                         Click to upload cover of the comic

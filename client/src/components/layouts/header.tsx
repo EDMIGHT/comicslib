@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
 
-import { AuthMenu } from '@/components/auth-menu';
 import { ComicSearch } from '@/components/comic-search';
 import { MenuSwitcher } from '@/components/menu-switcher';
-import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/ui/icons';
+import { UserMenu } from '@/components/user-menu';
 import { IUser } from '@/types/user.types';
 
 type HeaderProps = {
@@ -20,7 +18,7 @@ export const Header: FC<HeaderProps> = ({ user }) => {
         </div>
         <div className='flex items-center justify-end gap-2'>
           <ComicSearch />
-          <AuthMenu user={user} />
+          <UserMenu user={user} />
         </div>
       </div>
     </header>

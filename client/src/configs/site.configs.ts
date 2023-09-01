@@ -1,10 +1,4 @@
-import {
-  IConfigVariant,
-  ISortVariants,
-  NavigationLink,
-  SiteConfig,
-  SocialLink,
-} from '@/types/configs.types';
+import { ISortVariants, NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
 
 import { HREFS } from './href.configs';
 
@@ -89,9 +83,9 @@ export const INFO_PAGE_NAVIGATION: NavigationLink[] = [
 ];
 
 export const SITE_META = {
-  og: {
-    page: '/api/meta/og',
-    comic: '/api/meta/comic-og',
+  generateOg: {
+    page: `${process.env.APP_URL}/api/meta/og`,
+    comic: `${process.env.APP_URL}/api/meta/comic-og`,
   },
 };
 
@@ -157,7 +151,7 @@ export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
   {
     title: 'My bookmarks',
     href: HREFS.library.bookmarks,
-    icon: 'history',
+    icon: 'bookmark',
   },
 ];
 

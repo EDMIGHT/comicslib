@@ -6,7 +6,9 @@ import { ComicInfo } from '@/components/comic-info';
 import { ComicMenu } from '@/components/comic-menu';
 import { ComicPageImg } from '@/components/comic-page-img';
 import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
-import { createTitle } from '@/lib/utils';
+import { HREFS } from '@/configs/href.configs';
+import { SITE_META } from '@/configs/site.configs';
+import { absoluteUrl, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 type PageProps = {
@@ -23,9 +25,34 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params: { id } }: PageProps): Promise<Metadata> {
-  const data = await ComicsService.getById(id);
+  const comic = await ComicsService.getById(id);
+
+  if (!comic) {
+    return {};
+  }
+
+  const ogUrl = new URL(SITE_META.generateOg.comic);
+  ogUrl.searchParams.set('comicId', comic.id);
+
   return {
-    title: createTitle(data.title),
+    title: createTitle(comic.title),
+    description: `Page for viewing information about the comic with the title: ${comic.title}`,
+    openGraph: {
+      title: comic.title,
+      description:
+        comic.desc ??
+        `Page for viewing information about the comic with the title: ${comic.title}`,
+      type: 'article',
+      url: absoluteUrl(`${HREFS.comics}/${comic.id}`),
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: comic.title,
+        },
+      ],
+    },
   };
 }
 

@@ -1,6 +1,7 @@
 export const AUTH_HREFS = {
   signIn: 'sign-in',
   signUp: 'sign-up',
+  signOut: 'sign-out',
 };
 
 export const TITLE_HREFS = {

@@ -26,9 +26,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
-  const url = process.env.APP_URL;
-
-  const ogUrl = new URL(`${url}${SITE_META.og.page}`);
+  const ogUrl = new URL(SITE_META.generateOg.page);
   ogUrl.searchParams.set('title', content.title);
   ogUrl.searchParams.set('type', 'Document');
   ogUrl.searchParams.set('mode', 'dark');

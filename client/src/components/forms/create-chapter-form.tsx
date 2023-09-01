@@ -37,8 +37,8 @@ import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
-import { convertFileToBase64 } from '@/lib/helpers/convertToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { convertFileToBase64 } from '@/lib/utils';
 import {
   createChapterSchema,
   ICreateChapterFields,

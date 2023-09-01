@@ -7,20 +7,17 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { SITE_THEMES } from '@/configs/site.configs';
+import { useMounted } from '@/hooks/use-mounted';
 import { cn } from '@/lib/utils';
 
 type ThemeSwitcherProps = HTMLAttributes<HTMLDivElement>;
 
 export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({ className, ...rest }) => {
+  const mounted = useMounted();
   const [open, setOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
+  if (!mounted) {
     return null;
   }
 
