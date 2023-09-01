@@ -35,6 +35,11 @@ export type IGetAllQuery = {
 
 type IGetAllArg = IGetAllQuery & ISortArg & IPaginationArg;
 
+type IGetAllUploadedArg = ISortArg &
+  IPaginationArg & {
+    userLogin: string;
+  };
+
 type IGetAllSubscribedComics = ISortArg &
   IPaginationArg & {
     userId: string;
@@ -211,16 +216,6 @@ export class ComicModel {
       skip,
     });
   }
-  public static async refreshUpdatedAt(comicId: string): Promise<Comic> {
-    return prisma.comic.update({
-      where: {
-        id: comicId,
-      },
-      data: {
-        updatedAt: new Date(),
-      },
-    });
-  }
   public static async getAllSubscribedComics({
     userId,
     title,
@@ -287,6 +282,58 @@ export class ComicModel {
         title: {
           startsWith: title,
         },
+      },
+    });
+  }
+  public static async getAllUploadedByUser({
+    userLogin,
+    limit,
+    page,
+    sort,
+    order,
+  }: IGetAllUploadedArg): Promise<IComicWithChapter[]> {
+    const offset = (page - 1) * limit;
+
+    return prisma.comic.findMany({
+      skip: offset,
+      take: limit,
+      where: {
+        chapters: {
+          some: {
+            user: {
+              login: userLogin,
+            },
+          },
+        },
+      },
+      orderBy: {
+        [sort]: order,
+      },
+      include: {
+        chapters: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                login: true,
+                img: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+  }
+  public static async refreshUpdatedAt(comicId: string): Promise<Comic> {
+    return prisma.comic.update({
+      where: {
+        id: comicId,
+      },
+      data: {
+        updatedAt: new Date(),
       },
     });
   }

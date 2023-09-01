@@ -67,6 +67,13 @@ export class ChapterModel {
       },
     });
   }
+  public static async getTotalChapters(comicId: string): Promise<number> {
+    return prisma.chapter.count({
+      where: {
+        comicId,
+      },
+    });
+  }
   public static async create(data: ICreateChapterArg): Promise<IChapterWithUser> {
     return prisma.chapter.create({
       data,
@@ -78,14 +85,6 @@ export class ChapterModel {
             img: true,
           },
         },
-      },
-    });
-  }
-
-  public static async getTotalChapters(comicId: string): Promise<number> {
-    return prisma.chapter.count({
-      where: {
-        comicId,
       },
     });
   }

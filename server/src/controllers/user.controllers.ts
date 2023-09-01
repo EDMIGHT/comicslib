@@ -61,6 +61,37 @@ export const getProfile = async (req: Request, res: Response): Promise<Response>
   }
 };
 
+export const getUploads = async (req: Request, res: Response): Promise<Response> => {
+  const { page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
+  const { login } = req.params;
+
+  try {
+    const existedUser = await UserModel.getByLogin(login);
+
+    if (!existedUser) {
+      return CustomResponse.notFound(res, {
+        message: 'The user for which the downloaded comics are requested does not exist',
+      });
+    }
+
+    const chaptersWithComicInfo = await ComicModel.getAllUploadedByUser({
+      userLogin: login,
+      page: Number(page),
+      limit: Number(limit),
+      sort: sort as string,
+      order: order as ISortOrder,
+    });
+
+    return CustomResponse.ok(res, chaptersWithComicInfo);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error while fetching uploaded comic chapters`,
+      error,
+    });
+  }
+};
+
 export const createFolder = async (req: Request, res: Response): Promise<Response> => {
   try {
     const folder = await FolderModel.create({

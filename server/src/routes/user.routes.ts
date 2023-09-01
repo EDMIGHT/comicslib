@@ -9,6 +9,7 @@ import {
   getBookmarks,
   getFolder,
   getProfile,
+  getUploads,
   getUserBookmarkByComic,
   getUserFolders,
   getUserFoldersByComic,
@@ -31,6 +32,7 @@ router.get('/folders/u/:login/:folderId', getFolder);
 router.get('/folders/:comicId', authentication, getUserFoldersByComic);
 router.get('/comics-subscribed', authentication, getAllSubscribedComics);
 router.get('/profiles/:login', getProfile);
+router.get('/uploads/:login', getUploads);
 
 router.post('/folders', authentication, createFolderValidators, validation, createFolder);
 
