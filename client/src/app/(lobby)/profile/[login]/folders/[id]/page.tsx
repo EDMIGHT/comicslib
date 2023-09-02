@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import { ComicsFeed } from '@/components/comics-feed';
 import { ComicsList } from '@/components/comics-list';
+import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { Icons } from '@/components/ui/icons';
 import { ComicsService } from '@/services/comics.service';
 import { UserService } from '@/services/users.service';

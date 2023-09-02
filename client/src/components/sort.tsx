@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { ISortVariant } from '@/types/configs.types';
 
 type SortProps = {
+  defaultVariantNumber?: number;
   variants: ISortVariant[];
   initialSort?: string;
   initialOrder?: string;
@@ -17,6 +18,7 @@ type SortProps = {
 } & ButtonProps;
 
 export const Sort: FC<SortProps> = ({
+  defaultVariantNumber = 0,
   variants,
   initialOrder,
   initialSort,
@@ -27,7 +29,7 @@ export const Sort: FC<SortProps> = ({
   const initialVariant = variants.find(
     (v) => v.field === initialSort && v.order === initialOrder
   );
-  const [variant, setVariant] = useState(initialVariant ?? variants[0]);
+  const [variant, setVariant] = useState(initialVariant ?? variants[defaultVariantNumber]);
   const [open, setOpen] = useState(false);
 
   const pathname = usePathname();

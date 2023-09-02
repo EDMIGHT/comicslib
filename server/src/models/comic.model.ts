@@ -37,7 +37,8 @@ type IGetAllArg = IGetAllQuery & ISortArg & IPaginationArg;
 
 type IGetAllUploadedArg = ISortArg &
   IPaginationArg & {
-    userLogin: string;
+    title?: string;
+    login: string;
   };
 
 type IGetAllSubscribedComics = ISortArg &
@@ -286,7 +287,8 @@ export class ComicModel {
     });
   }
   public static async getAllUploadedByUser({
-    userLogin,
+    login,
+    title,
     limit,
     page,
     sort,
@@ -297,13 +299,17 @@ export class ComicModel {
     return prisma.comic.findMany({
       skip: offset,
       take: limit,
+
       where: {
         chapters: {
           some: {
             user: {
-              login: userLogin,
+              login,
             },
           },
+        },
+        title: {
+          startsWith: title,
         },
       },
       orderBy: {
@@ -321,7 +327,20 @@ export class ComicModel {
             },
           },
           orderBy: {
-            createdAt: 'desc',
+            number: 'desc',
+          },
+        },
+      },
+    });
+  }
+  public static async getAllCountUploadedByUser(login: string): Promise<number> {
+    return prisma.comic.count({
+      where: {
+        chapters: {
+          some: {
+            user: {
+              login,
+            },
           },
         },
       },

@@ -1,10 +1,11 @@
+import { format } from 'date-fns';
 import { Metadata } from 'next';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 
 import { ProfileFolders } from '@/components/profile-folders';
 import { ProfileMenu } from '@/components/profile-menu';
+import { UserAvatar } from '@/components/user-avatar';
 import { createTitle } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
 
@@ -34,17 +35,18 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
     return notFound();
   }
 
-  // TODO картинку пользователя упаковать в один компонент с остальными
-
   return (
-    <div className='grid grid-cols-profile-md gap-2 md:gap-6'>
-      <div className='relative h-[120px] w-[120px] overflow-hidden rounded-full md:h-[200px] md:w-[200px]'>
-        <Image src={user.img} alt={user.login} fill />
-      </div>
+    <div className='grid grid-cols-[200px_1fr] gap-2 md:gap-6'>
+      <UserAvatar
+        img={user.img}
+        login={user.login}
+        className='h-[120px] w-[120px] md:h-[200px] md:w-[200px]'
+      />
+
       <div className='flex flex-col justify-center gap-1'>
         <h1 className='text-4xl font-semibold'>{user.login}</h1>
         <h2 className='text-sm text-foreground/75'>
-          registered on {new Date(user.createdAt).toLocaleDateString()}
+          registered on {format(new Date(user.createdAt), 'PPP')}
         </h2>
       </div>
 
@@ -52,7 +54,8 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
         <ProfileMenu login={user.login} />
         <ProfileFolders folders={user.folders} login={user.login} />
       </nav>
-      <div>{children}</div>
+
+      {children}
     </div>
   );
 };

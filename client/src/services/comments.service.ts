@@ -1,6 +1,6 @@
 import { ICreateCommentFields } from '@/components/forms/create-comment-form';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
 import { API_COMMENTS_URL } from '@/configs/endpoint.configs';
+import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
 import { IResponseAllComments, IResponseComment } from '@/types/comment.types';
 
 import { api } from './api';

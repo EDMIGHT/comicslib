@@ -10,8 +10,8 @@ import { combineString } from '@/lib/utils';
 import { ComicsService, IGetAllComicsArg } from '@/services/comics.service';
 import { IResponseComic } from '@/types/comic.types';
 
-import { AdvancedQuerySearchParams } from './advanced-filtering';
-import { ComicSkeletons } from './skeletons/comic-skeletons';
+import { AdvancedQuerySearchParams } from '../advanced-filtering';
+import { ComicSkeletons } from '../skeletons/comic-skeletons';
 
 type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses' | 'themes'> & {
   initialComics?: IResponseComic[];

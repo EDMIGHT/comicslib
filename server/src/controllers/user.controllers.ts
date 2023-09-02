@@ -62,7 +62,7 @@ export const getProfile = async (req: Request, res: Response): Promise<Response>
 };
 
 export const getUploads = async (req: Request, res: Response): Promise<Response> => {
-  const { page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
+  const { title = '', page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
   const { login } = req.params;
 
   try {
@@ -74,15 +74,21 @@ export const getUploads = async (req: Request, res: Response): Promise<Response>
       });
     }
 
-    const chaptersWithComicInfo = await ComicModel.getAllUploadedByUser({
-      userLogin: login,
+    const uploadedComics = await ComicModel.getAllUploadedByUser({
+      login: login,
+      title: title as string,
       page: Number(page),
       limit: Number(limit),
       sort: sort as string,
       order: order as ISortOrder,
     });
+    const countUploadedComics = await ComicModel.getAllCountUploadedByUser(login);
 
-    return CustomResponse.ok(res, chaptersWithComicInfo);
+    return CustomResponse.ok(res, {
+      comics: uploadedComics,
+      currentPage: Number(page),
+      totalPages: Math.ceil(countUploadedComics / Number(limit)),
+    });
   } catch (error) {
     return serverErrorResponse({
       res,
@@ -127,8 +133,6 @@ export const getFolder = async (req: Request, res: Response): Promise<Response> 
     });
   }
 };
-
-// TODO оптимизировать
 
 export const getUserFolders = async (req: Request, res: Response): Promise<Response> => {
   const { login } = req.params;

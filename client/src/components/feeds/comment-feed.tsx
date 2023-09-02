@@ -7,8 +7,8 @@ import { useIntersection } from '@/hooks/use-intersection';
 import { CommentsService } from '@/services/comments.service';
 import { IResponseComment } from '@/types/comment.types';
 
-import { Comment } from './layouts/comment';
-import { Icons } from './ui/icons';
+import { Comment } from '../layouts/comment';
+import { Icons } from '../ui/icons';
 
 type CommentFeedProps = {
   initialComments: IResponseComment[];

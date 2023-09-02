@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import { FC } from 'react';
 
+import { UsersFeed } from '@/components/feeds/users-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
-import { UsersFeed } from '@/components/users-feed';
 import { SORT_VARIANTS } from '@/configs/site.configs';
 import { createTitle } from '@/lib/utils';
 

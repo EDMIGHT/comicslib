@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { ComicsFeed } from '@/components/comics-feed';
+import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
 import { PageHeader } from '@/components/page-header';
 import { HREFS } from '@/configs/href.configs';

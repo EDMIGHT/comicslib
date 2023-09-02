@@ -1,6 +1,6 @@
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
 import { API_USERS_ENDPOINTS } from '@/configs/endpoint.configs';
-import { IResponseAllSubscribedComics } from '@/types/comic.types';
+import { PAGINATION_LIMIT_CONFIG, SORT_VARIANTS } from '@/configs/site.configs';
+import { IResponseAllSubscribedComics, IResponseAllUploadedComics } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
   IBookmark,
@@ -25,6 +25,12 @@ export type IGetAllSubscribedComicsArg = IPaginationArg &
     title?: string;
   };
 export type IGetAllBookmarksArg = IPaginationArg &
+  ISortArg & {
+    login: string;
+    title?: string;
+  };
+
+export type IGetAllUploadsArg = IPaginationArg &
   ISortArg & {
     login: string;
     title?: string;
@@ -97,6 +103,21 @@ export class UserService {
   public static async getComicBookmark(comicId: string) {
     const { data } = await apiAuth.get<IBookmark>(
       `${API_USERS_ENDPOINTS.bookmarkComic}/${comicId}`
+    );
+    return data;
+  }
+  public static async getAllUploadedComics({
+    login,
+    title = '',
+    page = 1,
+    limit = PAGINATION_LIMIT_CONFIG.comics,
+    sort = SORT_VARIANTS.comics[2].field,
+    order = SORT_VARIANTS.comics[2].order,
+  }: IGetAllUploadsArg) {
+    const query = `title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
+
+    const { data } = await apiAuth.get<IResponseAllUploadedComics>(
+      `${API_USERS_ENDPOINTS.uploads}/${login}?${query}`
     );
     return data;
   }

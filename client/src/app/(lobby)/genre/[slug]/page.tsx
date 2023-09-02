@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { TripleComicCarousel } from '@/components/carousels/triple-comic-carousel';
-import { ComicsFeed } from '@/components/comics-feed';
+import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { SectionHeader } from '@/components/section-header';
 import { buttonVariants } from '@/components/ui/button';

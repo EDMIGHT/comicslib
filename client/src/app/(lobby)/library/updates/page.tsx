@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import { FC } from 'react';
 
+import { UserComicsWithChaptersFeed } from '@/components/feeds/user-comics-with-chapters-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
-import { UserComicsWithChaptersFeed } from '@/components/user-comics-with-chapters-feed';
 import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {

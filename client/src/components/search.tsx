@@ -35,7 +35,7 @@ export const Search: FC<SearchProps> = ({
 
       router.push(pathname + (pathname.includes('?') ? '&' : '?') + params.toString());
     }
-  }, [debounced]);
+  }, [debounced, searchParams, paramsKey, router, pathname]);
 
   return (
     <div {...rest} className={cn('relative', className)}>

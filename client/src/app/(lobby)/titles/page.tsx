@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 import { AdvancedFiltering } from '@/components/advanced-filtering';
-import { ComicsFeed } from '@/components/comics-feed';
+import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';

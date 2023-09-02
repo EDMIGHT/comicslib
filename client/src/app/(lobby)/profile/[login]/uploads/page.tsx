@@ -1,7 +1,11 @@
-import { ComicsFeed } from '@/components/feeds/comics-feed';
+import { FC } from 'react';
+
+import { UserComicsWithChaptersFeed } from '@/components/feeds/user-comics-with-chapters-feed';
+import { UserUploadsFeed } from '@/components/feeds/user-uploads-feed';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
 import { SORT_VARIANTS } from '@/configs/site.configs';
+import { UserService } from '@/services/users.service';
 
 type PageProps = {
   params: {
@@ -14,7 +18,7 @@ type PageProps = {
   };
 };
 
-const Page = async ({ params: { login }, searchParams }: PageProps) => {
+const Page: FC<PageProps> = ({ params: { login }, searchParams }) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex flex-col gap-2 md:flex-row'>
@@ -32,7 +36,7 @@ const Page = async ({ params: { login }, searchParams }: PageProps) => {
           className='w-[230px]'
         />
       </div>
-      <ComicsFeed ratedUser={login} {...searchParams} />
+      <UserUploadsFeed login={login} {...searchParams} />
     </div>
   );
 };
