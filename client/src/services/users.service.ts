@@ -10,6 +10,7 @@ import {
   IResponseAllBookmarks,
   IResponseAllUser,
   IResponseCleaningBookmarks,
+  IUser,
   IUserFolder,
 } from '@/types/user.types';
 
@@ -41,6 +42,7 @@ export type IUpdateBookmarkArg = {
   chapterId: string;
   pageNumber: number | string;
 };
+export type IUpdateUserArg = Partial<Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>>;
 
 export class UserService {
   public static async getProfile(login: string) {
@@ -141,6 +143,10 @@ export class UserService {
     const { data } = await apiAuth.delete<IResponseCleaningBookmarks>(
       `${API_USERS_ENDPOINTS.bookmarkComic}/all`
     );
+    return data;
+  }
+  public static async update(payload: IUpdateUserArg) {
+    const { data } = await apiAuth.patch<IUser>(API_USERS_ENDPOINTS.origin, payload);
     return data;
   }
 }

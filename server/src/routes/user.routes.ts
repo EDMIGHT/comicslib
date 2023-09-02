@@ -21,6 +21,7 @@ import { authentication, validation } from '@/middleware';
 import {
   createFolderValidators,
   updateBookmarkValidators,
+  updateUserValidators,
 } from '@/utils/validations/user.validators';
 
 const router = express.Router({ mergeParams: true });
@@ -46,7 +47,7 @@ router.patch(
 );
 
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
-router.patch('/', authentication, updateUser);
+router.patch('/', authentication, updateUserValidators, validation, updateUser);
 
 router.delete('/bookmarks/comic/all', authentication, clearAllBookmarks);
 router.delete('/bookmarks/comic/:comicId', authentication, deleteBookmark);

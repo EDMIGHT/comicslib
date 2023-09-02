@@ -8,6 +8,7 @@ import { PageModel } from '@/models/page.model';
 import { UserModel } from '@/models/user.model';
 import { ISortOrder } from '@/types/common.types';
 import { IFoldersWithIsExistComic } from '@/types/folder.types';
+import cloudinary from '@/utils/cloudinary';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -444,10 +445,21 @@ export const getAllSubscribedComics = async (
 };
 
 export const updateUser = async (req: Request, res: Response): Promise<Response> => {
+  const { img, ...restPaylaod } = req.body;
+
   try {
+    let uploadedImg;
+
+    if (img) {
+      uploadedImg = await cloudinary.uploader.upload(img, {
+        folder: 'users',
+      });
+    }
+
     const updatedUser = await UserModel.update({
       id: req.user.id,
-      ...req.body,
+      ...restPaylaod,
+      img: uploadedImg?.secure_url,
     });
 
     return CustomResponse.ok(res, updatedUser);
