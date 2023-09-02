@@ -131,11 +131,6 @@ export const PROFILE_NAVIGATION: readonly NavigationLink[] = [
     icon: 'star',
   },
   {
-    title: 'Bookmarks',
-    href: '/bookmarks',
-    icon: 'bookmark',
-  },
-  {
     title: 'Uploads',
     href: '/uploads',
     icon: 'upload',

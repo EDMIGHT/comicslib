@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 
+import { HREFS } from '@/configs/href.configs';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { IFolder } from '@/types/user.types';
@@ -27,8 +28,8 @@ export const ProfileFolders: FC<ProfileFoldersProps> = ({ folders, login }) => {
         </span>
 
         {user?.login === login && (
-          <Link href='/create-folder'>
-            <Icons.add />
+          <Link href={HREFS.create.folder}>
+            <Icons.add className='hover:stroke-active' />
           </Link>
         )}
       </h2>
@@ -36,10 +37,10 @@ export const ProfileFolders: FC<ProfileFoldersProps> = ({ folders, login }) => {
         {folders.map((f) => (
           <li key={f.id}>
             <Link
-              href={`/profile/${login}/folders/${f.id}`}
+              href={`${HREFS.profile}/${login}/folders/${f.id}`}
               className={cn(
                 'flex items-center gap-1 rounded px-4 py-1 text-base',
-                pathname.includes(`/profile/${login}/folders/${f.id}`)
+                pathname.includes(`${HREFS.profile}/${login}/folders/${f.id}`)
                   ? 'bg-active text-active-foreground'
                   : 'hover:bg-background/30 focus:bg-background/30'
               )}

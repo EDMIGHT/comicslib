@@ -31,6 +31,7 @@ export const CREATE_HREFS = {
   title: '/create/title',
   author: '/create/author',
   chapter: '/create/chapter',
+  folder: '/create/folder',
 };
 
 export const SOCIAL_HREFS = {

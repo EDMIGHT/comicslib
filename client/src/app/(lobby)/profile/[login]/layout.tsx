@@ -3,9 +3,11 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 
+import { ProfileAvatar } from '@/components/profile-avatar';
 import { ProfileFolders } from '@/components/profile-folders';
 import { ProfileMenu } from '@/components/profile-menu';
 import { UserAvatar } from '@/components/user-avatar';
+import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { createTitle } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
 
@@ -29,6 +31,7 @@ export async function generateMetadata({ params: { login } }: LayoutProps): Prom
 }
 
 const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
+  const currentUser = await getAuthServer();
   const user = await UserService.getProfile(login);
 
   if (!user) {
@@ -37,11 +40,7 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
 
   return (
     <div className='grid grid-cols-[200px_1fr] gap-2 md:gap-6'>
-      <UserAvatar
-        img={user.img}
-        login={user.login}
-        className='h-[120px] w-[120px] md:h-[200px] md:w-[200px]'
-      />
+      <ProfileAvatar {...user} currentUser={currentUser} />
 
       <div className='flex flex-col justify-center gap-1'>
         <h1 className='text-4xl font-semibold'>{user.login}</h1>

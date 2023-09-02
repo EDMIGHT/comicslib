@@ -1,10 +1,16 @@
 import { apiAuth } from '@/services/apiAuth';
 import { IUser } from '@/types/user.types';
 
+import { getServerRefreshToken } from './token.helper';
+
 export const getAuthServer = async () => {
   try {
-    const { data } = await apiAuth.get<IUser>('auth/me');
-    return data;
+    if (getServerRefreshToken()) {
+      const { data } = await apiAuth.get<IUser>('auth/me');
+      return data;
+    } else {
+      return null;
+    }
   } catch (error) {
     return null;
   }

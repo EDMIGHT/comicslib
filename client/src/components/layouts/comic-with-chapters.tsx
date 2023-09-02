@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { Card, CardTitle } from '@/components/ui/card';
 import { IComicWithChapter } from '@/types/comic.types';
 
+import { ComicChaptersList } from '../comic-chapters-list';
 import { ChapterItem } from './chapter-item';
 
 export const ComicWithChapters: FC<IComicWithChapter> = ({ id, img, title, chapters }) => {
@@ -25,7 +26,8 @@ export const ComicWithChapters: FC<IComicWithChapter> = ({ id, img, title, chapt
         <Link href={`/comics/${id}`}>
           <CardTitle className='text-xl hover:opacity-80'>{title}</CardTitle>
         </Link>
-        {chapters.length > 0 ? (
+        <ComicChaptersList chapters={chapters} />
+        {/* {chapters.length > 0 ? (
           <ul className='flex w-full flex-col gap-1'>
             {chapters.map((chap) => (
               <li key={chap.id}>
@@ -35,7 +37,7 @@ export const ComicWithChapters: FC<IComicWithChapter> = ({ id, img, title, chapt
           </ul>
         ) : (
           <div>chapters not found</div>
-        )}
+        )} */}
       </div>
     </Card>
   );
