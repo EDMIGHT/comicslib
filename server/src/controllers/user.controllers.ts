@@ -442,3 +442,20 @@ export const getAllSubscribedComics = async (
     });
   }
 };
+
+export const updateUser = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const updatedUser = await UserModel.update({
+      id: req.user.id,
+      ...req.body,
+    });
+
+    return CustomResponse.ok(res, updatedUser);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when updating user data`,
+      error,
+    });
+  }
+};

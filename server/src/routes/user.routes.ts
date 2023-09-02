@@ -15,6 +15,7 @@ import {
   getUserFoldersByComic,
   updateBookmark,
   updateComicsFolder,
+  updateUser,
 } from '@/controllers/user.controllers';
 import { authentication, validation } from '@/middleware';
 import {
@@ -43,7 +44,9 @@ router.patch(
   validation,
   updateBookmark
 );
+
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
+router.patch('/', authentication, updateUser);
 
 router.delete('/bookmarks/comic/all', authentication, clearAllBookmarks);
 router.delete('/bookmarks/comic/:comicId', authentication, deleteBookmark);

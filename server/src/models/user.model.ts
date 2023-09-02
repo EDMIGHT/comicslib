@@ -13,6 +13,8 @@ type IGetAllArg = ISortArg &
     login: string;
   };
 
+type IUpdateUser = Partial<Omit<User, 'id' | 'createdAt' | 'updatedAt'>> & Pick<User, 'id'>;
+
 export class UserModel {
   public static async getAll({
     login,
@@ -87,6 +89,14 @@ export class UserModel {
         ...data,
         img: defaultUserImg,
       },
+    });
+  }
+  public static async update({ id, ...data }: IUpdateUser): Promise<User> {
+    return prisma.user.update({
+      where: {
+        id,
+      },
+      data,
     });
   }
 }
