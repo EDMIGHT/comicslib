@@ -37,8 +37,8 @@ import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
+import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
-import { convertFileToBase64 } from '@/lib/utils';
 import {
   createChapterSchema,
   ICreateChapterFields,
@@ -95,21 +95,6 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
     },
   });
 
-  const onSelectFile = async (file: File) => {
-    const imageBASE64 = await convertFileToBase64(file);
-
-    if (!imageBASE64) {
-      return toast({
-        title: 'Oops. Something went wrong!',
-        description:
-          'An error occurred while processing the uploaded image, please try again later',
-        variant: 'destructive',
-      });
-    }
-
-    return imageBASE64;
-  };
-
   const onClickUploadPage = async ({
     file,
     currentValues,
@@ -117,16 +102,17 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
   }: IFieldControlPage & {
     file: File;
   }) => {
-    const convertedFile = await onSelectFile(file);
+    const convertedFile = await convertImgToBase64(file);
 
-    return onChange([
-      ...currentValues,
-      {
-        id: nanoid(),
-        // id: currentValues.length + 1,
-        img: convertedFile,
-      },
-    ]);
+    if (convertedFile) {
+      return onChange([
+        ...currentValues,
+        {
+          id: nanoid(),
+          img: convertedFile,
+        },
+      ]);
+    }
   };
   const onClickEditPage = async ({
     file,
@@ -137,20 +123,22 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
     changeId: ICreateChapterFields['pages'][number]['id'];
     file: File;
   }) => {
-    const convertedFile = await onSelectFile(file);
+    const convertedFile = await convertImgToBase64(file);
 
-    return onChange(
-      currentValues.map((page) => {
-        if (page.id === changeId) {
-          return {
-            id: page.id,
-            img: convertedFile,
-          };
-        }
+    if (convertedFile) {
+      return onChange(
+        currentValues.map((page) => {
+          if (page.id === changeId) {
+            return {
+              id: page.id,
+              img: convertedFile,
+            };
+          }
 
-        return page;
-      })
-    );
+          return page;
+        })
+      );
+    }
   };
 
   const onSubmit = ({ number, pages, title }: ICreateChapterFields) => {
@@ -174,8 +162,8 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
   }) => {
     const { active, over } = e;
     if (over?.id && active.id !== over.id) {
-      const oldIndex = currentValues.findIndex((page) => page.id === active.id);
-      const newIndex = currentValues.findIndex((page) => page.id === over.id);
+      const oldIndex = currentValues?.findIndex((page) => page.id === active.id);
+      const newIndex = currentValues?.findIndex((page) => page.id === over.id);
 
       const newArray = arrayMove(currentValues, oldIndex, newIndex);
 

@@ -49,8 +49,9 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
+import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
-import { cn, convertFileToBase64 } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { createComicSchema, ICreateComicFields } from '@/lib/validators/comic.validators';
 import { ComicsService } from '@/services/comics.service';
 import { IGenre } from '@/types/genre.types';
@@ -96,17 +97,11 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
   });
 
   const onSelectFile = async (onChangeHandler: (...event: any[]) => void, file: File) => {
-    const imageBASE64 = await convertFileToBase64(file);
+    const imageBASE64 = await convertImgToBase64(file);
 
-    if (!imageBASE64) {
-      return toast({
-        title: 'Oops. Something went wrong!',
-        description:
-          'An error occurred while processing the uploaded image, please try again later',
-        variant: 'destructive',
-      });
+    if (imageBASE64) {
+      onChangeHandler(imageBASE64);
     }
-    return onChangeHandler(imageBASE64);
   };
   const onSubmit = (data: ICreateComicFields) => createComic(data);
 

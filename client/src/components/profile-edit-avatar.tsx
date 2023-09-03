@@ -1,35 +1,61 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { FC, HTMLAttributes, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FC, HTMLAttributes, ReactNode } from 'react';
 
+import { Icons } from '@/components/ui/icons';
+import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
+import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { UserService } from '@/services/users.service';
 
-import { FileDialog } from './file-dialog';
 import { FileDialogWithCrop } from './file-dialog-with-crop';
-import { Icons } from './ui/icons';
 
 type ProfileEditAvatarProps = HTMLAttributes<HTMLDivElement> & {
-  onSelectFile: (file: File) => void;
+  children: ReactNode;
 };
 
 export const ProfileEditAvatar: FC<ProfileEditAvatarProps> = ({
   className,
-  onSelectFile,
+  children,
   ...props
 }) => {
-  const {} = useMutation({
+  const router = useRouter();
+
+  const { mutate: updateUser, isLoading } = useMutation({
     mutationKey: ['users'],
     mutationFn: async (fileBase64: string) => {
       return await UserService.update({
         img: fileBase64,
       });
     },
+    onSuccess: () => {
+      router.refresh();
+    },
+    onError: (err) => {
+      handleErrorMutation(err);
+    },
   });
 
+  const onSelectFile = async (file: File) => {
+    const convertedFile = await convertImgToBase64(file);
+
+    if (convertedFile) {
+      updateUser(convertedFile);
+    }
+  };
+
   return (
-    <FileDialogWithCrop onSelectFile={onSelectFile}>
-      <Icons.camera className='absolute bottom-0 left-0 h-7 w-7 cursor-pointer transition-colors hover:stroke-active' />
+    <FileDialogWithCrop {...props} onSelectFile={onSelectFile}>
+      <div className='h-full w-full cursor-pointer'>
+        {isLoading ? (
+          <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+            <Icons.loading className='h-10 w-10 animate-spin' />
+          </div>
+        ) : (
+          children
+        )}
+      </div>
     </FileDialogWithCrop>
   );
 };
