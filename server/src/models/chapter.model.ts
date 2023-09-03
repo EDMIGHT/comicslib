@@ -43,11 +43,26 @@ export class ChapterModel {
       },
     });
   }
-  public static async getNextChapter(currentChapterNumber: number): Promise<Chapter | null> {
+  public static async getByComicIdAndNumber({
+    comicId,
+    number,
+  }: Pick<Chapter, 'comicId' | 'number'>): Promise<Chapter | null> {
     return prisma.chapter.findFirst({
       where: {
+        comicId,
+        number,
+      },
+    });
+  }
+  public static async getNextChapter({
+    number,
+    comicId,
+  }: Pick<Chapter, 'comicId' | 'number'>): Promise<Chapter | null> {
+    return prisma.chapter.findFirst({
+      where: {
+        comicId,
         number: {
-          gt: currentChapterNumber,
+          gt: number,
         },
       },
       orderBy: {
@@ -55,11 +70,15 @@ export class ChapterModel {
       },
     });
   }
-  public static async getPrevChapter(currentChapterNumber: number): Promise<Chapter | null> {
+  public static async getPrevChapter({
+    number,
+    comicId,
+  }: Pick<Chapter, 'comicId' | 'number'>): Promise<Chapter | null> {
     return prisma.chapter.findFirst({
       where: {
+        comicId,
         number: {
-          lt: currentChapterNumber,
+          lt: number,
         },
       },
       orderBy: {

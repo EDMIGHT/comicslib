@@ -39,6 +39,17 @@ export const getChaptersByComicId = async (req: Request, res: Response): Promise
 export const createChapter = async (req: Request, res: Response): Promise<Response> => {
   const { pages, ...chapterData } = req.body as IRequestChapter;
   try {
+    const existedChapter = await ChapterModel.getByComicIdAndNumber({
+      comicId: chapterData.comicId,
+      number: chapterData.number,
+    });
+
+    if (existedChapter) {
+      return CustomResponse.conflict(res, {
+        message: `A chapter with this number already exists for the comic with id = ${chapterData.comicId}`,
+      });
+    }
+
     const chapter = await ChapterModel.create({ ...chapterData, userId: req.user.id });
 
     await Promise.all(
@@ -81,8 +92,14 @@ export const getPageByChapterId = async (req: Request, res: Response): Promise<R
 
     const totalPagesInChapter = await PageModel.getTotal(chapterId);
 
-    const nextChapter = await ChapterModel.getNextChapter(page.chapter.number);
-    const prevChapter = await ChapterModel.getPrevChapter(page.chapter.number);
+    const nextChapter = await ChapterModel.getNextChapter({
+      comicId: page.chapter.comicId,
+      number: page.chapter.number,
+    });
+    const prevChapter = await ChapterModel.getPrevChapter({
+      comicId: page.chapter.comicId,
+      number: page.chapter.number,
+    });
 
     return CustomResponse.ok(res, {
       chapter: page.chapter,

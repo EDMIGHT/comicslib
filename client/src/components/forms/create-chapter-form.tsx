@@ -86,7 +86,12 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
       router.replace(`${HREFS.chapter}/${id}`);
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      handleErrorMutation(err, {
+        conflictError: {
+          title: 'Chapter already exists',
+          description: 'There already exists a chapter for this comic with this number',
+        },
+      });
     },
   });
 

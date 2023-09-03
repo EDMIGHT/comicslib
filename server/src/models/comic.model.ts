@@ -8,17 +8,11 @@ import {
   IAllComicQuery,
 } from '@/utils/helpers/create-query-all-comic.helper';
 
-const defaultComicImg = process.env.COMIC_DEFAULT_IMG_PATH;
-const hostURL = `http://localhost:${process.env.PORT}/`;
-
-const hostWithImgPath = hostURL + defaultComicImg;
-
-type ICreateComic = Pick<Comic, 'title' | 'desc' | 'statusId' | 'releasedAt'> &
-  Partial<Pick<Comic, 'img'>> & {
-    authors: string[];
-    genres: string[];
-    themes: string[];
-  };
+type ICreateComic = Pick<Comic, 'title' | 'desc' | 'statusId' | 'img' | 'releasedAt'> & {
+  authors: string[];
+  genres: string[];
+  themes: string[];
+};
 
 export type IGetAllQuery = {
   authors?: string[];
@@ -61,7 +55,7 @@ export class ComicModel {
     return prisma.comic.create({
       data: {
         ...data,
-        img: data.img || hostWithImgPath,
+        img: data.img,
 
         authors: {
           connect: authorsConnect,
