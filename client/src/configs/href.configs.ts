@@ -1,7 +1,7 @@
 export const AUTH_HREFS = {
-  signIn: 'sign-in',
-  signUp: 'sign-up',
-  signOut: 'sign-out',
+  signIn: '/sign-in',
+  signUp: '/sign-up',
+  signOut: '/sign-out',
 };
 
 export const TITLE_HREFS = {
@@ -40,6 +40,13 @@ export const SOCIAL_HREFS = {
   twitter: 'https://twitter.com/home',
 };
 
+export const COMIC_ATTRIBUTES = {
+  status: '/status',
+  genre: '/genre',
+  author: '/author',
+  theme: '/theme',
+};
+
 export const HREFS = {
   auth: AUTH_HREFS,
   titles: TITLE_HREFS,
@@ -50,5 +57,6 @@ export const HREFS = {
   library: LIBRARY_HREFS,
   socials: SOCIAL_HREFS,
   create: CREATE_HREFS,
+  comicAttributes: COMIC_ATTRIBUTES,
   profile: '/profile',
 };

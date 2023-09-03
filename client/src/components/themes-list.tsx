@@ -1,9 +1,10 @@
+'use client';
+
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { FC, HTMLAttributes } from 'react';
 
 import { Badge } from '@/components/ui/badge';
-import { capitalizeFirstLetter, cn } from '@/lib/utils';
+import { HREFS } from '@/configs/href.configs';
 import { ITheme } from '@/types/theme.types';
 
 type ThemesListProps = HTMLAttributes<HTMLUListElement> & {
@@ -36,7 +37,12 @@ export const ThemesList: FC<ThemesListProps> = ({
                     : 'default'
                 }
               >
-                {theme.title}
+                {type === 'link' && (
+                  <Link href={`${HREFS.comicAttributes.theme}/${theme.title}`}>
+                    <h4>{theme.title}</h4>
+                  </Link>
+                )}
+                {type === 'default' && <h4>{theme.title}</h4>}
               </Badge>
             </li>
           ))}

@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { FC, HTMLAttributes } from 'react';
 
 import { Badge } from '@/components/ui/badge';
+import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 import { IGenre } from '@/types/genre.types';
 
@@ -39,7 +39,7 @@ export const GenresList: FC<GenresListProps> = ({
                 }
               >
                 {type === 'link' && (
-                  <Link href={`/genre/${genre.title}`}>
+                  <Link href={`${HREFS.comicAttributes.genre}/${genre.title}`}>
                     <h4>{genre.title}</h4>
                   </Link>
                 )}

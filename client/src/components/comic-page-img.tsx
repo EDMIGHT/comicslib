@@ -24,7 +24,7 @@ export const ComicPageImg = forwardRef<HTMLDivElement, ComicPageImgProps>(
           ref={ref}
           {...rest}
           className={cn(
-            'relative flex flex-col gap-1 rounded cursor-pointer group',
+            'relative flex flex-col w-[210px] h-[270px] justify-center shrink-0  gap-1 rounded cursor-pointer group',
             className
           )}
           onClick={() => setOpen(true)}
@@ -32,9 +32,9 @@ export const ComicPageImg = forwardRef<HTMLDivElement, ComicPageImgProps>(
           <Image
             src={imgSrc}
             alt={alt}
+            width={210}
             height={270}
-            width={230}
-            className='rounded object-cover transition-all group-hover:brightness-50'
+            className='overflow-hidden rounded object-cover object-center transition-all group-hover:brightness-50'
           />
           <span className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 group-hover:block'>
             <Icons.maximize className=' z-10 h-12 w-12 stroke-white' />

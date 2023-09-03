@@ -1,6 +1,8 @@
 import { cva, VariantProps } from 'class-variance-authority';
+import Link from 'next/link';
 import { FC } from 'react';
 
+import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 import { IStatus } from '@/types/status.types';
 
@@ -26,9 +28,16 @@ export interface StatusBadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof statusBadgeVariants> {
   status: IStatus['name'];
+  type?: 'default' | 'link';
 }
 
-export const StatusBadge: FC<StatusBadgeProps> = ({ status, className, variant, ...rest }) => {
+export const StatusBadge: FC<StatusBadgeProps> = ({
+  status,
+  className,
+  variant,
+  type = 'default',
+  ...rest
+}) => {
   return (
     <div {...rest} className={cn(statusBadgeVariants({ variant }), className)}>
       <div
@@ -40,7 +49,11 @@ export const StatusBadge: FC<StatusBadgeProps> = ({ status, className, variant, 
           status === 'hiatus' && 'bg-orange-500'
         )}
       />
-      {status}
+      {type === 'default' ? (
+        status
+      ) : (
+        <Link href={`${HREFS.comicAttributes.status}/${status}`}>{status}</Link>
+      )}
     </div>
   );
 };

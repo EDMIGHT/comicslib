@@ -9,12 +9,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import {
-  arrayMove,
-  horizontalListSortingStrategy,
-  SortableContext,
-  sortableKeyboardCoordinates,
-} from '@dnd-kit/sortable';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { nanoid } from '@reduxjs/toolkit';
 import { useMutation } from '@tanstack/react-query';
@@ -230,10 +225,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
                     onDragEnd({ e, currentValues: field.value, onChange: field.onChange })
                   }
                 >
-                  <SortableContext
-                    items={field.value}
-                    strategy={horizontalListSortingStrategy}
-                  >
+                  <SortableContext items={field.value}>
                     {field.value.map((page, i) => (
                       <li key={page.id}>
                         <SortablePage
@@ -266,7 +258,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
                         })
                       }
                     >
-                      <div className='relative flex h-[270px] w-[200px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border bg-background p-2 transition-colors hover:bg-muted'>
+                      <div className='relative flex h-[270px] w-[210px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border bg-background p-2 transition-colors hover:bg-muted'>
                         <Icons.uploadCloud className='h-10 w-10' />
                         <span className='text-center text-sm font-medium'>
                           Click to upload page for the comic

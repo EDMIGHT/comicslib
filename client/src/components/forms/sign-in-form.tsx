@@ -65,6 +65,12 @@ export const SignInForm = () => {
               err.response.data?.details[0]?.msg ||
               'Check the correctness of the entered data',
           });
+        } else if (err.response?.status === 404) {
+          return toast({
+            variant: 'destructive',
+            title: 'Account not found',
+            description: 'Account with this username does not exist',
+          });
         } else if (err.response?.status === 409) {
           return toast({
             variant: 'destructive',

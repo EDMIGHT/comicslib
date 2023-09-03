@@ -69,6 +69,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     desc,
     genres,
     authors,
+    themes,
     _count,
     avgRating,
     id: comicId,
@@ -81,44 +82,47 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
   const variants: NavigationVariants[] = [
     {
       title: 'Chapters',
-      href: `/comics/${comicId}`,
+      href: `${HREFS.comics}/${comicId}`,
       searchParams: '',
     },
     {
       title: 'Comments',
-      href: `/comics/${comicId}/comments`,
+      href: `${HREFS.comics}/${comicId}/comments`,
       searchParams: '',
     },
   ];
 
   return (
     <div className='flex flex-col gap-2 md:gap-4'>
-      <div className='flex gap-2 md:gap-4'>
+      <div className='grid grid-cols-[auto_1fr]  items-start gap-2 md:gap-4'>
         <ComicPageImg imgSrc={img} alt={title} />
-        <div className='flex w-full flex-col gap-2'>
-          <div className='flex justify-between gap-2 pt-2'>
-            <h1 className='text-7xl font-bold'>{title}</h1>
-            <ComicCounters
-              avgRating={avgRating}
-              _count={_count}
-              countUniqueSubscribes={countUniqueSubscribes}
-            />
-          </div>
-
-          <div className='mt-auto'>
-            <ComicMenu comicId={comicId} chapters={chapters} />
-          </div>
+        <div className='flex h-full flex-col justify-between gap-2'>
+          <h1 className='text-7xl font-bold'>{title}</h1>
+          <ComicMenu comicId={comicId} chapters={chapters} />
         </div>
       </div>
       <div>
         <p className='text-sm '>{desc}</p>
       </div>
-      <div className='grid grid-cols-[1fr_auto] gap-4'>
+      <div className='grid grid-cols-[1fr_250px] gap-4'>
         <div className='flex flex-1 flex-col gap-2'>
           <NavigationBtns variants={variants} />
           {children}
         </div>
-        <ComicInfo genres={genres} authors={authors} status={status} releasedAt={releasedAt} />
+        <div className='space-y-4'>
+          <ComicCounters
+            avgRating={avgRating}
+            _count={_count}
+            countUniqueSubscribes={countUniqueSubscribes}
+          />
+          <ComicInfo
+            genres={genres}
+            authors={authors}
+            status={status}
+            themes={themes}
+            releasedAt={releasedAt}
+          />
+        </div>
       </div>
     </div>
   );
