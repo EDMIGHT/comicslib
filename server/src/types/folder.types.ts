@@ -1,5 +1,6 @@
 import { Folder } from '@prisma/client';
 
+import { IShortComic } from './comic.types';
 import { IShortUser } from './user.types';
 
 export type IResponseFolderWithData = Folder & {
@@ -7,6 +8,10 @@ export type IResponseFolderWithData = Folder & {
   _count: {
     comics: number;
   };
+};
+
+export type IFolderWithShortComic = Folder & {
+  comics: IShortComic[];
 };
 
 export type IFolderWithComicIds = Folder & {

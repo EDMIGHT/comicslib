@@ -30,7 +30,7 @@ export async function GET(req: Request) {
     return new ImageResponse(
       (
         <div
-          tw='relative h-full w-full flex justify-between'
+          tw='relative h-full w-full flex justify-between '
           style={{
             color: '#fff',
             background: 'black',

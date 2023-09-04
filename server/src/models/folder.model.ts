@@ -1,7 +1,12 @@
 import { Folder } from '@prisma/client';
 
 import prisma from '@/db/prisma';
-import { IFolderWithComicIds, IResponseFolderWithData } from '@/types/folder.types';
+import { ISortArg } from '@/types/common.types';
+import {
+  IFolderWithComicIds,
+  IFolderWithShortComic,
+  IResponseFolderWithData,
+} from '@/types/folder.types';
 
 type ICreateFolderArg = Pick<Folder, 'title' | 'userId' | 'order'> & {
   comics?: string[];
@@ -10,6 +15,10 @@ type IGetByLoginFolderArg = Pick<Folder, 'id'> & {
   title?: string;
   login?: string;
 };
+type IGetAllFoldersWithComic = Pick<Folder, 'userId'> &
+  ISortArg & {
+    title?: string;
+  };
 type IUpdateComicsArg = {
   id: string;
   prevComics: { id: string }[];
@@ -24,6 +33,37 @@ export class FolderModel {
       },
       orderBy: {
         order: 'asc',
+      },
+    });
+  }
+  public static async getAllWithComics({
+    userId,
+    sort,
+    order,
+    title,
+  }: IGetAllFoldersWithComic): Promise<IFolderWithShortComic[]> {
+    return prisma.folder.findMany({
+      where: {
+        userId,
+        title: {
+          startsWith: title,
+        },
+      },
+      orderBy: {
+        [sort]: order,
+      },
+      include: {
+        comics: {
+          select: {
+            id: true,
+            title: true,
+            img: true,
+          },
+          take: 10,
+          orderBy: {
+            updatedAt: 'desc',
+          },
+        },
       },
     });
   }

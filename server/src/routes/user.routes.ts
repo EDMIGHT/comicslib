@@ -13,6 +13,7 @@ import {
   getUserBookmarkByComic,
   getUserFolders,
   getUserFoldersByComic,
+  getUserFoldersWithComicInfo,
   updateBookmark,
   updateComicsFolder,
   updateUser,
@@ -29,6 +30,7 @@ const router = express.Router({ mergeParams: true });
 router.get('/all', getAllUser);
 router.get('/bookmarks/:login', getBookmarks);
 router.get('/bookmarks/comic/:comicId', authentication, getUserBookmarkByComic);
+router.get('/folders/u', authentication, getUserFoldersWithComicInfo);
 router.get('/folders/u/:login', getUserFolders);
 router.get('/folders/u/:login/:folderId', getFolder);
 router.get('/folders/:comicId', authentication, getUserFoldersByComic);
@@ -45,7 +47,6 @@ router.patch(
   validation,
   updateBookmark
 );
-
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
 router.patch('/', authentication, updateUserValidators, validation, updateUser);
 

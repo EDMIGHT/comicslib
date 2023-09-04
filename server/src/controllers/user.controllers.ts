@@ -168,6 +168,30 @@ export const getUserFolders = async (req: Request, res: Response): Promise<Respo
   }
 };
 
+export const getUserFoldersWithComicInfo = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { title = '', sort = 'order', order = 'asc' } = req.query;
+
+  try {
+    const folders = await FolderModel.getAllWithComics({
+      userId: req.user.id,
+      title: title as string,
+      sort: sort as string,
+      order: order as ISortOrder,
+    });
+
+    return CustomResponse.ok(res, folders);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error while getting folders for user`,
+      error,
+    });
+  }
+};
+
 export const getUserFoldersByComic = async (
   req: Request,
   res: Response
