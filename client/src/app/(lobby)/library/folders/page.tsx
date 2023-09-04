@@ -1,12 +1,13 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound, redirect } from 'next/navigation';
 
-import { ComicsFeed } from '@/components/feeds/comics-feed';
-import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
+import { Folder } from '@/components/layouts/folder';
 import { PageHeader } from '@/components/page-header';
-import { HREFS } from '@/configs/href.configs';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { UserService } from '@/services/users.service';
+import { ISortArg } from '@/types/response.types';
 
 export const metadata: Metadata = {
   title: 'Your folders',
@@ -15,30 +16,33 @@ export const metadata: Metadata = {
 };
 
 type PageProps = {
-  searchParams: {
-    tab?: string;
+  searchParams: ISortArg & {
+    title?: string;
   };
 };
 
-const Page = async ({ searchParams: { tab } }: PageProps) => {
+const Page = async ({ searchParams }: PageProps) => {
   const user = await getAuthServer();
   if (!user) {
     return notFound();
   }
 
-  const folders = await UserService.getAllFolders(user.login);
-
-  const variants: NavigationVariants[] = folders.map((fold, i) => ({
-    href: HREFS.library.folders,
-    searchParams: `tab=${fold.id}`,
-    title: fold.title,
-  }));
+  const folders = await UserService.getAllUserFolders({ ...searchParams });
 
   return (
     <div className='flex flex-col gap-2'>
       <PageHeader>Your folders</PageHeader>
-      <NavigationBtns variants={variants} isFirstActive={!tab} />
-      <ComicsFeed folderId={tab ?? folders[0].id} />
+      {folders.length > 0 ? (
+        <ul className='space-y-2'>
+          {folders.map((folder) => (
+            <li key={folder.id}>
+              <Folder {...folder} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div>no found</div>
+      )}
     </div>
   );
 };

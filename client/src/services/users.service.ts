@@ -7,6 +7,7 @@ import {
   IBookmark,
   IFolder,
   IFolderForComic,
+  IFolderWithComics,
   IProfile,
   IResponseAllBookmarks,
   IResponseAllUser,
@@ -22,6 +23,9 @@ export type IGetAllUsersArg = IPaginationArg &
   ISortArg & {
     login?: string;
   };
+export type IGetAllUserFoldersArg = ISortArg & {
+  title?: string;
+};
 export type IGetAllSubscribedComicsArg = IPaginationArg &
   ISortArg & {
     title?: string;
@@ -82,6 +86,18 @@ export class UserService {
   }
   public static async getAllFolders(login: string) {
     const { data } = await api.get<IFolder[]>(`${API_USERS_ENDPOINTS.foldersUser}/${login}`);
+    return data;
+  }
+  public static async getAllUserFolders({
+    title = '',
+    sort = 'order',
+    order = 'asc',
+  }: IGetAllUserFoldersArg) {
+    const searchParams = `title=${title}&sort=${sort}&order=${order}`;
+
+    const { data } = await apiAuth.get<IFolderWithComics[]>(
+      `${API_USERS_ENDPOINTS.foldersUser}?${searchParams}`
+    );
     return data;
   }
   public static async getUserFolderInfo(login: string, folderId: string) {

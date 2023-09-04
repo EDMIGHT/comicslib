@@ -43,6 +43,10 @@ export type IFolder = {
   userId: string;
 };
 
+export type IFolderWithComics = IFolder & {
+  comics: IShortWithImgComic[];
+};
+
 export type IUserFolder = IFolder & {
   user: IShortUser;
   _count: {

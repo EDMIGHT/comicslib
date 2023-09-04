@@ -12,6 +12,7 @@ import {
   usePrevNextButtons,
 } from '@/components/carousel-arrow-buttons';
 import { ComicAttributes } from '@/components/comic-attributes';
+import { HREFS } from '@/configs/href.configs';
 import { IResponseComic } from '@/types/comic.types';
 
 type FullScreenComicCarouselProps = {
@@ -41,23 +42,22 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
     <div className='relative rounded-lg shadow'>
       <div className='overflow-hidden' ref={emblaRef}>
         <div className='flex touch-pan-y'>
-          {comics.map((comic, i) => (
+          {comics.map((comic) => (
             <Link
-              href={`/comics/${comic.id}`}
+              href={`${HREFS.comics}/${comic.id}`}
               className='relative mr-2 min-w-0 flex-[0_0_100%] overflow-hidden  p-4'
               key={comic.id}
             >
               <div className='relative h-[260px] w-full'>
                 <div className='grid h-full grid-cols-[auto_1fr] gap-2'>
-                  <div className='relative h-full w-[190px] overflow-hidden rounded'>
-                    <Image
-                      src={comic.img}
-                      alt={comic.title}
-                      sizes='190px'
-                      fill
-                      className='object-cover'
-                    />
-                  </div>
+                  <Image
+                    src={comic.img}
+                    alt={comic.title}
+                    width={190}
+                    height={260}
+                    className='h-full overflow-hidden rounded object-cover object-center'
+                  />
+
                   <div className='flex h-full flex-col gap-2 py-2'>
                     <h3 className='line-clamp-2 text-xl font-bold lg:text-4xl'>
                       {comic.title}
