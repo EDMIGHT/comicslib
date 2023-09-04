@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { LIMITS } from '@/configs/limits.config';
 import { BookmarksModel } from '@/models/bookmarks.model';
 import { ChapterModel } from '@/models/chapter.model';
 import { ComicModel } from '@/models/comic.model';
@@ -101,8 +102,17 @@ export const getUploads = async (req: Request, res: Response): Promise<Response>
 
 export const createFolder = async (req: Request, res: Response): Promise<Response> => {
   try {
+    const totalFolders = await FolderModel.getTotalUserFolders(req.user.id);
+
+    if (totalFolders >= LIMITS.maxFoldersPerUser) {
+      return CustomResponse.forbidden(res, {
+        message: `You have already reached the limit of ${LIMITS.maxFoldersPerUser} folders`,
+      });
+    }
+
     const folder = await FolderModel.create({
       userId: req.user.id,
+      order: totalFolders + 1,
       ...req.body,
     });
 

@@ -2,15 +2,13 @@ import { FC } from 'react';
 
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { LIMITS } from '@/configs/site.configs';
 
 type ComicSkeletonsProps = {
   count?: number;
 };
 
-export const ComicSkeletons: FC<ComicSkeletonsProps> = ({
-  count = PAGINATION_LIMIT_CONFIG.comics,
-}) => {
+export const ComicSkeletons: FC<ComicSkeletonsProps> = ({ count = LIMITS.comics }) => {
   const skeletonArray: undefined[] = Array.from({ length: count });
 
   return (

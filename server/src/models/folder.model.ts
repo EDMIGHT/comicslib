@@ -90,6 +90,13 @@ export class FolderModel {
       },
     });
   }
+  public static async getTotalUserFolders(userId: string): Promise<number> {
+    return prisma.folder.count({
+      where: {
+        userId,
+      },
+    });
+  }
   public static async create({ comics, ...data }: ICreateFolderArg): Promise<Folder> {
     const comicsConnect = comics && comics.map((comic) => ({ id: comic }));
     return prisma.folder.create({

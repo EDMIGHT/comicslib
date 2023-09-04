@@ -1,6 +1,6 @@
 import { ICreateCommentFields } from '@/components/forms/create-comment-form';
 import { API_COMMENTS_URL } from '@/configs/endpoint.configs';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { LIMITS } from '@/configs/site.configs';
 import { IResponseAllComments, IResponseComment } from '@/types/comment.types';
 
 import { api } from './api';
@@ -23,7 +23,7 @@ export class CommentsService {
   }
   public static async getAll({
     comicId,
-    limit = PAGINATION_LIMIT_CONFIG.chapters,
+    limit = LIMITS.chapters,
     page = 1,
     order = 'desc',
   }: IGetAllChaptersArg) {

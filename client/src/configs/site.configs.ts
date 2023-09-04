@@ -223,9 +223,11 @@ export const SORT_VARIANTS: ISortVariants = {
   ],
 };
 
-export const PAGINATION_LIMIT_CONFIG = {
+export const LIMITS = {
   chapters: 5,
   comics: 6,
+  comicsSearch: 5,
+  folders: 20,
   comments: 5,
   bookmarks: 6,
   users: 12,

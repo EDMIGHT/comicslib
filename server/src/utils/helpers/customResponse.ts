@@ -22,4 +22,7 @@ export class CustomResponse {
   static unauthorized(response: Response, data: any): Response {
     return response.status(401).send(data);
   }
+  static forbidden(response: Response, data: any): Response {
+    return response.status(403).send(data);
+  }
 }

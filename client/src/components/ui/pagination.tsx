@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { FC, HTMLAttributes } from 'react';
 
 import { Icons } from '@/components/ui/icons';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { LIMITS } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 
 type PaginationProps = HTMLAttributes<HTMLUListElement> & {
@@ -15,7 +15,7 @@ type PaginationProps = HTMLAttributes<HTMLUListElement> & {
 };
 
 export const Pagination: FC<PaginationProps> = ({
-  initialLimit = PAGINATION_LIMIT_CONFIG.chapters,
+  initialLimit = LIMITS.chapters,
   currentPage = 1,
   totalPages = 50,
   pageRange = 2,

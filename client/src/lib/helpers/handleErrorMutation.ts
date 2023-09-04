@@ -12,6 +12,7 @@ type ErrorMessages = {
   authError?: ErrorMessageSchema;
   notFoundError?: ErrorMessageSchema;
   conflictError?: ErrorMessageSchema;
+  forbiddenError?: ErrorMessageSchema;
 };
 
 export const handleErrorMutation = (err: unknown, errMessages?: ErrorMessages) => {
@@ -29,6 +30,14 @@ export const handleErrorMutation = (err: unknown, errMessages?: ErrorMessages) =
         variant: 'destructive',
         title: errMessages?.authError?.title ?? 'Authorization Error',
         description: errMessages?.authError?.description ?? 'Please login or refresh the page',
+      });
+    } else if (err.response?.status === 403) {
+      return toast({
+        variant: 'destructive',
+        title: errMessages?.forbiddenError?.title ?? 'Limit has been reached',
+        description:
+          errMessages?.forbiddenError?.description ??
+          'Please, before repeating the action, provide free space for the created object',
       });
     } else if (err.response?.status === 404) {
       return toast({

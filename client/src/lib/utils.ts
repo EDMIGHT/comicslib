@@ -28,6 +28,22 @@ export const combineString = (value: string | string[] | unknown) => {
   }
 };
 
+export const getRandomNumber = ({
+  min = 0,
+  max = 10,
+  inclusive = false,
+}: {
+  min: number;
+  max: number;
+  inclusive?: boolean;
+}): number => {
+  if (inclusive) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  } else {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+};
+
 export const capitalizeFirstLetter = (word: string): string =>
   word.charAt(0).toUpperCase() + word.slice(1);
 

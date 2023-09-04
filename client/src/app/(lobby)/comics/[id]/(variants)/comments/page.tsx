@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { CreateCommentForm } from '@/components/forms/create-comment-form';
 import { Comment } from '@/components/layouts/comment';
 import { Pagination } from '@/components/ui/pagination';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { LIMITS } from '@/configs/site.configs';
 import { CommentsService } from '@/services/comments.service';
 
 type PageProps = {
@@ -15,7 +15,7 @@ type PageProps = {
 
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const page = searchParams['page'] ?? '1';
-  const limit = searchParams['limit'] ?? PAGINATION_LIMIT_CONFIG.comments;
+  const limit = searchParams['limit'] ?? LIMITS.comments;
 
   const response = await CommentsService.getAll({ comicId: id, limit, page });
 
@@ -39,7 +39,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
             <Pagination
               currentPage={response.currentPage}
               totalPages={response.totalPages}
-              initialLimit={PAGINATION_LIMIT_CONFIG.comments}
+              initialLimit={LIMITS.comments}
               className='justify-center'
             />
           )}

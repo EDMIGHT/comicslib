@@ -1,21 +1,21 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useEffect, useState } from 'react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CommandDialog, CommandInput } from '@/components/ui/command';
 import { Icons } from '@/components/ui/icons';
-import { Skeleton } from '@/components/ui/skeleton';
+import { HREFS } from '@/configs/href.configs';
+import { LIMITS } from '@/configs/site.configs';
 import { useDebounce } from '@/hooks/use-debounce';
 import { toast } from '@/hooks/use-toast';
 import { isMacOS } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
-import { ComicCounters } from './comic-counters';
+import { SearchComic } from './layouts/search-comic';
+import { SearchComicSkeletons } from './skeletons/search-comic-skeletons';
 
 type ComicSearchProps = {};
 
@@ -51,7 +51,7 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
     queryFn: async () => {
       if (debounced) {
         const data = await ComicsService.getAll({
-          limit: 5,
+          limit: LIMITS.comicsSearch,
           title: debounced,
         });
         return data;
@@ -88,30 +88,7 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
         />
         {isLoading && (
           <ul className='flex flex-col gap-1 p-1'>
-            <li className='flex w-full gap-2 rounded p-1'>
-              <Skeleton className='h-[90px] w-[60px] rounded' />
-              <div className='flex flex-col justify-center gap-1'>
-                <Skeleton className='h-5 w-[250px]' />
-                <Skeleton className='h-5 w-[150px]' />
-                <Skeleton className='h-5 w-[100px]' />
-              </div>
-            </li>
-            <li className='flex w-full gap-2 rounded p-1'>
-              <Skeleton className='h-[90px] w-[60px] rounded' />
-              <div className='flex flex-col justify-center gap-1'>
-                <Skeleton className='h-5 w-[250px]' />
-                <Skeleton className='h-5 w-[150px]' />
-                <Skeleton className='h-5 w-[100px]' />
-              </div>
-            </li>
-            <li className='flex w-full gap-2 rounded p-1'>
-              <Skeleton className='h-[90px] w-[60px] rounded' />
-              <div className='flex flex-col justify-center gap-1'>
-                <Skeleton className='h-5 w-[250px]' />
-                <Skeleton className='h-5 w-[150px]' />
-                <Skeleton className='h-5 w-[100px]' />
-              </div>
-            </li>
+            <SearchComicSkeletons />
           </ul>
         )}
         {isSuccess &&
@@ -121,22 +98,10 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
               {searchedComics?.comics.map((comic) => (
                 <li key={comic.id}>
                   <Link
-                    href={`/comics/${comic.id}`}
+                    href={`${HREFS.comics}/${comic.id}`}
                     className='flex gap-2 rounded p-1 transition-colors hover:bg-secondary/75'
                   >
-                    <div className='relative h-[90px] w-[60px] overflow-hidden rounded object-cover'>
-                      <Image src={comic.img} alt={comic.title} fill />
-                    </div>
-                    <div className='flex flex-col justify-center gap-1'>
-                      <h3 className='text-xl'>{comic.title}</h3>
-
-                      <ComicCounters
-                        _count={comic._count}
-                        avgRating={comic.avgRating}
-                        countUniqueSubscribes={comic.countUniqueSubscribes}
-                      />
-                      <Badge className='w-fit'>{comic.status.name}</Badge>
-                    </div>
+                    <SearchComic {...comic} />
                   </Link>
                 </li>
               ))}

@@ -1,5 +1,5 @@
 import { API_CHAPTERS_ENDPOINTS } from '@/configs/endpoint.configs';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { LIMITS } from '@/configs/site.configs';
 import { ICreateChapterFields } from '@/lib/validators/chapter.validators';
 import { IChapter, IResponseAllChapters } from '@/types/chapter.types';
 import { IResponsePage } from '@/types/page.types';
@@ -31,7 +31,7 @@ export type ICreateChapterArg = Omit<ICreateChapterFields, 'pages' | 'number'> &
 export class ChaptersService {
   public static async getAll({
     comicId,
-    limit = PAGINATION_LIMIT_CONFIG.chapters,
+    limit = LIMITS.chapters,
     page = 1,
     order = 'desc',
   }: IGetAllChaptersArg) {

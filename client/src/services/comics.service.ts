@@ -1,5 +1,5 @@
 import { API_COMICS_URL } from '@/configs/endpoint.configs';
-import { PAGINATION_LIMIT_CONFIG, SORT_VARIANTS } from '@/configs/site.configs';
+import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
 import { ICreateComicFields } from '@/lib/validators/comic.validators';
 import {
   IComic,
@@ -30,7 +30,7 @@ export type IGetAllComicsArg = IPaginationArg &
 export class ComicsService {
   public static async getAll({
     page = 1,
-    limit = PAGINATION_LIMIT_CONFIG.comics,
+    limit = LIMITS.comics,
     sort = SORT_VARIANTS.comics[0].field,
     order = SORT_VARIANTS.comics[0].order,
     title = '',

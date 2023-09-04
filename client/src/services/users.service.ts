@@ -1,5 +1,6 @@
 import { API_USERS_ENDPOINTS } from '@/configs/endpoint.configs';
-import { PAGINATION_LIMIT_CONFIG, SORT_VARIANTS } from '@/configs/site.configs';
+import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
+import { ICreateUserFolderFields } from '@/lib/validators/user.validators';
 import { IResponseAllSubscribedComics, IResponseAllUploadedComics } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
@@ -52,7 +53,7 @@ export class UserService {
   public static async getAllUsers({
     login = '',
     page = 1,
-    limit = PAGINATION_LIMIT_CONFIG.users,
+    limit = LIMITS.users,
     sort = 'createdAt',
     order = 'desc',
   }: IGetAllUsersArg) {
@@ -70,7 +71,7 @@ export class UserService {
   public static async getAllSubscribedComics({
     title = '',
     page = 1,
-    limit = PAGINATION_LIMIT_CONFIG.comics,
+    limit = LIMITS.comics,
     sort = 'updatedAt',
     order = 'desc',
   }: IGetAllSubscribedComicsArg) {
@@ -93,7 +94,7 @@ export class UserService {
     title = '',
     login,
     page = 1,
-    limit = PAGINATION_LIMIT_CONFIG.bookmarks,
+    limit = LIMITS.bookmarks,
     sort = 'updatedAt',
     order = 'desc',
   }: IGetAllBookmarksArg) {
@@ -112,7 +113,7 @@ export class UserService {
     login,
     title = '',
     page = 1,
-    limit = PAGINATION_LIMIT_CONFIG.comics,
+    limit = LIMITS.comics,
     sort = SORT_VARIANTS.comics[2].field,
     order = SORT_VARIANTS.comics[2].order,
   }: IGetAllUploadsArg) {
@@ -143,6 +144,10 @@ export class UserService {
     const { data } = await apiAuth.delete<IResponseCleaningBookmarks>(
       `${API_USERS_ENDPOINTS.bookmarkComic}/all`
     );
+    return data;
+  }
+  public static async createFolder(payload: ICreateUserFolderFields) {
+    const { data } = await apiAuth.post<IFolder>(API_USERS_ENDPOINTS.folders, payload);
     return data;
   }
   public static async update(payload: IUpdateUserArg) {

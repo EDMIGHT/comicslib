@@ -2,15 +2,13 @@ import { FC } from 'react';
 
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { LIMITS } from '@/configs/site.configs';
 
 type UserItemSkeletonsProps = {
   count?: number;
 };
 
-export const UserItemSkeletons: FC<UserItemSkeletonsProps> = ({
-  count = PAGINATION_LIMIT_CONFIG.users,
-}) => {
+export const UserItemSkeletons: FC<UserItemSkeletonsProps> = ({ count = LIMITS.users }) => {
   const skeletonArray: undefined[] = Array.from({ length: count });
 
   return (

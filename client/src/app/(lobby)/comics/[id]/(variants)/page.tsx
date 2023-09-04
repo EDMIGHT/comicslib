@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { ChapterItem } from '@/components/layouts/chapter-item';
 import { Pagination } from '@/components/ui/pagination';
-import { PAGINATION_LIMIT_CONFIG } from '@/configs/site.configs';
+import { LIMITS } from '@/configs/site.configs';
 import { ChaptersService } from '@/services/chapters.service';
 
 type PageProps = {
@@ -14,7 +14,7 @@ type PageProps = {
 
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const page = searchParams['page'] ?? '1';
-  const limit = searchParams['limit'] ?? PAGINATION_LIMIT_CONFIG.chapters;
+  const limit = searchParams['limit'] ?? LIMITS.chapters;
 
   const response = await ChaptersService.getAll({ comicId: id, limit, page });
 
@@ -37,7 +37,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
             <Pagination
               currentPage={response.currentPage}
               totalPages={response.totalPages}
-              initialLimit={PAGINATION_LIMIT_CONFIG.chapters}
+              initialLimit={LIMITS.chapters}
               className='justify-center'
             />
           )}
