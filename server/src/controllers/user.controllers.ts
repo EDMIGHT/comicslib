@@ -127,12 +127,11 @@ export const createFolder = async (req: Request, res: Response): Promise<Respons
 };
 
 export const getFolder = async (req: Request, res: Response): Promise<Response> => {
-  const { login, folderId } = req.params;
+  const { folderId } = req.params;
 
   try {
     const folder = await FolderModel.getByFolderIdAndLogin({
       id: folderId,
-      login,
     });
 
     return CustomResponse.ok(res, folder);

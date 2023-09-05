@@ -42,6 +42,7 @@ export const API_USERS_ENDPOINTS = {
   uploads: '/users/uploads',
   folders: '/users/folders',
   foldersUser: '/users/folders/u',
+  foldersComic: '/users/folders/all',
   bookmark: '/users/bookmarks',
   bookmarkComic: '/users/bookmarks/comic',
   comicsSubscribed: '/users/comics-subscribed',

@@ -222,7 +222,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
                   </Button>
                 )}
               </div>
-              <ul className='flex flex-wrap items-center gap-2'>
+              <ul className='flex flex-wrap items-center gap-2 overflow-hidden'>
                 <DndContext
                   sensors={sensors}
                   collisionDetection={closestCenter}

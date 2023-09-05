@@ -32,7 +32,7 @@ import {
   Orbit,
   Palette,
   Pencil,
-  PlusCircle,
+  Plus,
   Scale,
   Search,
   Star,
@@ -51,7 +51,7 @@ import {
 export type Icon = LucideIcon;
 
 export const Icons = {
-  add: PlusCircle,
+  add: Plus,
   back: ChevronLeft,
   bookmark: Bookmark,
   camera: Camera,

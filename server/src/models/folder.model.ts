@@ -11,10 +11,7 @@ import {
 type ICreateFolderArg = Pick<Folder, 'title' | 'userId' | 'order'> & {
   comics?: string[];
 };
-type IGetByLoginFolderArg = Pick<Folder, 'id'> & {
-  title?: string;
-  login?: string;
-};
+type IGetByLoginFolderArg = Pick<Folder, 'id'>;
 type IGetAllFoldersWithComic = Pick<Folder, 'userId'> &
   ISortArg & {
     title?: string;
@@ -83,14 +80,10 @@ export class FolderModel {
   }
   public static async getByFolderIdAndLogin({
     id,
-    login,
   }: IGetByLoginFolderArg): Promise<IResponseFolderWithData | null> {
     return prisma.folder.findFirst({
       where: {
         id,
-        user: {
-          login,
-        },
       },
       include: {
         user: {

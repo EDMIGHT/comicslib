@@ -31,7 +31,7 @@ export const SortablePage: FC<SortablePageProps> = ({
 
   const style = {
     transition,
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
   };
 
   return (

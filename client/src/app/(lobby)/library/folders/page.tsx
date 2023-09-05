@@ -1,11 +1,14 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
-import { Folder } from '@/components/layouts/folder';
+import { FoldersSortableList } from '@/components/folders-sortable-list';
 import { PageHeader } from '@/components/page-header';
+import { buttonVariants } from '@/components/ui/button';
+import { Icons } from '@/components/ui/icons';
+import { HREFS } from '@/configs/href.configs';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { cn } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
 import { ISortArg } from '@/types/response.types';
 
@@ -29,20 +32,27 @@ const Page = async ({ searchParams }: PageProps) => {
 
   const folders = await UserService.getAllUserFolders({ ...searchParams });
 
+  const isMoreThanZeroFolder = folders.length > 0;
+
   return (
     <div className='flex flex-col gap-2'>
       <PageHeader>Your folders</PageHeader>
-      {folders.length > 0 ? (
-        <ul className='space-y-2'>
-          {folders.map((folder) => (
-            <li key={folder.id}>
-              <Folder {...folder} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div>no found</div>
+      {isMoreThanZeroFolder && (
+        <p className='pl-2 text-base font-medium text-muted-foreground'>
+          You can change the order of folders by dragging them and saving the change using the
+          &#34;Save changes&#34; button at the bottom of the list
+        </p>
       )}
+      <Link
+        href={HREFS.create.folder}
+        className={cn(
+          buttonVariants({ variant: 'ghost' }),
+          'flex justify-center gap-2 border border-dashed border-border p-6 '
+        )}
+      >
+        <Icons.add /> Create your own folder
+      </Link>
+      {isMoreThanZeroFolder && <FoldersSortableList folders={folders} />}
     </div>
   );
 };

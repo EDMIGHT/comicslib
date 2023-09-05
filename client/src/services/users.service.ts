@@ -68,7 +68,7 @@ export class UserService {
   }
   public static async getFoldersByComic(comicId: string) {
     const { data } = await apiAuth.get<IFolderForComic[]>(
-      `${API_USERS_ENDPOINTS.folders}/${comicId}`
+      `${API_USERS_ENDPOINTS.foldersComic}/${comicId}`
     );
     return data;
   }
@@ -100,10 +100,8 @@ export class UserService {
     );
     return data;
   }
-  public static async getUserFolderInfo(login: string, folderId: string) {
-    const { data } = await api.get<IUserFolder>(
-      `${API_USERS_ENDPOINTS.foldersUser}/${login}/${folderId}`
-    );
+  public static async getFolderInfo(folderId: string) {
+    const { data } = await api.get<IUserFolder>(`${API_USERS_ENDPOINTS.folders}/${folderId}`);
     return data;
   }
   public static async getAllBookmarks({

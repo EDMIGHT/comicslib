@@ -8,13 +8,12 @@ import { UserService } from '@/services/users.service';
 
 type PageProps = {
   params: {
-    login: string;
     id: string;
   };
 };
 
-const Page = async ({ params: { id, login } }: PageProps) => {
-  const folderInfo = await UserService.getUserFolderInfo(login, id);
+const Page = async ({ params: { id } }: PageProps) => {
+  const folderInfo = await UserService.getFolderInfo(id);
 
   return (
     <div className='flex flex-col gap-2'>
