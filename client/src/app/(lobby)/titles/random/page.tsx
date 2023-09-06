@@ -24,7 +24,7 @@ const Page = () => {
       router.push(`${HREFS.comics}/${randomId}`);
     };
 
-    redirectToRandomComic();
+    void redirectToRandomComic();
   }, []);
 
   return (

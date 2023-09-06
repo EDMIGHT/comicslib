@@ -7,7 +7,7 @@ import { IStatus } from '@/types/status.types';
 type StatusesListProps = HTMLAttributes<HTMLUListElement> & {
   statuses: IStatus[];
   activeStatuses?: string[];
-  onClickItem?: (statusName: string) => any;
+  onClickItem?: (statusName: string) => void;
 };
 
 export const StatusesList: FC<StatusesListProps> = ({
@@ -20,7 +20,7 @@ export const StatusesList: FC<StatusesListProps> = ({
   return (
     <>
       {statuses.length > 0 ? (
-        <ul {...rest} className={cn('flex gap-1', className)}>
+        <ul {...rest} className={cn('flex gap-1 flex-wrap', className)}>
           {statuses.map((status) => (
             <li key={status.id}>
               <Badge

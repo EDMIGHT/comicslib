@@ -232,3 +232,7 @@ export const LIMITS = {
   bookmarks: 6,
   users: 12,
 } as const;
+
+export const PLACEHOLDERS = {
+  folderTitle: ['reading..', 'completed..', 'in progress..', 'plan to read..'],
+};

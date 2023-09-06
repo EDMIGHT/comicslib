@@ -64,7 +64,9 @@ export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' className='font-medium'>
             <DropdownMenuGroup>
-              <DropdownMenuItem disabled={isLoading}>Edit</DropdownMenuItem>
+              <Link href={`${HREFS.library.folders}/${id}/edit`}>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+              </Link>
               <DropdownMenuItem
                 onClick={() => deleteFolder(id)}
                 disabled={isLoading}

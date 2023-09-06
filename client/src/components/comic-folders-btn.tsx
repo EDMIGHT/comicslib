@@ -1,7 +1,6 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
@@ -14,13 +13,12 @@ import {
   CommandInput,
   CommandItem,
 } from '@/components/ui/command';
+import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { toast } from '@/hooks/use-toast';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
-
-import { Icons } from './ui/icons';
-import { ScrollArea } from './ui/scroll-area';
 
 type ComicFoldersBtnProps = {
   comicId: string;
@@ -33,51 +31,25 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
   const queryClient = useQueryClient();
 
   const { data } = useQuery({
-    queryKey: ['comics-folders'],
+    queryKey: ['folders'],
     queryFn: async () => {
       return await UserService.getFoldersByComic(comicId);
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          return toast({
-            variant: 'destructive',
-            title: 'Authorization Error',
-            description: 'Please login or refresh the page',
-          });
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Sorry, something went wrong while retrieving your folders',
-          });
-        }
-      }
+      handleErrorMutation(err);
     },
   });
   const { mutate: updateFolder, isLoading } = useMutation({
-    mutationKey: ['comics-folders'],
+    mutationKey: ['folders'],
     mutationFn: async (folderId: string) => {
       return await UserService.updateFolder(folderId, comicId);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comics-folders'] });
+      void queryClient.invalidateQueries({ queryKey: ['folders'] });
       router.refresh();
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          return toast({
-            variant: 'destructive',
-            title: 'Authorization Error',
-            description: 'Please login or refresh the page',
-          });
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Sorry, something went wrong adding or removing a comic from a folder',
-          });
-        }
-      }
+      handleErrorMutation(err);
     },
   });
 

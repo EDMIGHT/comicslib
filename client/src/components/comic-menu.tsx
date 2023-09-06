@@ -35,14 +35,14 @@ export const ComicMenu = async ({ comicId, chapters }: ComicMenuProps) => {
       {firstChapter &&
         (bookmark ? (
           <Link
-            href={`/chapter/${bookmark.chapterId}/${bookmark.pageNumber}`}
+            href={`${HREFS.chapter}/${bookmark.chapterId}/${bookmark.pageNumber}`}
             className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
           >
             <Icons.read className='h-5 w-5' /> Continue
           </Link>
         ) : (
           <Link
-            href={`/chapter/${firstChapter.id}/1`}
+            href={`${HREFS.chapter}/${firstChapter.id}/1`}
             className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
           >
             <Icons.read className='h-5 w-5' /> Read

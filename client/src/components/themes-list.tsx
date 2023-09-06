@@ -5,6 +5,7 @@ import { FC, HTMLAttributes } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { HREFS } from '@/configs/href.configs';
+import { cn } from '@/lib/utils';
 import { ITheme } from '@/types/theme.types';
 
 type ThemesListProps = HTMLAttributes<HTMLUListElement> & {
@@ -25,7 +26,7 @@ export const ThemesList: FC<ThemesListProps> = ({
   return (
     <>
       {themes.length > 0 ? (
-        <ul {...rest} className='flex gap-1'>
+        <ul {...rest} className={cn('flex flex-wrap gap-1', className)}>
           {themes.map((theme) => (
             <li key={theme.id}>
               <Badge

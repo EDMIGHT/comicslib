@@ -24,12 +24,15 @@ import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { HREFS } from '@/configs/href.configs';
-import { LIMITS } from '@/configs/site.configs';
+import { LIMITS, PLACEHOLDERS } from '@/configs/site.configs';
 import { useDebounce } from '@/hooks/use-debounce';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { getRandomNumber } from '@/lib/utils';
-import { createUserFolder, ICreateUserFolderFields } from '@/lib/validators/user.validators';
+import {
+  createUserFolderSchema,
+  ICreateUserFolderSchema,
+} from '@/lib/validators/user.validators';
 import { ComicsService } from '@/services/comics.service';
 import { UserService } from '@/services/users.service';
 import { IResponseComic } from '@/types/comic.types';
@@ -39,16 +42,14 @@ type CreateFolderFormProps = {
   user: IUser;
 };
 
-const titlePlaceholders = ['reading..', 'completed..', 'in progress..', 'plan to read..'];
-
 export const CreateFolderForm: FC<CreateFolderFormProps> = ({ user }) => {
   const router = useRouter();
   const [isOpenSearchDialog, setIsOpenSearchDialog] = useState(false);
   const [value, setValue] = useState('');
   const [selectedComic, setSelectedComic] = useState<IResponseComic[]>([]);
   const [debounced] = useDebounce(value, 500);
-  const form = useForm<ICreateUserFolderFields>({
-    resolver: zodResolver(createUserFolder),
+  const form = useForm<ICreateUserFolderSchema>({
+    resolver: zodResolver(createUserFolderSchema),
     defaultValues: {
       title: '',
       comics: [],
@@ -93,7 +94,7 @@ export const CreateFolderForm: FC<CreateFolderFormProps> = ({ user }) => {
 
   const { mutate: createFolder, isLoading: isLoadingCreateFolder } = useMutation({
     mutationKey: ['folders', 'comics'],
-    mutationFn: async (data: ICreateUserFolderFields) => {
+    mutationFn: async (data: ICreateUserFolderSchema) => {
       return await UserService.createFolder(data);
     },
     onError: (err) => {
@@ -117,10 +118,10 @@ export const CreateFolderForm: FC<CreateFolderFormProps> = ({ user }) => {
 
   const memoizedTitlePlaceholder = useMemo(
     () =>
-      titlePlaceholders[
+      PLACEHOLDERS.folderTitle[
         getRandomNumber({
           min: 0,
-          max: titlePlaceholders.length - 1,
+          max: PLACEHOLDERS.folderTitle.length - 1,
           inclusive: true,
         })
       ],
