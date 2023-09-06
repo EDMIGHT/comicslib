@@ -15,15 +15,12 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import Link from 'next/link';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import { HREFS } from '@/configs/href.configs';
 import { IFolderWithComics } from '@/types/user.types';
 
 import { SortableFolder } from './sortable-folder';
 import { Button } from './ui/button';
-import { Icons } from './ui/icons';
 
 type FoldersSortableListProps = {
   folders: IFolderWithComics[];
@@ -31,7 +28,12 @@ type FoldersSortableListProps = {
 
 export const FoldersSortableList: FC<FoldersSortableListProps> = ({ folders }) => {
   const [isEdit, setIsEdit] = useState(false);
-  const [tempFolders, setTempFolders] = useState(folders);
+
+  const [tempFolders, setTempFolders] = useState<IFolderWithComics[]>(folders);
+
+  useEffect(() => {
+    setTempFolders(folders); // allows us to track the deletion of folders
+  }, [folders]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

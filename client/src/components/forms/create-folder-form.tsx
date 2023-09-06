@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -41,6 +42,7 @@ type CreateFolderFormProps = {
 const titlePlaceholders = ['reading..', 'completed..', 'in progress..', 'plan to read..'];
 
 export const CreateFolderForm: FC<CreateFolderFormProps> = ({ user }) => {
+  const router = useRouter();
   const [isOpenSearchDialog, setIsOpenSearchDialog] = useState(false);
   const [value, setValue] = useState('');
   const [selectedComic, setSelectedComic] = useState<IResponseComic[]>([]);
@@ -102,7 +104,9 @@ export const CreateFolderForm: FC<CreateFolderFormProps> = ({ user }) => {
         },
       });
     },
-    onSuccess: (data) => {
+    onSuccess: (res) => {
+      router.refresh();
+      router.push(`${HREFS.library.folders}/${res.id}`);
       form.reset();
     },
   });

@@ -10,7 +10,6 @@ import { HREFS } from '@/configs/href.configs';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { cn } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
-import { ISortArg } from '@/types/response.types';
 
 export const metadata: Metadata = {
   title: 'Your folders',
@@ -18,19 +17,13 @@ export const metadata: Metadata = {
     'User folders and the comics they have saved: an organized repository of comics that interest you',
 };
 
-type PageProps = {
-  searchParams: ISortArg & {
-    title?: string;
-  };
-};
-
-const Page = async ({ searchParams }: PageProps) => {
+const Page = async () => {
   const user = await getAuthServer();
   if (!user) {
     return notFound();
   }
 
-  const folders = await UserService.getAllUserFolders({ ...searchParams });
+  const folders = await UserService.getAllUserFolders();
 
   const isMoreThanZeroFolder = folders.length > 0;
 

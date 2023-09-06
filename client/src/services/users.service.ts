@@ -23,9 +23,7 @@ export type IGetAllUsersArg = IPaginationArg &
   ISortArg & {
     login?: string;
   };
-export type IGetAllUserFoldersArg = ISortArg & {
-  title?: string;
-};
+
 export type IGetAllSubscribedComicsArg = IPaginationArg &
   ISortArg & {
     title?: string;
@@ -88,16 +86,8 @@ export class UserService {
     const { data } = await api.get<IFolder[]>(`${API_USERS_ENDPOINTS.foldersUser}/${login}`);
     return data;
   }
-  public static async getAllUserFolders({
-    title = '',
-    sort = 'order',
-    order = 'asc',
-  }: IGetAllUserFoldersArg) {
-    const searchParams = `title=${title}&sort=${sort}&order=${order}`;
-
-    const { data } = await apiAuth.get<IFolderWithComics[]>(
-      `${API_USERS_ENDPOINTS.foldersUser}?${searchParams}`
-    );
+  public static async getAllUserFolders() {
+    const { data } = await apiAuth.get<IFolderWithComics[]>(API_USERS_ENDPOINTS.foldersUser);
     return data;
   }
   public static async getFolderInfo(folderId: string) {
@@ -138,6 +128,10 @@ export class UserService {
     );
     return data;
   }
+  public static async createFolder(payload: ICreateUserFolderFields) {
+    const { data } = await apiAuth.post<IFolder>(API_USERS_ENDPOINTS.folders, payload);
+    return data;
+  }
   public static async updateBookmark(body: IUpdateBookmarkArg) {
     const { data } = await apiAuth.patch<IBookmark>(API_USERS_ENDPOINTS.bookmark, body);
     return data;
@@ -146,6 +140,10 @@ export class UserService {
     const { data } = await apiAuth.patch<IProfile>(
       `${API_USERS_ENDPOINTS.folders}/${folderId}/${comicId}`
     );
+    return data;
+  }
+  public static async update(payload: IUpdateUserArg) {
+    const { data } = await apiAuth.patch<IUser>(API_USERS_ENDPOINTS.origin, payload);
     return data;
   }
   public static async deleteBookmark(comicId: string) {
@@ -160,12 +158,10 @@ export class UserService {
     );
     return data;
   }
-  public static async createFolder(payload: ICreateUserFolderFields) {
-    const { data } = await apiAuth.post<IFolder>(API_USERS_ENDPOINTS.folders, payload);
-    return data;
-  }
-  public static async update(payload: IUpdateUserArg) {
-    const { data } = await apiAuth.patch<IUser>(API_USERS_ENDPOINTS.origin, payload);
+  public static async deleteFolder(folderId: string) {
+    const { data } = await apiAuth.delete<IFolder>(
+      `${API_USERS_ENDPOINTS.folders}/${folderId}`
+    );
     return data;
   }
 }

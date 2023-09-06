@@ -1,8 +1,10 @@
 'use client';
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FC, memo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -15,10 +17,36 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { HREFS } from '@/configs/href.configs';
+import { toast } from '@/hooks/use-toast';
+import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { UserService } from '@/services/users.service';
 import { IFolderWithComics } from '@/types/user.types';
 
 export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
+  const router = useRouter();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+
+  const { mutate: deleteFolder, isLoading } = useMutation({
+    mutationKey: ['folders'],
+    mutationFn: async (folderId: string) => {
+      return await UserService.deleteFolder(folderId);
+    },
+    onSuccess: (res) => {
+      toast({
+        title: 'Congratulations!!',
+        description: `You have successfully deleted the folder "${res.title}"`,
+      });
+      router.refresh();
+    },
+    onError: (err) => {
+      handleErrorMutation(err, {
+        forbiddenError: {
+          title: 'Access error',
+          description: 'You are trying to delete a folder that you do not own',
+        },
+      });
+    },
+  });
 
   return (
     <Card className='flex flex-col items-start justify-start gap-2 p-2 transition-colors'>
@@ -30,14 +58,20 @@ export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
         </Link>
         <DropdownMenu open={isOpenMenu} onOpenChange={setIsOpenMenu}>
           <DropdownMenuTrigger asChild>
-            <Button variant='ghost' size='sm'>
+            <Button variant='ghost' size='sm' disabled={isLoading}>
               <DotsHorizontalIcon />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='w-fit'>
+          <DropdownMenuContent align='end' className='font-medium'>
             <DropdownMenuGroup>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem className='text-destructive'>Delete</DropdownMenuItem>
+              <DropdownMenuItem disabled={isLoading}>Edit</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => deleteFolder(id)}
+                disabled={isLoading}
+                className='text-destructive'
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>

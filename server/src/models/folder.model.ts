@@ -33,6 +33,9 @@ export class FolderModel {
       where: {
         userId,
       },
+      orderBy: {
+        order: 'asc',
+      },
       include: {
         comics: {
           select: {
