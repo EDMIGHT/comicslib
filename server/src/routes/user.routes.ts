@@ -4,6 +4,7 @@ import {
   clearAllBookmarks,
   createFolder,
   deleteBookmark,
+  deleteFolder,
   getAllSubscribedComics,
   getAllUser,
   getBookmarks,
@@ -52,5 +53,6 @@ router.patch('/', authentication, updateUserValidators, validation, updateUser);
 
 router.delete('/bookmarks/comic/all', authentication, clearAllBookmarks);
 router.delete('/bookmarks/comic/:comicId', authentication, deleteBookmark);
+router.delete('/folders/:folderId', authentication, deleteFolder);
 
 export default router;

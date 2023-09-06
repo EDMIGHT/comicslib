@@ -1,7 +1,6 @@
 import { Folder } from '@prisma/client';
 
 import prisma from '@/db/prisma';
-import { ISortArg } from '@/types/common.types';
 import {
   IFolderWithComicIds,
   IFolderWithShortComic,
@@ -11,11 +10,7 @@ import {
 type ICreateFolderArg = Pick<Folder, 'title' | 'userId' | 'order'> & {
   comics?: string[];
 };
-type IGetByLoginFolderArg = Pick<Folder, 'id'>;
-type IGetAllFoldersWithComic = Pick<Folder, 'userId'> &
-  ISortArg & {
-    title?: string;
-  };
+
 type IUpdateComicsArg = {
   id: string;
   prevComics: { id: string }[];
@@ -33,21 +28,10 @@ export class FolderModel {
       },
     });
   }
-  public static async getAllWithComics({
-    userId,
-    sort,
-    order,
-    title,
-  }: IGetAllFoldersWithComic): Promise<IFolderWithShortComic[]> {
+  public static async getAllWithComics(userId: string): Promise<IFolderWithShortComic[]> {
     return prisma.folder.findMany({
       where: {
         userId,
-        title: {
-          startsWith: title,
-        },
-      },
-      orderBy: {
-        [sort]: order,
       },
       include: {
         comics: {
@@ -59,6 +43,11 @@ export class FolderModel {
           take: 10,
           orderBy: {
             updatedAt: 'desc',
+          },
+        },
+        _count: {
+          select: {
+            comics: true,
           },
         },
       },
@@ -78,9 +67,7 @@ export class FolderModel {
       },
     });
   }
-  public static async getByFolderIdAndLogin({
-    id,
-  }: IGetByLoginFolderArg): Promise<IResponseFolderWithData | null> {
+  public static async getById(id: string): Promise<IResponseFolderWithData | null> {
     return prisma.folder.findFirst({
       where: {
         id,
@@ -138,6 +125,13 @@ export class FolderModel {
         comics: {
           connect: comicsConnect,
         },
+      },
+    });
+  }
+  public static async deleteById(id: string): Promise<Folder> {
+    return prisma.folder.delete({
+      where: {
+        id,
       },
     });
   }

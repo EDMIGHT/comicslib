@@ -130,9 +130,7 @@ export const getFolder = async (req: Request, res: Response): Promise<Response> 
   const { folderId } = req.params;
 
   try {
-    const folder = await FolderModel.getByFolderIdAndLogin({
-      id: folderId,
-    });
+    const folder = await FolderModel.getById(folderId);
 
     return CustomResponse.ok(res, folder);
   } catch (error) {
@@ -171,15 +169,8 @@ export const getUserFoldersWithComicInfo = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const { title = '', sort = 'order', order = 'asc' } = req.query;
-
   try {
-    const folders = await FolderModel.getAllWithComics({
-      userId: req.user.id,
-      title: title as string,
-      sort: sort as string,
-      order: order as ISortOrder,
-    });
+    const folders = await FolderModel.getAllWithComics(req.user.id);
 
     return CustomResponse.ok(res, folders);
   } catch (error) {
@@ -322,6 +313,40 @@ export const getUserBookmarkByComic = async (
   }
 };
 
+export const getAllSubscribedComics = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { title, page = 1, limit = 10, order = 'desc', sort = 'createdAt' } = req.query;
+
+  try {
+    const ComicsSubscribed = await ComicModel.getAllSubscribedComics({
+      userId: req.user.id,
+      page: Number(page),
+      limit: Number(limit),
+      sort: sort as string,
+      order: order as ISortOrder,
+      title: title as string,
+    });
+    const totalSubscribedComics = await ComicModel.getAllCountSubscribedComic({
+      userId: req.user.id,
+      title: title as string,
+    });
+
+    return CustomResponse.ok(res, {
+      comics: ComicsSubscribed,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalSubscribedComics / Number(limit)),
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when fetching comics you follow`,
+      error,
+    });
+  }
+};
+
 export const updateBookmark = async (req: Request, res: Response): Promise<Response> => {
   const { comicId, chapterId, pageNumber } = req.body;
   try {
@@ -389,6 +414,34 @@ export const updateBookmark = async (req: Request, res: Response): Promise<Respo
   }
 };
 
+export const updateUser = async (req: Request, res: Response): Promise<Response> => {
+  const { img, ...restPaylaod } = req.body;
+
+  try {
+    let uploadedImg;
+
+    if (img) {
+      uploadedImg = await cloudinary.uploader.upload(img, {
+        folder: 'users',
+      });
+    }
+
+    const updatedUser = await UserModel.update({
+      id: req.user.id,
+      ...restPaylaod,
+      img: uploadedImg?.secure_url,
+    });
+
+    return CustomResponse.ok(res, updatedUser);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when updating user data`,
+      error,
+    });
+  }
+};
+
 export const deleteBookmark = async (req: Request, res: Response): Promise<Response> => {
   const { comicId } = req.params;
 
@@ -443,63 +496,29 @@ export const clearAllBookmarks = async (req: Request, res: Response): Promise<Re
   }
 };
 
-export const getAllSubscribedComics = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  const { title, page = 1, limit = 10, order = 'desc', sort = 'createdAt' } = req.query;
+export const deleteFolder = async (req: Request, res: Response): Promise<Response> => {
+  const { folderId } = req.params;
 
   try {
-    const ComicsSubscribed = await ComicModel.getAllSubscribedComics({
-      userId: req.user.id,
-      page: Number(page),
-      limit: Number(limit),
-      sort: sort as string,
-      order: order as ISortOrder,
-      title: title as string,
-    });
-    const totalSubscribedComics = await ComicModel.getAllCountSubscribedComic({
-      userId: req.user.id,
-      title: title as string,
-    });
-
-    return CustomResponse.ok(res, {
-      comics: ComicsSubscribed,
-      currentPage: Number(page),
-      totalPages: Math.ceil(totalSubscribedComics / Number(limit)),
-    });
-  } catch (error) {
-    return serverErrorResponse({
-      res,
-      message: `server side error when fetching comics you follow`,
-      error,
-    });
-  }
-};
-
-export const updateUser = async (req: Request, res: Response): Promise<Response> => {
-  const { img, ...restPaylaod } = req.body;
-
-  try {
-    let uploadedImg;
-
-    if (img) {
-      uploadedImg = await cloudinary.uploader.upload(img, {
-        folder: 'users',
+    const existedFolder = await FolderModel.getById(folderId);
+    if (!existedFolder) {
+      return CustomResponse.notFound(res, {
+        message: `Folder with id = ${folderId} does not exist`,
+      });
+    }
+    if (existedFolder.userId !== req.user.id) {
+      return CustomResponse.forbidden(res, {
+        message: 'You are not the owner of this folder',
       });
     }
 
-    const updatedUser = await UserModel.update({
-      id: req.user.id,
-      ...restPaylaod,
-      img: uploadedImg?.secure_url,
-    });
+    const deletedFolder = await FolderModel.deleteById(existedFolder.id);
 
-    return CustomResponse.ok(res, updatedUser);
+    return CustomResponse.ok(res, deletedFolder);
   } catch (error) {
     return serverErrorResponse({
       res,
-      message: `server side error when updating user data`,
+      message: `An error occurred on the server while trying to delete a folder with id = ${folderId}`,
       error,
     });
   }
