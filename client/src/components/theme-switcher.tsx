@@ -1,7 +1,7 @@
 'use client';
 
 import { useTheme } from 'next-themes';
-import { FC, HTMLAttributes, useEffect, useState } from 'react';
+import { FC, HTMLAttributes, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';

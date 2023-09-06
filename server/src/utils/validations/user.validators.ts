@@ -10,13 +10,28 @@ export const createFolderValidators = [
   check('comics')
     .optional()
     .isArray()
-    .withMessage('comics must be passed as an array of strings with their id'),
+    .withMessage('Сomics must be passed as an array of strings with their id'),
+  check('comics.*').isString().withMessage('Comics array must be a comics id of type string'),
 ];
 
 export const updateBookmarkValidators = [
-  check('comicId').exists().withMessage('comic id is required field').trim(),
-  check('chapterId').exists().withMessage('chapter id is required field').trim(),
-  check('pageNumber').exists().withMessage('page number is required field').trim(),
+  check('comicId').exists().withMessage('Comic id is required field').trim(),
+  check('chapterId').exists().withMessage('Chapter id is required field').trim(),
+  check('pageNumber').exists().withMessage('Page number is required field').trim(),
+];
+
+export const updateFolderValidators = [
+  check('title')
+    .trim()
+    .isLength({ min: 2 })
+    .withMessage('The minimum title length is 2 characters')
+    .isLength({ max: 190 })
+    .withMessage('The maximum title length is 190 characters'),
+  check('comics')
+    .optional()
+    .isArray()
+    .withMessage('Comics must be passed as an array of strings with their id'),
+  check('comics.*').isString().withMessage('Comics array must be a comics id of type string'),
 ];
 
 export const updateUserValidators = [

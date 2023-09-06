@@ -13,7 +13,6 @@ type ProfileAvatarProps = IShortUser &
   };
 
 export const ProfileAvatar: FC<ProfileAvatarProps> = ({
-  id,
   img,
   login,
   className,

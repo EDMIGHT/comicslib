@@ -211,6 +211,15 @@ export class ComicModel {
       skip,
     });
   }
+  public static async getAllByIds(ids: string[]): Promise<Comic[]> {
+    return prisma.comic.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
   public static async getAllSubscribedComics({
     userId,
     title,

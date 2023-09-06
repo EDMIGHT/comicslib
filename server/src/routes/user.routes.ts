@@ -17,12 +17,14 @@ import {
   getUserFoldersWithComicInfo,
   updateBookmark,
   updateComicsFolder,
+  updateFolder,
   updateUser,
 } from '@/controllers/user.controllers';
 import { authentication, validation } from '@/middleware';
 import {
   createFolderValidators,
   updateBookmarkValidators,
+  updateFolderValidators,
   updateUserValidators,
 } from '@/utils/validations/user.validators';
 
@@ -50,6 +52,13 @@ router.patch(
 );
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
 router.patch('/', authentication, updateUserValidators, validation, updateUser);
+router.patch(
+  '/folders/:folderId',
+  authentication,
+  updateFolderValidators,
+  validation,
+  updateFolder
+);
 
 router.delete('/bookmarks/comic/all', authentication, clearAllBookmarks);
 router.delete('/bookmarks/comic/:comicId', authentication, deleteBookmark);

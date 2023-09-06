@@ -7,6 +7,7 @@ import { FC, HTMLAttributes, ReactNode } from 'react';
 import { Icons } from '@/components/ui/icons';
 import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { cn } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
 
 import { FileDialogWithCrop } from './file-dialog-with-crop';
@@ -47,7 +48,7 @@ export const ProfileEditAvatar: FC<ProfileEditAvatarProps> = ({
 
   return (
     <FileDialogWithCrop {...props} onSelectFile={onSelectFile}>
-      <div className='h-full w-full cursor-pointer'>
+      <div className={cn('h-full w-full cursor-pointer', className)}>
         {isLoading ? (
           <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
             <Icons.loading className='h-10 w-10 animate-spin' />

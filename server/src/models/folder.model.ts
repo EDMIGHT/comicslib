@@ -10,7 +10,9 @@ import {
 type ICreateFolderArg = Pick<Folder, 'title' | 'userId' | 'order'> & {
   comics?: string[];
 };
-
+type IUpdateFolder = Pick<Folder, 'id' | 'title'> & {
+  comics?: string[];
+};
 type IUpdateComicsArg = {
   id: string;
   prevComics: { id: string }[];
@@ -131,10 +133,17 @@ export class FolderModel {
       },
     });
   }
-  public static async deleteById(id: string): Promise<Folder> {
-    return prisma.folder.delete({
+  public static async update({ id, title, comics }: IUpdateFolder): Promise<Folder> {
+    const comicsDisconnect = comics && comics.map((comic) => ({ id: comic }));
+    return prisma.folder.update({
       where: {
         id,
+      },
+      data: {
+        title,
+        comics: {
+          disconnect: comicsDisconnect,
+        },
       },
     });
   }
@@ -152,6 +161,13 @@ export class FolderModel {
           disconnect: prevComics,
           connect: newComics,
         },
+      },
+    });
+  }
+  public static async deleteById(id: string): Promise<Folder> {
+    return prisma.folder.delete({
+      where: {
+        id,
       },
     });
   }

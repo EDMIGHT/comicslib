@@ -442,6 +442,49 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
   }
 };
 
+export const updateFolder = async (req: Request, res: Response): Promise<Response> => {
+  const { folderId } = req.params;
+  const { comics } = req.body;
+
+  try {
+    const existedFolder = await FolderModel.getById(folderId);
+
+    if (!existedFolder) {
+      return CustomResponse.notFound(res, {
+        message: 'folder does not exist',
+      });
+    }
+    if (existedFolder.userId !== req.user.id) {
+      return CustomResponse.forbidden(res, {
+        message: 'you are not the owner of this folder to change it',
+      });
+    }
+
+    const existedComics = await ComicModel.getAllByIds(comics);
+
+    if (existedComics.length !== comics.length) {
+      const diff = comics.length - existedComics.length;
+      return CustomResponse.conflict(res, {
+        message: `there are ${diff} non-existent comics in the submitted list of comics`,
+      });
+    }
+
+    const updatedFolder = await FolderModel.update({
+      id: existedFolder.id,
+      comics,
+      ...req.body,
+    });
+
+    return CustomResponse.ok(res, updatedFolder);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when updating folder with id = ${folderId}`,
+      error,
+    });
+  }
+};
+
 export const deleteBookmark = async (req: Request, res: Response): Promise<Response> => {
   const { comicId } = req.params;
 

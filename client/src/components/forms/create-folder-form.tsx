@@ -111,7 +111,7 @@ export const CreateFolderForm: FC<CreateFolderFormProps> = ({ user }) => {
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = void form.handleSubmit((data) => {
     createFolder(data);
   });
 
