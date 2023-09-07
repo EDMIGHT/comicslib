@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -40,12 +41,12 @@ export const CreateAuthorForm: FC<CreateAuthorFormProps> = ({
   const queryClient = useQueryClient();
 
   const { mutate: createAuthor, isLoading } = useMutation({
-    mutationKey: ['authors'],
+    mutationKey: [REACT_QUERY_KEYS.authors],
     mutationFn: async (payload: ICreateAuthorFields) => {
       return await AuthorsService.create(payload);
     },
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ['authors'] });
+    onSuccess: async (response) => {
+      await queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.authors] });
       toast({
         title: 'Congratulations!!',
         description: `You have successfully created an author with login: "${response.login}"`,
@@ -63,7 +64,10 @@ export const CreateAuthorForm: FC<CreateAuthorFormProps> = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+      <form
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        className='flex flex-col gap-2'
+      >
         <FormField
           control={form.control}
           name='login'

@@ -21,10 +21,13 @@ const Page: FC<PageProps> = async ({ params: { id }, searchParams }) => {
     notFound();
   }
 
-  const comics = await ComicsService.getAll({ ...searchParams, folderId: folder.id });
+  const comics = await ComicsService.getAll({
+    ...searchParams,
+    folderId: folder.id,
+  });
 
   return (
-    <div>
+    <div className='space-y-2'>
       <PageHeader>Edit folder &#34;{folder.title}&#34;</PageHeader>
       <EditFolderForm folder={folder} responseComics={comics} />
     </div>

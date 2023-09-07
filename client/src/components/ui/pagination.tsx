@@ -8,14 +8,12 @@ import { LIMITS } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 
 type PaginationProps = HTMLAttributes<HTMLUListElement> & {
-  initialLimit: number | string;
-  currentPage?: number;
+  currentPage: number;
   totalPages: number;
   pageRange?: number;
 };
 
 export const Pagination: FC<PaginationProps> = ({
-  initialLimit = LIMITS.chapters,
   currentPage = 1,
   totalPages = 50,
   pageRange = 2,
@@ -23,14 +21,12 @@ export const Pagination: FC<PaginationProps> = ({
   ...rest
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const limit = searchParams.get('limit') ?? initialLimit;
   const hasNextPage = currentPage < totalPages;
   const hasPrevPage = currentPage > 1;
 
   const handlePageChange = (newPage: number) => {
-    router.push(`?page=${newPage}&limit=${limit}`);
+    router.push(`?page=${newPage}`);
   };
 
   let startPage: number;
@@ -57,6 +53,7 @@ export const Pagination: FC<PaginationProps> = ({
     <ul {...rest} className={cn('flex items-center gap-1 text-lg', className)}>
       <li>
         <button
+          type='button'
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={!hasPrevPage}
           className='flex min-h-[2.5rem] min-w-[2.5rem] cursor-pointer items-center justify-center rounded-full enabled:cursor-pointer enabled:hover:bg-secondary disabled:text-muted'
@@ -68,6 +65,7 @@ export const Pagination: FC<PaginationProps> = ({
         <>
           <li>
             <button
+              type='button'
               onClick={() => handlePageChange(1)}
               className='flex min-h-[2.5rem] min-w-[2.5rem] cursor-pointer items-center justify-center rounded enabled:hover:bg-secondary disabled:bg-active disabled:hover:opacity-80'
             >
@@ -86,6 +84,7 @@ export const Pagination: FC<PaginationProps> = ({
         <li key={i}>
           <button
             key={page}
+            type='button'
             onClick={() => handlePageChange(page)}
             disabled={page === currentPage}
             className='flex min-h-[2.5rem] min-w-[2.5rem] cursor-pointer items-center justify-center rounded enabled:hover:bg-secondary disabled:bg-active disabled:hover:opacity-80'
@@ -103,6 +102,7 @@ export const Pagination: FC<PaginationProps> = ({
           </li>
           <li>
             <button
+              type='button'
               onClick={() => handlePageChange(totalPages)}
               className='flex min-h-[2.5rem] min-w-[2.5rem] cursor-pointer items-center justify-center rounded  enabled:hover:bg-secondary disabled:bg-active disabled:hover:opacity-80'
             >
@@ -114,6 +114,7 @@ export const Pagination: FC<PaginationProps> = ({
 
       <li>
         <button
+          type='button'
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={!hasNextPage}
           className='flex min-h-[2.5rem] min-w-[2.5rem] cursor-pointer items-center justify-center rounded-full enabled:cursor-pointer enabled:hover:bg-secondary disabled:text-muted'

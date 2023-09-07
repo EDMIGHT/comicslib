@@ -1,13 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -38,7 +39,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
   });
 
   const { mutate: createComment, isLoading } = useMutation({
-    mutationKey: ['comments'],
+    mutationKey: [REACT_QUERY_KEYS.comments],
     mutationFn: async (data: ICreateCommentFields) => {
       return await CommentsService.create(data, comicId);
     },
@@ -49,7 +50,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
             variant: 'destructive',
             title: 'Invalid request body',
             description:
-              err.response.data?.details[0]?.msg ||
+              (err.response.data?.details[0]?.msg as string) ||
               'Check the correctness of the entered text',
           });
         } else if (err.response?.status === 401) {
@@ -70,7 +71,6 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
     onSuccess: () => {
       form.reset();
       router.refresh();
-      // queryClient.invalidateQueries(['comments']);
     },
   });
 
@@ -80,7 +80,10 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-1 '>
+      <form
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        className='flex flex-col gap-1 '
+      >
         <FormField
           control={form.control}
           name='text'

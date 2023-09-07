@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { AuthorsFiltering } from '@/components/authors-filtering';
 import { FileDialog } from '@/components/file-dialog';
 import { GenresList } from '@/components/genres-list';
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { ThemesList } from '@/components/themes-list';
 import {
   AlertDialog,
@@ -80,7 +81,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
   });
 
   const { mutate: createComic, isLoading: isLoadingCreateComic } = useMutation({
-    mutationKey: ['comics'],
+    mutationKey: [REACT_QUERY_KEYS.comics],
     mutationFn: async (data: ICreateComicFields) => {
       return await ComicsService.create(data);
     },
@@ -96,7 +97,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
     },
   });
 
-  const onSelectFile = async (onChangeHandler: (...event: any[]) => void, file: File) => {
+  const onSelectFile = async (onChangeHandler: (...event: unknown[]) => void, file: File) => {
     const imageBASE64 = await convertImgToBase64(file);
 
     if (imageBASE64) {
@@ -109,7 +110,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
     <Form {...form}>
       <form
         id='create-comic-form'
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
         className='space-y-2'
       >
         <div className='grid grid-cols-[200px_1fr] gap-2'>
@@ -120,7 +121,9 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
               <FormItem>
                 <FormControl>
                   <FileDialog
-                    onSelectFile={(selectedFile) => onSelectFile(field.onChange, selectedFile)}
+                    onSelectFile={(selectedFile) =>
+                      void onSelectFile(field.onChange, selectedFile)
+                    }
                   >
                     <div className='group relative flex h-[270px] w-[200px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border p-2 transition-colors hover:bg-muted'>
                       <Icons.uploadCloud className='h-10 w-10' />

@@ -25,6 +25,7 @@ import { saveTokens } from '@/lib/helpers/token.helper';
 import { cn } from '@/lib/utils';
 import { ISignUpFields, signUpValidation } from '@/lib/validators/auth.validators';
 import { AuthService, IRequestSignUpBody } from '@/services/auth.service';
+import { IInvalidResponse } from '@/types/response.types';
 
 export const SignUpForm = () => {
   const router = useRouter();
@@ -69,7 +70,7 @@ export const SignUpForm = () => {
             variant: 'destructive',
             title: 'Invalid request body',
             description:
-              err.response.data?.details[0]?.msg ||
+              (err.response.data as IInvalidResponse)?.details[0]?.msg ||
               'Check the correctness of the entered data',
           });
         } else if (err.response?.status === 409) {
@@ -77,7 +78,7 @@ export const SignUpForm = () => {
             variant: 'destructive',
             title: 'Such an account already exists',
             description:
-              err.response.data?.details[0]?.msg ||
+              (err.response.data as IInvalidResponse)?.details[0]?.msg ||
               'An account with this username probably already exists, please enter a different one',
           });
         } else {
@@ -91,14 +92,17 @@ export const SignUpForm = () => {
     },
   });
 
-  const onSubmit = form.handleSubmit(async (data) => {
+  const onSubmit = (data: ISignUpFields) => {
     signUp(data);
     form.reset();
-  });
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='space-y-2'>
+      <form
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        className='space-y-2'
+      >
         <FormField
           control={form.control}
           name='login'

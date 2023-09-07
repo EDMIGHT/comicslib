@@ -18,6 +18,7 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FileDialog } from '@/components/file-dialog';
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -47,7 +48,7 @@ type CreateChapterFormProps = {
 };
 
 type IFieldControlPage = {
-  onChange: (...event: any[]) => void;
+  onChange: (...event: unknown[]) => void;
   currentValues: ICreateChapterFields['pages'];
 };
 
@@ -72,7 +73,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
   });
 
   const { mutate: createChapter, isLoading } = useMutation({
-    mutationKey: ['chapters'],
+    mutationKey: [REACT_QUERY_KEYS.chapters],
     mutationFn: async (data: ICreateChapterArg) => {
       return await ChaptersService.create(data);
     },
@@ -173,7 +174,10 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2'>
+      <form
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        className='flex flex-col gap-2'
+      >
         <div className='flex flex-col gap-2 md:flex-row'>
           <FormItem className='w-full'>
             <FormLabel>Number</FormLabel>
@@ -240,7 +244,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
                             field.onChange(field.value.filter((page) => page.id !== deletedId))
                           }
                           onClickEditPage={(changeId, selectedFile) =>
-                            onClickEditPage({
+                            void onClickEditPage({
                               changeId,
                               file: selectedFile,
                               currentValues: field.value,
@@ -256,7 +260,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
                   <FormControl>
                     <FileDialog
                       onSelectFile={(selectedFile) =>
-                        onClickUploadPage({
+                        void onClickUploadPage({
                           file: selectedFile,
                           onChange: field.onChange,
                           currentValues: field.value,

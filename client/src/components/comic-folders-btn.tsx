@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -31,7 +32,7 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
   const queryClient = useQueryClient();
 
   const { data } = useQuery({
-    queryKey: ['folders'],
+    queryKey: [REACT_QUERY_KEYS.folders],
     queryFn: async () => {
       return await UserService.getFoldersByComic(comicId);
     },
@@ -40,12 +41,12 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
     },
   });
   const { mutate: updateFolder, isLoading } = useMutation({
-    mutationKey: ['folders'],
+    mutationKey: [REACT_QUERY_KEYS.folders],
     mutationFn: async (folderId: string) => {
-      return await UserService.updateFolder(folderId, comicId);
+      return await UserService.updateExistenceComicInFolder(folderId, comicId);
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['folders'] });
+      void queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.folders] });
       router.refresh();
     },
     onError: (err) => {

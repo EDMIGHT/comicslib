@@ -15,6 +15,15 @@ const queryClient = new QueryClient({
   },
 });
 
+export const REACT_QUERY_KEYS = {
+  authors: 'authors',
+  folders: 'folders',
+  comics: 'comics',
+  chapters: 'chapters',
+  comments: 'comments',
+  bookmarks: 'bookmarks',
+};
+
 export const QueryProvider: FC<IQueryProviderProps> = ({ children }) => {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };

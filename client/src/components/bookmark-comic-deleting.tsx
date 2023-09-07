@@ -4,10 +4,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { FC } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { UserService } from '@/services/users.service';
+import { IBadResponse } from '@/types/response.types';
 
 type BookmarkComicDeleteProps = {
   comicId: string;
@@ -17,12 +19,12 @@ export const BookmarkComicDelete: FC<BookmarkComicDeleteProps> = ({ comicId }) =
   const queryClient = useQueryClient();
 
   const { mutate: deleteBookmark, isLoading } = useMutation({
-    mutationKey: ['bookmarks'],
+    mutationKey: [REACT_QUERY_KEYS.bookmarks],
     mutationFn: async () => {
       return await UserService.deleteBookmark(comicId);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
+      void queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.bookmarks] });
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
@@ -35,7 +37,7 @@ export const BookmarkComicDelete: FC<BookmarkComicDeleteProps> = ({ comicId }) =
         } else if (err.response?.status === 404) {
           toast({
             variant: 'destructive',
-            title: err.response.data.message,
+            title: (err.response.data as IBadResponse).message,
           });
         } else if (err.response?.status === 409) {
           toast({

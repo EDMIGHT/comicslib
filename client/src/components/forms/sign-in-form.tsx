@@ -21,6 +21,7 @@ import { toast } from '@/hooks/use-toast';
 import { saveTokens } from '@/lib/helpers/token.helper';
 import { ISignInFields, signInValidation } from '@/lib/validators/auth.validators';
 import { AuthService } from '@/services/auth.service';
+import { IInvalidResponse } from '@/types/response.types';
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -62,7 +63,7 @@ export const SignInForm = () => {
             variant: 'destructive',
             title: 'Invalid request body',
             description:
-              err.response.data?.details[0]?.msg ||
+              (err.response.data as IInvalidResponse)?.details[0]?.msg ||
               'Check the correctness of the entered data',
           });
         } else if (err.response?.status === 404) {
@@ -87,14 +88,17 @@ export const SignInForm = () => {
     },
   });
 
-  const onSubmit = form.handleSubmit(async (data) => {
+  const onSubmit = (data: ISignInFields) => {
     signIn(data);
     form.reset();
-  });
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='space-y-2'>
+      <form
+        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        className='space-y-2'
+      >
         <FormField
           control={form.control}
           name='login'

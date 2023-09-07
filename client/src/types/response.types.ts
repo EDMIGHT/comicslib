@@ -20,17 +20,18 @@ export type ISortArg = {
 };
 
 export type IBadResponse = {
-  error: {
-    data: {
-      message: string;
-    };
-  };
+  message: string;
 };
 
-export const isBadResponse = (response: any): response is IBadResponse => {
-  return (
-    response?.error !== undefined &&
-    response.error.data !== undefined &&
-    response.error.data.message !== undefined
-  );
+export type IInvalidResponse = IBadResponse & {
+  details: [
+    {
+      type: string;
+      value: string | number;
+      msg: string;
+      path: string;
+      location: string;
+    },
+  ];
+  body: unknown;
 };

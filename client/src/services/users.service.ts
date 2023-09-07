@@ -1,6 +1,6 @@
 import { API_USERS_ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
-import { ICreateUserFolderFields } from '@/lib/validators/user.validators';
+import { ICreateUserFolderSchema, IEditFolderSchema } from '@/lib/validators/user.validators';
 import { IResponseAllSubscribedComics, IResponseAllUploadedComics } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
@@ -128,15 +128,22 @@ export class UserService {
     );
     return data;
   }
-  public static async createFolder(payload: ICreateUserFolderFields) {
+  public static async createFolder(payload: ICreateUserFolderSchema) {
     const { data } = await apiAuth.post<IFolder>(API_USERS_ENDPOINTS.folders, payload);
     return data;
   }
-  public static async updateBookmark(body: IUpdateBookmarkArg) {
-    const { data } = await apiAuth.patch<IBookmark>(API_USERS_ENDPOINTS.bookmark, body);
+  public static async updateBookmark(payload: IUpdateBookmarkArg) {
+    const { data } = await apiAuth.patch<IBookmark>(API_USERS_ENDPOINTS.bookmark, payload);
     return data;
   }
-  public static async updateFolder(folderId: string, comicId: string) {
+  public static async updateFolder(folderId: string, payload: IEditFolderSchema) {
+    const { data } = await apiAuth.patch<IFolder>(
+      `${API_USERS_ENDPOINTS.folders}/${folderId}`,
+      payload
+    );
+    return data;
+  }
+  public static async updateExistenceComicInFolder(folderId: string, comicId: string) {
     const { data } = await apiAuth.patch<IProfile>(
       `${API_USERS_ENDPOINTS.folders}/${folderId}/${comicId}`
     );
