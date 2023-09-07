@@ -1,28 +1,17 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 
+import { SearchComics } from '@/components/search-comics';
 import { Button } from '@/components/ui/button';
-import { CommandDialog, CommandInput } from '@/components/ui/command';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
-import { LIMITS } from '@/configs/site.configs';
-import { useDebounce } from '@/hooks/use-debounce';
-import { toast } from '@/hooks/use-toast';
 import { isMacOS } from '@/lib/utils';
-import { ComicsService } from '@/services/comics.service';
 
-import { SearchComic } from './layouts/search-comic';
-import { SearchComicSkeletons } from './skeletons/search-comic-skeletons';
-
-type ComicSearchProps = {};
-
-export const ComicSearch: FC<ComicSearchProps> = ({}) => {
+export const ComicSearch: FC = ({}) => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const [debounced] = useDebounce(value, 500);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -35,37 +24,6 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
   }, []);
-
-  useEffect(() => {
-    if (!open) {
-      setValue('');
-    }
-  }, [open]);
-
-  const {
-    data: searchedComics,
-    isLoading,
-    isSuccess,
-  } = useQuery({
-    queryKey: ['search-comics', debounced],
-    queryFn: async () => {
-      if (debounced) {
-        const data = await ComicsService.getAll({
-          limit: LIMITS.comicsSearch,
-          title: debounced,
-        });
-        return data;
-      }
-      return null;
-    },
-    onError: () => {
-      toast({
-        variant: 'destructive',
-        title: 'Oops, something went wrong',
-        description: 'An error occurred while searching, please try again later',
-      });
-    },
-  });
 
   return (
     <>
@@ -80,38 +38,13 @@ export const ComicSearch: FC<ComicSearchProps> = ({}) => {
           <abbr title={isMacOS() ? 'Command' : 'Control'}>{isMacOS() ? '⌘' : 'Ctrl'} K</abbr>
         </kbd>
       </Button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder='search comic by title..'
-          value={value}
-          onValueChange={setValue}
-        />
-        {isLoading && (
-          <ul className='flex flex-col gap-1 p-1'>
-            <SearchComicSkeletons />
-          </ul>
-        )}
-        {isSuccess &&
-          searchedComics &&
-          (searchedComics?.comics?.length > 0 ? (
-            <ul className='flex flex-col gap-1 p-1'>
-              {searchedComics?.comics.map((comic) => (
-                <li key={comic.id}>
-                  <Link
-                    href={`${HREFS.comics}/${comic.id}`}
-                    className='flex gap-2 rounded p-1 transition-colors hover:bg-secondary/75'
-                  >
-                    <SearchComic {...comic} />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className='p-10 text-center '>
-              <h2>comics not found</h2>
-            </div>
-          ))}
-      </CommandDialog>
+      <SearchComics
+        open={open}
+        setOpen={setOpen}
+        onClickItem={(comic) => {
+          router.push(`${HREFS.comics}/${comic.id}`);
+        }}
+      />
     </>
   );
 };

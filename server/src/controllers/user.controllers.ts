@@ -455,7 +455,7 @@ export const reorderFolders = async (req: Request, res: Response): Promise<Respo
         message: 'there are non-existent folders in the passed list',
       });
     }
-    if (existedFolders.some((folder) => folder.id !== req.user.id)) {
+    if (!existedFolders.some((folder) => folder.id !== req.user.id)) {
       return CustomResponse.forbidden(res, {
         message: 'you are trying to change a folder/folders that you do not own',
       });

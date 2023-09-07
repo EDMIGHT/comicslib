@@ -60,6 +60,11 @@ export const SearchComics: FC<SearchComicsProps> = ({ open, setOpen, onClickItem
     },
   });
 
+  const handleClick = (comic: IResponseComic) => {
+    onClickItem && onClickItem(comic);
+    resetDialog();
+  };
+
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder='comic title name..' value={value} onValueChange={setValue} />
@@ -78,8 +83,12 @@ export const SearchComics: FC<SearchComicsProps> = ({ open, setOpen, onClickItem
                 <SearchComic
                   {...comic}
                   onClick={() => {
-                    onClickItem && onClickItem(comic);
-                    resetDialog();
+                    handleClick(comic);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleClick(comic);
+                    }
                   }}
                 />
               </li>

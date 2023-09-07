@@ -46,6 +46,9 @@ export type IUpdateBookmarkArg = {
   pageNumber: number | string;
 };
 export type IUpdateUserArg = Partial<Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>>;
+export type IReorderFolders = {
+  folders: string[];
+};
 
 export class UserService {
   public static async getProfile(login: string) {
@@ -151,6 +154,13 @@ export class UserService {
   }
   public static async update(payload: IUpdateUserArg) {
     const { data } = await apiAuth.patch<IUser>(API_USERS_ENDPOINTS.origin, payload);
+    return data;
+  }
+  public static async reorderFolders(payload: IReorderFolders) {
+    const { data } = await apiAuth.patch<null>(
+      `${API_USERS_ENDPOINTS.folders}/reorder`,
+      payload
+    );
     return data;
   }
   public static async deleteBookmark(comicId: string) {
