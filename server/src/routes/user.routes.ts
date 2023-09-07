@@ -15,6 +15,7 @@ import {
   getUserFolders,
   getUserFoldersByComic,
   getUserFoldersWithComicInfo,
+  reorderFolders,
   updateBookmark,
   updateComicsFolder,
   updateFolder,
@@ -23,6 +24,7 @@ import {
 import { authentication, validation } from '@/middleware';
 import {
   createFolderValidators,
+  reorderFoldersValidators,
   updateBookmarkValidators,
   updateFolderValidators,
   updateUserValidators,
@@ -52,6 +54,13 @@ router.patch(
 );
 router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
 router.patch('/', authentication, updateUserValidators, validation, updateUser);
+router.patch(
+  '/folders/reorder',
+  authentication,
+  reorderFoldersValidators,
+  validation,
+  reorderFolders
+);
 router.patch(
   '/folders/:folderId',
   authentication,

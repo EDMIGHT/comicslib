@@ -207,47 +207,6 @@ export const getUserFoldersByComic = async (
   }
 };
 
-export const updateComicsFolder = async (req: Request, res: Response): Promise<Response> => {
-  const { folderId, comicId } = req.params;
-
-  try {
-    const existedFolder = await FolderModel.getWithComicsIds(folderId);
-
-    if (!existedFolder) {
-      return CustomResponse.notFound(res, {
-        message: 'folder does not exist',
-      });
-    }
-    if (existedFolder.userId !== req.user.id) {
-      return CustomResponse.conflict(res, {
-        message: 'you are not the owner of this folder to change it',
-      });
-    }
-
-    let newFolderComics;
-
-    if (existedFolder.comics.some((com) => com.id === comicId)) {
-      newFolderComics = existedFolder.comics.filter((comic) => comic.id !== comicId);
-    } else {
-      newFolderComics = [...existedFolder.comics, { id: comicId }];
-    }
-
-    const updatedFolder = await FolderModel.updateComics({
-      id: folderId,
-      prevComics: existedFolder.comics,
-      newComics: newFolderComics,
-    });
-
-    return CustomResponse.ok(res, updatedFolder);
-  } catch (error) {
-    return serverErrorResponse({
-      res,
-      message: `server side error changing folder`,
-      error,
-    });
-  }
-};
-
 export const getBookmarks = async (req: Request, res: Response): Promise<Response> => {
   const { login } = req.params;
   const { title, page = 1, limit = 5, sort = 'updatedAt', order = 'desc' } = req.query;
@@ -347,6 +306,47 @@ export const getAllSubscribedComics = async (
   }
 };
 
+export const updateComicsFolder = async (req: Request, res: Response): Promise<Response> => {
+  const { folderId, comicId } = req.params;
+
+  try {
+    const existedFolder = await FolderModel.getWithComicsIds(folderId);
+
+    if (!existedFolder) {
+      return CustomResponse.notFound(res, {
+        message: 'folder does not exist',
+      });
+    }
+    if (existedFolder.userId !== req.user.id) {
+      return CustomResponse.conflict(res, {
+        message: 'you are not the owner of this folder to change it',
+      });
+    }
+
+    let newFolderComics;
+
+    if (existedFolder.comics.some((com) => com.id === comicId)) {
+      newFolderComics = existedFolder.comics.filter((comic) => comic.id !== comicId);
+    } else {
+      newFolderComics = [...existedFolder.comics, { id: comicId }];
+    }
+
+    const updatedFolder = await FolderModel.updateComics({
+      id: folderId,
+      prevComics: existedFolder.comics,
+      newComics: newFolderComics,
+    });
+
+    return CustomResponse.ok(res, updatedFolder);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error changing folder`,
+      error,
+    });
+  }
+};
+
 export const updateBookmark = async (req: Request, res: Response): Promise<Response> => {
   const { comicId, chapterId, pageNumber } = req.body;
   try {
@@ -437,6 +437,43 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
     return serverErrorResponse({
       res,
       message: `server side error when updating user data`,
+      error,
+    });
+  }
+};
+
+export const reorderFolders = async (req: Request, res: Response): Promise<Response> => {
+  const { folders } = req.body as {
+    folders: string[];
+  };
+
+  try {
+    const existedFolders = await FolderModel.getAllByIds(folders);
+
+    if (existedFolders.length !== folders.length) {
+      return CustomResponse.notFound(res, {
+        message: 'there are non-existent folders in the passed list',
+      });
+    }
+    if (existedFolders.some((folder) => folder.id !== req.user.id)) {
+      return CustomResponse.forbidden(res, {
+        message: 'you are trying to change a folder/folders that you do not own',
+      });
+    }
+
+    await Promise.all(
+      folders.map((folderId, i) =>
+        FolderModel.updateOrder({
+          id: folderId,
+          order: i + 1,
+        })
+      )
+    );
+    return CustomResponse.ok(res, null);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when updating folder order`,
       error,
     });
   }
@@ -556,6 +593,17 @@ export const deleteFolder = async (req: Request, res: Response): Promise<Respons
     }
 
     const deletedFolder = await FolderModel.deleteById(existedFolder.id);
+
+    const allFolders = await FolderModel.getAll(req.user.id);
+
+    await Promise.all(
+      allFolders.map(({ id }, i) =>
+        FolderModel.updateOrder({
+          id,
+          order: i + 1,
+        })
+      )
+    );
 
     return CustomResponse.ok(res, deletedFolder);
   } catch (error) {

@@ -30,6 +30,15 @@ export class FolderModel {
       },
     });
   }
+  public static async getAllByIds(ids: string[]): Promise<Folder[]> {
+    return prisma.folder.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
   public static async getAllWithComics(userId: string): Promise<IFolderWithShortComic[]> {
     return prisma.folder.findMany({
       where: {
@@ -144,6 +153,19 @@ export class FolderModel {
         comics: {
           disconnect: comicsDisconnect,
         },
+      },
+    });
+  }
+  public static async updateOrder({
+    id,
+    order,
+  }: Pick<Folder, 'id' | 'order'>): Promise<Folder> {
+    return prisma.folder.update({
+      where: {
+        id,
+      },
+      data: {
+        order,
       },
     });
   }

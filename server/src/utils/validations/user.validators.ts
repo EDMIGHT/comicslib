@@ -62,3 +62,13 @@ export const updateUserValidators = [
     .isLength({ max: 190 })
     .withMessage('The maximum password length is 190 characters'),
 ];
+
+export const reorderFoldersValidators = [
+  check('folders')
+    .optional()
+    .isArray()
+    .withMessage('The array of folders must be passed as an array of strings with their id.'),
+  check('folders.*')
+    .isString()
+    .withMessage('The folder array element must be a folder ID of string type.'),
+];
