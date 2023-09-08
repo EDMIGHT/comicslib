@@ -3,17 +3,16 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { COMIC_RATING_CONFIG } from '@/configs/comic.configs';
 import { toast } from '@/hooks/use-toast';
 import { arrayFromRange, cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { IRating } from '@/types/review.types';
-
-import { Icons } from './ui/icons';
 
 type ComicUpdateRatingProps = {
   comicId: string;

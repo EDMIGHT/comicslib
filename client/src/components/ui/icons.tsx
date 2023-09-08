@@ -45,9 +45,6 @@ import {
   X,
 } from 'lucide-react';
 
-// type IconType = {
-//   [key: string]: (props: LucideProps) => JSX.Element;
-// };
 export type Icon = LucideIcon;
 
 export const Icons = {

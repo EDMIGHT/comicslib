@@ -75,6 +75,7 @@ export const FoldersSortableList: FC<FoldersSortableListProps> = ({ folders }) =
       });
     },
     onSuccess: () => {
+      setIsEdit(false);
       router.refresh();
       toast({
         title: 'Congratulations!!',

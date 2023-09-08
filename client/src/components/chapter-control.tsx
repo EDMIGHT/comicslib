@@ -4,14 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
+import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ChaptersService } from '@/services/chapters.service';
-
-import { Icons } from './ui/icons';
 
 type ChapterControlProps = {
   comicId: string;
@@ -23,10 +24,8 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
 
   const router = useRouter();
 
-  // TODO infinity scroll for chapters
-
   const { data: response, isLoading } = useQuery({
-    queryKey: ['chapters'],
+    queryKey: [REACT_QUERY_KEYS.chapters],
     queryFn: async () => {
       return await ChaptersService.getAll({ comicId, limit: 5, order: 'asc' });
     },
@@ -75,7 +74,7 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
                   )}
                   onClick={() => {
                     setOpen(false);
-                    router.push(`/chapter/${chap.id}`);
+                    router.push(`${HREFS.chapter}/${chap.id}`);
                   }}
                 >
                   <span className='block w-[150px] truncate'>

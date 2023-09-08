@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
 import { FullScreenComicCarousel } from '@/components/carousels/full-screen-comic-carousel';
-import { ComicsSection } from '@/components/comics-section';
 import { SectionHeader } from '@/components/section-header';
 import { ComicsService } from '@/services/comics.service';
 
@@ -11,18 +10,18 @@ export const metadata: Metadata = {
 };
 
 const IndexPage = async () => {
-  const recentlyAddedComics = await ComicsService.getAll({
-    page: 1,
-    limit: 6,
-    sort: 'createdAt',
-    order: 'desc',
-  });
-  const latestUpdatesComics = await ComicsService.getAll({
-    page: 1,
-    limit: 6,
-    sort: 'updatedAt',
-    order: 'desc',
-  });
+  // const recentlyAddedComics = await ComicsService.getAll({
+  //   page: 1,
+  //   limit: 6,
+  //   sort: 'createdAt',
+  //   order: 'desc',
+  // });
+  // const latestUpdatesComics = await ComicsService.getAll({
+  //   page: 1,
+  //   limit: 6,
+  //   sort: 'updatedAt',
+  //   order: 'desc',
+  // });
   const popularNewComicsCarousel = await ComicsService.getAll({
     page: 1,
     limit: 10,
@@ -38,8 +37,6 @@ const IndexPage = async () => {
         <SectionHeader>Popular New Titles</SectionHeader>
         <FullScreenComicCarousel comics={popularNewComicsCarousel.comics} />
       </section>
-      <ComicsSection title='Latest Updates' comics={latestUpdatesComics.comics} />
-      <ComicsSection title='Recently Added' comics={recentlyAddedComics.comics} />
     </div>
   );
 };

@@ -16,8 +16,6 @@ export const OverlayModal: FC<OverlayModalProps> = ({
   className,
   ...rest
 }) => {
-  const router = useRouter();
-
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     if (onClick) onClick();
     // else router.back();

@@ -24,7 +24,7 @@ export enum DateFilterSearchParams {
 export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()!;
 
   const initialVariant = searchParams.get(DateFilterSearchParams.DATE);
   const initialDateFrom = searchParams.get(DateFilterSearchParams.START_DATE);
@@ -44,6 +44,8 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
 
   const createQueryString = useCallback(
     (name: 'date' | 'startDate' | 'endDate', field: string | undefined) => {
+      // https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const params = new URLSearchParams(searchParams);
       if (!field) {

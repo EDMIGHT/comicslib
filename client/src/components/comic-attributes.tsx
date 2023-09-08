@@ -5,6 +5,7 @@ import { FC, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { ButtonProps, buttonVariants } from '@/components/ui/button';
+import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 import { IGenre } from '@/types/genre.types';
 import { ITheme } from '@/types/theme.types';
@@ -34,13 +35,13 @@ export const ComicAttributes: FC<ComicAttributesProps> = ({
     if (i < genres.length) {
       mixedAttributes.push({
         ...genres[i],
-        href: `/genre/${genres[i].title.toLowerCase()}`,
+        href: `${HREFS.comicAttributes.genre}/${genres[i].title.toLowerCase()}`,
       });
     }
     if (i < themes.length) {
       mixedAttributes.push({
         ...themes[i],
-        href: `/theme/${themes[i].title.toLowerCase()}`,
+        href: `${HREFS.comicAttributes.theme}/${themes[i].title.toLowerCase()}`,
       });
     }
   }

@@ -29,6 +29,7 @@ export const Search: FC<SearchProps> = ({
 
   useEffect(() => {
     if (debounced !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const params = new URLSearchParams(searchParams);
       params.set(paramsKey, debounced);

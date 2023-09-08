@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import { CommandDialog } from '@/components/ui/command';
 import { Icons } from '@/components/ui/icons';
@@ -15,7 +16,7 @@ export const BookmarksCleaning = () => {
   const [open, setOpen] = useState(false);
 
   const { mutate: cleaningBookmarks, isLoading } = useMutation({
-    mutationKey: ['bookmarks'],
+    mutationKey: [REACT_QUERY_KEYS.bookmarks],
     mutationFn: async () => {
       return await UserService.cleaningBookmarks();
     },
@@ -24,7 +25,7 @@ export const BookmarksCleaning = () => {
         title: 'Successfully',
         description: `${data.count} bookmarks have been deleted`,
       });
-      queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
+      void queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.bookmarks] });
     },
     onError: (err) => {
       if (err instanceof AxiosError) {

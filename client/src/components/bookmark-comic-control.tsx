@@ -1,12 +1,12 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
-import { toast } from '@/hooks/use-toast';
+import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { IUpdateBookmarkArg, UserService } from '@/services/users.service';
 import { IBookmark } from '@/types/user.types';
@@ -24,7 +24,7 @@ export const BookmarkComicControl: FC<BookmarkComicControlProps> = ({
   const router = useRouter();
 
   const { mutate: updateBookmark, isLoading } = useMutation({
-    mutationKey: ['bookmark'],
+    mutationKey: [REACT_QUERY_KEYS.bookmarks],
     mutationFn: async () => {
       return await UserService.updateBookmark({
         chapterId,
@@ -36,20 +36,7 @@ export const BookmarkComicControl: FC<BookmarkComicControlProps> = ({
       router.refresh();
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          return toast({
-            variant: 'destructive',
-            title: 'Authorization Error',
-            description: 'Please login or refresh the page',
-          });
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Sorry, something went wrong while retrieving your folders',
-          });
-        }
-      }
+      handleErrorMutation(err);
     },
   });
 

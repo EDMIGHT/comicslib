@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { FC, forwardRef, HTMLAttributes, useState } from 'react';
+import { forwardRef, HTMLAttributes, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Icons } from '@/components/ui/icons';

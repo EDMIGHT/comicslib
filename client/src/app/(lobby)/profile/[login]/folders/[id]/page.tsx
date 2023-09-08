@@ -1,9 +1,5 @@
-import { FC } from 'react';
-
-import { ComicsList } from '@/components/comics-list';
 import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { Icons } from '@/components/ui/icons';
-import { ComicsService } from '@/services/comics.service';
 import { UserService } from '@/services/users.service';
 
 type PageProps = {

@@ -53,6 +53,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
     (name: string, value: string) => {
       const existedValues = searchParams.getAll(name);
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const params = new URLSearchParams(searchParams);
 

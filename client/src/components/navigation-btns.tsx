@@ -20,8 +20,6 @@ type NavigationBtnsProps = {
   isFirstActive?: boolean;
 };
 
-// TODO попробовать сделать более универсальным
-
 export const NavigationBtns: FC<NavigationBtnsProps> = ({ variants, isFirstActive }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();

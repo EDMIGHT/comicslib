@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
 import { useClickOutside } from '@/hooks/use-click-outside';
@@ -11,12 +12,11 @@ import { cn } from '@/lib/utils';
 import { AuthorsService } from '@/services/authors.service';
 import { IAuthor } from '@/types/author.types';
 
-import { CreateAuthorDialog } from './create-author-dialog';
 import { AuthorSearchSkeletons } from './skeletons/author-search-skeletons';
 import { buttonVariants } from './ui/button';
 
 type AuthorsFilteringProps = {
-  onClick: (author: IAuthor) => any;
+  onClick: (author: IAuthor) => void;
   activeAuthors: string[];
   createAuthorAbility?: boolean;
 };
@@ -38,7 +38,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({
     isError,
     isSuccess,
   } = useQuery({
-    queryKey: ['authors', debounced],
+    queryKey: [REACT_QUERY_KEYS.authors, debounced],
     queryFn: async () => {
       if (debounced) {
         const { authors } = await AuthorsService.getAll({ limit: 5, login: debounced });

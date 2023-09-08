@@ -3,8 +3,14 @@ import 'cropperjs/dist/cropper.css';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useRef } from 'react';
 import Cropper, { type ReactCropperElement } from 'react-cropper';
 
-import { Button } from './ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 type CropImgDialogProps = {
   file: File;
