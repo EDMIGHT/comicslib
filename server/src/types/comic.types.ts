@@ -1,4 +1,16 @@
-import { Author, Chapter, Comic, Comment, Genre, Status, Theme } from '@prisma/client';
+import {
+  Author,
+  Chapter,
+  Comic,
+  Comment,
+  Folder,
+  Genre,
+  Status,
+  Theme,
+  User,
+} from '@prisma/client';
+
+import { IPaginationArg, ISortArg } from '@/types/common.types';
 
 import { IChapterWithUser } from './chapter.types';
 
@@ -24,3 +36,17 @@ export type IComicWithDataSingle = IComicWithData & {
 export type IComicWithChapter = Comic & {
   chapters: IChapterWithUser[];
 };
+
+export type IGetAllComicsQuery = IPaginationArg &
+  ISortArg & {
+    genres: string;
+    themes: string;
+    authors: string;
+    statuses: string;
+    title: Comic['title'];
+    folderId: Folder['id'];
+    ratedUser: User['login'];
+    date: string;
+    startDate: string;
+    endDate: string;
+  };

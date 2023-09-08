@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 
-import { FolderModel } from '@/models/folder.model';
 import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
@@ -35,31 +34,6 @@ export const register = async (req: Request, res: Response): Promise<Response> =
       userId: user.id,
       refreshToken: tokens.refreshToken,
     });
-
-    const defaultFolders = [
-      FolderModel.create({
-        userId: user.id,
-        title: 'Reading',
-        order: 1,
-      }),
-      FolderModel.create({
-        userId: user.id,
-        title: 'Plan to read',
-        order: 2,
-      }),
-      FolderModel.create({
-        userId: user.id,
-        title: 'Completed',
-        order: 3,
-      }),
-      FolderModel.create({
-        userId: user.id,
-        title: 'Dropped',
-        order: 4,
-      }),
-    ];
-
-    await Promise.all(defaultFolders);
 
     return CustomResponse.created(res, {
       user: createResponseUser(user),

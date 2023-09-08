@@ -15,7 +15,7 @@ export const COMIC_DATE_FIELDS: readonly IConfigVariant[] = [
     field: 'updatedAt',
   },
   {
-    title: 'Published',
-    field: 'publishedAt',
+    title: 'Released',
+    field: 'releasedAt',
   },
 ];

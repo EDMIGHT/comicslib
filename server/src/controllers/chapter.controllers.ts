@@ -4,28 +4,34 @@ import { ChapterModel } from '@/models/chapter.model';
 import { ComicModel } from '@/models/comic.model';
 import { PageModel } from '@/models/page.model';
 import { IRequestChapter } from '@/types/chapter.types';
-import { ISortOrder } from '@/types/common.types';
+import { IPaginationArg, ISortArg } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getChaptersByComicId = async (req: Request, res: Response): Promise<Response> => {
   const { comicId } = req.params;
-  const { page = 1, limit = 10, order = 'desc', sort = 'number' } = req.query;
+  const {
+    page = 1,
+    limit = 10,
+    order = 'desc',
+    sort = 'number',
+  } = req.query as unknown as IPaginationArg & ISortArg;
+
   try {
     const chapters = await ChapterModel.getAll({
       comicId,
-      limit: Number(limit),
-      order: order as ISortOrder,
-      page: Number(page),
-      sort: sort as string,
+      limit,
+      order,
+      page,
+      sort,
     });
     const totalChapters = await ChapterModel.getTotalChapters(comicId);
 
     return CustomResponse.ok(res, {
       chapters,
-      currentPage: Number(page),
-      totalPages: Math.ceil(totalChapters / +limit),
+      currentPage: page,
+      totalPages: Math.ceil(totalChapters / limit),
     });
   } catch (error) {
     return serverErrorResponse({

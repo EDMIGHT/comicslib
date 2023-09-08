@@ -14,10 +14,13 @@ export const validation = async (
     return next();
   } else {
     return CustomResponse.badRequest(response, {
-      message: 'invalid request body',
+      message: 'invalid request',
       details: errors.array(),
       body: {
         ...request.body,
+      },
+      query: {
+        ...request.query,
       },
     });
   }

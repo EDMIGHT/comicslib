@@ -1,29 +1,36 @@
+import { Author } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import { AuthorModel } from '@/models/author.model';
-import { ISortOrder } from '@/types/common.types';
+import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getAllAuthors = async (req: Request, res: Response): Promise<Response> => {
-  const { login, page = 1, limit = 5, order = 'asc' } = req.query;
+  const {
+    login,
+    sort,
+    page = 1,
+    limit = 5,
+    order = 'asc',
+  } = req.query as unknown as IPaginationArg & ISortArg & Pick<Author, 'login'>;
 
   try {
     const authors = await AuthorModel.getAll({
-      login: login as string,
-      page: Number(page),
-      limit: Number(limit),
-      order: order as ISortOrder,
-      sort: 'login',
+      login,
+      page,
+      limit,
+      order,
+      sort,
     });
     const totalAuthors = await AuthorModel.getTotalAll({
-      login: login as string,
+      login,
     });
 
     return CustomResponse.ok(res, {
       authors,
-      currentPage: Number(page),
-      totalPages: Math.ceil(totalAuthors / Number(limit)),
+      currentPage: page,
+      totalPages: Math.ceil(totalAuthors / limit),
     });
   } catch (error) {
     return serverErrorResponse({

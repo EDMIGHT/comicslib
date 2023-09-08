@@ -10,13 +10,23 @@ import {
   updateComicRating,
 } from '@/controllers/comic.controllers';
 import { authentication, validation } from '@/middleware';
-import { createComicValidators } from '@/utils/validations/comic.validators';
+import {
+  createComicValidators,
+  getComicsValidators,
+} from '@/utils/validations/comic.validators';
+import { paginationValidators, sortValidators } from '@/utils/validations/req.validators';
 
 const router = express.Router({ mergeParams: true });
 
-router.get('/', getComics);
+router.get(
+  '/',
+  paginationValidators,
+  sortValidators,
+  getComicsValidators,
+  validation,
+  getComics
+);
 router.get('/random', getRandom);
-router.get('/top-reading');
 router.get('/:id', getComic);
 router.get('/rating/:id', getRatings);
 router.get('/rating/me/:id', authentication, getUserRating);

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { ComicModel } from '@/models/comic.model';
 import { CommentModel } from '@/models/comment.model';
-import { ISortOrder } from '@/types/common.types';
+import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -40,7 +40,12 @@ export const createComment = async (req: Request, res: Response): Promise<Respon
 
 export const getComments = async (req: Request, res: Response): Promise<Response> => {
   const { comicId } = req.params;
-  const { page = 1, limit = 10, order = 'desc', sort = 'createdAt' } = req.query;
+  const {
+    page = 1,
+    limit = 10,
+    order = 'desc',
+    sort = 'createdAt',
+  } = req.query as unknown as IPaginationArg & ISortArg;
 
   try {
     const existedComic = await ComicModel.get(comicId);
@@ -53,10 +58,10 @@ export const getComments = async (req: Request, res: Response): Promise<Response
 
     const comments = await CommentModel.getAllForComic({
       comicId,
-      page: +page,
-      limit: +limit,
-      sort: sort as string,
-      order: order as ISortOrder,
+      page,
+      limit,
+      sort,
+      order,
     });
 
     const totalCommentsByComic = await CommentModel.getTotal(comicId);
@@ -68,8 +73,8 @@ export const getComments = async (req: Request, res: Response): Promise<Response
 
     return CustomResponse.ok(res, {
       comments: responseComments,
-      currentPage: +page,
-      totalPages: Math.ceil(totalCommentsByComic / +limit),
+      currentPage: page,
+      totalPages: Math.ceil(totalCommentsByComic / limit),
     });
   } catch (error) {
     return serverErrorResponse({

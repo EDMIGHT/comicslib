@@ -88,7 +88,7 @@ export class ComicModel {
     if (sort === 'best') {
       sortQuery.push({
         bookmarks: {
-          _count: 'desc' as ISortOrder,
+          _count: order as ISortOrder,
         },
       });
     } else if (sort === 'title') {

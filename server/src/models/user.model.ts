@@ -1,5 +1,6 @@
 import { User } from '@prisma/client';
 
+import { DEFAULT_USER_FOLDER } from '@/configs/user.configs';
 import prisma from '@/db/prisma';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { IProfile } from '@/types/user.types';
@@ -88,6 +89,9 @@ export class UserModel {
       data: {
         ...data,
         img: defaultUserImg,
+        folders: {
+          create: DEFAULT_USER_FOLDER,
+        },
       },
     });
   }
