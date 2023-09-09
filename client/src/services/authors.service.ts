@@ -19,10 +19,14 @@ export class AuthorsService {
     order = 'asc',
     login = '',
   }: IGetAllAuthorsArg) {
+    const searchParams = `page=${page}&limit=${limit}&sort=${sort}&order=${order}&login=${login}`;
     const { data } = await api.get<IResponseAllAuthors>(
-      API_AUTHORS_URL.origin +
-        `?page=${page}&limit=${limit}&sort=${sort}&order=${order}&login=${login}`
+      `${API_AUTHORS_URL.origin}?${searchParams}`
     );
+    return data;
+  }
+  public static async get(login: string) {
+    const { data } = await api.get<IAuthor>(`${API_AUTHORS_URL.origin}/${login}`);
     return data;
   }
   public static async create(payload: ICreateAuthorFields) {

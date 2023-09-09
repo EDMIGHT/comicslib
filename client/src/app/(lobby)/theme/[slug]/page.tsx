@@ -7,7 +7,7 @@ import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { SectionHeader } from '@/components/section-header';
 import { buttonVariants } from '@/components/ui/button';
-import { TITLE_HREFS } from '@/configs/href.configs';
+import { HREFS } from '@/configs/href.configs';
 import { capitalizeFirstLetter, cn, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { ThemesService } from '@/services/themes.service';
@@ -51,12 +51,12 @@ const Page = async ({ params: { slug } }: PageProps) => {
   return (
     <div className='space-y-4'>
       <PageHeader>{capitalizedTitle}</PageHeader>
-      <div className='space-y-1'>
+      <section className='space-y-1'>
         <SectionHeader>Trending this year with theme {capitalizedTitle}</SectionHeader>
         <TripleComicCarousel comics={topComics.comics} />
         <div className='flex w-full items-center justify-center'>
           <Link
-            href={`${TITLE_HREFS.advancedSearch}?theme=${slug}`}
+            href={`${HREFS.titles.advancedSearch}?theme=${slug}`}
             className={cn(buttonVariants({ variant: 'link' }))}
           >
             <h3 className='text-center text-xl'>
@@ -65,11 +65,11 @@ const Page = async ({ params: { slug } }: PageProps) => {
             </h3>
           </Link>
         </div>
-      </div>
-      <div>
+      </section>
+      <section>
         <SectionHeader>All comics with theme {capitalizedTitle}</SectionHeader>
         <ComicsFeed theme={[slug]} />
-      </div>
+      </section>
     </div>
   );
 };

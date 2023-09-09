@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  Bomb,
   BookCopy,
   Bookmark,
   BookMarked,
@@ -80,6 +81,7 @@ export const Icons = {
   ),
   delete: Trash2,
   edit: Pencil,
+  fatalError: Bomb,
   logOut: LogOut,
   listPlus: ListPlus,
   filter: Filter,
