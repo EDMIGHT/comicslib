@@ -42,45 +42,6 @@ export const getChaptersByComicId = async (req: Request, res: Response): Promise
   }
 };
 
-export const createChapter = async (req: Request, res: Response): Promise<Response> => {
-  const { pages, ...chapterData } = req.body as IRequestChapter;
-  try {
-    const existedChapter = await ChapterModel.getByComicIdAndNumber({
-      comicId: chapterData.comicId,
-      number: chapterData.number,
-    });
-
-    if (existedChapter) {
-      return CustomResponse.conflict(res, {
-        message: `A chapter with this number already exists for the comic with id = ${chapterData.comicId}`,
-      });
-    }
-
-    const chapter = await ChapterModel.create({ ...chapterData, userId: req.user.id });
-
-    await Promise.all(
-      pages.map(async ({ img, number }) => {
-        const uploadedImg = await cloudinary.uploader.upload(img, {
-          folder: 'pages',
-        });
-        return await PageModel.create({
-          number,
-          img: uploadedImg.secure_url,
-          chapterId: chapter.id,
-        });
-      })
-    );
-    await ComicModel.refreshUpdatedAt(chapter.comicId);
-    return CustomResponse.created(res, chapter);
-  } catch (error) {
-    return serverErrorResponse({
-      res,
-      message: 'error while creating genre on server side',
-      error,
-    });
-  }
-};
-
 export const getPageByChapterId = async (req: Request, res: Response): Promise<Response> => {
   const { chapterId, pageNumber } = req.params;
 
@@ -119,6 +80,69 @@ export const getPageByChapterId = async (req: Request, res: Response): Promise<R
     return serverErrorResponse({
       res,
       message: 'error while receiving genres on server side',
+      error,
+    });
+  }
+};
+
+export const getContentForComic = async (req: Request, res: Response): Promise<Response> => {
+  const { comicId } = req.params;
+
+  try {
+    const existedComic = await ComicModel.get(comicId);
+
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'the comic for which the content is requested does not exist',
+      });
+    }
+
+    const content = await ChapterModel.getContentByComicId(comicId);
+
+    return CustomResponse.ok(res, content);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'server side error when retrieving content for a comic',
+      error,
+    });
+  }
+};
+
+export const createChapter = async (req: Request, res: Response): Promise<Response> => {
+  const { pages, ...chapterData } = req.body as IRequestChapter;
+  try {
+    const existedChapter = await ChapterModel.getByComicIdAndNumber({
+      comicId: chapterData.comicId,
+      number: chapterData.number,
+    });
+
+    if (existedChapter) {
+      return CustomResponse.conflict(res, {
+        message: `A chapter with this number already exists for the comic with id = ${chapterData.comicId}`,
+      });
+    }
+
+    const chapter = await ChapterModel.create({ ...chapterData, userId: req.user.id });
+
+    await Promise.all(
+      pages.map(async ({ img, number }) => {
+        const uploadedImg = await cloudinary.uploader.upload(img, {
+          folder: 'pages',
+        });
+        return await PageModel.create({
+          number,
+          img: uploadedImg.secure_url,
+          chapterId: chapter.id,
+        });
+      })
+    );
+    await ComicModel.refreshUpdatedAt(chapter.comicId);
+    return CustomResponse.created(res, chapter);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'error while creating genre on server side',
       error,
     });
   }

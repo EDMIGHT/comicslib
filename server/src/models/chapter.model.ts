@@ -1,7 +1,7 @@
 import { Chapter } from '@prisma/client';
 
 import prisma from '@/db/prisma';
-import { IChapterWithUser } from '@/types/chapter.types';
+import { IChapterWithUser, IShortChapter } from '@/types/chapter.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 
 type ICreateChapterArg = Pick<Chapter, 'title' | 'comicId' | 'userId' | 'number'>;
@@ -90,6 +90,21 @@ export class ChapterModel {
     return prisma.chapter.count({
       where: {
         comicId,
+      },
+    });
+  }
+  public static async getContentByComicId(comicId: string): Promise<IShortChapter[]> {
+    return prisma.chapter.findMany({
+      where: {
+        comicId,
+      },
+      select: {
+        id: true,
+        number: true,
+        title: true,
+      },
+      orderBy: {
+        number: 'desc',
       },
     });
   }

@@ -3,6 +3,7 @@ import express from 'express';
 import {
   createChapter,
   getChaptersByComicId,
+  getContentForComic,
   getPageByChapterId,
 } from '@/controllers/chapter.controllers';
 import { authentication, validation } from '@/middleware';
@@ -18,6 +19,7 @@ router.get(
   validation,
   getChaptersByComicId
 );
+router.get('/content/:comicId', getContentForComic);
 router.get('/:chapterId/:pageNumber', getPageByChapterId);
 
 router.post('/', authentication, createChapterValidators, validation, createChapter);
