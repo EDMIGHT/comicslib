@@ -20,29 +20,17 @@ import {
 
 const router = express.Router({ mergeParams: true });
 
-router.get('/folders/u', authentication, getUserFoldersWithComicInfo);
-router.get('/folders/u/:login', getUserFolders);
-router.get('/folders/:folderId', getFolder);
-router.get('/folders/c/:comicId', authentication, getUserFoldersByComic);
+router.get('/u', authentication, getUserFoldersWithComicInfo);
+router.get('/u/:login', getUserFolders);
+router.get('/:folderId', getFolder);
+router.get('/c/:comicId', authentication, getUserFoldersByComic);
 
-router.post('/folders', authentication, createFolderValidators, validation, createFolder);
+router.post('', authentication, createFolderValidators, validation, createFolder);
 
-router.patch('/folders/:folderId/:comicId', authentication, updateComicsFolder);
-router.patch(
-  '/folders/reorder',
-  authentication,
-  reorderFoldersValidators,
-  validation,
-  reorderFolders
-);
-router.patch(
-  '/folders/:folderId',
-  authentication,
-  updateFolderValidators,
-  validation,
-  updateFolder
-);
+router.patch('/:folderId/:comicId', authentication, updateComicsFolder);
+router.patch('/reorder', authentication, reorderFoldersValidators, validation, reorderFolders);
+router.patch('/:folderId', authentication, updateFolderValidators, validation, updateFolder);
 
-router.delete('/folders/:folderId', authentication, deleteFolder);
+router.delete('/:folderId', authentication, deleteFolder);
 
 export default router;

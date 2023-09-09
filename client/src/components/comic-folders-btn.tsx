@@ -19,7 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 
 type ComicFoldersBtnProps = {
   comicId: string;
@@ -34,7 +34,7 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
   const { data } = useQuery({
     queryKey: [REACT_QUERY_KEYS.folders],
     queryFn: async () => {
-      return await UserService.getFoldersByComic(comicId);
+      return await FoldersService.getFoldersByComic(comicId);
     },
     onError: (err) => {
       handleErrorMutation(err);
@@ -43,7 +43,7 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
   const { mutate: updateFolder, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.folders],
     mutationFn: async (folderId: string) => {
-      return await UserService.updateExistenceComicInFolder(folderId, comicId);
+      return await FoldersService.updateExistenceComicInFolder(folderId, comicId);
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.folders] });

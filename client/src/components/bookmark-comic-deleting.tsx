@@ -7,7 +7,7 @@ import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
-import { UserService } from '@/services/users.service';
+import { UsersService } from '@/services/users.service';
 
 type BookmarkComicDeleteProps = {
   comicId: string;
@@ -19,7 +19,7 @@ export const BookmarkComicDelete: FC<BookmarkComicDeleteProps> = ({ comicId }) =
   const { mutate: deleteBookmark, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.bookmarks],
     mutationFn: async () => {
-      return await UserService.deleteBookmark(comicId);
+      return await UsersService.deleteBookmark(comicId);
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.bookmarks] });

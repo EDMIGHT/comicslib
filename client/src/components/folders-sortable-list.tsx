@@ -24,7 +24,7 @@ import { SortableFolder } from '@/components/sortable-folder';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 import { IFolderWithComics } from '@/types/user.types';
 
 type FoldersSortableListProps = {
@@ -70,7 +70,7 @@ export const FoldersSortableList: FC<FoldersSortableListProps> = ({ folders }) =
   const { mutate: reorderFolders, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.folders],
     mutationFn: async () => {
-      return await UserService.reorderFolders({
+      return await FoldersService.reorderFolders({
         folders: tempFolders.map((currentFol) => currentFol.id),
       });
     },

@@ -8,7 +8,7 @@ import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
-import { IUpdateBookmarkArg, UserService } from '@/services/users.service';
+import { IUpdateBookmarkArg, UsersService } from '@/services/users.service';
 import { IBookmark } from '@/types/user.types';
 
 type BookmarkComicControlProps = IUpdateBookmarkArg & {
@@ -26,7 +26,7 @@ export const BookmarkComicControl: FC<BookmarkComicControlProps> = ({
   const { mutate: updateBookmark, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.bookmarks],
     mutationFn: async () => {
-      return await UserService.updateBookmark({
+      return await UsersService.updateBookmark({
         chapterId,
         comicId,
         pageNumber,

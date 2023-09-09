@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { CommandDialog } from '@/components/ui/command';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/hooks/use-toast';
-import { UserService } from '@/services/users.service';
+import { UsersService } from '@/services/users.service';
 
 export const BookmarksCleaning = () => {
   const queryClient = useQueryClient();
@@ -18,7 +18,7 @@ export const BookmarksCleaning = () => {
   const { mutate: cleaningBookmarks, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.bookmarks],
     mutationFn: async () => {
-      return await UserService.cleaningBookmarks();
+      return await UsersService.cleaningBookmarks();
     },
     onSuccess: (data) => {
       toast({

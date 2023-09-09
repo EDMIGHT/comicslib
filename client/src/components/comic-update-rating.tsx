@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -27,7 +28,7 @@ export const ComicUpdateRating: FC<ComicUpdateRatingProps> = ({ comicId, rating 
   const ratingsValue = arrayFromRange(COMIC_RATING_CONFIG.min, COMIC_RATING_CONFIG.max);
 
   const { mutate: updateRating, isLoading } = useMutation({
-    mutationKey: ['rating'],
+    mutationKey: [REACT_QUERY_KEYS.rating],
     mutationFn: async (value: number) => {
       return await ComicsService.updateRating(comicId, value);
     },

@@ -5,10 +5,10 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
 import { Bookmark } from '@/components/layouts/bookmark';
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { BookmarkSkeletons } from '@/components/skeletons/bookmark-skeletons';
-import { useAuth } from '@/hooks/use-auth';
 import { useIntersection } from '@/hooks/use-intersection';
-import { IGetAllBookmarksArg, UserService } from '@/services/users.service';
+import { IGetAllBookmarksArg, UsersService } from '@/services/users.service';
 import { IUser } from '@/types/user.types';
 
 type BookmarksFeedProps = IGetAllBookmarksArg & {
@@ -29,16 +29,16 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    ['bookmarks', searchQuery.title],
-    async ({ pageParam = 1 }) => {
-      return await UserService.getAllBookmarks({
+    [REACT_QUERY_KEYS.bookmarks, searchQuery.title],
+    async ({ pageParam = 1 }: { pageParam?: number }) => {
+      return await UsersService.getAllBookmarks({
         ...searchQuery,
         login,
         page: pageParam,
       });
     },
     {
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.currentPage < lastPage.totalPages) {
           return lastPage.currentPage + 1;
         } else {
@@ -50,7 +50,7 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({
 
   useEffect(() => {
     if (entry?.isIntersecting && hasNextPage) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [entry, fetchNextPage, hasNextPage]);
 

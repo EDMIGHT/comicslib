@@ -6,7 +6,7 @@ import { FC, useEffect, useRef } from 'react';
 
 import { ComicWithChapters } from '@/components/layouts/comic-with-chapters';
 import { useIntersection } from '@/hooks/use-intersection';
-import { IGetAllUploadsArg, UserService } from '@/services/users.service';
+import { IGetAllUploadsArg, UsersService } from '@/services/users.service';
 
 type UserUploadsFeedProps = Omit<IGetAllUploadsArg, 'page' | 'limit'>;
 
@@ -21,8 +21,8 @@ export const UserUploadsFeed: FC<UserUploadsFeedProps> = ({ login, title, sort, 
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
     ['comics', 'folders', title, sort, order],
-    async ({ pageParam = 1 }) => {
-      return await UserService.getAllUploadedComics({
+    async ({ pageParam = 1 }: { pageParam?: number }) => {
+      return await UsersService.getAllUploadedComics({
         login,
         page: pageParam,
         title,
@@ -31,7 +31,7 @@ export const UserUploadsFeed: FC<UserUploadsFeedProps> = ({ login, title, sort, 
       });
     },
     {
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.currentPage < lastPage.totalPages) {
           return lastPage.currentPage + 1;
         } else {
@@ -43,7 +43,7 @@ export const UserUploadsFeed: FC<UserUploadsFeedProps> = ({ login, title, sort, 
 
   useEffect(() => {
     if (entry?.isIntersecting && hasNextPage) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [entry, fetchNextPage, hasNextPage]);
 

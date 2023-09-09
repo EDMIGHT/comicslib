@@ -5,9 +5,10 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
 import { ComicWithChapters } from '@/components/layouts/comic-with-chapters';
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { useIntersection } from '@/hooks/use-intersection';
 import { IGetAllComicsArg } from '@/services/comics.service';
-import { UserService } from '@/services/users.service';
+import { UsersService } from '@/services/users.service';
 import { IResponseComic } from '@/types/comic.types';
 
 type ComicsWithChaptersFeedProps = Omit<
@@ -34,15 +35,15 @@ export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({ ti
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    ['comics', 'folders', title],
-    async ({ pageParam = 1 }) => {
-      return await UserService.getAllSubscribedComics({
+    [REACT_QUERY_KEYS.comics, REACT_QUERY_KEYS.folders, title],
+    async ({ pageParam = 1 }: { pageParam?: number }) => {
+      return await UsersService.getAllSubscribedComics({
         page: pageParam,
         title,
       });
     },
     {
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.currentPage < lastPage.totalPages) {
           return lastPage.currentPage + 1;
         } else {
@@ -54,7 +55,7 @@ export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({ ti
 
   useEffect(() => {
     if (entry?.isIntersecting && hasNextPage) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [entry, fetchNextPage, hasNextPage]);
 

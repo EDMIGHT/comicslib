@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { EditFolderForm } from '@/components/forms/edit-folder-form';
 import { PageHeader } from '@/components/page-header';
 import { ComicsService } from '@/services/comics.service';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 import { IPaginationArg } from '@/types/response.types';
 
 type PageProps = {
@@ -15,7 +15,7 @@ type PageProps = {
 };
 
 const Page: FC<PageProps> = async ({ params: { id }, searchParams }) => {
-  const folder = await UserService.getFolderInfo(id);
+  const folder = await FoldersService.getFolderInfo(id);
 
   if (!folder) {
     notFound();

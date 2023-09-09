@@ -31,7 +31,7 @@ import {
   createUserFolderSchema,
   ICreateUserFolderSchema,
 } from '@/lib/validators/user.validators';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 import { IResponseComic } from '@/types/comic.types';
 
 export const CreateFolderForm: FC = () => {
@@ -49,7 +49,7 @@ export const CreateFolderForm: FC = () => {
   const { mutate: createFolder, isLoading: isLoadingCreateFolder } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.folders, REACT_QUERY_KEYS.comics],
     mutationFn: async (data: ICreateUserFolderSchema) => {
-      return await UserService.createFolder(data);
+      return await FoldersService.createFolder(data);
     },
     onError: (err) => {
       handleErrorMutation(err, {

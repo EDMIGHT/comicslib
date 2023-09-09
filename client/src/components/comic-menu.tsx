@@ -6,7 +6,7 @@ import { HREFS } from '@/configs/href.configs';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
-import { UserService } from '@/services/users.service';
+import { UsersService } from '@/services/users.service';
 import { IChapter } from '@/types/chapter.types';
 
 import { ComicFoldersBtn } from './comic-folders-btn';
@@ -25,7 +25,7 @@ export const ComicMenu = async ({ comicId, chapters }: ComicMenuProps) => {
 
   if (accessToken) {
     rating = await ComicsService.getUserRating(comicId);
-    bookmark = await UserService.getComicBookmark(comicId);
+    bookmark = await UsersService.getComicBookmark(comicId);
   }
 
   const firstChapter = chapters[0];

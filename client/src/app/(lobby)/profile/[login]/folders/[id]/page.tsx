@@ -1,6 +1,6 @@
 import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { Icons } from '@/components/ui/icons';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 
 type PageProps = {
   params: {
@@ -9,7 +9,7 @@ type PageProps = {
 };
 
 const Page = async ({ params: { id } }: PageProps) => {
-  const folderInfo = await UserService.getFolderInfo(id);
+  const folderInfo = await FoldersService.getFolderInfo(id);
 
   return (
     <div className='flex flex-col gap-2'>

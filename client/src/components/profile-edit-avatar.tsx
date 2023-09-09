@@ -4,11 +4,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FC, HTMLAttributes, ReactNode } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
 import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
-import { UserService } from '@/services/users.service';
+import { UsersService } from '@/services/users.service';
 
 import { FileDialogWithCrop } from './file-dialog-with-crop';
 
@@ -24,9 +25,9 @@ export const ProfileEditAvatar: FC<ProfileEditAvatarProps> = ({
   const router = useRouter();
 
   const { mutate: updateUser, isLoading } = useMutation({
-    mutationKey: ['users'],
+    mutationKey: [REACT_QUERY_KEYS.users],
     mutationFn: async (fileBase64: string) => {
-      return await UserService.update({
+      return await UsersService.update({
         img: fileBase64,
       });
     },
@@ -42,7 +43,7 @@ export const ProfileEditAvatar: FC<ProfileEditAvatarProps> = ({
     const convertedFile = await convertImgToBase64(file);
 
     if (convertedFile) {
-      updateUser(convertedFile);
+      void updateUser(convertedFile);
     }
   };
 

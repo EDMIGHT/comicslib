@@ -9,7 +9,7 @@ import { PageBackground } from '@/components/page-background';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { createTitle } from '@/lib/utils';
 import { ChaptersService } from '@/services/chapters.service';
-import { UserService } from '@/services/users.service';
+import { UsersService } from '@/services/users.service';
 
 type PageProps = {
   params: {
@@ -48,7 +48,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
 
   let bookmark;
   if (isAuth) {
-    bookmark = await UserService.getComicBookmark(chapter.comicId);
+    bookmark = await UsersService.getComicBookmark(chapter.comicId);
   }
 
   return (

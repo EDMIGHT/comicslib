@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FC, memo, useState } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -19,7 +20,7 @@ import {
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 import { IFolderWithComics } from '@/types/user.types';
 
 export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
@@ -27,9 +28,9 @@ export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const { mutate: deleteFolder, isLoading } = useMutation({
-    mutationKey: ['folders'],
+    mutationKey: [REACT_QUERY_KEYS.folders],
     mutationFn: async (folderId: string) => {
-      return await UserService.deleteFolder(folderId);
+      return await FoldersService.deleteFolder(folderId);
     },
     onSuccess: (res) => {
       toast({

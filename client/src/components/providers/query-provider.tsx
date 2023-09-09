@@ -16,6 +16,8 @@ const queryClient = new QueryClient({
 });
 
 export const REACT_QUERY_KEYS = {
+  rating: 'rating',
+  users: 'users',
   authors: 'authors',
   folders: 'folders',
   comics: 'comics',

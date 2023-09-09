@@ -23,7 +23,7 @@ import { CropImgDialog } from './crop-img-dialog';
 
 type FileDialogProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
-  onSelectFile: (file: File) => void;
+  onSelectFile: (file: File) => Promise<void>;
   accept?: Accept;
   maxSize?: number;
   maxFiles?: number;
@@ -142,7 +142,7 @@ export const FileDialogWithCrop: FC<FileDialogProps> = ({
             onConfirm={(file) => {
               setOpenCroppedModal(false);
               setOpen(false);
-              onSelectFile(file);
+              void onSelectFile(file);
             }}
           />
         )}

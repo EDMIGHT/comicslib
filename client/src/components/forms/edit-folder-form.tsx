@@ -28,7 +28,7 @@ import { toast } from '@/hooks/use-toast';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { getRandomNumber } from '@/lib/utils';
 import { editFolderSchema, IEditFolderSchema } from '@/lib/validators/user.validators';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 import { IResponseAllComics } from '@/types/comic.types';
 import { IUserFolder } from '@/types/user.types';
 
@@ -54,7 +54,7 @@ export const EditFolderForm: FC<EditFolderFormProps> = ({
   const { mutate: editFolder, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.folders],
     mutationFn: async ({ title, comics }: IEditFolderSchema) => {
-      return await UserService.updateFolder(folder.id, { title, comics });
+      return await FoldersService.updateFolder(folder.id, { title, comics });
     },
     onSuccess: (res) => {
       form.reset();

@@ -1,19 +1,14 @@
-import { API_USERS_ENDPOINTS } from '@/configs/endpoint.configs';
+import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
-import { ICreateUserFolderSchema, IEditFolderSchema } from '@/lib/validators/user.validators';
 import { IResponseAllSubscribedComics, IResponseAllUploadedComics } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
   IBookmark,
-  IFolder,
-  IFolderForComic,
-  IFolderWithComics,
   IProfile,
   IResponseAllBookmarks,
   IResponseAllUser,
   IResponseCleaningBookmarks,
   IUser,
-  IUserFolder,
 } from '@/types/user.types';
 
 import { api } from './api';
@@ -46,13 +41,10 @@ export type IUpdateBookmarkArg = {
   pageNumber: number | string;
 };
 export type IUpdateUserArg = Partial<Omit<IUser, 'id' | 'createdAt' | 'updatedAt'>>;
-export type IReorderFolders = {
-  folders: string[];
-};
 
-export class UserService {
+export class UsersService {
   public static async getProfile(login: string) {
-    const { data } = await api.get<IProfile>(`${API_USERS_ENDPOINTS.profile}/${login}`);
+    const { data } = await api.get<IProfile>(`${ENDPOINTS.users.profile}/${login}`);
     return data;
   }
   public static async getAllUsers({
@@ -63,13 +55,7 @@ export class UserService {
     order = 'desc',
   }: IGetAllUsersArg) {
     const { data } = await api.get<IResponseAllUser>(
-      `${API_USERS_ENDPOINTS.origin}/all?login=${login}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`
-    );
-    return data;
-  }
-  public static async getFoldersByComic(comicId: string) {
-    const { data } = await apiAuth.get<IFolderForComic[]>(
-      `${API_USERS_ENDPOINTS.foldersComic}/${comicId}`
+      `${ENDPOINTS.users.origin}/all?login=${login}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
     return data;
   }
@@ -81,20 +67,8 @@ export class UserService {
     order = 'desc',
   }: IGetAllSubscribedComicsArg) {
     const { data } = await apiAuth.get<IResponseAllSubscribedComics>(
-      `${API_USERS_ENDPOINTS.comicsSubscribed}?title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`
+      `${ENDPOINTS.users.comicsSubscribed}?title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
-    return data;
-  }
-  public static async getAllFolders(login: string) {
-    const { data } = await api.get<IFolder[]>(`${API_USERS_ENDPOINTS.foldersUser}/${login}`);
-    return data;
-  }
-  public static async getAllUserFolders() {
-    const { data } = await apiAuth.get<IFolderWithComics[]>(API_USERS_ENDPOINTS.foldersUser);
-    return data;
-  }
-  public static async getFolderInfo(folderId: string) {
-    const { data } = await api.get<IUserFolder>(`${API_USERS_ENDPOINTS.folders}/${folderId}`);
     return data;
   }
   public static async getAllBookmarks({
@@ -106,13 +80,13 @@ export class UserService {
     order = 'desc',
   }: IGetAllBookmarksArg) {
     const { data } = await api.get<IResponseAllBookmarks>(
-      `${API_USERS_ENDPOINTS.bookmark}/${login}?page=${page}&limit=${limit}&sort=${sort}&order=${order}`
+      `${ENDPOINTS.users.bookmark}/${login}?page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
     return data;
   }
   public static async getComicBookmark(comicId: string) {
     const { data } = await apiAuth.get<IBookmark>(
-      `${API_USERS_ENDPOINTS.bookmarkComic}/${comicId}`
+      `${ENDPOINTS.users.bookmarkComic}/${comicId}`
     );
     return data;
   }
@@ -127,57 +101,25 @@ export class UserService {
     const query = `title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
 
     const { data } = await apiAuth.get<IResponseAllUploadedComics>(
-      `${API_USERS_ENDPOINTS.uploads}/${login}?${query}`
+      `${ENDPOINTS.users.uploads}/${login}?${query}`
     );
-    return data;
-  }
-  public static async createFolder(payload: ICreateUserFolderSchema) {
-    const { data } = await apiAuth.post<IFolder>(API_USERS_ENDPOINTS.folders, payload);
     return data;
   }
   public static async updateBookmark(payload: IUpdateBookmarkArg) {
-    const { data } = await apiAuth.patch<IBookmark>(API_USERS_ENDPOINTS.bookmark, payload);
-    return data;
-  }
-  public static async updateFolder(folderId: string, payload: IEditFolderSchema) {
-    const { data } = await apiAuth.patch<IFolder>(
-      `${API_USERS_ENDPOINTS.folders}/${folderId}`,
-      payload
-    );
-    return data;
-  }
-  public static async updateExistenceComicInFolder(folderId: string, comicId: string) {
-    const { data } = await apiAuth.patch<IProfile>(
-      `${API_USERS_ENDPOINTS.folders}/${folderId}/${comicId}`
-    );
+    const { data } = await apiAuth.patch<IBookmark>(ENDPOINTS.users.bookmark, payload);
     return data;
   }
   public static async update(payload: IUpdateUserArg) {
-    const { data } = await apiAuth.patch<IUser>(API_USERS_ENDPOINTS.origin, payload);
-    return data;
-  }
-  public static async reorderFolders(payload: IReorderFolders) {
-    const { data } = await apiAuth.patch<null>(
-      `${API_USERS_ENDPOINTS.folders}/reorder`,
-      payload
-    );
+    const { data } = await apiAuth.patch<IUser>(ENDPOINTS.users.origin, payload);
     return data;
   }
   public static async deleteBookmark(comicId: string) {
-    const { data } = await apiAuth.delete<null>(
-      `${API_USERS_ENDPOINTS.bookmarkComic}/${comicId}`
-    );
+    const { data } = await apiAuth.delete<null>(`${ENDPOINTS.users.bookmarkComic}/${comicId}`);
     return data;
   }
   public static async cleaningBookmarks() {
     const { data } = await apiAuth.delete<IResponseCleaningBookmarks>(
-      `${API_USERS_ENDPOINTS.bookmarkComic}/all`
-    );
-    return data;
-  }
-  public static async deleteFolder(folderId: string) {
-    const { data } = await apiAuth.delete<IFolder>(
-      `${API_USERS_ENDPOINTS.folders}/${folderId}`
+      `${ENDPOINTS.users.bookmarkComic}/all`
     );
     return data;
   }

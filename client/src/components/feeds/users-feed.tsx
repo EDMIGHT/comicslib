@@ -5,10 +5,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
 import { UserItem } from '@/components/layouts/user-item';
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { UserItemSkeletons } from '@/components/skeletons/user-item-skeletons';
 import { useAuth } from '@/hooks/use-auth';
 import { useIntersection } from '@/hooks/use-intersection';
-import { IGetAllUsersArg, UserService } from '@/services/users.service';
+import { IGetAllUsersArg, UsersService } from '@/services/users.service';
 
 export const UsersFeed: FC<IGetAllUsersArg> = ({ ...searchQuery }) => {
   const { user } = useAuth();
@@ -21,15 +22,15 @@ export const UsersFeed: FC<IGetAllUsersArg> = ({ ...searchQuery }) => {
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    ['users', searchQuery.login, searchQuery.sort, searchQuery.order],
-    async ({ pageParam = 1 }) => {
-      return await UserService.getAllUsers({
+    [REACT_QUERY_KEYS.users, searchQuery.login, searchQuery.sort, searchQuery.order],
+    async ({ pageParam = 1 }: { pageParam?: number }) => {
+      return await UsersService.getAllUsers({
         page: pageParam,
         ...searchQuery,
       });
     },
     {
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.currentPage < lastPage.totalPages) {
           return lastPage.currentPage + 1;
         } else {
@@ -41,7 +42,7 @@ export const UsersFeed: FC<IGetAllUsersArg> = ({ ...searchQuery }) => {
 
   useEffect(() => {
     if (entry?.isIntersecting && hasNextPage) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [entry, fetchNextPage, hasNextPage]);
 

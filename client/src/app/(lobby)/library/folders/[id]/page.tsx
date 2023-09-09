@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
 import { SORT_VARIANTS } from '@/configs/site.configs';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 
 type PageProps = {
   params: {
@@ -19,7 +19,7 @@ type PageProps = {
 };
 
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
-  const folderInfo = await UserService.getFolderInfo(id);
+  const folderInfo = await FoldersService.getFolderInfo(id);
 
   if (!folderInfo) {
     notFound();

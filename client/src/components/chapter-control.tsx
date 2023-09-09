@@ -24,10 +24,14 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
 
   const router = useRouter();
 
-  const { data: response, isLoading } = useQuery({
+  const {
+    data: content,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: [REACT_QUERY_KEYS.chapters],
     queryFn: async () => {
-      return await ChaptersService.getAll({ comicId, limit: 5, order: 'asc' });
+      return await ChaptersService.getContentForComic(comicId);
     },
     onError: () => {
       toast({
@@ -38,7 +42,9 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
     },
   });
 
-  const existedChap = response?.chapters.find((chap) => chap.id === currentChapterId);
+  console.log(content);
+
+  const existedChap = content && content?.find((chap) => chap.id === currentChapterId);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -63,7 +69,7 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
       <PopoverContent className='z-10 w-[200px] p-2'>
         <ScrollArea className='max-h-[40vh]'>
           <ul className='flex flex-col gap-1 '>
-            {response?.chapters.map((chap) => (
+            {content?.map((chap) => (
               <li key={chap.id}>
                 <button
                   className={cn(
@@ -84,7 +90,7 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
               </li>
             ))}
           </ul>
-          {isLoading && (
+          {(isLoading || isError) && (
             <span>
               <Icons.loading className='mx-auto h-5 w-5 animate-spin' />
             </span>

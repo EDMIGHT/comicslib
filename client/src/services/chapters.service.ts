@@ -1,7 +1,7 @@
-import { API_CHAPTERS_ENDPOINTS } from '@/configs/endpoint.configs';
+import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS } from '@/configs/site.configs';
 import { ICreateChapterFields } from '@/lib/validators/chapter.validators';
-import { IChapter, IResponseAllChapters } from '@/types/chapter.types';
+import { IChapter, IResponseAllChapters, IShortChapter } from '@/types/chapter.types';
 import { IResponsePage } from '@/types/page.types';
 
 import { api } from './api';
@@ -36,18 +36,24 @@ export class ChaptersService {
     order = 'desc',
   }: IGetAllChaptersArg) {
     const { data } = await api.get<IResponseAllChapters>(
-      `${API_CHAPTERS_ENDPOINTS.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
+      `${ENDPOINTS.chapters.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
     );
     return data;
   }
   public static async getPage({ chapterId, page = 1 }: IGetChapterPageArg) {
     const { data } = await api.get<IResponsePage>(
-      `${API_CHAPTERS_ENDPOINTS.origin}/${chapterId}/${page}`
+      `${ENDPOINTS.chapters.origin}/${chapterId}/${page}`
+    );
+    return data;
+  }
+  public static async getContentForComic(comicId: string) {
+    const { data } = await api.get<IShortChapter[]>(
+      `${ENDPOINTS.chapters.content}/${comicId}`
     );
     return data;
   }
   public static async create(payload: ICreateChapterArg) {
-    const { data } = await apiAuth.post<IChapter>(API_CHAPTERS_ENDPOINTS.origin, payload);
+    const { data } = await apiAuth.post<IChapter>(ENDPOINTS.chapters.origin, payload);
     return data;
   }
 }

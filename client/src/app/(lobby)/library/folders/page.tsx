@@ -9,7 +9,7 @@ import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { cn } from '@/lib/utils';
-import { UserService } from '@/services/users.service';
+import { FoldersService } from '@/services/folders.service';
 
 export const metadata: Metadata = {
   title: 'Your folders',
@@ -22,8 +22,7 @@ const Page = async () => {
   if (!user) {
     return notFound();
   }
-
-  const folders = await UserService.getAllUserFolders();
+  const folders = await FoldersService.getAllUserFolders();
 
   const isMoreThanZeroFolder = folders.length > 0;
 
