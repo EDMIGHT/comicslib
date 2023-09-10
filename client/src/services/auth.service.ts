@@ -4,6 +4,7 @@ import { API_AUTH_URL } from '@/configs/endpoint.configs';
 import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
 import { isServer } from '@/lib/utils';
 import { ISignInFields, ISignUpFields } from '@/lib/validators/auth.validators';
+import { api } from '@/services/api';
 import { ITokens } from '@/types/response.types';
 import { IResponseAuth, IUser } from '@/types/user.types';
 
@@ -16,10 +17,11 @@ export class AuthService {
     type: 'signIn' | 'signUp',
     data: ISignInFields | IRequestSignUpBody
   ) {
-    const response = await apiAuth<IResponseAuth>({
+    const response = await api<IResponseAuth>({
       url: API_AUTH_URL[type],
       method: 'POST',
       data,
+      withCredentials: true,
     });
 
     return response.data;

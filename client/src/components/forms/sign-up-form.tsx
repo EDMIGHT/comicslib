@@ -21,7 +21,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
-import { saveTokens } from '@/lib/helpers/token.helper';
 import { cn } from '@/lib/utils';
 import { ISignUpFields, signUpValidation } from '@/lib/validators/auth.validators';
 import { AuthService, IRequestSignUpBody } from '@/services/auth.service';
@@ -47,17 +46,8 @@ export const SignUpForm = () => {
         password,
         name,
       };
-      const data = await AuthService.auth('signUp', payload);
 
-      if (data && data.accessToken) {
-        saveTokens({
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
-          expiresIn: data.expiresIn,
-        });
-      }
-
-      return data;
+      return await AuthService.auth('signUp', payload);
     },
     onSuccess: () => {
       router.replace('/');

@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import { saveTokens } from '@/lib/helpers/token.helper';
 import { ISignInFields, signInValidation } from '@/lib/validators/auth.validators';
 import { AuthService } from '@/services/auth.service';
 import { IInvalidResponse } from '@/types/response.types';
@@ -40,17 +39,8 @@ export const SignInForm = () => {
         login,
         password,
       };
-      const data = await AuthService.auth('signIn', payload);
 
-      if (data && data.accessToken) {
-        saveTokens({
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
-          expiresIn: data.expiresIn,
-        });
-      }
-
-      return data;
+      return await AuthService.auth('signIn', payload);
     },
     onSuccess: () => {
       router.replace('/');

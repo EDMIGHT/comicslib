@@ -48,9 +48,3 @@ export const clearTokens = () => {
     Cookies.remove(Tokens.REFRESH);
   }
 };
-
-export const saveTokens = (data: ITokens) => {
-  Cookies.set(Tokens.ACCESS, data.accessToken);
-  Cookies.set(Tokens.REFRESH, data.refreshToken);
-  Cookies.set(Tokens.EXPIRES_IN, data.expiresIn.toString());
-};
