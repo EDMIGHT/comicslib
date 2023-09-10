@@ -7,37 +7,48 @@ import { CreationSession, TokenPayload, VerifiedTokenPayload } from '@/types/tok
 
 env.config();
 
-const accessKey = process.env.accessKey ?? '';
-const refreshKey = process.env.refreshKey ?? '';
-const expiresIn = Number(process.env.expiresIn) ?? 86400;
+const accessKey = process.env.accessKey!;
+const refreshKey = process.env.refreshKey!;
+const expiresIn = Number(process.env.expiresIn)!;
+
+type DecodedToken = TokenPayload & {
+  iat: number;
+  exp: number;
+};
+
+type CreateTokensResult = {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+  exp: number;
+};
 
 class TokenService {
-  public createTokens(payload: TokenPayload): {
-    accessToken: string;
-    refreshToken: string;
-    expiresIn: number;
-  } {
+  public createTokens(payload: TokenPayload): CreateTokensResult {
     const accessToken = jwt.sign(payload, accessKey, {
       expiresIn,
     });
     const refreshToken = jwt.sign(payload, refreshKey);
 
+    const decodedAccessToken = jwt.decode(accessToken) as DecodedToken;
+
     return {
       accessToken,
       refreshToken,
       expiresIn,
+      exp: decodedAccessToken.exp,
     };
   }
   public verifyAccessToken(token: string): VerifiedTokenPayload | null {
     try {
-      return jwt.verify(token, accessKey) as VerifiedTokenPayload; // idk откуда стринга
+      return jwt.verify(token, accessKey) as VerifiedTokenPayload;
     } catch (error) {
       return null;
     }
   }
   public verifyRefreshToken(token: string): VerifiedTokenPayload | null {
     try {
-      return jwt.verify(token, refreshKey) as VerifiedTokenPayload; // idk откуда стринга
+      return jwt.verify(token, refreshKey) as VerifiedTokenPayload;
     } catch (error) {
       return null;
     }

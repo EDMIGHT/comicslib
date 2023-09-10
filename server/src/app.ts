@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import env from 'dotenv';
 import express from 'express';
@@ -8,11 +9,18 @@ import routes from '@/routes';
 env.config();
 
 const PORT = process.env.PORT || 3001;
+const CLIENT_DOMAIN = process.env.CLIENT_DOMAIN!;
 
 const app = express();
 
-app.use(express.json({ limit: '55mb' }));
-app.use(cors());
+app.use(express.json({ limit: '5mb' }));
+app.use(
+  cors({
+    origin: CLIENT_DOMAIN,
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use('/api', routes);
 
 const main = async (): Promise<void> => {

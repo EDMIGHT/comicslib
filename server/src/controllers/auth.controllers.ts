@@ -25,22 +25,26 @@ export const register = async (req: Request, res: Response): Promise<Response> =
       password: hashedPassword,
     });
 
-    const tokens = tokenService.createTokens({
+    const { accessToken, refreshToken, expiresIn, exp } = tokenService.createTokens({
       id: user.id,
       login: user.login,
     });
-
     tokenService.save({
       userId: user.id,
-      refreshToken: tokens.refreshToken,
+      refreshToken: refreshToken,
     });
 
-    return CustomResponse.created(res, {
-      user: createResponseUser(user),
-      ...tokens,
+    res.cookie('accessToken', accessToken, {
+      maxAge: expiresIn * 1000,
+      httpOnly: true,
     });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+    });
+    res.cookie('exp', exp);
+
+    return CustomResponse.created(res, null);
   } catch (error) {
-    console.error(error);
     return CustomResponse.serverError(res, {
       message: 'an error occurred during registration on the server side',
     });
@@ -67,19 +71,25 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       });
     }
 
-    const tokens = await tokenService.createTokens({
+    const { accessToken, refreshToken, expiresIn, exp } = await tokenService.createTokens({
       id: existedUser.id,
       login: existedUser.login,
     });
     await tokenService.save({
       userId: existedUser.id,
-      refreshToken: tokens.refreshToken,
+      refreshToken: refreshToken,
     });
 
-    return CustomResponse.created(res, {
-      ...tokens,
-      user: createResponseUser(existedUser),
+    res.cookie('accessToken', accessToken, {
+      maxAge: expiresIn * 1000,
+      httpOnly: true,
     });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+    });
+    res.cookie('exp', exp);
+
+    return CustomResponse.created(res, null);
   } catch (error) {
     console.error(error);
     return CustomResponse.serverError(res, {
@@ -102,37 +112,41 @@ export const authMe = async (req: Request, res: Response): Promise<Response> => 
   }
 };
 
-export const updateTokens = async (
-  request: Request,
-  response: Response
-): Promise<Response> => {
+export const updateTokens = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { refreshToken } = request.body;
+    const { refreshToken: reqRefreshToken } = req.cookies;
 
-    const tokenPayload = await tokenService.verifyRefreshToken(refreshToken);
-    const dbToken = await tokenService.findRefreshToken(refreshToken);
+    const tokenPayload = await tokenService.verifyRefreshToken(reqRefreshToken);
+    const dbToken = await tokenService.findRefreshToken(reqRefreshToken);
 
     if (!dbToken || !tokenPayload || isTokenInvalid(dbToken, tokenPayload)) {
-      return CustomResponse.unauthorized(response, {
+      return CustomResponse.unauthorized(res, {
         message: 'unauthorized access',
       });
     }
 
-    const tokens = tokenService.createTokens({
+    const { accessToken, refreshToken, exp, expiresIn } = tokenService.createTokens({
       id: tokenPayload.id,
       login: tokenPayload.login,
     });
     await tokenService.save({
       userId: tokenPayload.id,
-      refreshToken: tokens.refreshToken,
+      refreshToken,
     });
 
-    return CustomResponse.ok(response, {
-      ...tokens,
+    res.cookie('accessToken', accessToken, {
+      maxAge: expiresIn * 1000,
+      httpOnly: true,
     });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+    });
+    res.cookie('exp', exp);
+
+    return CustomResponse.ok(res, null);
   } catch (error) {
     console.error('update token: ', error);
-    return CustomResponse.serverError(response, {
+    return CustomResponse.serverError(res, {
       message: `an error occurred on the server while updating tokens: ${error}`,
     });
   }
