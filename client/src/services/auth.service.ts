@@ -17,24 +17,25 @@ export class AuthService {
     type: 'signIn' | 'signUp',
     data: ISignInFields | IRequestSignUpBody
   ) {
-    const response = await api<IResponseAuth>({
+    const { data: respData } = await api<IResponseAuth>({
       url: ENDPOINTS.auth[type],
       method: 'POST',
       data,
       withCredentials: true,
     });
 
-    return response.data;
+    return respData;
+  }
+  public static async signOut() {
+    const { data } = await apiAuth.delete<null>(ENDPOINTS.auth.signOut, {
+      withCredentials: true,
+    });
+    return data;
   }
 
   public static async getNewTokens(): Promise<ITokens> {
-    let refreshToken;
+    const refreshToken = isServer ? getServerRefreshToken() : getRefreshToken();
 
-    if (isServer) {
-      refreshToken = getServerRefreshToken();
-    } else {
-      refreshToken = getRefreshToken();
-    }
     try {
       const { data } = await axios.post(process.env.API_HOST + ENDPOINTS.auth.tokens, {
         refreshToken,

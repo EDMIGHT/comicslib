@@ -12,10 +12,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { HREFS } from '@/configs/href.configs';
-import { cn } from '@/lib/utils';
+import { cn, createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Sign In',
+  title: createTitle('Sign In'),
   description: 'Page for user authorization',
 };
 

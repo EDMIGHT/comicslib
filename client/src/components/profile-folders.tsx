@@ -4,12 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 
+import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { IFolder } from '@/types/user.types';
-
-import { Icons } from './ui/icons';
 
 type ProfileFoldersProps = {
   folders: IFolder[];

@@ -139,12 +139,12 @@ export const PROFILE_NAVIGATION: readonly NavigationLink[] = [
 
 export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
   {
-    title: 'My folders',
+    title: 'Folders',
     href: HREFS.library.folders,
     icon: 'folder',
   },
   {
-    title: 'My bookmarks',
+    title: 'Bookmarks',
     href: HREFS.library.bookmarks,
     icon: 'bookmark',
   },

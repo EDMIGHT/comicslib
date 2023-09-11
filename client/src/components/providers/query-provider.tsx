@@ -24,6 +24,7 @@ export const REACT_QUERY_KEYS = {
   chapters: 'chapters',
   comments: 'comments',
   bookmarks: 'bookmarks',
+  me: 'me',
 };
 
 export const QueryProvider: FC<IQueryProviderProps> = ({ children }) => {

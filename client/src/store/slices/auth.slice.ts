@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { authMe, logout } from '@/store/actions/auth.actions';
+import { authMeThunk } from '@/store/actions/auth.actions';
 import { IUser } from '@/types/user.types';
 
 type IAuthSlice = {
   user: IUser | null;
-  isLoading: boolean;
-  error: unknown;
+  status: 'idle' | 'loading' | 'error';
+  errorMessage: unknown;
 };
 
 const initialState: IAuthSlice = {
   user: null,
-  isLoading: false,
-  error: null,
+  status: 'idle',
+  errorMessage: null,
 };
 
 export const authSlice = createSlice({
@@ -25,21 +25,17 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(logout.fulfilled, (state) => {
-        state.isLoading = false;
-        state.user = null;
+      .addCase(authMeThunk.pending, (state) => {
+        state.status = 'loading';
       })
-      .addCase(authMe.pending, (state) => {
-        state.isLoading = true;
+      .addCase(authMeThunk.rejected, (state, { payload }) => {
+        state.status = 'error';
+        state.errorMessage = payload;
       })
-      .addCase(authMe.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
-      })
-      .addCase(authMe.fulfilled, (state, { payload }) => {
+      .addCase(authMeThunk.fulfilled, (state, { payload }) => {
         state.user = payload;
-        state.isLoading = false;
-        state.error = null;
+        state.status = 'idle';
+        state.errorMessage = null;
       });
   },
 });

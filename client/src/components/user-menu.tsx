@@ -34,7 +34,7 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
           )}
         </Avatar>
       </PopoverTrigger>
-      <PopoverContent className={cn('w-fit min-w-[150px] space-y-2 p-5')}>
+      <PopoverContent className={cn('w-fit min-w-[200px] space-y-2 px-4 py-3')}>
         <div className='flex flex-col items-center justify-center gap-1'>
           {user ? (
             <UserAvatar img={user.img} login={user.login} className='h-12 w-12' />
@@ -43,9 +43,9 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
           )}
           <h3 className='text-lg font-semibold'>{user ? user.login : 'Guest'}</h3>
         </div>
-        <div className='flex flex-col items-center border-y p-1 '>
+        <div className='flex flex-col border-t p-1'>
           {user ? (
-            <ul className='space-y-1'>
+            <ul className='flex flex-col gap-1'>
               <li>
                 <Link
                   href={`${HREFS.profile}/${user.login}`}
@@ -55,7 +55,7 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
                   )}
                   onClick={() => setOpen(false)}
                 >
-                  <Icons.user /> My Profile
+                  <Icons.user /> Profile
                 </Link>
               </li>
               {AUTH_MENU_NAVIGATION.map((nav, i) => {
@@ -76,6 +76,32 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
                   </li>
                 );
               })}
+              <li>
+                <Link
+                  href={`${HREFS.profile}/settings`}
+                  className={cn(
+                    buttonVariants({ variant: 'ghost' }),
+                    'flex justify-start gap-1 hover:bg-muted'
+                  )}
+                  onClick={() => setOpen(false)}
+                >
+                  <Icons.settings /> Settings
+                </Link>
+              </li>
+              {user && (
+                <li>
+                  <Link
+                    href={`${HREFS.profile}/${user.login}`}
+                    className={cn(
+                      buttonVariants({ variant: 'ghost' }),
+                      'flex justify-start gap-1 hover:bg-muted'
+                    )}
+                    onClick={() => setOpen(false)}
+                  >
+                    <Icons.logOut /> Sign Out
+                  </Link>
+                </li>
+              )}
             </ul>
           ) : (
             <ul className='flex w-full flex-col space-y-1'>
@@ -101,25 +127,9 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
           )}
         </div>
 
-        <ul className='space-y-1 p-1'>
-          <li>
+        {/* <li>
             <ThemeSwitcher className='text-sm font-medium' />
-          </li>
-          {user && (
-            <li>
-              <Link
-                href={HREFS.auth.signOut}
-                className={cn(
-                  buttonVariants({ variant: 'ghost' }),
-                  'flex justify-start gap-1 hover:bg-muted p-1'
-                )}
-                onClick={() => setOpen(false)}
-              >
-                <Icons.logOut /> Sign Out
-              </Link>
-            </li>
-          )}
-        </ul>
+          </li> */}
       </PopoverContent>
     </Popover>
   );

@@ -10,11 +10,11 @@ type LayoutProps = {
 };
 
 export const AuthProvider: FC<LayoutProps> = ({ children }) => {
-  const { authMe } = useActions();
+  const { authMeThunk } = useActions();
 
   useEffect(() => {
     if (getAccessToken()) {
-      authMe();
+      authMeThunk();
     }
   }, []);
 
