@@ -78,7 +78,7 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
               })}
               <li>
                 <Link
-                  href={`${HREFS.profile}/settings`}
+                  href={HREFS.settings}
                   className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     'flex justify-start gap-1 hover:bg-muted'
@@ -91,7 +91,7 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
               {user && (
                 <li>
                   <Link
-                    href={`${HREFS.profile}/${user.login}`}
+                    href={HREFS.auth.signOut}
                     className={cn(
                       buttonVariants({ variant: 'ghost' }),
                       'flex justify-start gap-1 hover:bg-muted'

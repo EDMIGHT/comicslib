@@ -56,6 +56,7 @@ export const HREFS = {
   community: COMMUNITY_HREFS,
   library: LIBRARY_HREFS,
   socials: SOCIAL_HREFS,
+  settings: '/settings',
   create: CREATE_HREFS,
   comicAttributes: COMIC_ATTRIBUTES,
   profile: '/profile',

@@ -1,11 +1,8 @@
 import axios from 'axios';
 
 import { ENDPOINTS } from '@/configs/endpoint.configs';
-import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
-import { isServer } from '@/lib/utils';
 import { ISignInFields, ISignUpFields } from '@/lib/validators/auth.validators';
 import { api } from '@/services/api';
-import { ITokens } from '@/types/response.types';
 import { IResponseAuth, IUser } from '@/types/user.types';
 
 import { apiAuth } from './apiAuth';
@@ -33,22 +30,10 @@ export class AuthService {
     return data;
   }
 
-  public static async getNewTokens(): Promise<ITokens> {
-    const refreshToken = isServer ? getServerRefreshToken() : getRefreshToken();
-
-    try {
-      const { data } = await axios.post(process.env.API_HOST + ENDPOINTS.auth.tokens, {
-        refreshToken,
-      });
-
-      return data;
-    } catch (error) {
-      return {
-        accessToken: '',
-        refreshToken: '',
-        expiresIn: 0,
-      };
-    }
+  public static async getNewTokens() {
+    await axios.post<null>(process.env.API_HOST + ENDPOINTS.auth.tokens, null, {
+      withCredentials: true,
+    });
   }
 
   public static async getUser() {

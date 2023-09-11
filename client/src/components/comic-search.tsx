@@ -9,7 +9,7 @@ import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
 import { isMacOS } from '@/lib/utils';
 
-export const ComicSearch: FC = ({}) => {
+export const ComicSearch: FC = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 

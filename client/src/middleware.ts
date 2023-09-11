@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { API_AUTH_URL } from '@/configs/endpoint.configs';
-import { Tokens } from '@/lib/helpers/token.helper';
+import { AuthCookie } from '@/lib/helpers/token.helper';
 
 import { HREFS } from './configs/href.configs';
 
@@ -18,9 +18,9 @@ const checkIsTokenValid = (exp: number): boolean => {
 };
 
 export async function middleware(req: NextRequest) {
-  const accessToken = req.cookies.get(Tokens.ACCESS)?.value;
-  const refreshToken = req.cookies.get(Tokens.REFRESH)?.value;
-  const expAccessToken = req.cookies.get('exp')?.value;
+  const accessToken = req.cookies.get(AuthCookie.ACCESS)?.value;
+  const refreshToken = req.cookies.get(AuthCookie.REFRESH)?.value;
+  const expAccessToken = req.cookies.get(AuthCookie.EXP)?.value;
 
   const isPrivatePage = checkIsPrivatePages(req.nextUrl.pathname);
   const isTokenValid = checkIsTokenValid(Number(expAccessToken));
@@ -55,9 +55,9 @@ export async function middleware(req: NextRequest) {
         ? NextResponse.redirect(new URL(HREFS.auth.signIn, req.url))
         : NextResponse.next();
 
-      newResponse.cookies.delete(Tokens.ACCESS);
-      newResponse.cookies.delete(Tokens.REFRESH);
-      newResponse.cookies.delete('exp');
+      newResponse.cookies.delete(AuthCookie.ACCESS);
+      newResponse.cookies.delete(AuthCookie.REFRESH);
+      newResponse.cookies.delete(AuthCookie.EXP);
 
       return newResponse;
     }

@@ -1,50 +1,37 @@
 import Cookies from 'js-cookie';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
-import { ITokens } from '@/types/response.types';
-import { IResponseAuth } from '@/types/user.types';
-
-import { isServer } from '../utils';
-
-export enum Tokens {
+export enum AuthCookie {
   ACCESS = 'accessToken',
   REFRESH = 'refreshToken',
-  EXPIRES_IN = 'expiresIn',
+  EXP = 'exp',
 }
 
-export const getServerCookieStore = () => {
-  const { cookies } = require('next/headers');
+export const getServerCookieStore = (): ReadonlyRequestCookies => {
+  // ? Is there a better way to bypass the problem with receiving cookies in the axios interceptor?
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { cookies } = require('next/headers') as { cookies: () => ReadonlyRequestCookies };
   return cookies();
 };
 
 export const getAccessToken = () => {
-  const accessToken = Cookies.get(Tokens.ACCESS);
+  const accessToken = Cookies.get(AuthCookie.ACCESS);
   return accessToken || null;
 };
 
 export const getServerAccessToken = () => {
   const cookieStore = getServerCookieStore();
 
-  return cookieStore.get(Tokens.ACCESS)?.value;
+  return cookieStore.get(AuthCookie.ACCESS)?.value;
 };
 
 export const getRefreshToken = () => {
-  const refreshToken = Cookies.get(Tokens.REFRESH);
+  const refreshToken = Cookies.get(AuthCookie.REFRESH);
   return refreshToken || null;
 };
 
 export const getServerRefreshToken = () => {
   const cookieStore = getServerCookieStore();
 
-  return cookieStore.get(Tokens.REFRESH)?.value;
-};
-
-export const clearTokens = () => {
-  if (isServer) {
-    const cookieStore = getServerCookieStore();
-    cookieStore.remove(Tokens.ACCESS);
-    cookieStore.remove(Tokens.REFRESH);
-  } else {
-    Cookies.remove(Tokens.ACCESS);
-    Cookies.remove(Tokens.REFRESH);
-  }
+  return cookieStore.get(AuthCookie.REFRESH)?.value;
 };

@@ -109,6 +109,8 @@ export const updateTokens = async (req: Request, res: Response): Promise<Respons
     const dbToken = await tokenService.findRefreshToken(reqRefreshToken);
 
     if (!dbToken || !tokenPayload || isTokenInvalid(dbToken, tokenPayload)) {
+      clearAuthCookieFromResponse(res);
+
       return CustomResponse.unauthorized(res, {
         message: 'unauthorized access',
       });

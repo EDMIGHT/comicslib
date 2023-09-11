@@ -1,13 +1,16 @@
+import { ReactNode } from 'react';
+
 import { Header } from '@/components/layouts/header';
 import { Sidebar } from '@/components/layouts/sidebar';
 import { MenuSetter } from '@/components/menu-setter';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
 interface LobbyLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
+  modals: ReactNode;
 }
 
-const LobbyLayout = async ({ children }: LobbyLayoutProps) => {
+const LobbyLayout = async ({ children, modals }: LobbyLayoutProps) => {
   const user = await getAuthServer();
 
   return (
@@ -18,7 +21,9 @@ const LobbyLayout = async ({ children }: LobbyLayoutProps) => {
 
       <div className='flex-1'>
         <Header user={user} />
-        <main className='container py-2'>{children}</main>
+        <main className='container py-2'>
+          {children} {modals}
+        </main>
       </div>
     </div>
   );

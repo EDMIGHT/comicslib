@@ -43,8 +43,8 @@ export const SignInForm = () => {
       return await AuthService.auth('signIn', payload);
     },
     onSuccess: () => {
-      router.replace('/');
       router.refresh();
+      router.replace('/');
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
