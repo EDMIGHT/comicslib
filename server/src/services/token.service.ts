@@ -16,7 +16,7 @@ type DecodedToken = TokenPayload & {
   exp: number;
 };
 
-type CreateTokensResult = {
+export type CreateTokensResult = {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;

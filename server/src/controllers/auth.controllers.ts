@@ -1,13 +1,18 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 
+import { SessionModel } from '@/models/session.model';
 import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
+import {
+  clearAuthCookieFromResponse,
+  setAuthCookieToResponse,
+} from '@/utils/helpers/auth-cookie-response.helper';
 import { createResponseUser } from '@/utils/helpers/createResponseUser';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { isTokenInvalid } from '@/utils/helpers/isTokenInvalid';
 
-export const register = async (req: Request, res: Response): Promise<Response> => {
+export const signUp = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { login, password } = req.body;
     const existedUser = await UserModel.getByLogin(login);
@@ -25,25 +30,18 @@ export const register = async (req: Request, res: Response): Promise<Response> =
       password: hashedPassword,
     });
 
-    const { accessToken, refreshToken, expiresIn, exp } = tokenService.createTokens({
+    const tokens = tokenService.createTokens({
       id: user.id,
       login: user.login,
     });
     tokenService.save({
       userId: user.id,
-      refreshToken: refreshToken,
+      refreshToken: tokens.refreshToken,
     });
 
-    res.cookie('accessToken', accessToken, {
-      maxAge: expiresIn * 1000,
-      httpOnly: true,
-    });
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-    });
-    res.cookie('exp', exp);
+    const resWithCookie = setAuthCookieToResponse(res, tokens);
 
-    return CustomResponse.created(res, null);
+    return CustomResponse.created(resWithCookie, null);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: 'an error occurred during registration on the server side',
@@ -51,7 +49,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
   }
 };
 
-export const login = async (req: Request, res: Response): Promise<Response> => {
+export const signIn = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { login, password } = req.body;
 
@@ -71,27 +69,19 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       });
     }
 
-    const { accessToken, refreshToken, expiresIn, exp } = await tokenService.createTokens({
+    const tokens = await tokenService.createTokens({
       id: existedUser.id,
       login: existedUser.login,
     });
     await tokenService.save({
       userId: existedUser.id,
-      refreshToken: refreshToken,
+      refreshToken: tokens.refreshToken,
     });
 
-    res.cookie('accessToken', accessToken, {
-      maxAge: expiresIn * 1000,
-      httpOnly: true,
-    });
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-    });
-    res.cookie('exp', exp);
+    const resWithCookie = setAuthCookieToResponse(res, tokens);
 
-    return CustomResponse.created(res, null);
+    return CustomResponse.created(resWithCookie, null);
   } catch (error) {
-    console.error(error);
     return CustomResponse.serverError(res, {
       message: 'server side authorization error',
     });
@@ -104,7 +94,6 @@ export const authMe = async (req: Request, res: Response): Promise<Response> => 
 
     return CustomResponse.ok(res, createResponseUser(existedUser));
   } catch (error) {
-    console.log(error);
     return CustomResponse.serverError(res, {
       id: req.user.id,
       message: 'an error occurred on the server side while getting user information',
@@ -125,29 +114,37 @@ export const updateTokens = async (req: Request, res: Response): Promise<Respons
       });
     }
 
-    const { accessToken, refreshToken, exp, expiresIn } = tokenService.createTokens({
+    const tokens = tokenService.createTokens({
       id: tokenPayload.id,
       login: tokenPayload.login,
     });
     await tokenService.save({
       userId: tokenPayload.id,
-      refreshToken,
+      refreshToken: tokens.refreshToken,
     });
 
-    res.cookie('accessToken', accessToken, {
-      maxAge: expiresIn * 1000,
-      httpOnly: true,
+    const resWithCookie = setAuthCookieToResponse(res, tokens);
+
+    return CustomResponse.ok(resWithCookie, null);
+  } catch (error) {
+    return CustomResponse.serverError(res, {
+      message: `an error occurred on the server while updating tokens: ${error}`,
     });
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
+  }
+};
+
+export const signOut = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    await SessionModel.delete({
+      userId: req.user.id,
     });
-    res.cookie('exp', exp);
+
+    clearAuthCookieFromResponse(res);
 
     return CustomResponse.ok(res, null);
   } catch (error) {
-    console.error('update token: ', error);
     return CustomResponse.serverError(res, {
-      message: `an error occurred on the server while updating tokens: ${error}`,
+      message: `server side error when logging out`,
     });
   }
 };

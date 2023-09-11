@@ -1,6 +1,7 @@
 export const API_AUTH_URL = {
-  signIn: '/auth/login',
-  signUp: '/auth/register',
+  signIn: '/auth/sign-in',
+  signUp: '/auth/sign-up',
+  signOut: '/auth/sign-out',
   tokens: '/auth/token',
   authMe: '/auth/me',
 } as const;

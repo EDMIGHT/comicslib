@@ -34,4 +34,11 @@ export class SessionModel {
       },
     });
   }
+  public static async delete({ userId }: Pick<Session, 'userId'>): Promise<Session> {
+    return prisma.session.delete({
+      where: {
+        userId,
+      },
+    });
+  }
 }

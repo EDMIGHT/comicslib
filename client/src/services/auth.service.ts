@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_AUTH_URL } from '@/configs/endpoint.configs';
+import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { getRefreshToken, getServerRefreshToken } from '@/lib/helpers/token.helper';
 import { isServer } from '@/lib/utils';
 import { ISignInFields, ISignUpFields } from '@/lib/validators/auth.validators';
@@ -18,7 +18,7 @@ export class AuthService {
     data: ISignInFields | IRequestSignUpBody
   ) {
     const response = await api<IResponseAuth>({
-      url: API_AUTH_URL[type],
+      url: ENDPOINTS.auth[type],
       method: 'POST',
       data,
       withCredentials: true,
@@ -36,7 +36,7 @@ export class AuthService {
       refreshToken = getRefreshToken();
     }
     try {
-      const { data } = await axios.post(process.env.API_HOST + API_AUTH_URL.tokens, {
+      const { data } = await axios.post(process.env.API_HOST + ENDPOINTS.auth.tokens, {
         refreshToken,
       });
 
@@ -52,7 +52,7 @@ export class AuthService {
 
   public static async getUser() {
     try {
-      const { data } = await apiAuth.get<IUser>(process.env.API_HOST + API_AUTH_URL.authMe);
+      const { data } = await apiAuth.get<IUser>(process.env.API_HOST + ENDPOINTS.auth.authMe);
       return data;
     } catch (error) {
       return null;

@@ -1,6 +1,6 @@
 import { check } from 'express-validator';
 
-export const registerValidators = [
+export const signUpValidators = [
   check('name')
     .optional()
     .trim()
@@ -22,7 +22,7 @@ export const registerValidators = [
     .withMessage('The maximum password length is 190 characters'),
 ];
 
-export const loginValidators = [
+export const signInValidators = [
   check('login')
     .trim()
     .isLength({ min: 2 })
