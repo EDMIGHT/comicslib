@@ -18,7 +18,7 @@ export const arrayFromRange = (min: number, max: number): number[] => {
   return Array.from({ length: max - min + 1 }, (_, index) => index + min);
 };
 
-export const combineString = (value: string | string[] | unknown) => {
+export const combineString = (value: unknown) => {
   if (typeof value === 'string') {
     return value;
   } else if (Array.isArray(value)) {

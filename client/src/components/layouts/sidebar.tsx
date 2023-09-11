@@ -6,7 +6,7 @@ import { FC } from 'react';
 import { SidebarFooter } from '@/components/sidebar-footer';
 import { Icons } from '@/components/ui/icons';
 import { SITE_CONFIG } from '@/configs/site.configs';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector } from '@/hooks/redux-hooks';
 import { useActions } from '@/hooks/use-actions';
 import { cn } from '@/lib/utils';
 import { IUser } from '@/types/user.types';

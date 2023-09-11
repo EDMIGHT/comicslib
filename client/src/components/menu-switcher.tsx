@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import { SITE_CONFIG } from '@/configs/site.configs';
-import { useAppSelector } from '@/hooks/reduxHooks';
+import { useAppSelector } from '@/hooks/redux-hooks';
 import { useActions } from '@/hooks/use-actions';
 
 import { Icons } from './ui/icons';

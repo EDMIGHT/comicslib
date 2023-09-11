@@ -7,8 +7,8 @@ export type IUser = {
   login: string;
   name: string | null;
   img: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type IResponseUser = IUser & {
