@@ -42,13 +42,6 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
     <div className='grid grid-cols-[200px_1fr] gap-2 md:gap-6'>
       <ProfileAvatar {...user} currentUser={currentUser} />
 
-      {/* <div className='flex flex-col justify-center gap-1'>
-        <h1 className='text-4xl font-semibold'>{user.login}</h1>
-        <h2 className='text-sm text-foreground/75'>
-          registered on {format(new Date(user.createdAt), 'PPP')}
-        </h2>
-      </div> */}
-
       <ProfileHeader user={user} currentUser={currentUser} />
 
       <nav className='h-fit rounded border-none bg-card p-1'>

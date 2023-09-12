@@ -6,6 +6,7 @@ import { FC, HTMLAttributes, ReactNode } from 'react';
 
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
+import { useActions } from '@/hooks/use-actions';
 import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
@@ -22,16 +23,18 @@ export const ProfileEditAvatar: FC<ProfileEditAvatarProps> = ({
   children,
   ...props
 }) => {
+  const { setUser } = useActions();
   const router = useRouter();
 
   const { mutate: updateUser, isLoading } = useMutation({
-    mutationKey: [REACT_QUERY_KEYS.users],
+    mutationKey: [REACT_QUERY_KEYS.me, REACT_QUERY_KEYS.users],
     mutationFn: async (fileBase64: string) => {
       return await UsersService.update({
         img: fileBase64,
       });
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
+      setUser(res);
       router.refresh();
     },
     onError: (err) => {

@@ -22,6 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 import { createCommentValidation } from '@/lib/validators/comment.validators';
 import { CommentsService } from '@/services/comments.service';
+import { IInvalidResponse } from '@/types/response.types';
 
 type CreateCommentFormProps = {
   comicId: string;
@@ -50,7 +51,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
             variant: 'destructive',
             title: 'Invalid request body',
             description:
-              (err.response.data?.details[0]?.msg as string) ||
+              (err.response.data as IInvalidResponse)?.details[0]?.msg ||
               'Check the correctness of the entered text',
           });
         } else if (err.response?.status === 401) {

@@ -22,7 +22,8 @@ const LobbyLayout = async ({ children, modals }: LobbyLayoutProps) => {
       <div className='flex-1'>
         <Header user={user} />
         <main className='container py-2'>
-          {children} {modals}
+          {modals}
+          {children}
         </main>
       </div>
     </div>

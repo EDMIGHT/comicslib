@@ -2,19 +2,18 @@ import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
 import { SORT_VARIANTS } from '@/configs/site.configs';
+import { ISortArg } from '@/types/response.types';
 
 type PageProps = {
   params: {
     login: string;
   };
-  searchParams: {
+  searchParams: ISortArg & {
     title?: string;
-    sort?: string;
-    order?: string;
   };
 };
 
-const Page = async ({ params: { login }, searchParams }: PageProps) => {
+const Page = ({ params: { login }, searchParams }: PageProps) => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex flex-col gap-2 md:flex-row'>

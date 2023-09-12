@@ -317,7 +317,7 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
       img: uploadedImg?.secure_url,
     });
 
-    return CustomResponse.ok(res, updatedUser);
+    return CustomResponse.ok(res, createResponseUser(updatedUser));
   } catch (error) {
     return serverErrorResponse({
       res,

@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { EditProfileForm } from '@/components/forms/edit-profile-form';
 import {
@@ -19,6 +19,8 @@ type ProfileHeaderProps = {
 };
 
 export const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => {
+  const [open, setOpen] = useState(false);
+
   return currentUser?.login !== user.login ? (
     <div className='flex flex-col items-start justify-center gap-1'>
       <h1 className='text-4xl font-semibold'>{user.login}</h1>
@@ -27,7 +29,7 @@ export const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => 
       </h2>
     </div>
   ) : (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className='my-auto flex h-fit w-fit flex-col items-start gap-1 hover:brightness-75'>
           <h1 className='text-4xl font-semibold'>{user.login}</h1>
@@ -40,7 +42,7 @@ export const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => 
         <DialogHeader>
           <DialogTitle>Profile details</DialogTitle>
         </DialogHeader>
-        <EditProfileForm user={user} currentUser={currentUser} />
+        <EditProfileForm user={user} isDialogOpen={open} setDialogOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

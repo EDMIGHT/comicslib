@@ -4,17 +4,29 @@ import { FC } from 'react';
 import { Card } from '@/components/ui/card';
 import { Icons } from '@/components/ui/icons';
 import { UserAvatar } from '@/components/user-avatar';
+import { HREFS } from '@/configs/href.configs';
+import { cn } from '@/lib/utils';
 import { IResponseUser, IUser } from '@/types/user.types';
 
 type UserItemProps = IResponseUser & {
   currentUser: IUser | null;
 };
 
-export const UserItem: FC<UserItemProps> = ({ img, login, _count: { comments, ratings } }) => {
+export const UserItem: FC<UserItemProps> = ({
+  id,
+  img,
+  login,
+  _count: { comments, ratings },
+  currentUser,
+}) => {
+  const isCurrentUser = currentUser?.id === id;
   return (
-    <Card>
+    <Card className={cn(isCurrentUser && 'relative bg-active/70')}>
+      {isCurrentUser && (
+        <span className='absolute -right-2 -top-1 rotate-45 text-xs font-semibold'>YOU</span>
+      )}
       <Link
-        href={`/profile/${login}`}
+        href={`${HREFS.profile}/${login}`}
         className='flex items-center gap-2 p-2 hover:bg-background/30 focus:bg-background/30'
       >
         <UserAvatar img={img} login={login} />

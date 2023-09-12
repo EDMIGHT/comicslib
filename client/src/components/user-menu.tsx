@@ -13,7 +13,6 @@ import { AUTH_MENU_NAVIGATION } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 import { IUser } from '@/types/user.types';
 
-import { ThemeSwitcher } from './theme-switcher';
 import { UserAvatar } from './user-avatar';
 
 type UserMenuProps = {
@@ -126,10 +125,6 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
             </ul>
           )}
         </div>
-
-        {/* <li>
-            <ThemeSwitcher className='text-sm font-medium' />
-          </li> */}
       </PopoverContent>
     </Popover>
   );
