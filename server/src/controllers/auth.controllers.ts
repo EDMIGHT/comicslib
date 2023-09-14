@@ -1,16 +1,27 @@
+import axios from 'axios';
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 
+import { LIMITS } from '@/configs/limits.configs';
 import { SessionModel } from '@/models/session.model';
 import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
+import { IResponseGoogleAuth } from '@/types/auth.types';
 import {
   clearAuthCookieFromResponse,
   setAuthCookieToResponse,
 } from '@/utils/helpers/auth-cookie-response.helper';
-import { createResponseUser } from '@/utils/helpers/createResponseUser';
+import { createResponseUser } from '@/utils/helpers/create-response-user';
+import { createUniqueLogin } from '@/utils/helpers/create-unique-login';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { isTokenInvalid } from '@/utils/helpers/isTokenInvalid';
+
+// google
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
+const REDIRECT_URL = process.env.GOOGLE_AUTH_REDIRECT_URL!;
+
+const CLIENT_DOMAIN = process.env.CLIENT_DOMAIN!;
 
 export const signUp = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -58,6 +69,12 @@ export const signIn = async (req: Request, res: Response): Promise<Response> => 
     if (!existedUser) {
       return CustomResponse.notFound(res, {
         message: `User with login = ${login} does not exist`,
+      });
+    }
+    if (!existedUser.password) {
+      return CustomResponse.forbidden(res, {
+        message:
+          'You cannot access an account created using an external provider in this way.',
       });
     }
 
@@ -147,6 +164,82 @@ export const signOut = async (req: Request, res: Response): Promise<Response> =>
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: `server side error when logging out`,
+    });
+  }
+};
+
+export const googleAuth = (_: Request, res: Response): void => {
+  const authURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=code&scope=email profile`;
+
+  res.redirect(authURL);
+};
+
+export const googleCallback = async (
+  req: Request,
+  res: Response
+): Promise<void | Response<any, Record<string, any>>> => {
+  const { code } = req.query;
+
+  try {
+    const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
+      code,
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      redirect_uri: REDIRECT_URL,
+      grant_type: 'authorization_code',
+    });
+
+    const { access_token } = tokenResponse.data;
+
+    const { data: googleUserData } = await axios.get<IResponseGoogleAuth>(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`
+    );
+
+    const existedUser = await UserModel.getByProvider('google', googleUserData.id);
+
+    if (existedUser) {
+      const tokens = tokenService.createTokens({
+        id: existedUser.id,
+        login: existedUser.login,
+      });
+      tokenService.save({
+        userId: existedUser.id,
+        refreshToken: tokens.refreshToken,
+      });
+
+      const resWithCookie = setAuthCookieToResponse(res, tokens);
+
+      return resWithCookie.redirect(CLIENT_DOMAIN);
+    }
+
+    const preparedLogin = googleUserData.email
+      .split('@')[0]
+      .substring(0, LIMITS.maxStringLength);
+
+    const isExistLogin = await UserModel.getByLogin(preparedLogin);
+
+    const uniqueLogin = isExistLogin ? await createUniqueLogin(preparedLogin) : preparedLogin;
+
+    const user = await UserModel.create({
+      login: uniqueLogin,
+      password: null,
+    });
+
+    const tokens = tokenService.createTokens({
+      id: user.id,
+      login: user.login,
+    });
+    tokenService.save({
+      userId: user.id,
+      refreshToken: tokens.refreshToken,
+    });
+
+    const resWithCookie = setAuthCookieToResponse(res, tokens);
+
+    return resWithCookie.redirect(CLIENT_DOMAIN);
+  } catch (error) {
+    return CustomResponse.serverError(res, {
+      message: `An error occurred on the server side when logging in using Google.`,
     });
   }
 };

@@ -7,7 +7,7 @@ import { PageModel } from '@/models/page.model';
 import { UserModel } from '@/models/user.model';
 import { IPaginationArg, ISortArg, ISortOrder } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
-import { createResponseUser } from '@/utils/helpers/createResponseUser';
+import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 

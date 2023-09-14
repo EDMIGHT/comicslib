@@ -25,13 +25,6 @@ export const updateUserValidators = [
     .trim()
     .isString()
     .withMessage('The picture must be in base64 format and the string'),
-  check(userSchema.name.name)
-    .optional()
-    .trim()
-    .isLength({ min: 2 })
-    .withMessage('The minimum name length is 2 characters')
-    .isLength({ max: LIMITS.maxStringLength })
-    .withMessage(`The maximum name length is ${LIMITS.maxStringLength} characters`),
   check(userSchema.login.name)
     .optional()
     .trim()

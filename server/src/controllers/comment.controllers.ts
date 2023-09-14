@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ComicModel } from '@/models/comic.model';
 import { CommentModel } from '@/models/comment.model';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
-import { createResponseUser } from '@/utils/helpers/createResponseUser';
+import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 

@@ -14,14 +14,20 @@ enum StatusName {
   cancelled
 }
 
+enum Providers {
+  google
+}
+
 model User {
   id        String   @id @default(uuid())
   login     String   @unique
-  name      String?
-  password  String
+  password  String?
   img       String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  provider   Providers?
+  providerId String?
 
   session   Session?
   ratings   Rating[]
@@ -31,6 +37,7 @@ model User {
   chapters  Chapter[]
 
   @@index([login])
+  @@index([provider, providerId])
 }
 
 model Session {
@@ -93,8 +100,6 @@ model Chapter {
   bookmarks Bookmark[]
   comic     Comic      @relation(fields: [comicId], references: [id])
   user      User       @relation(fields: [userId], references: [id])
-
-  @@index([title])
 }
 
 model Comic {

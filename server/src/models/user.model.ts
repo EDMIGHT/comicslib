@@ -1,11 +1,11 @@
-import { User } from '@prisma/client';
+import { Providers, User } from '@prisma/client';
 
 import { DEFAULT_USER_FOLDER } from '@/configs/user.configs';
 import prisma from '@/db/prisma';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { IProfile } from '@/types/user.types';
 
-type ICreateUserArg = Pick<User, 'login' | 'password' | 'name'>;
+type ICreateUserArg = Pick<User, 'login' | 'password'>;
 
 const defaultUserImg = process.env.USER_DEFAULT_IMG_PATH!;
 
@@ -61,9 +61,18 @@ export class UserModel {
     });
   }
   public static async getByLogin(login: string): Promise<User | null> {
-    return prisma.user.findUnique({
+    return prisma.user.findFirst({
       where: {
         login,
+      },
+    });
+  }
+  public static async getAllByLogins(logins: string[]): Promise<User[]> {
+    return prisma.user.findMany({
+      where: {
+        login: {
+          in: logins,
+        },
       },
     });
   }
@@ -81,6 +90,17 @@ export class UserModel {
             bookmarks: true,
           },
         },
+      },
+    });
+  }
+  public static async getByProvider(
+    provider: Providers,
+    providerId: User['providerId']
+  ): Promise<User | null> {
+    return prisma.user.findFirst({
+      where: {
+        provider,
+        providerId,
       },
     });
   }
