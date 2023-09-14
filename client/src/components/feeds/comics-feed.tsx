@@ -4,14 +4,14 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
+import { AdvancedQuerySearchParams } from '@/components/advanced-filtering';
 import { Comic } from '@/components/layouts/comic';
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
+import { ComicSkeletons } from '@/components/skeletons/comic-skeletons';
 import { useIntersection } from '@/hooks/use-intersection';
 import { combineString } from '@/lib/utils';
 import { ComicsService, IGetAllComicsArg } from '@/services/comics.service';
 import { IResponseComic } from '@/types/comic.types';
-
-import { AdvancedQuerySearchParams } from '../advanced-filtering';
-import { ComicSkeletons } from '../skeletons/comic-skeletons';
 
 type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses' | 'themes'> & {
   initialComics?: IResponseComic[];
@@ -40,7 +40,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
     [
-      'comics',
+      REACT_QUERY_KEYS.comics,
       queryOptions.folderId,
       queryOptions.title,
       queryOptions.sort,
@@ -53,7 +53,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
       authorsList,
       statusesList,
     ],
-    async ({ pageParam = initialComics ? 2 : 1 }) => {
+    async ({ pageParam = initialComics ? 2 : 1 }: { pageParam?: number }) => {
       return await ComicsService.getAll({
         page: pageParam,
         ...queryOptions,
@@ -64,7 +64,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
       });
     },
     {
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.currentPage < lastPage.totalPages) {
           return lastPage.currentPage + 1;
         } else {
@@ -76,7 +76,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
 
   useEffect(() => {
     if (entry?.isIntersecting && hasNextPage) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [entry, fetchNextPage, hasNextPage]);
 

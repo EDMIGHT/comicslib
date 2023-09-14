@@ -55,7 +55,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         ...classNames,
       }}
       components={{
-        Dropdown: ({ value, onChange, children, ...props }: DropdownProps) => {
+        Dropdown: ({ value, onChange, children }: DropdownProps) => {
           const options = React.Children.toArray(children) as React.ReactElement<
             React.HTMLProps<HTMLOptionElement>
           >[];
@@ -80,6 +80,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                 <ScrollArea className='h-80'>
                   {options.map((option, id: number) => (
                     <SelectItem
+                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                       key={`${option.props.value}-${id}`}
                       value={option.props.value?.toString() ?? ''}
                     >
@@ -91,8 +92,8 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
             </Select>
           );
         },
-        IconLeft: ({ ...props }) => <ChevronLeft className='h-4 w-4' />,
-        IconRight: ({ ...props }) => <ChevronRight className='h-4 w-4' />,
+        IconLeft: ({ ...props }) => <ChevronLeft className='h-4 w-4' {...props} />,
+        IconRight: ({ ...props }) => <ChevronRight className='h-4 w-4' {...props} />,
       }}
       {...props}
     />

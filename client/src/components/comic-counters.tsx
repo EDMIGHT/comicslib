@@ -6,14 +6,14 @@ import { IResponseComic } from '@/types/comic.types';
 
 type ComicCountersProps = Pick<
   IResponseComic,
-  'avgRating' | '_count' | 'countUniqueSubscribes'
+  'avg_rating' | 'comments_count' | 'unique_bookmarks_count'
 > &
   HTMLAttributes<HTMLUListElement>;
 
 export const ComicCounters: FC<ComicCountersProps> = ({
-  avgRating,
-  _count: { comments },
-  countUniqueSubscribes,
+  avg_rating,
+  comments_count,
+  unique_bookmarks_count,
   className,
   ...rest
 }) => {
@@ -21,17 +21,17 @@ export const ComicCounters: FC<ComicCountersProps> = ({
     <ul {...rest} className={cn('flex items-center gap-2', className)}>
       <li className='flex items-center gap-1 '>
         <Icons.star className='fill-foreground' />
-        {avgRating || 0}
+        {avg_rating || 0}
       </li>
 
       <li className='flex items-center gap-1'>
         <Icons.bookmark className='fill-foreground' />
-        {countUniqueSubscribes}
+        {unique_bookmarks_count}
       </li>
 
       <li className='flex items-center gap-1'>
         <Icons.comment className='fill-foreground' />
-        {comments}
+        {comments_count}
       </li>
     </ul>
   );

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useEffect, useRef } from 'react';
 
 const DEFAULT_EVENTS = ['mousedown', 'touchstart'];

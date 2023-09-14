@@ -94,7 +94,7 @@ export class ComicModel {
         break;
       }
       case 'popular': {
-        sortBy = Prisma.sql`avg_rating`;
+        sortBy = Prisma.sql`unique_bookmarks_count`;
         break;
       }
       case comicSchema.title.name: {
@@ -125,23 +125,32 @@ export class ComicModel {
       AVG(Rating.value) as avg_rating,
       CAST(COUNT(DISTINCT Bookmark.user_id) AS DECIMAL(10, 0)) as unique_bookmarks_count,
       CAST(COUNT(Comment.id) AS DECIMAL(10, 0)) as comments_count,
+      COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Genre.id, 'title', Genre.title))
         FROM Genre
         INNER JOIN _comictogenre ON Genre.id = _comictogenre.B
         WHERE _comictogenre.A = Comic.id
+      ),
+        JSON_ARRAY()
       ) as genres,
+      COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Theme.id, 'title', Theme.title))
         FROM Theme
         INNER JOIN _comictotheme ON Theme.id = _comictotheme.B
         WHERE _comictotheme.A = Comic.id
+      ),
+        JSON_ARRAY()
       ) as themes,
+      COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Author.id, 'login', Author.login, 'name', Author.name))
         FROM Author
         INNER JOIN _authortocomic ON Author.id = _authortocomic.A
         WHERE _authortocomic.B = Comic.id
+      ),
+        JSON_ARRAY()
       ) as authors,
       JSON_OBJECT('id', Status.id, 'name', Status.name) as status
     FROM Comic
@@ -167,12 +176,14 @@ export class ComicModel {
     const whereQuery = createWhereQueryAllComics({ ...whereQueryArgs });
 
     const countQuery = await prisma.$queryRaw<{ count: number }[]>`
-    SELECT CAST(COUNT(Comic.id) AS DECIMAL(10, 0)) as count 
+    SELECT CAST(COUNT(DISTINCT Comic.id) AS DECIMAL(10, 0)) as count
     FROM Comic
+    LEFT JOIN Rating ON Comic.id = Rating.comic_id
+    LEFT JOIN Bookmark ON Comic.id = Bookmark.comic_id
+    LEFT JOIN Comment ON Comic.id = Comment.comic_id
+    LEFT JOIN Status ON Comic.status_id = Status.id
     WHERE ${whereQuery}
   `;
-
-    console.log(countQuery[0].count);
 
     return countQuery[0].count || 0;
   }
@@ -183,23 +194,32 @@ export class ComicModel {
       AVG(Rating.value) as avg_rating,
       CAST(COUNT(DISTINCT Bookmark.user_id) AS DECIMAL(10, 0)) as unique_bookmarks_count,
       CAST(COUNT(Comment.id) AS DECIMAL(10, 0)) as comments_count,
+      COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Genre.id, 'title', Genre.title))
         FROM Genre
         INNER JOIN _comictogenre ON Genre.id = _comictogenre.B
         WHERE _comictogenre.A = Comic.id
+      ),
+        JSON_ARRAY()
       ) as genres,
+      COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Theme.id, 'title', Theme.title))
         FROM Theme
         INNER JOIN _comictotheme ON Theme.id = _comictotheme.B
         WHERE _comictotheme.A = Comic.id
+      ),
+        JSON_ARRAY()
       ) as themes,
+      COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Author.id, 'login', Author.login, 'name', Author.name))
         FROM Author
         INNER JOIN _authortocomic ON Author.id = _authortocomic.A
         WHERE _authortocomic.B = Comic.id
+      ),
+        JSON_ARRAY()
       ) as authors,
       JSON_OBJECT('id', Status.id, 'name', Status.name) as status,
       (

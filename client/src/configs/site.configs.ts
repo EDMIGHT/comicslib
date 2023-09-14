@@ -153,6 +153,36 @@ export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
 export const SORT_VARIANTS: ISortVariants = {
   comics: [
     {
+      label: 'Title: A to Z',
+      field: 'title',
+      order: 'asc',
+    },
+    {
+      label: 'Title: Z to A',
+      field: 'title',
+      order: 'desc',
+    },
+    {
+      label: 'Top: Best to worse',
+      field: 'best',
+      order: 'desc',
+    },
+    {
+      label: 'Top: Worse to best',
+      field: 'best',
+      order: 'asc',
+    },
+    {
+      label: 'Popular: Best to worse',
+      field: 'popular',
+      order: 'desc',
+    },
+    {
+      label: 'Popular: Worse to best',
+      field: 'popular',
+      order: 'asc',
+    },
+    {
       label: 'Date Added: New to old',
       field: 'createdAt',
       order: 'desc',
@@ -173,30 +203,15 @@ export const SORT_VARIANTS: ISortVariants = {
       order: 'asc',
     },
     {
-      label: 'Title: A to Z',
-      field: 'title',
-      order: 'asc',
-    },
-    {
-      label: 'Title: Z to A',
-      field: 'title',
+      label: 'Release date: New to old',
+      field: 'releasedAt',
       order: 'desc',
     },
     {
-      label: 'Top: Best to worse',
-      field: 'best',
+      label: 'Release date: Old to new',
+      field: 'releasedAt',
       order: 'asc',
     },
-    {
-      label: 'Top: Worse to best',
-      field: 'best',
-      order: 'desc',
-    },
-    // {
-    //   label: 'highest rating',
-    //   field: 'avgRating',
-    //   order: 'asc',
-    // },
   ],
   users: [
     {

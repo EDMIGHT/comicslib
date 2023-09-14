@@ -4,8 +4,8 @@ import { ICreateComicFields } from '@/lib/validators/comic.validators';
 import {
   IComic,
   IResponseAllComics,
-  IResponseComic,
   IResponseRandomComic,
+  IResponseSingleComic,
 } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import { IRating } from '@/types/review.types';
@@ -55,7 +55,7 @@ export class ComicsService {
   }
 
   public static async getById(id: string | number) {
-    const { data } = await api.get<IResponseComic>(`${API_COMICS_URL.origin}/${id}`);
+    const { data } = await api.get<IResponseSingleComic>(`${API_COMICS_URL.origin}/${id}`);
     return data;
   }
   public static async getUserRating(id: string | number) {

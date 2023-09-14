@@ -10,14 +10,14 @@ import { IResponseComic } from '@/types/comic.types';
 
 export const Comic: FC<IResponseComic> = ({
   id,
-  _count,
-  avgRating,
   genres,
   themes,
   desc,
   img,
   title,
-  countUniqueSubscribes,
+  comments_count,
+  avg_rating,
+  unique_bookmarks_count,
 }) => {
   return (
     <Card className='flex gap-2 p-2'>
@@ -37,9 +37,9 @@ export const Comic: FC<IResponseComic> = ({
           <CardTitle className='text-xl hover:opacity-80'>{title}</CardTitle>
         </Link>
         <ComicCounters
-          avgRating={avgRating}
-          _count={_count}
-          countUniqueSubscribes={countUniqueSubscribes}
+          avg_rating={avg_rating}
+          comments_count={comments_count}
+          unique_bookmarks_count={unique_bookmarks_count}
         />
         <ComicAttributes genres={genres} themes={themes} />
         <p className='line-clamp-3'>{desc}</p>

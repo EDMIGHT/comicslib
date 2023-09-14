@@ -3,6 +3,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { useIntersection } from '@/hooks/use-intersection';
 import { CommentsService } from '@/services/comments.service';
 import { IResponseComment } from '@/types/comment.types';
@@ -27,8 +28,8 @@ export const CommentFeed: FC<CommentFeedProps> = ({ comicId, initialComments }) 
   });
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['comments'],
-    async ({ pageParam = 0 }) => {
+    [REACT_QUERY_KEYS.comments],
+    async ({ pageParam = 0 }: { pageParam?: number }) => {
       const { comments } = await CommentsService.getAll({
         comicId,
         page: pageParam,
@@ -48,7 +49,7 @@ export const CommentFeed: FC<CommentFeedProps> = ({ comicId, initialComments }) 
 
   useEffect(() => {
     if (entry?.isIntersecting) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [entry, fetchNextPage]);
 

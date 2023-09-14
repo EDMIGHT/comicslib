@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useEffect, useRef, useState } from 'react';
 
 // https://mantine.dev/hooks/use-debounced-value/

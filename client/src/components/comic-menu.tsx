@@ -7,32 +7,27 @@ import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { UsersService } from '@/services/users.service';
-import { IChapter } from '@/types/chapter.types';
+import { IResponseSingleComic } from '@/types/comic.types';
 
 import { ComicFoldersBtn } from './comic-folders-btn';
 import { ComicUpdateRating } from './comic-update-rating';
 
-type ComicMenuProps = {
-  comicId: string;
-  chapters: IChapter[];
-};
+type ComicMenuProps = Pick<IResponseSingleComic, 'first_chapter' | 'id'>;
 
-export const ComicMenu = async ({ comicId, chapters }: ComicMenuProps) => {
+export const ComicMenu = async ({ id, first_chapter }: ComicMenuProps) => {
   const accessToken = getServerAccessToken();
 
   let rating = null;
   let bookmark = null;
 
   if (accessToken) {
-    rating = await ComicsService.getUserRating(comicId);
-    bookmark = await UsersService.getComicBookmark(comicId);
+    rating = await ComicsService.getUserRating(id);
+    bookmark = await UsersService.getComicBookmark(id);
   }
-
-  const firstChapter = chapters[0];
 
   return (
     <div className='flex gap-2'>
-      {firstChapter &&
+      {first_chapter &&
         (bookmark ? (
           <Link
             href={`${HREFS.chapter}/${bookmark.chapterId}/${bookmark.pageNumber}`}
@@ -42,7 +37,7 @@ export const ComicMenu = async ({ comicId, chapters }: ComicMenuProps) => {
           </Link>
         ) : (
           <Link
-            href={`${HREFS.chapter}/${firstChapter.id}/1`}
+            href={`${HREFS.chapter}/${first_chapter.id}/1`}
             className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
           >
             <Icons.read className='h-5 w-5' /> Read
@@ -50,10 +45,10 @@ export const ComicMenu = async ({ comicId, chapters }: ComicMenuProps) => {
         ))}
       {accessToken && (
         <>
-          <ComicFoldersBtn comicId={comicId} />
-          <ComicUpdateRating comicId={comicId} rating={rating} />
+          <ComicFoldersBtn comicId={id} />
+          <ComicUpdateRating comicId={id} rating={rating} />
           <Link
-            href={`${HREFS.create.chapter}/${comicId}`}
+            href={`${HREFS.create.chapter}/${id}`}
             className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
           >
             <Icons.upload className='h-5 w-5' /> Upload Chapter

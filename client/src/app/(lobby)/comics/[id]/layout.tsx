@@ -70,12 +70,12 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     genres,
     authors,
     themes,
-    _count,
-    avgRating,
     id: comicId,
     status,
-    chapters,
-    countUniqueSubscribes,
+    avg_rating,
+    comments_count,
+    unique_bookmarks_count,
+    first_chapter,
     releasedAt,
   } = comic;
 
@@ -98,7 +98,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
         <ComicPageImg imgSrc={img} alt={title} />
         <div className='flex h-full flex-col justify-between gap-2'>
           <h1 className='text-7xl font-bold'>{title}</h1>
-          <ComicMenu comicId={comicId} chapters={chapters} />
+          <ComicMenu id={comicId} first_chapter={first_chapter} />
         </div>
       </div>
       <div>
@@ -111,9 +111,9 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
         </div>
         <div className='space-y-4'>
           <ComicCounters
-            avgRating={avgRating}
-            _count={_count}
-            countUniqueSubscribes={countUniqueSubscribes}
+            avg_rating={avg_rating}
+            comments_count={comments_count}
+            unique_bookmarks_count={unique_bookmarks_count}
           />
           <ComicInfo
             genres={genres}

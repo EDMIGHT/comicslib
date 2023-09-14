@@ -13,6 +13,7 @@ type PageProps = {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/require-await
 const getPageContentFromParams = async (params: PageProps['params']) => {
   const slug = params.slug.join('/') ?? '';
 
@@ -51,6 +52,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export const generateStaticParams = async () => {
   return allPages.map((page) => ({
     slug: page.slugAsParams.split('/'),

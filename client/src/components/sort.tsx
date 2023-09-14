@@ -38,6 +38,7 @@ export const Sort: FC<SortProps> = ({
 
   const createQueryString = useCallback(
     (field: string, order: string) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const params = new URLSearchParams(searchParams);
       params.set('sort', field);

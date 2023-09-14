@@ -1,5 +1,5 @@
 import { IAuthor } from './author.types';
-import { IChapter, IChapterWithUser } from './chapter.types';
+import { IChapterWithUser, IShortChapter } from './chapter.types';
 import { IGenre } from './genre.types';
 import { IPagination } from './response.types';
 import { IStatus } from './status.types';
@@ -33,15 +33,18 @@ export type IResponseComic = IComic & {
   genres: IGenre[];
   themes: ITheme[];
   status: IStatus;
-  _count: IComicCount;
-  chapters: IChapter[];
-  avgRating: number;
-  countUniqueSubscribes: number;
+  avg_rating: number;
+  unique_bookmarks_count: number;
+  comments_count: number;
 };
 
 export type IResponseAllComics = {
   comics: IResponseComic[];
 } & IPagination;
+
+export type IResponseSingleComic = IResponseComic & {
+  first_chapter: IShortChapter;
+};
 
 export type IResponseRandomComic = {
   randomId: string;

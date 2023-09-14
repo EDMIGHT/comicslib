@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useCallback, useRef, useState } from 'react';
 
 // https://mantine.dev/hooks/use-intersection/
