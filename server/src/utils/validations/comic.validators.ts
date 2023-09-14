@@ -33,6 +33,7 @@ export const getComicsValidators = [
       comicSchema.updatedAt.name,
       comicSchema.releasedAt.name,
       'best',
+      'popular',
       comicSchema.title.name,
     ])
     .withMessage(

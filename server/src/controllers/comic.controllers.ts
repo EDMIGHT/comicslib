@@ -28,24 +28,24 @@ export const createComic = async (req: Request, res: Response): Promise<Response
 };
 
 export const getComics = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    const {
-      genres,
-      themes,
-      authors,
-      statuses,
-      title,
-      folderId,
-      ratedUser,
-      date,
-      startDate,
-      endDate,
-      page = 1,
-      limit = 10,
-      order = 'desc',
-      sort = 'createdAt',
-    } = req.query as unknown as IGetAllComicsQuery;
+  const {
+    genres,
+    themes,
+    authors,
+    statuses,
+    title = '',
+    folderId,
+    ratedUser,
+    date,
+    startDate,
+    endDate,
+    page = 1,
+    limit = 5,
+    order = 'desc',
+    sort = 'createdAt',
+  } = req.query as unknown as IGetAllComicsQuery;
 
+  try {
     const genresList = genres ? (genres as string).split(',') : [];
     const themesList = themes ? (themes as string).split(',') : [];
     const authorsList = authors ? (authors as string).split(',') : [];
@@ -68,25 +68,6 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
       endDate,
     });
 
-    const comicsWithAvgRating = await Promise.all(
-      comics.map(async (comic) => {
-        const avgRating = await ComicModel.getAvgRating(comic.id);
-        return {
-          ...comic,
-          avgRating,
-        };
-      })
-    );
-    const comicsWithAvgRatingAndCountUniqueSubscribes = await Promise.all(
-      comicsWithAvgRating.map(async (comic) => {
-        const countUniqueSubscribes = await ComicModel.getUniqueSubscribes(comic.id);
-        return {
-          ...comic,
-          countUniqueSubscribes,
-        };
-      })
-    );
-
     const totalComics = await ComicModel.getAllCount({
       genres: genresList,
       themes: themesList,
@@ -101,7 +82,7 @@ export const getComics = async (req: Request, res: Response): Promise<Response> 
     });
 
     return CustomResponse.ok(res, {
-      comics: comicsWithAvgRatingAndCountUniqueSubscribes,
+      comics,
       currentPage: +page,
       totalPages: Math.ceil(totalComics / +limit),
     });
@@ -126,14 +107,7 @@ export const getComic = async (req: Request, res: Response): Promise<Response> =
       });
     }
 
-    const avgRating = await ComicModel.getAvgRating(existedComic.id);
-    const countUniqueSubscribes = await ComicModel.getUniqueSubscribes(existedComic.id);
-
-    return CustomResponse.ok(res, {
-      ...existedComic,
-      avgRating: avgRating?.toFixed(1),
-      countUniqueSubscribes,
-    });
+    return CustomResponse.ok(res, existedComic);
   } catch (error) {
     return serverErrorResponse({
       res,

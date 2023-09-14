@@ -1,18 +1,8 @@
-import {
-  Author,
-  Chapter,
-  Comic,
-  Comment,
-  Folder,
-  Genre,
-  Status,
-  Theme,
-  User,
-} from '@prisma/client';
+import { Author, Comic, Comment, Folder, Genre, Status, Theme, User } from '@prisma/client';
 
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 
-import { IChapterWithUser } from './chapter.types';
+import { IChapterWithUser, IShortChapter } from './chapter.types';
 
 export type IComicCount = {
   comments: number;
@@ -21,15 +11,17 @@ export type IComicCount = {
 export type IShortComic = Pick<Comic, 'id' | 'img' | 'title'>;
 
 export type IComicWithData = Comic & {
+  avg_rating: number;
+  unique_bookmarks_count: number;
+  comments_count: number;
   authors: Author[];
   genres: Genre[];
   themes: Theme[];
   status: Status;
-  _count: IComicCount;
-  chapters: Chapter[];
 };
 
 export type IComicWithDataSingle = IComicWithData & {
+  first_chapter: IShortChapter;
   comments: Comment[];
 };
 

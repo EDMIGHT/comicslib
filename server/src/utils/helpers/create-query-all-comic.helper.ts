@@ -1,146 +1,132 @@
-import { StatusName } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { Sql } from '@prisma/client/runtime/library';
 
 import { IGetAllQuery } from '@/models/comic.model';
 
-export type IAllComicQuery = {
-  genres?: {
-    some: {
-      title: {
-        in: string[];
-      };
-    };
-  };
-  themes?: {
-    some: {
-      title: {
-        in: string[];
-      };
-    };
-  };
-  authors?: {
-    some: {
-      login: {
-        in: string[];
-      };
-    };
-  };
-  status?: {
-    name: {
-      in: StatusName[];
-    };
-  };
-  folders?: {
-    some: {
-      id: string;
-    };
-  };
-  ratings?: {
-    some: {
-      user: {
-        login: string;
-      };
-    };
-  };
-  createdAt?: {
-    gte?: Date;
-    lte?: Date;
-  };
-  updatedAt?: {
-    gte?: Date;
-    lte?: Date;
-  };
-};
-
-export const createQueryAllComic = ({
-  genres,
-  themes,
-  authors,
-  statuses,
+export const createWhereQueryAllComics = ({
+  title,
+  authors = [],
+  genres = [],
+  themes = [],
+  statuses = [],
   folderId,
   ratedUser,
   date,
   startDate,
   endDate,
-}: Omit<IGetAllQuery, 'title'>): IAllComicQuery => {
-  const query: IAllComicQuery = {};
+}: IGetAllQuery): Sql => {
+  const titleQuery = Prisma.sql`Comic.title LIKE ${`${title}%`} `;
 
-  if (genres && genres.length > 0) {
-    query.genres = {
-      some: {
-        title: {
-          in: genres,
-        },
-      },
-    };
-  }
-  if (authors && authors.length > 0) {
-    query.authors = {
-      some: {
-        login: {
-          in: authors,
-        },
-      },
-    };
-  }
-  if (themes && themes.length > 0) {
-    query.themes = {
-      some: {
-        title: {
-          in: themes,
-        },
-      },
-    };
-  }
-  if (statuses && statuses.length > 0) {
-    query.status = {
-      name: {
-        in: statuses as StatusName[],
-      },
-    };
-  }
-  if (folderId) {
-    query.folders = {
-      some: {
-        id: folderId,
-      },
-    };
-  }
-  if (ratedUser) {
-    query.ratings = {
-      some: {
-        user: {
-          login: ratedUser,
-        },
-      },
-    };
-  }
-  if (date && startDate && endDate) {
-    const index = date === 'createdAt' ? 'createdAt' : 'updatedAt';
-    const modifyStartDate = new Date(startDate);
-    modifyStartDate.setHours(0, 0, 0, 0);
-    const modifyEndDate = new Date(endDate);
-    modifyEndDate.setHours(23, 59, 59, 999);
-    query[index] = {
-      gte: new Date(modifyStartDate),
-      lte: new Date(modifyEndDate),
-    };
-  } else if (date && startDate) {
-    const index = date === 'createdAt' ? 'createdAt' : 'updatedAt';
-    const modifyStartDate = new Date(startDate);
-    modifyStartDate.setHours(0, 0, 0, 0);
+  let dateFilter = Prisma.empty;
 
-    query[index] = {
-      gte: new Date(modifyStartDate),
-    };
-  } else if (date && endDate) {
-    const index = date === 'createdAt' ? 'createdAt' : 'updatedAt';
-    const modifyEndDate = new Date(endDate);
-    modifyEndDate.setHours(23, 59, 59, 999);
-
-    query[index] = {
-      lte: new Date(modifyEndDate),
-    };
+  if (date === 'createdAt') {
+    if (startDate && endDate) {
+      dateFilter = Prisma.sql`
+        AND Comic.created_at BETWEEN ${startDate} AND ${endDate}
+      `;
+    } else if (endDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.created_at <= ${endDate}
+      `;
+    } else if (startDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.created_at >= ${startDate}
+      `;
+    }
+  } else if (date === 'updatedAt') {
+    if (startDate && endDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.updated_at BETWEEN ${startDate} AND ${endDate}
+      `;
+    } else if (endDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.updated_at <= ${endDate}
+      `;
+    } else if (startDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.updated_at >= ${startDate}
+      `;
+    }
+  } else if (date === 'releasedAt') {
+    if (startDate && endDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.released_at BETWEEN ${startDate} AND ${endDate}
+      `;
+    } else if (endDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.released_at <= ${endDate}
+      `;
+    } else if (startDate) {
+      dateFilter = Prisma.sql`
+      AND Comic.released_at >= ${startDate}
+      `;
+    }
   }
 
-  return query;
+  const statusQuery =
+    statuses.length > 0
+      ? Prisma.sql`AND Status.name IN (${Prisma.join(statuses)})`
+      : Prisma.empty;
+  const genresQuery =
+    genres.length > 0
+      ? Prisma.sql`AND EXISTS (
+          SELECT 1
+          FROM Genre
+          INNER JOIN _comictogenre ON Genre.id = _comictogenre.B
+          WHERE _comictogenre.A = Comic.id
+          AND Genre.title IN (${Prisma.join(genres)})
+        )`
+      : Prisma.empty;
+  const themesQuery =
+    themes.length > 0
+      ? Prisma.sql`AND EXISTS (
+          SELECT 1
+          FROM Theme
+          INNER JOIN _comictotheme ON Theme.id = _comictotheme.B
+          WHERE _comictotheme.A = Comic.id
+          AND Theme.title IN (${Prisma.join(themes)})
+        )`
+      : Prisma.empty;
+  const authorsQuery =
+    authors.length > 0
+      ? Prisma.sql`AND EXISTS (
+          SELECT 1
+          FROM Author
+          INNER JOIN _authortocomic ON Author.id = _authortocomic.A
+          WHERE _authortocomic.B = Comic.id
+          AND Author.login IN (${Prisma.join(authors)})
+        )`
+      : Prisma.empty;
+  const ratedUserQuery = ratedUser
+    ? Prisma.sql`
+        AND EXISTS (
+          SELECT 1
+          FROM Rating
+          INNER JOIN User ON Rating.user_id = User.id
+          WHERE Rating.comic_id = Comic.id
+          AND User.login = ${ratedUser}
+        )
+      `
+    : Prisma.empty;
+  const folderQuery = folderId
+    ? Prisma.sql`
+      AND EXISTS (
+        SELECT 1
+        FROM Folder
+        INNER JOIN _comictofolder ON Folder.id = _comictofolder.B
+        WHERE _comictofolder.A = Comic.id 
+        AND Folder.id = ${folderId}
+      )
+    `
+    : Prisma.empty;
+
+  return Prisma.sql` 
+  ${titleQuery} 
+  ${statusQuery} 
+  ${genresQuery} 
+  ${themesQuery}
+  ${authorsQuery}
+  ${ratedUserQuery}
+  ${folderQuery}
+  ${dateFilter}`;
 };
