@@ -168,12 +168,6 @@ export const signOut = async (req: Request, res: Response): Promise<Response> =>
   }
 };
 
-export const googleAuth = (_: Request, res: Response): void => {
-  const authURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=code&scope=email profile`;
-
-  res.redirect(authURL);
-};
-
 export const googleCallback = async (
   req: Request,
   res: Response
@@ -223,6 +217,9 @@ export const googleCallback = async (
     const user = await UserModel.create({
       login: uniqueLogin,
       password: null,
+      provider: 'google',
+      providerId: googleUserData.id,
+      img: googleUserData.picture,
     });
 
     const tokens = tokenService.createTokens({

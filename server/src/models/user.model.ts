@@ -5,7 +5,8 @@ import prisma from '@/db/prisma';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { IProfile } from '@/types/user.types';
 
-type ICreateUserArg = Pick<User, 'login' | 'password'>;
+type ICreateUserArg = Pick<User, 'login' | 'password'> &
+  Partial<Pick<User, 'provider' | 'providerId' | 'img'>>;
 
 const defaultUserImg = process.env.USER_DEFAULT_IMG_PATH!;
 
@@ -104,11 +105,18 @@ export class UserModel {
       },
     });
   }
-  public static async create(data: ICreateUserArg): Promise<User> {
+  public static async create({
+    provider = null,
+    providerId = null,
+    img,
+    ...data
+  }: ICreateUserArg): Promise<User> {
     return prisma.user.create({
       data: {
         ...data,
-        img: defaultUserImg,
+        provider,
+        providerId,
+        img: img ?? defaultUserImg,
         folders: {
           create: DEFAULT_USER_FOLDER,
         },

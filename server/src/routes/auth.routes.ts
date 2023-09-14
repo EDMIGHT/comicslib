@@ -2,7 +2,6 @@ import express from 'express';
 
 import {
   authMe,
-  googleAuth,
   googleCallback,
   signIn,
   signOut,
@@ -16,7 +15,6 @@ const router = express.Router({ mergeParams: true });
 
 router.get('/me', authentication, authMe);
 
-router.get('/google', googleAuth);
 router.get('/callback/google', googleCallback);
 
 router.post('/sign-up', signUpValidators, validation, signUp);

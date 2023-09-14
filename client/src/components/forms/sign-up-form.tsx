@@ -33,18 +33,16 @@ export const SignUpForm = () => {
     resolver: zodResolver(signUpValidation),
     defaultValues: {
       login: '',
-      name: '',
       password: '',
       confirmPassword: '',
     },
   });
 
   const { mutate: signUp, isLoading } = useMutation({
-    mutationFn: async ({ login, password, name }: IRequestSignUpBody) => {
+    mutationFn: async ({ login, password }: IRequestSignUpBody) => {
       const payload: IRequestSignUpBody = {
         login,
         password,
-        name,
       };
 
       return await AuthService.auth('signUp', payload);
@@ -98,22 +96,9 @@ export const SignUpForm = () => {
           name='login'
           render={({ field }) => (
             <FormItem>
-              <FormLabel isRequired>Login</FormLabel>
+              <FormLabel>Login</FormLabel>
               <FormControl>
                 <Input placeholder='alex123' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='name'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder='Alex' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -124,7 +109,7 @@ export const SignUpForm = () => {
           name='password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel isRequired>Password</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
                 <PasswordInput placeholder='*******' {...field} />
               </FormControl>
@@ -137,7 +122,7 @@ export const SignUpForm = () => {
           name='confirmPassword'
           render={({ field }) => (
             <FormItem>
-              <FormLabel isRequired>Confirm Password</FormLabel>
+              <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <PasswordInput placeholder='*******' {...field} />
               </FormControl>
@@ -155,7 +140,7 @@ export const SignUpForm = () => {
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className='leading-none'>
-                  <FormLabel isRequired className='p-0'>
+                  <FormLabel className='p-0'>
                     I&apos;ve read and agree to the{' '}
                     <Link
                       href={HREFS.infoPage.privacyPolicy}

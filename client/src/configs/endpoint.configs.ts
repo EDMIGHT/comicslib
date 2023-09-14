@@ -4,6 +4,8 @@ export const API_AUTH_URL = {
   signOut: '/auth/sign-out',
   tokens: '/auth/token',
   authMe: '/auth/me',
+  google: '/auth/google',
+  github: '/auth/github',
 } as const;
 
 export const API_COMICS_URL = {

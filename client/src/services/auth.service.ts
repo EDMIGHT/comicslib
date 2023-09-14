@@ -7,7 +7,7 @@ import { IResponseAuth, IUser } from '@/types/user.types';
 
 import { apiAuth } from './apiAuth';
 
-export type IRequestSignUpBody = Pick<ISignUpFields, 'login' | 'password' | 'name'>;
+export type IRequestSignUpBody = Pick<ISignUpFields, 'login' | 'password'>;
 
 export class AuthService {
   public static async auth(
