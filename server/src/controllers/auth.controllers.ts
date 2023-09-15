@@ -245,12 +245,6 @@ export const googleCallback = async (
   }
 };
 
-export const githubRedirect = async (_: Request, res: Response): Promise<void> => {
-  return res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=http://localhost:3001/api/auth/callback/github&scope=user`
-  );
-};
-
 export const githubCallback = async (
   req: Request,
   res: Response

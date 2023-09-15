@@ -18,4 +18,16 @@ export class OAuthUrlHelper {
 
     return `${rootUrl}?${qs.toString()}`;
   }
+  public static Github() {
+    const rootUrl = 'https://github.com/login/oauth/authorize';
+
+    const options = {
+      client_id: process.env.GITHUB_CLIENT_ID!,
+      scope: 'user',
+    };
+
+    const qs = new URLSearchParams(options);
+
+    return `${rootUrl}?${qs.toString()}`;
+  }
 }
