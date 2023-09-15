@@ -2,6 +2,8 @@ import express from 'express';
 
 import {
   authMe,
+  githubCallback,
+  githubRedirect,
   googleCallback,
   signIn,
   signOut,
@@ -16,6 +18,8 @@ const router = express.Router({ mergeParams: true });
 router.get('/me', authentication, authMe);
 
 router.get('/callback/google', googleCallback);
+router.get('/github', githubRedirect);
+router.get('/callback/github', githubCallback);
 
 router.post('/sign-up', signUpValidators, validation, signUp);
 router.post('/sign-in', signInValidators, validation, signIn);

@@ -6,7 +6,7 @@ import { LIMITS } from '@/configs/limits.configs';
 import { SessionModel } from '@/models/session.model';
 import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
-import { IResponseGoogleAuth } from '@/types/auth.types';
+import { IResponseGithubAuth, IResponseGoogleAuth } from '@/types/auth.types';
 import {
   clearAuthCookieFromResponse,
   setAuthCookieToResponse,
@@ -17,9 +17,13 @@ import { CustomResponse } from '@/utils/helpers/customResponse';
 import { isTokenInvalid } from '@/utils/helpers/isTokenInvalid';
 
 // google
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const REDIRECT_URL = process.env.GOOGLE_AUTH_REDIRECT_URL!;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
+const GOOGLE_REDIRECT_URL = process.env.GOOGLE_AUTH_REDIRECT_URL!;
+
+// github
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID!;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET!;
 
 const CLIENT_DOMAIN = process.env.CLIENT_DOMAIN!;
 
@@ -175,15 +179,15 @@ export const googleCallback = async (
   const { code } = req.query;
 
   try {
-    const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
+    const { data: tokenResponse } = await axios.post('https://oauth2.googleapis.com/token', {
       code,
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-      redirect_uri: REDIRECT_URL,
+      client_id: GOOGLE_CLIENT_ID,
+      client_secret: GOOGLE_CLIENT_SECRET,
+      redirect_uri: GOOGLE_REDIRECT_URL,
       grant_type: 'authorization_code',
     });
 
-    const { access_token } = tokenResponse.data;
+    const { access_token } = tokenResponse;
 
     const { data: googleUserData } = await axios.get<IResponseGoogleAuth>(
       `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`
@@ -237,6 +241,96 @@ export const googleCallback = async (
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: `An error occurred on the server side when logging in using Google.`,
+    });
+  }
+};
+
+export const githubRedirect = async (_: Request, res: Response): Promise<void> => {
+  return res.redirect(
+    `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=http://localhost:3001/api/auth/callback/github&scope=user`
+  );
+};
+
+export const githubCallback = async (
+  req: Request,
+  res: Response
+): Promise<void | Response<any, Record<string, any>>> => {
+  const { code } = req.query;
+
+  try {
+    const { data: githubResponse } = await axios.post(
+      'https://github.com/login/oauth/access_token',
+      null,
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+        params: {
+          client_id: GITHUB_CLIENT_ID,
+          client_secret: GITHUB_CLIENT_SECRET,
+          redirect_uri: 'http://localhost:3001/api/auth/callback/github',
+          code,
+        },
+      }
+    );
+
+    const { access_token } = githubResponse;
+
+    const { data: githubUserData } = await axios.get<IResponseGithubAuth>(
+      'https://api.github.com/user',
+      {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      }
+    );
+
+    const existedUser = await UserModel.getByProvider('github', githubUserData.id.toString());
+
+    if (existedUser) {
+      const tokens = tokenService.createTokens({
+        id: existedUser.id,
+        login: existedUser.login,
+      });
+      tokenService.save({
+        userId: existedUser.id,
+        refreshToken: tokens.refreshToken,
+      });
+
+      const resWithCookie = setAuthCookieToResponse(res, tokens);
+
+      return resWithCookie.redirect(CLIENT_DOMAIN);
+    }
+
+    const preparedLogin = githubUserData.login.substring(0, LIMITS.maxStringLength);
+
+    const isExistLogin = await UserModel.getByLogin(preparedLogin);
+
+    const uniqueLogin = isExistLogin ? await createUniqueLogin(preparedLogin) : preparedLogin;
+
+    const user = await UserModel.create({
+      login: uniqueLogin,
+      password: null,
+      provider: 'github',
+      providerId: githubUserData.id.toString(),
+      img: githubUserData.avatar_url,
+    });
+
+    const tokens = tokenService.createTokens({
+      id: user.id,
+      login: user.login,
+    });
+    tokenService.save({
+      userId: user.id,
+      refreshToken: tokens.refreshToken,
+    });
+
+    const resWithCookie = setAuthCookieToResponse(res, tokens);
+
+    return resWithCookie.redirect(CLIENT_DOMAIN);
+  } catch (error) {
+    return CustomResponse.serverError(res, {
+      message: `An error occurred on the server side when logging in using Github.`,
     });
   }
 };

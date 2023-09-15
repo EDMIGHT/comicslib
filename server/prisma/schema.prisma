@@ -16,6 +16,7 @@ enum StatusName {
 
 enum Providers {
   google
+  github
 }
 
 model User {
