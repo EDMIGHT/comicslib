@@ -1,5 +1,5 @@
 import { IPagination } from './response.types';
-import { IShortUser } from './user.types';
+import { IShortUserWithCounts } from './user.types';
 
 export type IChapter = {
   id: string;
@@ -13,7 +13,7 @@ export type IChapter = {
 export type IShortChapter = Pick<IChapter, 'id' | 'number' | 'title'>;
 
 export type IChapterWithUser = IChapter & {
-  user: IShortUser;
+  user: IShortUserWithCounts | null;
 };
 
 export type IResponseAllChapters = {

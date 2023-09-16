@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
+import { ChapterUserInfo } from '@/components/chapter-user-info';
 import { Time } from '@/components/ui/time';
 import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 import { IChapterWithUser } from '@/types/chapter.types';
-
-import { ChapterUserInfo } from '../chapter-user-info';
 
 type ChapterItemProps = IChapterWithUser & {
   variant?: 'default' | 'transparent';
@@ -20,7 +19,6 @@ export const ChapterItem: FC<ChapterItemProps> = ({
   createdAt,
   variant = 'default',
 }) => {
-  // TODO найти причину гидратации при вложенной ссылке в ссылку (ChapterUserInfo)
   return (
     <div
       className={cn(
@@ -36,7 +34,7 @@ export const ChapterItem: FC<ChapterItemProps> = ({
         </h3>
       </Link>
 
-      <ChapterUserInfo {...user} />
+      {user ? <ChapterUserInfo {...user} /> : <h3>deleted</h3>}
 
       <Link href={`${HREFS.chapter}/${id}`} className=' p-2'>
         {createdAt && <Time time={new Date(createdAt)} />}

@@ -28,6 +28,14 @@ export type IResponseAuth = {
 
 export type IShortUser = Pick<IUser, 'id' | 'login' | 'img'>;
 
+export type IShortUserWithCounts = IShortUser & {
+  _count: {
+    chapters: number;
+    comments: number;
+    ratings: number;
+  };
+};
+
 export type IProfile = IUser & {
   folders: IFolder[];
   _count: {

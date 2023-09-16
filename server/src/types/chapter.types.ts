@@ -8,7 +8,15 @@ export type IRequestChapter = Pick<Chapter, 'comicId' | 'title' | 'number'> & {
 };
 
 export type IChapterWithUser = Chapter & {
-  user: IShortUser;
+  user:
+    | (IShortUser & {
+        _count: {
+          chapters: number;
+          comments: number;
+          ratings: number;
+        };
+      })
+    | null;
 };
 
 export type IShortChapter = Pick<Chapter, 'id' | 'number' | 'title'>;
