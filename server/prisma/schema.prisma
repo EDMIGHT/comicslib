@@ -47,7 +47,7 @@ model Session {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Author {
@@ -83,7 +83,7 @@ model Page {
   number    Int    @db.UnsignedTinyInt
   img       String
 
-  chapter   Chapter    @relation(fields: [chapterId], references: [id])
+  chapter   Chapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   bookmarks Bookmark[]
 
   @@id([chapterId, number])
@@ -92,15 +92,15 @@ model Page {
 model Chapter {
   id        String   @id @default(uuid())
   comicId   String   @map("comic_id")
-  userId    String
+  userId    String?
   number    Float
   title     String?
   createdAt DateTime @default(now()) @map("created_at")
 
   pages     Page[]
   bookmarks Bookmark[]
-  comic     Comic      @relation(fields: [comicId], references: [id])
-  user      User       @relation(fields: [userId], references: [id])
+  comic     Comic      @relation(fields: [comicId], references: [id], onDelete: Cascade)
+  user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model Comic {
@@ -143,8 +143,8 @@ model Rating {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  comic Comic @relation(fields: [comicId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
+  comic Comic @relation(fields: [comicId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Folder {
@@ -154,7 +154,7 @@ model Folder {
   order     Int      @db.UnsignedTinyInt
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user   User    @relation(fields: [userId], references: [id])
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   comics Comic[]
 }
 
@@ -166,8 +166,8 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  comic Comic @relation(fields: [comicId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
+  comic Comic @relation(fields: [comicId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Bookmark {
@@ -177,10 +177,10 @@ model Bookmark {
   pageNumber Int      @map("page_number") @db.UnsignedTinyInt
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  user    User    @relation(fields: [userId], references: [id])
-  comic   Comic   @relation(fields: [comicId], references: [id])
-  chapter Chapter @relation(fields: [chapterId], references: [id])
-  page    Page    @relation(fields: [chapterId, pageNumber], references: [chapterId, number])
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comic   Comic   @relation(fields: [comicId], references: [id], onDelete: Cascade)
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  page    Page    @relation(fields: [chapterId, pageNumber], references: [chapterId, number], onDelete: Cascade)
 
   @@id([userId, comicId])
   @@index([chapterId, pageNumber])

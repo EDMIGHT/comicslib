@@ -131,4 +131,11 @@ export class UserModel {
       data,
     });
   }
+  public static async delete(id: User['id']): Promise<User> {
+    return prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

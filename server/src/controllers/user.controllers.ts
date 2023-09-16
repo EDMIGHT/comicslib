@@ -380,3 +380,24 @@ export const clearAllBookmarks = async (req: Request, res: Response): Promise<Re
     });
   }
 };
+
+export const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const existedUser = await UserModel.getById(req.user.id);
+    if (!existedUser) {
+      return CustomResponse.notFound(res, {
+        message: 'The user has already been deleted or does not exist',
+      });
+    }
+
+    await UserModel.delete(req.user.id);
+
+    return CustomResponse.ok(res, null);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when clearing user's bookmarks`,
+      error,
+    });
+  }
+};
