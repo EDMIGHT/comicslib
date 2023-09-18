@@ -31,3 +31,28 @@ export const editProfileSchema = z.object({
 });
 
 export type IEditProfileSchema = z.infer<typeof editProfileSchema>;
+
+export const changePasswordSchema = z
+  .object({
+    oldPassword: z
+      .string()
+      .trim()
+      .min(5, 'The minimum old password length is 5 characters')
+      .max(190, 'The maximum old password length is 190 characters'),
+    newPassword: z
+      .string()
+      .trim()
+      .min(5, 'The minimum new password length is 5 characters')
+      .max(190, 'The maximum new password length is 190 characters'),
+    confirmNewPassword: z
+      .string()
+      .trim()
+      .min(5, 'The minimum confirm new password length is 5 characters')
+      .max(190, 'The maximum confirm new password length is 190 characters'),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ['confirmNewPassword'],
+    message: 'New Password does not match',
+  });
+
+export type IChangePasswordSchema = z.infer<typeof changePasswordSchema>;

@@ -4,11 +4,10 @@ import { FC } from 'react';
 import { buttonVariants } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Separator } from '@/components/ui/separator';
+import { UserAvatar } from '@/components/user-avatar';
 import { HREFS } from '@/configs/href.configs';
 import { cn } from '@/lib/utils';
 import { IShortUserWithCounts } from '@/types/user.types';
-
-import { UserAvatar } from './user-avatar';
 
 export const ChapterUserInfo: FC<IShortUserWithCounts> = ({
   img,

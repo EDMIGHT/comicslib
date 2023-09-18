@@ -1,3 +1,4 @@
+import { COMIC_SORT_VARIANTS } from '@/configs/comic.configs';
 import { ISortVariants, NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
 
 import { HREFS } from './href.configs';
@@ -137,6 +138,17 @@ export const PROFILE_NAVIGATION: readonly NavigationLink[] = [
   },
 ];
 
+export const SETTINGS_NAVIGATION: readonly NavigationLink[] = [
+  {
+    title: 'Account',
+    href: '/settings',
+  },
+  {
+    title: 'Appearance',
+    href: '/settings/appearance',
+  },
+];
+
 export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
   {
     title: 'Folders',
@@ -151,68 +163,7 @@ export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
 ];
 
 export const SORT_VARIANTS: ISortVariants = {
-  comics: [
-    {
-      label: 'Title: A to Z',
-      field: 'title',
-      order: 'asc',
-    },
-    {
-      label: 'Title: Z to A',
-      field: 'title',
-      order: 'desc',
-    },
-    {
-      label: 'Top: Best to worse',
-      field: 'best',
-      order: 'desc',
-    },
-    {
-      label: 'Top: Worse to best',
-      field: 'best',
-      order: 'asc',
-    },
-    {
-      label: 'Popular: Best to worse',
-      field: 'popular',
-      order: 'desc',
-    },
-    {
-      label: 'Popular: Worse to best',
-      field: 'popular',
-      order: 'asc',
-    },
-    {
-      label: 'Date Added: New to old',
-      field: 'createdAt',
-      order: 'desc',
-    },
-    {
-      label: 'Date Added: Old to new',
-      field: 'createdAt',
-      order: 'asc',
-    },
-    {
-      label: 'Update Date: New to old',
-      field: 'updatedAt',
-      order: 'desc',
-    },
-    {
-      label: 'Update Date: Old to new',
-      field: 'updatedAt',
-      order: 'asc',
-    },
-    {
-      label: 'Release date: New to old',
-      field: 'releasedAt',
-      order: 'desc',
-    },
-    {
-      label: 'Release date: Old to new',
-      field: 'releasedAt',
-      order: 'asc',
-    },
-  ],
+  comics: COMIC_SORT_VARIANTS,
   users: [
     {
       label: 'recently registered',
@@ -236,7 +187,7 @@ export const SORT_VARIANTS: ISortVariants = {
       order: 'desc',
     },
   ],
-};
+} as const;
 
 export const LIMITS = {
   chapters: 5,

@@ -45,7 +45,7 @@ export async function middleware(req: NextRequest) {
       const newHeaders = new Headers(res.headers);
       const cookieHeader = newHeaders.get('set-cookie');
 
-      const newResponse = NextResponse.next();
+      const newResponse = NextResponse.redirect(req.url);
 
       newResponse.headers.set('set-cookie', cookieHeader || '');
 
