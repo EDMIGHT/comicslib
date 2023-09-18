@@ -122,6 +122,15 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
                   Sign Up
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={HREFS.settings}
+                  className={cn(buttonVariants({ variant: 'ghost' }), 'w-full')}
+                  onClick={() => setOpen(false)}
+                >
+                  Settings
+                </Link>
+              </li>
             </ul>
           )}
         </div>

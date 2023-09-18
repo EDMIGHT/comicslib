@@ -1,20 +1,20 @@
 'use client';
 
 import { useTheme } from 'next-themes';
-import { FC, HTMLAttributes, useState } from 'react';
+import { FC } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Icons } from '@/components/ui/icons';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ThemeView } from '@/components/theme-view';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { SITE_THEMES } from '@/configs/site.configs';
 import { useMounted } from '@/hooks/use-mounted';
 import { cn } from '@/lib/utils';
 
-type ThemeSwitcherProps = HTMLAttributes<HTMLDivElement>;
+type ThemeSwitcherThemeSwitcherFormProps = {
+  className?: string;
+};
 
-export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({ className, ...rest }) => {
+export const ThemeSwitcherForm: FC<ThemeSwitcherThemeSwitcherFormProps> = ({ className }) => {
   const mounted = useMounted();
-  const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
 
   if (!mounted) {
@@ -22,51 +22,25 @@ export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({ className, ...rest }) =>
   }
 
   return (
-    <div {...rest} className={cn('flex items-center gap-2 p-1', className)}>
-      <h3>Theme:</h3>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant='outline'
-            role='combobox'
-            aria-expanded={open}
-            className={cn('flex w-[100px] p-1 text-sm font-medium')}
-          >
-            <span>{theme}</span>
-            <Icons.chevronUpDown className='h-4 w-4' />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className='w-fit p-1'>
-          <ul>
-            {SITE_THEMES.map((theme, i) => (
-              <li key={i}>
-                <Button
-                  variant='outline'
-                  className='w-full border-none px-4 py-3 text-sm font-medium'
-                  onClick={() => {
-                    setTheme(theme);
-                    setOpen(false);
-                  }}
-                >
-                  {theme}
-                </Button>
-              </li>
-            ))}
-            <li>
-              <Button
-                variant='outline'
-                className='w-full border-none px-4 py-3 text-sm font-medium'
-                onClick={() => {
-                  setTheme('system');
-                  setOpen(false);
-                }}
-              >
-                system
-              </Button>
-            </li>
-          </ul>
-        </PopoverContent>
-      </Popover>
-    </div>
+    <RadioGroup
+      defaultValue={theme}
+      onValueChange={(val) => setTheme(val)}
+      className={cn('flex flex-wrap items-center gap-2 p-1', className)}
+    >
+      <label className='cursor-pointer'>
+        <RadioGroupItem value='system' className='sr-only' />
+        <ThemeView value='system' currentTheme={theme} />
+        <span className='block w-full p-2 text-center font-normal capitalize'>System</span>
+      </label>
+      {SITE_THEMES.map((renderTheme) => (
+        <label key={renderTheme} className='cursor-pointer'>
+          <RadioGroupItem value={renderTheme} className='sr-only' />
+          <ThemeView value={renderTheme} currentTheme={theme} />
+          <span className='block w-full p-2 text-center font-medium capitalize'>
+            {renderTheme}
+          </span>
+        </label>
+      ))}
+    </RadioGroup>
   );
 };

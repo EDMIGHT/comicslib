@@ -2,7 +2,7 @@ import { ServerRuntime } from 'next';
 import { ImageResponse } from 'next/server';
 
 import { SITE_CONFIG } from '@/configs/site.configs';
-import { ogImageSchema } from '@/lib/validators/meta.validators';
+import { ogImageSchema } from '@/lib/validators/site.validators';
 
 export const runtime: ServerRuntime = 'edge';
 

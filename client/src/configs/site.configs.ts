@@ -3,7 +3,19 @@ import { ISortVariants, NavigationLink, SiteConfig, SocialLink } from '@/types/c
 
 import { HREFS } from './href.configs';
 
-export const SITE_THEMES: string[] = ['light', 'dark', 'gray'];
+export enum ESITE_THEMES {
+  LIGHT = 'light',
+  DARK = 'dark',
+  GRAY = 'gray',
+}
+
+export const SITE_THEMES: ESITE_THEMES[] = [
+  ESITE_THEMES.LIGHT,
+  ESITE_THEMES.DARK,
+  ESITE_THEMES.GRAY,
+];
+
+// export const SITE_THEMES: string[] = ['light', 'dark', 'gray'];
 
 export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
   {
@@ -140,12 +152,13 @@ export const PROFILE_NAVIGATION: readonly NavigationLink[] = [
 
 export const SETTINGS_NAVIGATION: readonly NavigationLink[] = [
   {
-    title: 'Account',
+    title: 'Appearance',
     href: '/settings',
   },
   {
-    title: 'Appearance',
-    href: '/settings/appearance',
+    title: 'Account',
+    href: '/settings/account',
+    isPrivate: true,
   },
 ];
 

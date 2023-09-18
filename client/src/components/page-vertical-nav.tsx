@@ -7,6 +7,7 @@ import { DetailedHTMLProps, FC, HTMLAttributes } from 'react';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { SETTINGS_NAVIGATION } from '@/configs/site.configs';
+import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 
 type PageVerticalNavProps = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
@@ -15,6 +16,7 @@ type PageVerticalNavProps = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLE
 
 export const PageVerticalNav: FC<PageVerticalNavProps> = ({ items, className, ...rest }) => {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   return (
     <nav
@@ -24,13 +26,17 @@ export const PageVerticalNav: FC<PageVerticalNavProps> = ({ items, className, ..
       {items.map((item, i) => {
         const Icon = item.icon && Icons[item.icon];
 
+        if (item.isPrivate && !user) {
+          return null;
+        }
+
         return (
           <Link
             key={i}
             href={item.href}
             className={cn(
               buttonVariants({ variant: 'ghost' }),
-              pathname.startsWith(item.href)
+              pathname === item.href
                 ? 'bg-muted hover:bg-muted'
                 : 'hover:bg-transparent hover:underline',
               'justify-start'

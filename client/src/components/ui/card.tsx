@@ -7,7 +7,7 @@ const cardVariants = cva('rounded shadow', {
   variants: {
     variant: {
       default: 'border bg-card text-card-foreground',
-      transparent: '',
+      transparent: 'border-none shadow-none',
     },
   },
   defaultVariants: {

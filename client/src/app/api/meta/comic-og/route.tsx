@@ -4,7 +4,7 @@ import { ImageResponse } from 'next/server';
 
 import { API_COMICS_URL } from '@/configs/endpoint.configs';
 import { SITE_CONFIG } from '@/configs/site.configs';
-import { comicOgImageSchema } from '@/lib/validators/meta.validators';
+import { comicOgImageSchema } from '@/lib/validators/site.validators';
 import { IResponseComic } from '@/types/comic.types';
 
 export const runtime: ServerRuntime = 'edge';
