@@ -54,29 +54,37 @@ export const SignUpForm = () => {
     onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 400) {
-          return toast({
-            variant: 'destructive',
-            title: 'Invalid request body',
-            description:
-              (err.response.data as IInvalidResponse)?.details[0]?.msg ||
-              'Check the correctness of the entered data',
-          });
+          const detailsResponse = (err.response.data as IInvalidResponse)?.details;
+
+          if (detailsResponse) {
+            detailsResponse.forEach((detail) => {
+              if (detail.path === 'login') {
+                form.setError('login', {
+                  type: 'server',
+                  message: detail.msg,
+                });
+              } else if (detail.path === 'password') {
+                form.setError('password', {
+                  type: 'server',
+                  message: detail.msg,
+                });
+              }
+            });
+          }
+
+          return;
         } else if (err.response?.status === 409) {
-          return toast({
-            variant: 'destructive',
-            title: 'Such an account already exists',
-            description:
-              (err.response.data as IInvalidResponse)?.details[0]?.msg ||
-              'An account with this username probably already exists, please enter a different one',
-          });
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Oops, something went wrong while logging in.',
-            description: 'Please double check your input or try again later.',
+          return form.setError('login', {
+            type: 'server',
+            message: 'An account with this login already exists',
           });
         }
       }
+      toast({
+        variant: 'destructive',
+        title: 'Oops, something went wrong while logging in.',
+        description: 'Please double check your input or try again later.',
+      });
     },
   });
 

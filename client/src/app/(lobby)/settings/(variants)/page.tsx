@@ -19,13 +19,17 @@ const Page = async () => {
         <CardTitle className='text-xl'>Account</CardTitle>
         <CardDescription>You can change your current account settings</CardDescription>
       </Card>
-      <Separator />
-      <Card variant='transparent' className='space-y-2' as='section'>
-        <CardTitle className='text-xl'>Change password</CardTitle>
-        <CardContent className='flex flex-wrap items-center justify-between gap-2  p-0'>
-          <ChangePasswordForm />
-        </CardContent>
-      </Card>
+      {!user.provider && (
+        <>
+          <Separator />
+          <Card variant='transparent' className='space-y-2' as='section'>
+            <CardTitle className='text-xl'>Change password</CardTitle>
+            <CardContent className='flex flex-wrap items-center justify-between gap-2  p-0'>
+              <ChangePasswordForm />
+            </CardContent>
+          </Card>
+        </>
+      )}
       <Separator />
       <Card variant='transparent' className='space-y-2' as='section'>
         <CardTitle className='text-xl'>Delete Account</CardTitle>

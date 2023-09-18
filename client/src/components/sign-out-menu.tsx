@@ -30,8 +30,8 @@ export const SignOutMenu: FC<SignOutMenuProps> = ({ className, ...rest }) => {
         description: 'You have successfully logged out of your account',
       });
       router.refresh();
-      router.back(); //necessary for the modal window to close (this does not happen when replacing or pushing into the address bar)
       router.replace('/');
+      // router.back(); //necessary for the modal window to close (this does not happen when replacing or pushing into the address bar)
     },
     onError: (err) => {
       handleErrorMutation(err);

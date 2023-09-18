@@ -1,5 +1,6 @@
 import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
+import { IChangePasswordSchema } from '@/lib/validators/user.validators';
 import { IResponseAllSubscribedComics, IResponseAllUploadedComics } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
@@ -105,12 +106,18 @@ export class UsersService {
     );
     return data;
   }
+  public static async update(payload: IUpdateUserArg) {
+    const { data } = await apiAuth.patch<IUser>(ENDPOINTS.users.origin, payload);
+    return data;
+  }
   public static async updateBookmark(payload: IUpdateBookmarkArg) {
     const { data } = await apiAuth.patch<IBookmark>(ENDPOINTS.users.bookmark, payload);
     return data;
   }
-  public static async update(payload: IUpdateUserArg) {
-    const { data } = await apiAuth.patch<IUser>(ENDPOINTS.users.origin, payload);
+  public static async updatePassword(
+    payload: Pick<IChangePasswordSchema, 'oldPassword' | 'newPassword'>
+  ) {
+    const { data } = await apiAuth.patch<IUser>(`${ENDPOINTS.users.origin}/password`, payload);
     return data;
   }
   public static async deleteBookmark(comicId: string) {

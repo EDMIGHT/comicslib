@@ -2,13 +2,16 @@ import { IShortChapter } from './chapter.types';
 import { IShortWithImgComic } from './comic.types';
 import { IPagination, ITokens } from './response.types';
 
+type Providers = 'github' | 'google';
+
 export type IUser = {
   id: string;
   login: string;
-  name: string | null;
   img: string;
   createdAt: string;
   updatedAt: string;
+  provider: Providers | null;
+  providerId: string | null;
 };
 
 export type IResponseUser = IUser & {
