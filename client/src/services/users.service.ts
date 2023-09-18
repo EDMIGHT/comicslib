@@ -123,4 +123,8 @@ export class UsersService {
     );
     return data;
   }
+  public static async deleteAccount() {
+    const { data } = await apiAuth.delete<null>(ENDPOINTS.users.origin);
+    return data;
+  }
 }

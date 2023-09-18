@@ -34,7 +34,11 @@ export const ChapterItem: FC<ChapterItemProps> = ({
         </h3>
       </Link>
 
-      {user ? <ChapterUserInfo {...user} /> : <h3>deleted</h3>}
+      {user ? (
+        <ChapterUserInfo {...user} />
+      ) : (
+        <h3 className='text-muted-foreground'>deleted</h3>
+      )}
 
       <Link href={`${HREFS.chapter}/${id}`} className=' p-2'>
         {createdAt && <Time time={new Date(createdAt)} />}
