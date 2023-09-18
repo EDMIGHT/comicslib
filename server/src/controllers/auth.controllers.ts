@@ -1,10 +1,10 @@
 import axios from 'axios';
-import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 
 import { LIMITS } from '@/configs/limits.configs';
 import { SessionModel } from '@/models/session.model';
 import { UserModel } from '@/models/user.model';
+import { PasswordService } from '@/services/password.service';
 import tokenService from '@/services/token.service';
 import { IResponseGithubAuth, IResponseGoogleAuth } from '@/types/auth.types';
 import {
@@ -38,7 +38,7 @@ export const signUp = async (req: Request, res: Response): Promise<Response> => 
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await PasswordService.hash(password);
 
     const user = await UserModel.create({
       ...req.body,
@@ -82,7 +82,7 @@ export const signIn = async (req: Request, res: Response): Promise<Response> => 
       });
     }
 
-    const isPasswordEqual = await bcrypt.compare(password, existedUser.password);
+    const isPasswordEqual = await PasswordService.compare(password, existedUser.password);
 
     if (!isPasswordEqual) {
       return CustomResponse.conflict(res, {
@@ -130,9 +130,9 @@ export const updateTokens = async (req: Request, res: Response): Promise<Respons
     const dbToken = await tokenService.findRefreshToken(reqRefreshToken);
 
     if (!dbToken || !tokenPayload || isTokenInvalid(dbToken, tokenPayload)) {
-      clearAuthCookieFromResponse(res);
+      const newRes = clearAuthCookieFromResponse(res);
 
-      return CustomResponse.unauthorized(res, {
+      return CustomResponse.unauthorized(newRes, {
         message: 'unauthorized access',
       });
     }
@@ -162,9 +162,9 @@ export const signOut = async (req: Request, res: Response): Promise<Response> =>
       userId: req.user.id,
     });
 
-    clearAuthCookieFromResponse(res);
+    const newRes = clearAuthCookieFromResponse(res);
 
-    return CustomResponse.ok(res, null);
+    return CustomResponse.ok(newRes, null);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: `server side error when logging out`,

@@ -80,3 +80,18 @@ export const getComicsForUserValidators = [
       `Sorting can be by fields: ${comicSchema.createdAt.name}, ${comicSchema.updatedAt.name}, ${comicSchema.title.name}`
     ),
 ];
+
+export const updatePasswordValidators = [
+  check('oldPassword')
+    .trim()
+    .isLength({ min: 5 })
+    .withMessage('The minimum old password length is 5 characters')
+    .isLength({ max: LIMITS.maxStringLength })
+    .withMessage(`The maximum old password length is ${LIMITS.maxStringLength} characters`),
+  check('newPassword')
+    .trim()
+    .isLength({ min: 5 })
+    .withMessage('The minimum new password length is 5 characters')
+    .isLength({ max: LIMITS.maxStringLength })
+    .withMessage(`The maximum new password length is ${LIMITS.maxStringLength} characters`),
+];

@@ -1,6 +1,7 @@
 import express from 'express';
 
 import {
+  changePassword,
   clearAllBookmarks,
   deleteBookmark,
   deleteUser,
@@ -20,6 +21,7 @@ import {
   getComicsForUserValidators,
   getUsersValidators,
   updateBookmarkValidators,
+  updatePasswordValidators,
   updateUserValidators,
 } from '@/utils/validations/user.validators';
 
@@ -69,6 +71,13 @@ router.patch(
   updateBookmark
 );
 router.patch('/', authentication, updateUserValidators, validation, updateUser);
+router.patch(
+  '/password',
+  authentication,
+  updatePasswordValidators,
+  validation,
+  changePassword
+);
 
 router.delete('/bookmarks/comic/all', authentication, clearAllBookmarks);
 router.delete('/bookmarks/comic/:comicId', authentication, deleteBookmark);

@@ -5,8 +5,10 @@ import { ChapterModel } from '@/models/chapter.model';
 import { ComicModel } from '@/models/comic.model';
 import { PageModel } from '@/models/page.model';
 import { UserModel } from '@/models/user.model';
+import { PasswordService } from '@/services/password.service';
 import { IPaginationArg, ISortArg, ISortOrder } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
+import { clearAuthCookieFromResponse } from '@/utils/helpers/auth-cookie-response.helper';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -327,6 +329,48 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
   }
 };
 
+export const changePassword = async (req: Request, res: Response): Promise<Response> => {
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const existedUser = await UserModel.getById(req.user.id);
+
+    if (!existedUser) {
+      return CustomResponse.notFound(res, {
+        message: `the user for whom the password is being changed does not exist`,
+      });
+    }
+    if (!existedUser.password) {
+      return CustomResponse.notFound(res, {
+        message: `this account was created using an external service and cannot be changed or set a password.`,
+      });
+    }
+
+    const isPasswordEqual = await PasswordService.compare(oldPassword, existedUser.password);
+
+    if (!isPasswordEqual) {
+      return CustomResponse.conflict(res, {
+        message: 'wrong old password',
+      });
+    }
+
+    const hashedPassword = await PasswordService.hash(newPassword);
+
+    const newUser = await UserModel.update({
+      id: req.user.id,
+      password: hashedPassword,
+    });
+
+    return CustomResponse.ok(res, createResponseUser(newUser));
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when changing password`,
+      error,
+    });
+  }
+};
+
 export const deleteBookmark = async (req: Request, res: Response): Promise<Response> => {
   const { comicId } = req.params;
 
@@ -392,7 +436,9 @@ export const deleteUser = async (req: Request, res: Response): Promise<Response>
 
     await UserModel.delete(req.user.id);
 
-    return CustomResponse.ok(res, null);
+    const newRes = clearAuthCookieFromResponse(res);
+
+    return CustomResponse.ok(newRes, null);
   } catch (error) {
     return serverErrorResponse({
       res,
