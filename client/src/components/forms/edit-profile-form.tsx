@@ -96,7 +96,6 @@ export const EditProfileForm: FC<EditProfileFormProps> = ({
   };
 
   const onSubmit = (data: IEditProfileSchema) => {
-    console.log(data);
     editProfile(data);
   };
 

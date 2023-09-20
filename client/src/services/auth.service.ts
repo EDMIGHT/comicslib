@@ -38,7 +38,7 @@ export class AuthService {
 
   public static async getUser() {
     try {
-      const { data } = await apiAuth.get<IUser>(process.env.API_HOST + ENDPOINTS.auth.authMe);
+      const { data } = await apiAuth.get<IUser>(ENDPOINTS.auth.authMe);
       return data;
     } catch (error) {
       return null;

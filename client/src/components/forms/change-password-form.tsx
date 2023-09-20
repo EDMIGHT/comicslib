@@ -77,7 +77,6 @@ export const ChangePasswordForm: FC = ({}) => {
   });
 
   const onSubmit = (data: IChangePasswordSchema) => {
-    console.log(data);
     changePassword(data);
   };
 

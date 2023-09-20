@@ -27,7 +27,6 @@ export const NavigationBtns: FC<NavigationBtnsProps> = ({ variants, isFirstActiv
     <Card className='flex w-fit gap-2 border-none p-1'>
       {variants.map((v, i) => {
         const hrefSearchParams = v.searchParams ? `?${v.searchParams}` : '';
-        console.log();
         return (
           <Link
             key={v.id ?? i}

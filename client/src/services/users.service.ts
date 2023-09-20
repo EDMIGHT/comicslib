@@ -96,8 +96,8 @@ export class UsersService {
     title = '',
     page = 1,
     limit = LIMITS.comics,
-    sort = SORT_VARIANTS.comics[2].field,
-    order = SORT_VARIANTS.comics[2].order,
+    sort = SORT_VARIANTS.comicsWithChapters[4].field,
+    order = SORT_VARIANTS.comicsWithChapters[4].order,
   }: IGetAllUploadsArg) {
     const query = `title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
 

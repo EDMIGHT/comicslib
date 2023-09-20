@@ -5,6 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { FC, useEffect, useRef } from 'react';
 
 import { ComicWithChapters } from '@/components/layouts/comic-with-chapters';
+import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { useIntersection } from '@/hooks/use-intersection';
 import { IGetAllUploadsArg, UsersService } from '@/services/users.service';
 
@@ -20,7 +21,7 @@ export const UserUploadsFeed: FC<UserUploadsFeedProps> = ({ login, title, sort, 
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    ['comics', 'folders', title, sort, order],
+    [REACT_QUERY_KEYS.comics, title, sort, order],
     async ({ pageParam = 1 }: { pageParam?: number }) => {
       return await UsersService.getAllUploadedComics({
         login,

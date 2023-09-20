@@ -64,3 +64,13 @@ export const formatBytes = (
     sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
   }`;
 };
+
+export const generatePerPageVariants = (limit: number, numberOfVariants: number): number[] => {
+  if (numberOfVariants === 0) {
+    return [];
+  }
+
+  const variants = generatePerPageVariants(limit, numberOfVariants - 1);
+  variants.push(numberOfVariants * limit);
+  return variants;
+};

@@ -29,7 +29,8 @@ const Page: FC<PageProps> = ({ params: { login }, searchParams }) => {
         <Sort
           initialSort={searchParams.sort}
           initialOrder={searchParams.order}
-          variants={SORT_VARIANTS.comics}
+          variants={SORT_VARIANTS.comicsWithChapters}
+          defaultVariantNumber={4}
           contentWidth='230px'
           className='w-[230px]'
         />

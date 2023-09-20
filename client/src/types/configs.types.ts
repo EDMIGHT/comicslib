@@ -44,5 +44,6 @@ export type IConfigVariant = {
 
 export type ISortVariants = {
   comics: readonly ISortVariant[];
+  comicsWithChapters: readonly ISortVariant[];
   users: readonly ISortVariant[];
 };

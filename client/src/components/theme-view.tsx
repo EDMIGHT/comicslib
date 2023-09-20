@@ -3,6 +3,11 @@ import { FC } from 'react';
 import { ESITE_THEMES } from '@/configs/site.configs';
 import { cn } from '@/lib/utils';
 
+type ThemeViewProps = {
+  value: ESITE_THEMES | 'system';
+  currentTheme?: string;
+};
+
 const colorsBase = {
   [ESITE_THEMES.LIGHT]: {
     bg: 'bg-[#ecedef]',
@@ -19,11 +24,6 @@ const colorsBase = {
     card: 'bg-slate-800',
     content: 'bg-slate-400',
   },
-};
-
-type ThemeViewProps = {
-  value: ESITE_THEMES | 'system';
-  currentTheme?: string;
 };
 
 export const ThemeView: FC<ThemeViewProps> = ({ value, currentTheme }) => {

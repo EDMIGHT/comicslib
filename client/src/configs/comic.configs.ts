@@ -82,3 +82,46 @@ export const COMIC_SORT_VARIANTS: readonly ISortVariant[] = [
     order: 'asc',
   },
 ];
+
+export const COMIC_WITH_CHAPTERS_SORT_VARIANTS: readonly ISortVariant[] = [
+  {
+    label: 'Title: A to Z',
+    field: 'title',
+    order: 'asc',
+  },
+  {
+    label: 'Title: Z to A',
+    field: 'title',
+    order: 'desc',
+  },
+  {
+    label: 'Date Added: New to old',
+    field: 'createdAt',
+    order: 'desc',
+  },
+  {
+    label: 'Date Added: Old to new',
+    field: 'createdAt',
+    order: 'asc',
+  },
+  {
+    label: 'Update Date: New to old',
+    field: 'updatedAt',
+    order: 'desc',
+  },
+  {
+    label: 'Update Date: Old to new',
+    field: 'updatedAt',
+    order: 'asc',
+  },
+  {
+    label: 'Release date: New to old',
+    field: 'releasedAt',
+    order: 'desc',
+  },
+  {
+    label: 'Release date: Old to new',
+    field: 'releasedAt',
+    order: 'asc',
+  },
+];

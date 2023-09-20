@@ -7,25 +7,15 @@ import { FC, useEffect, useRef } from 'react';
 import { ComicWithChapters } from '@/components/layouts/comic-with-chapters';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { useIntersection } from '@/hooks/use-intersection';
-import { IGetAllComicsArg } from '@/services/comics.service';
-import { UsersService } from '@/services/users.service';
-import { IResponseComic } from '@/types/comic.types';
+import { IGetAllUploadsArg, UsersService } from '@/services/users.service';
 
-type ComicsWithChaptersFeedProps = Omit<
-  IGetAllComicsArg,
-  'genres' | 'authors' | 'statuses' | 'themes'
-> & {
-  initialComics?: IResponseComic[];
-  theme?: string[];
-  genre?: string[];
-  author?: string[];
-  status?: string[];
-  date?: string;
-  startDate?: string;
-  endDate?: string;
-};
+type ComicsWithChaptersFeedProps = Omit<IGetAllUploadsArg, 'page' | 'limit' | 'login'>;
 
-export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({ title }) => {
+export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({
+  title,
+  sort,
+  order,
+}) => {
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
 
@@ -35,11 +25,13 @@ export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({ ti
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    [REACT_QUERY_KEYS.comics, REACT_QUERY_KEYS.folders, title],
+    [REACT_QUERY_KEYS.comics, REACT_QUERY_KEYS.folders, title, sort, order],
     async ({ pageParam = 1 }: { pageParam?: number }) => {
       return await UsersService.getAllSubscribedComics({
         page: pageParam,
         title,
+        sort,
+        order,
       });
     },
     {

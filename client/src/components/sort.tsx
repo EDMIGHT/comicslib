@@ -11,7 +11,7 @@ import { ISortVariant } from '@/types/configs.types';
 
 type SortProps = {
   defaultVariantNumber?: number;
-  variants: ISortVariant[];
+  variants: readonly ISortVariant[];
   initialSort?: string;
   initialOrder?: string;
   contentWidth?: string;

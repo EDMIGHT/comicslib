@@ -9,11 +9,11 @@ import { SITE_THEMES } from '@/configs/site.configs';
 import { useMounted } from '@/hooks/use-mounted';
 import { cn } from '@/lib/utils';
 
-type ThemeSwitcherThemeSwitcherFormProps = {
+type ThemeSwitcherThemeSwitcherProps = {
   className?: string;
 };
 
-export const ThemeSwitcherForm: FC<ThemeSwitcherThemeSwitcherFormProps> = ({ className }) => {
+export const ThemeSwitcher: FC<ThemeSwitcherThemeSwitcherProps> = ({ className }) => {
   const mounted = useMounted();
   const { theme, setTheme } = useTheme();
 

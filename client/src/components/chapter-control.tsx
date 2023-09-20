@@ -42,8 +42,6 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
     },
   });
 
-  console.log(content);
-
   const existedChap = content && content?.find((chap) => chap.id === currentChapterId);
 
   return (

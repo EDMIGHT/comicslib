@@ -1,4 +1,7 @@
-import { COMIC_SORT_VARIANTS } from '@/configs/comic.configs';
+import {
+  COMIC_SORT_VARIANTS,
+  COMIC_WITH_CHAPTERS_SORT_VARIANTS,
+} from '@/configs/comic.configs';
 import { ISortVariants, NavigationLink, SiteConfig, SocialLink } from '@/types/configs.types';
 
 import { HREFS } from './href.configs';
@@ -177,6 +180,7 @@ export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
 
 export const SORT_VARIANTS: ISortVariants = {
   comics: COMIC_SORT_VARIANTS,
+  comicsWithChapters: COMIC_WITH_CHAPTERS_SORT_VARIANTS,
   users: [
     {
       label: 'recently registered',

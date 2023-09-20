@@ -331,6 +331,13 @@ export class ComicModel {
                 id: true,
                 login: true,
                 img: true,
+                _count: {
+                  select: {
+                    chapters: true,
+                    comments: true,
+                    ratings: true,
+                  },
+                },
               },
             },
           },
@@ -397,6 +404,13 @@ export class ComicModel {
                 id: true,
                 login: true,
                 img: true,
+                _count: {
+                  select: {
+                    chapters: true,
+                    comments: true,
+                    ratings: true,
+                  },
+                },
               },
             },
           },

@@ -1,13 +1,11 @@
-import { apiAuth } from '@/services/apiAuth';
-import { IUser } from '@/types/user.types';
+import { AuthService } from '@/services/auth.service';
 
 import { getServerRefreshToken } from './token.helper';
 
 export const getAuthServer = async () => {
   try {
     if (getServerRefreshToken()) {
-      const { data } = await apiAuth.get<IUser>('auth/me');
-      return data;
+      return await AuthService.getUser();
     } else {
       return null;
     }
