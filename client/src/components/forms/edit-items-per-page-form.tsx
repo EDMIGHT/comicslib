@@ -6,6 +6,7 @@ import { CheckIcon } from 'lucide-react';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { LocalStorageKeys } from '@/components/providers/local-provider';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
 import {
@@ -18,8 +19,9 @@ import {
 } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { LIMITS } from '@/configs/site.configs';
-import { useAppSelector } from '@/hooks/redux-hooks';
+import { useActions } from '@/hooks/use-actions';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { useMounted } from '@/hooks/use-mounted';
 import { toast } from '@/hooks/use-toast';
 import { cn, generatePerPageVariants } from '@/lib/utils';
 import { IItemsPerPageSchema, ItemsPerPageSchema } from '@/lib/validators/site.validators';
@@ -28,12 +30,17 @@ const comicsPerPageVariants = generatePerPageVariants(LIMITS.comics, 5);
 const usersPerPageVariants = generatePerPageVariants(LIMITS.users, 5);
 
 export const EditItemsPerPageForm: FC = ({}) => {
-  const { countComicsPerPage, countUsersPerPage } = useAppSelector((state) => state.settings);
-  const [_c, setCountComicsPerPage] = useLocalStorage(
-    'countComicsPerPage',
-    countComicsPerPage
+  const mounted = useMounted();
+  const { setCountsPerPage: setReduxCountsPerPage } = useActions();
+
+  const [countComicsPerPage, setCountComicsPerPage] = useLocalStorage(
+    LocalStorageKeys.countComicsPerPage,
+    LIMITS.comics as number
   );
-  const [_u, setCountUsersPerPage] = useLocalStorage('countUsersPerPage', countUsersPerPage);
+  const [countUsersPerPage, setCountUsersPerPage] = useLocalStorage(
+    LocalStorageKeys.countUsersPerPage,
+    LIMITS.users as number
+  );
 
   const form = useForm<IItemsPerPageSchema>({
     resolver: zodResolver(ItemsPerPageSchema),
@@ -46,11 +53,19 @@ export const EditItemsPerPageForm: FC = ({}) => {
   const onSubmit = ({ comicsPerPage, usersPerPage }: IItemsPerPageSchema) => {
     setCountComicsPerPage(comicsPerPage);
     setCountUsersPerPage(usersPerPage);
+    setReduxCountsPerPage({
+      countComicsPerPage: comicsPerPage,
+      countUsersPerPage: usersPerPage,
+    });
     toast({
       title: 'Congratulations!!',
       description: 'You have successfully changed the amount of content loaded per page',
     });
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Form {...form}>

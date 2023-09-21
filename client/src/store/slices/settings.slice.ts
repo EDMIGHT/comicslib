@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { LIMITS } from '@/configs/site.configs';
-
 type ISettingsSlice = {
   isActiveMenu: boolean;
   countComicsPerPage: number;
@@ -10,8 +8,8 @@ type ISettingsSlice = {
 
 const initialState: ISettingsSlice = {
   isActiveMenu: true,
-  countComicsPerPage: LIMITS.comics,
-  countUsersPerPage: LIMITS.users,
+  countComicsPerPage: 6,
+  countUsersPerPage: 6,
 };
 
 export const settingsSlice = createSlice({

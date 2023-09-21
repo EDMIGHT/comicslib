@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { FC, ReactNode } from 'react';

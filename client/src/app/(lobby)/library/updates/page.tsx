@@ -26,11 +26,6 @@ const Page: FC<PageProps> = ({ searchParams }) => {
   return (
     <div className='flex flex-col gap-2'>
       <PageHeader>Updates</PageHeader>
-      {/* <Search
-        initialValue={searchParams.title}
-        placeholder='enter title name..'
-        paramsKey='title'
-      /> */}
       <div className='flex flex-col gap-2 md:flex-row'>
         <Search
           initialValue={searchParams.title}

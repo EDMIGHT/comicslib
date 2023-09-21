@@ -23,7 +23,7 @@ const Page = async () => {
   return (
     <div className='space-y-2'>
       <PageHeader>Create Folder</PageHeader>
-      <CreateFolderForm user={user} />
+      <CreateFolderForm />
     </div>
   );
 };

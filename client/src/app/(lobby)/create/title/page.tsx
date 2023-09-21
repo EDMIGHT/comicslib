@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { FC } from 'react';
 
 import { CreateComicForm } from '@/components/forms/create-comic-form';
 import { PageHeader } from '@/components/page-header';

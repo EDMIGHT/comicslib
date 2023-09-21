@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { API_AUTH_URL } from '@/configs/endpoint.configs';
+import { HREFS } from '@/configs/href.configs';
 import { AuthCookie } from '@/lib/helpers/token.helper';
-
-import { HREFS } from './configs/href.configs';
 
 const PRIVATE_PAGES = ['/protected'];
 
@@ -35,7 +34,6 @@ export async function middleware(req: NextRequest) {
     const res = await fetch(fetchUrl, {
       method: 'POST',
       headers: {
-        // 'Content-Type': 'application/json;charset=utf-8',
         Cookie: `refreshToken=${refreshToken}`,
       },
       credentials: 'include',

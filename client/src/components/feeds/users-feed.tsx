@@ -7,11 +7,13 @@ import { FC, useEffect, useRef } from 'react';
 import { UserItem } from '@/components/layouts/user-item';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { UserItemSkeletons } from '@/components/skeletons/user-item-skeletons';
+import { useAppSelector } from '@/hooks/redux-hooks';
 import { useAuth } from '@/hooks/use-auth';
 import { useIntersection } from '@/hooks/use-intersection';
 import { IGetAllUsersArg, UsersService } from '@/services/users.service';
 
 export const UsersFeed: FC<IGetAllUsersArg> = ({ ...searchQuery }) => {
+  const { countUsersPerPage } = useAppSelector((state) => state.settings);
   const { user } = useAuth();
   const lastUserRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
@@ -22,10 +24,17 @@ export const UsersFeed: FC<IGetAllUsersArg> = ({ ...searchQuery }) => {
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    [REACT_QUERY_KEYS.users, searchQuery.login, searchQuery.sort, searchQuery.order],
+    [
+      REACT_QUERY_KEYS.users,
+      countUsersPerPage,
+      searchQuery.login,
+      searchQuery.sort,
+      searchQuery.order,
+    ],
     async ({ pageParam = 1 }: { pageParam?: number }) => {
       return await UsersService.getAllUsers({
         page: pageParam,
+        limit: countUsersPerPage,
         ...searchQuery,
       });
     },

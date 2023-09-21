@@ -6,12 +6,14 @@ import { FC, useEffect, useRef } from 'react';
 
 import { ComicWithChapters } from '@/components/layouts/comic-with-chapters';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
+import { useAppSelector } from '@/hooks/redux-hooks';
 import { useIntersection } from '@/hooks/use-intersection';
 import { IGetAllUploadsArg, UsersService } from '@/services/users.service';
 
 type UserUploadsFeedProps = Omit<IGetAllUploadsArg, 'page' | 'limit'>;
 
 export const UserUploadsFeed: FC<UserUploadsFeedProps> = ({ login, title, sort, order }) => {
+  const { countComicsPerPage } = useAppSelector((state) => state.settings);
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
 
@@ -21,11 +23,12 @@ export const UserUploadsFeed: FC<UserUploadsFeedProps> = ({ login, title, sort, 
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
-    [REACT_QUERY_KEYS.comics, title, sort, order],
+    [REACT_QUERY_KEYS.comics, countComicsPerPage, title, sort, order],
     async ({ pageParam = 1 }: { pageParam?: number }) => {
       return await UsersService.getAllUploadedComics({
         login,
         page: pageParam,
+        limit: countComicsPerPage,
         title,
         sort,
         order,

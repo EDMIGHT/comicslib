@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { BookmarkComicControl } from '@/components/bookmark-comic-control';
 import { ChapterControl } from '@/components/chapter-control';
 import { PageBackground } from '@/components/page-background';
+import { HREFS } from '@/configs/href.configs';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
 import { createTitle } from '@/lib/utils';
 import { ChaptersService } from '@/services/chapters.service';
@@ -55,7 +56,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
     <div>
       <div className='container flex items-center justify-between gap-2'>
         <Link
-          href={`/comics/${chapter.comic.id}`}
+          href={`${HREFS.comics}/${chapter.comic.id}`}
           className='p-1 hover:opacity-80 focus:opacity-80'
         >
           <h1 className='text-xl font-semibold'>{chapter.comic.title}</h1>

@@ -8,13 +8,12 @@ import { AdvancedQuerySearchParams } from '@/components/advanced-filtering';
 import { Comic } from '@/components/layouts/comic';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { ComicSkeletons } from '@/components/skeletons/comic-skeletons';
+import { useAppSelector } from '@/hooks/redux-hooks';
 import { useIntersection } from '@/hooks/use-intersection';
 import { combineString } from '@/lib/utils';
 import { ComicsService, IGetAllComicsArg } from '@/services/comics.service';
-import { IResponseComic } from '@/types/comic.types';
 
 type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses' | 'themes'> & {
-  initialComics?: IResponseComic[];
   theme?: string[];
   genre?: string[];
   author?: string[];
@@ -24,7 +23,8 @@ type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses' | '
   endDate?: string;
 };
 
-export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions }) => {
+export const ComicsFeed: FC<IComicsProps> = ({ ...queryOptions }) => {
+  const { countComicsPerPage } = useAppSelector((state) => state.settings);
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
 
@@ -52,10 +52,12 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
       genresList,
       authorsList,
       statusesList,
+      countComicsPerPage,
     ],
-    async ({ pageParam = initialComics ? 2 : 1 }: { pageParam?: number }) => {
+    async ({ pageParam = 1 }: { pageParam?: number }) => {
       return await ComicsService.getAll({
         page: pageParam,
+        limit: countComicsPerPage,
         ...queryOptions,
         genres: genresList,
         authors: authorsList,
@@ -80,7 +82,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ initialComics, ...queryOptions })
     }
   }, [entry, fetchNextPage, hasNextPage]);
 
-  const comics = data?.pages.flatMap((page) => page.comics) ?? initialComics;
+  const comics = data?.pages.flatMap((page) => page.comics);
 
   return (
     <ul ref={parent} className='grid auto-cols-max grid-cols-2 gap-2'>

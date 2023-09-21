@@ -9,15 +9,15 @@ import { IResponseComic } from '@/types/comic.types';
 type SearchComicProps = HTMLAttributes<HTMLButtonElement> &
   Pick<
     IResponseComic,
-    'id' | 'img' | 'title' | '_count' | 'avgRating' | 'countUniqueSubscribes' | 'status'
+    'img' | 'title' | 'status' | 'avg_rating' | 'unique_bookmarks_count' | 'comments_count'
   >;
 
 export const SearchComic: FC<SearchComicProps> = ({
   img,
   title,
-  _count,
-  avgRating,
-  countUniqueSubscribes,
+  avg_rating,
+  comments_count,
+  unique_bookmarks_count,
   status,
   className,
   ...props
@@ -43,9 +43,9 @@ export const SearchComic: FC<SearchComicProps> = ({
         <h3 className='line-clamp-1 w-fit text-xl font-semibold'>{title}</h3>
 
         <ComicCounters
-          _count={_count}
-          avgRating={avgRating}
-          countUniqueSubscribes={countUniqueSubscribes}
+          avg_rating={avg_rating}
+          comments_count={comments_count}
+          unique_bookmarks_count={unique_bookmarks_count}
         />
         <StatusBadge status={status.name} className='w-fit' variant='transparent' />
       </div>

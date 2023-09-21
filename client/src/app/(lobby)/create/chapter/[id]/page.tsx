@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FC } from 'react';
 
 import { CreateChapterForm } from '@/components/forms/create-chapter-form';
 import { PageHeader } from '@/components/page-header';
