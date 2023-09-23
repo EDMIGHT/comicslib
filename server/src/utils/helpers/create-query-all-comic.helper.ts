@@ -4,7 +4,7 @@ import { Sql } from '@prisma/client/runtime/library';
 import { IGetAllQuery } from '@/models/comic.model';
 
 export const createWhereQueryAllComics = ({
-  title,
+  title = '',
   authors = [],
   genres = [],
   themes = [],

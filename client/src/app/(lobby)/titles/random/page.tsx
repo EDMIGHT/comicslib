@@ -21,7 +21,7 @@ const Page = () => {
   useEffect(() => {
     const redirectToRandomComic = async () => {
       const { randomId } = await ComicsService.getRandomId();
-      router.push(`${HREFS.comics}/${randomId}`);
+      router.replace(`${HREFS.comics}/${randomId}`);
     };
 
     void redirectToRandomComic();

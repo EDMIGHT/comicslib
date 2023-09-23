@@ -11,6 +11,11 @@ export const TITLE_HREFS = {
   random: '/titles/random',
 };
 
+export const SETTINGS_HREFS = {
+  origin: '/settings',
+  account: '/settings/account',
+};
+
 export const INFO_PAGE_HREFS = {
   rules: '/rules',
   privacyPolicy: '/privacy-policy',
@@ -56,7 +61,7 @@ export const HREFS = {
   community: COMMUNITY_HREFS,
   library: LIBRARY_HREFS,
   socials: SOCIAL_HREFS,
-  settings: '/settings',
+  settings: SETTINGS_HREFS,
   create: CREATE_HREFS,
   comicAttributes: COMIC_ATTRIBUTES,
   profile: '/profile',

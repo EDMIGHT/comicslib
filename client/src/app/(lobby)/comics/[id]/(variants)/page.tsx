@@ -24,7 +24,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      {response && (
+      {response.chapters.length > 0 ? (
         <>
           <ul className='flex flex-col gap-1'>
             {response.chapters.map((chap) => (
@@ -41,6 +41,10 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
             />
           )}
         </>
+      ) : (
+        <div className='flex h-[30vh] w-full items-center justify-center'>
+          <h3 className='text-xl font-medium'>No chapters uploaded</h3>
+        </div>
       )}
     </div>
   );

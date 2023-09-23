@@ -155,11 +155,11 @@ export const PROFILE_NAVIGATION: readonly NavigationLink[] = [
 export const SETTINGS_NAVIGATION: readonly NavigationLink[] = [
   {
     title: 'Appearance',
-    href: '/settings',
+    href: HREFS.settings.origin,
   },
   {
     title: 'Account',
-    href: '/settings/account',
+    href: HREFS.settings.account,
     isPrivate: true,
   },
 ];

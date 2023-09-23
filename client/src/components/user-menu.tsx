@@ -77,7 +77,7 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
               })}
               <li>
                 <Link
-                  href={HREFS.settings}
+                  href={HREFS.settings.origin}
                   className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     'flex justify-start gap-1 hover:bg-muted'
@@ -124,7 +124,7 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
               </li>
               <li>
                 <Link
-                  href={HREFS.settings}
+                  href={HREFS.settings.origin}
                   className={cn(buttonVariants({ variant: 'ghost' }), 'w-full')}
                   onClick={() => setOpen(false)}
                 >
