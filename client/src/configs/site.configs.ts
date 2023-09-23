@@ -18,8 +18,6 @@ export const SITE_THEMES: ESITE_THEMES[] = [
   ESITE_THEMES.GRAY,
 ];
 
-// export const SITE_THEMES: string[] = ['light', 'dark', 'gray'];
-
 export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
   {
     title: 'github',
@@ -40,15 +38,15 @@ export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
 
 export const LIBRARY_NAVIGATION: NavigationLink[] = [
   {
-    title: 'updates',
+    title: 'Updates',
     href: HREFS.library.updates,
   },
   {
-    title: 'folders',
+    title: 'Folders',
     href: HREFS.library.folders,
   },
   {
-    title: 'bookmarks',
+    title: 'Bookmarks',
     href: HREFS.library.bookmarks,
   },
 ];
@@ -78,22 +76,22 @@ export const TITLES_NAVIGATION: NavigationLink[] = [
 
 export const COMMUNITY_NAVIGATION: NavigationLink[] = [
   {
-    title: 'users',
+    title: 'Users',
     href: HREFS.community.users,
   },
 ];
 
 export const INFO_PAGE_NAVIGATION: NavigationLink[] = [
   {
-    title: 'rules',
+    title: 'Rules',
     href: HREFS.infoPage.rules,
   },
   {
-    title: 'privacy policy',
+    title: 'Privacy policy',
     href: HREFS.infoPage.privacyPolicy,
   },
   {
-    title: 'about us',
+    title: 'About us',
     href: HREFS.infoPage.aboutUs,
   },
 ];

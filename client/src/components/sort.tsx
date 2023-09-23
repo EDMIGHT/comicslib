@@ -62,7 +62,7 @@ export const Sort: FC<SortProps> = ({
           {variant.label ?? 'sort'} <Icons.chevronUpDown className='h-4 w-4' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn(`w-[${contentWidth}] bg-secondary p-0`)}>
+      <PopoverContent className={cn(`w-[${contentWidth}] bg-secondary p-0 shadow-xl`)}>
         <ul>
           {variants.map((variant, i) => (
             <li

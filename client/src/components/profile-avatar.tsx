@@ -7,21 +7,19 @@ import { IShortUser, IUser } from '@/types/user.types';
 import { ProfileEditAvatar } from './profile-edit-avatar';
 import { UserAvatar } from './user-avatar';
 
-type ProfileAvatarProps = IShortUser &
-  HTMLAttributes<HTMLDivElement> & {
-    currentUser: IUser | null;
-  };
+type ProfileAvatarProps = IShortUser & {
+  className?: string;
+  currentUser: IUser | null;
+};
 
 export const ProfileAvatar: FC<ProfileAvatarProps> = ({
   img,
   login,
   className,
   currentUser,
-  ...props
 }) => {
   return (
     <div
-      {...props}
       className={cn('relative h-[120px] w-[120px] md:h-[200px] md:w-[200px] group', className)}
     >
       {currentUser?.login !== login ? (

@@ -17,7 +17,7 @@ export type IGetAllQuery = {
   themes?: string[];
   genres?: string[];
   statuses?: string[];
-  title: string;
+  title?: string;
   folderId?: string;
   ratedUser?: string;
   date?: string;
@@ -27,17 +27,32 @@ export type IGetAllQuery = {
 
 type IGetAllArg = IGetAllQuery & ISortArg & IPaginationArg;
 
-type IGetAllUploadedArg = ISortArg &
+type IGetAllComicsWithChaptersArg = ISortArg &
   IPaginationArg & {
     title?: string;
-    login: string;
+    login?: string;
+    type?: 'uploadedBy' | 'subscribedBy';
   };
 
-type IGetAllSubscribedComics = ISortArg &
-  IPaginationArg & {
-    userId: string;
-    title?: string;
+type IQueryGetAllComicsWithChaptersArg = {
+  chapters?: {
+    some: {
+      user: {
+        login: string;
+      };
+    };
   };
+  folders?: {
+    some: {
+      user: {
+        login: string;
+      };
+    };
+  };
+  title?: {
+    startsWith: string;
+  };
+};
 
 const comicSchema = prisma.comic.fields;
 
@@ -248,35 +263,6 @@ export class ComicModel {
 
     return comic;
   }
-  public static async getAvgRating(id: string): Promise<number | null> {
-    const avgRating = await prisma.rating.aggregate({
-      where: {
-        comicId: id,
-      },
-      _avg: {
-        value: true,
-      },
-    });
-
-    return avgRating._avg?.value || null;
-  }
-  public static async getUniqueSubscribes(id: string): Promise<number> {
-    const uniqueUsers = await prisma.user.count({
-      where: {
-        folders: {
-          some: {
-            comics: {
-              some: {
-                id,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    return uniqueUsers;
-  }
   public static async getComicBySkip(skip: number): Promise<Comic | null> {
     return prisma.comic.findFirst({
       skip,
@@ -291,113 +277,61 @@ export class ComicModel {
       },
     });
   }
-  public static async getAllSubscribedComics({
-    userId,
-    title,
-    page,
-    limit,
-    sort,
-    order,
-  }: IGetAllSubscribedComics): Promise<IComicWithChapter[]> {
-    const offset = (page - 1) * limit;
-
-    const today = new Date(); // Текущая дата и время
-    const sevenDaysAgo = new Date(today);
-    sevenDaysAgo.setDate(today.getDate() - 30); // Вычитаем 7 дней
-
-    return prisma.comic.findMany({
-      where: {
-        folders: {
-          some: {
-            userId,
-          },
-        },
-        updatedAt: {
-          gt: sevenDaysAgo,
-        },
-        title: {
-          startsWith: title,
-        },
-      },
-      include: {
-        chapters: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-          take: 3,
-          include: {
-            user: {
-              select: {
-                id: true,
-                login: true,
-                img: true,
-                _count: {
-                  select: {
-                    chapters: true,
-                    comments: true,
-                    ratings: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-      skip: offset,
-      take: limit,
-      orderBy: {
-        [sort]: order,
-      },
-    });
-  }
-  public static getAllCountSubscribedComic({
-    userId,
-    title,
-  }: Pick<IGetAllSubscribedComics, 'title' | 'userId'>): Promise<number> {
-    return prisma.comic.count({
-      where: {
-        folders: {
-          some: {
-            userId,
-          },
-        },
-        title: {
-          startsWith: title,
-        },
-      },
-    });
-  }
-  public static async getAllUploadedByUser({
+  public static async getAllWithChapters({
     login,
     title,
     limit,
     page,
     sort,
     order,
-  }: IGetAllUploadedArg): Promise<IComicWithChapter[]> {
+    type,
+  }: IGetAllComicsWithChaptersArg): Promise<IComicWithChapter[]> {
     const offset = (page - 1) * limit;
+    const query: IQueryGetAllComicsWithChaptersArg = {};
+
+    if (login && type === 'uploadedBy') {
+      query.chapters = {
+        some: {
+          user: {
+            login,
+          },
+        },
+      };
+    } else if (login && type === 'subscribedBy') {
+      query.folders = {
+        some: {
+          user: {
+            login,
+          },
+        },
+      };
+    }
 
     return prisma.comic.findMany({
       skip: offset,
       take: limit,
 
       where: {
-        chapters: {
-          some: {
-            user: {
-              login,
-            },
-          },
-        },
         title: {
           startsWith: title,
         },
+        chapters: {
+          some: {
+            id: {
+              not: {
+                equals: undefined,
+              },
+            },
+          },
+        },
+        ...query,
       },
       orderBy: {
         [sort]: order,
       },
       include: {
         chapters: {
+          take: 10,
           include: {
             user: {
               select: {
@@ -421,16 +355,37 @@ export class ComicModel {
       },
     });
   }
-  public static async getAllCountUploadedByUser(login: string): Promise<number> {
-    return prisma.comic.count({
-      where: {
-        chapters: {
-          some: {
-            user: {
-              login,
-            },
+  public static async getAllCountWithChapters({
+    login,
+    type,
+    title,
+  }: Pick<IGetAllComicsWithChaptersArg, 'login' | 'type' | 'title'>): Promise<number> {
+    const query: IQueryGetAllComicsWithChaptersArg = {};
+
+    if (login && type === 'uploadedBy') {
+      query.chapters = {
+        some: {
+          user: {
+            login,
           },
         },
+      };
+    } else if (login && type === 'subscribedBy') {
+      query.folders = {
+        some: {
+          user: {
+            login,
+          },
+        },
+      };
+    }
+
+    return prisma.comic.count({
+      where: {
+        title: {
+          startsWith: title,
+        },
+        ...query,
       },
     });
   }

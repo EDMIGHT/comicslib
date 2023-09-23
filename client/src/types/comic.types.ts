@@ -54,10 +54,6 @@ export type IComicWithChapter = IComic & {
   chapters: IChapterWithUser[];
 };
 
-export type IResponseAllSubscribedComics = IPagination & {
-  comics: IComicWithChapter[];
-};
-
-export type IResponseAllUploadedComics = IPagination & {
+export type IResponseAllComicsWithChapters = IPagination & {
   comics: IComicWithChapter[];
 };

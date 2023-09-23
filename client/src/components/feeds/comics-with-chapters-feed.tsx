@@ -9,11 +9,11 @@ import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { ComicWithChaptersSkeletons } from '@/components/skeletons/comic-with-chapters-skeletons';
 import { useAppSelector } from '@/hooks/redux-hooks';
 import { useIntersection } from '@/hooks/use-intersection';
-import { IGetAllUploadsArg, UsersService } from '@/services/users.service';
+import { ComicsService, IGetAllComicsWithChaptersArg } from '@/services/comics.service';
 
-type ComicsWithChaptersFeedProps = Omit<IGetAllUploadsArg, 'page' | 'limit' | 'login'>;
+type ComicsWithChaptersFeedProps = Omit<IGetAllComicsWithChaptersArg, 'page' | 'limit'>;
 
-export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({
+export const ComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({
   title,
   sort,
   order,
@@ -28,16 +28,9 @@ export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({
   });
 
   const { data, fetchNextPage, hasNextPage, isLoading, isSuccess, isError } = useInfiniteQuery(
-    [
-      REACT_QUERY_KEYS.comics,
-      REACT_QUERY_KEYS.folders,
-      countComicsPerPage,
-      title,
-      sort,
-      order,
-    ],
+    [REACT_QUERY_KEYS.comics, countComicsPerPage, title, sort, order],
     async ({ pageParam = 1 }: { pageParam?: number }) => {
-      return await UsersService.getAllSubscribedComics({
+      return await ComicsService.getAllWithChapters({
         page: pageParam,
         limit: countComicsPerPage,
         title,

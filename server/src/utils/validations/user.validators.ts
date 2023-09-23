@@ -67,20 +67,6 @@ export const getBookmarksValidators = [
     .withMessage(`Sorting can be by fields: ${bookmarkSchema.updatedAt.name}`),
 ];
 
-export const getComicsForUserValidators = [
-  query(comicSchema.title.name)
-    .optional()
-    .isLength({ max: LIMITS.maxStringLength })
-    .withMessage(`The maximum comic title length is ${LIMITS.maxStringLength} characters`),
-  query('sort')
-    .optional()
-    .trim()
-    .isIn([comicSchema.createdAt.name, comicSchema.updatedAt.name, comicSchema.title.name])
-    .withMessage(
-      `Sorting can be by fields: ${comicSchema.createdAt.name}, ${comicSchema.updatedAt.name}, ${comicSchema.title.name}`
-    ),
-];
-
 export const updatePasswordValidators = [
   check('oldPassword')
     .trim()

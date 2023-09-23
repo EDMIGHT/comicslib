@@ -4,6 +4,7 @@ import {
   createComic,
   getComic,
   getComics,
+  getComicsWithChapters,
   getRandom,
   getRatings,
   getUserRating,
@@ -13,6 +14,7 @@ import { authentication, validation } from '@/middleware';
 import {
   createComicValidators,
   getComicsValidators,
+  getComicsWithChaptersValidators,
 } from '@/utils/validations/comic.validators';
 import { paginationValidators, sortValidators } from '@/utils/validations/req.validators';
 
@@ -25,6 +27,14 @@ router.get(
   getComicsValidators,
   validation,
   getComics
+);
+router.get(
+  '/with-chapters',
+  paginationValidators,
+  sortValidators,
+  getComicsWithChaptersValidators,
+  validation,
+  getComicsWithChapters
 );
 router.get('/random', getRandom);
 router.get('/:id', getComic);

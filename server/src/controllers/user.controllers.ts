@@ -93,15 +93,20 @@ export const getUploads = async (req: Request, res: Response): Promise<Response>
       });
     }
 
-    const uploadedComics = await ComicModel.getAllUploadedByUser({
+    const uploadedComics = await ComicModel.getAllWithChapters({
       login,
       title,
       page,
       limit,
       sort,
       order,
+      type: 'uploadedBy',
     });
-    const countUploadedComics = await ComicModel.getAllCountUploadedByUser(login);
+    const countUploadedComics = await ComicModel.getAllCountWithChapters({
+      login,
+      type: 'uploadedBy',
+      title,
+    });
 
     return CustomResponse.ok(res, {
       comics: uploadedComics,
@@ -207,21 +212,23 @@ export const getAllSubscribedComics = async (
     };
 
   try {
-    const ComicsSubscribed = await ComicModel.getAllSubscribedComics({
-      userId: req.user.id,
+    const comicsSubscribed = await ComicModel.getAllWithChapters({
+      login: req.user.login,
+      type: 'subscribedBy',
       page,
       limit,
       sort,
       order,
       title,
     });
-    const totalSubscribedComics = await ComicModel.getAllCountSubscribedComic({
-      userId: req.user.id,
+    const totalSubscribedComics = await ComicModel.getAllCountWithChapters({
+      login: req.user.login,
+      type: 'subscribedBy',
       title,
     });
 
     return CustomResponse.ok(res, {
-      comics: ComicsSubscribed,
+      comics: comicsSubscribed,
       currentPage: page,
       totalPages: Math.ceil(totalSubscribedComics / limit),
     });
@@ -302,7 +309,7 @@ export const updateBookmark = async (req: Request, res: Response): Promise<Respo
 };
 
 export const updateUser = async (req: Request, res: Response): Promise<Response> => {
-  const { img, ...restPaylaod } = req.body;
+  const { img, ...restPayload } = req.body;
 
   try {
     let uploadedImg;
@@ -315,7 +322,7 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
 
     const updatedUser = await UserModel.update({
       id: req.user.id,
-      ...restPaylaod,
+      ...restPayload,
       img: uploadedImg?.secure_url,
     });
 

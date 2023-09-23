@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { ComicModel } from '@/models/comic.model';
 import { RatingModel } from '@/models/rating.model';
 import { IGetAllComicsQuery } from '@/types/comic.types';
+import { IPaginationArg, ISortArg } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -165,6 +166,63 @@ export const getUserRating = async (req: Request, res: Response): Promise<Respon
   }
 };
 
+export const getRandom = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const totalComic = await ComicModel.getAllCount({});
+    const skip = Math.floor(Math.random() * totalComic);
+    const randomComic = await ComicModel.getComicBySkip(skip);
+
+    return CustomResponse.ok(res, {
+      randomId: randomComic?.id,
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when getting random comic id`,
+      error,
+    });
+  }
+};
+
+export const getComicsWithChapters = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const {
+    title = '',
+    page = 1,
+    limit = 5,
+    sort = 'updatedAt',
+    order = 'desc',
+  } = req.query as unknown as IPaginationArg &
+    ISortArg & {
+      title: string;
+    };
+
+  try {
+    const uploadedComics = await ComicModel.getAllWithChapters({
+      title,
+      page,
+      limit,
+      sort,
+      order,
+    });
+    const countUploadedComics = await ComicModel.getAllCountWithChapters({ title });
+
+    return CustomResponse.ok(res, {
+      comics: uploadedComics,
+      currentPage: page,
+      totalPages: Math.ceil(countUploadedComics / limit),
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when receiving comics with parts`,
+      error,
+    });
+  }
+};
+
 export const updateComicRating = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
 
@@ -204,24 +262,6 @@ export const updateComicRating = async (req: Request, res: Response): Promise<Re
     return serverErrorResponse({
       res,
       message: `server side error when trying to rate a comic`,
-      error,
-    });
-  }
-};
-
-export const getRandom = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    const totalComic = await ComicModel.getAllCount({});
-    const skip = Math.floor(Math.random() * totalComic);
-    const randomComic = await ComicModel.getComicBySkip(skip);
-
-    return CustomResponse.ok(res, {
-      randomId: randomComic?.id,
-    });
-  } catch (error) {
-    return serverErrorResponse({
-      res,
-      message: `server side error when getting random comic id`,
       error,
     });
   }

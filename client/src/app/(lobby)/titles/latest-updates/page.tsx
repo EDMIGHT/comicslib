@@ -1,17 +1,17 @@
 import { Metadata } from 'next';
 
-import { AdvancedFiltering } from '@/components/advanced-filtering';
-import { ComicsFeed } from '@/components/feeds/comics-feed';
+import { ComicsWithChaptersFeed } from '@/components/feeds/comics-with-chapters-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
+import { Sort } from '@/components/sort';
+import { SORT_VARIANTS } from '@/configs/site.configs';
 import { createTitle } from '@/lib/utils';
-import { GenresService } from '@/services/genres.service';
-import { StatusesService } from '@/services/statuses.service';
-import { ThemesService } from '@/services/themes.service';
 
 type PageProps = {
   searchParams: {
     title?: string;
+    sort?: string;
+    order?: string;
   };
 };
 
@@ -21,24 +21,28 @@ export const metadata: Metadata = {
     'Discover the latest updates in the world of comics. Explore newly updated comics that have just been released or refreshed. Stay current with the freshest content from your favorite comics.',
 };
 
-const Page = async ({ searchParams }: PageProps) => {
-  const genres = await GenresService.getAll();
-  const statuses = await StatusesService.getAll();
-  const themes = await ThemesService.getAll();
-
+const Page = ({ searchParams }: PageProps) => {
   return (
     <div className='flex flex-col gap-2'>
       <PageHeader>Latest updates</PageHeader>
-      <div className='flex flex-wrap items-center gap-2'>
+      <div className='flex flex-col gap-2 md:flex-row'>
         <Search
-          className='min-w-[300px] flex-1'
           initialValue={searchParams.title}
-          placeholder='enter name of title..'
+          placeholder='enter title name..'
           paramsKey='title'
+          className='flex-1'
         />
-        <AdvancedFiltering genres={genres} statuses={statuses} themes={themes} />
+        <Sort
+          initialSort={searchParams.sort}
+          initialOrder={searchParams.order}
+          variants={SORT_VARIANTS.comicsWithChapters}
+          defaultVariantNumber={4}
+          contentWidth='230px'
+          className='w-[230px]'
+        />
       </div>
-      <ComicsFeed {...searchParams} sort='updatedAt' order='desc' />
+
+      <ComicsWithChaptersFeed {...searchParams} />
     </div>
   );
 };

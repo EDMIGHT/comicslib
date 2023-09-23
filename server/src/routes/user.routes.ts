@@ -15,10 +15,10 @@ import {
   updateUser,
 } from '@/controllers/user.controllers';
 import { authentication, validation } from '@/middleware';
+import { getComicsWithChaptersValidators } from '@/utils/validations/comic.validators';
 import { paginationValidators, sortValidators } from '@/utils/validations/req.validators';
 import {
   getBookmarksValidators,
-  getComicsForUserValidators,
   getUsersValidators,
   updateBookmarkValidators,
   updatePasswordValidators,
@@ -49,7 +49,7 @@ router.get(
   authentication,
   paginationValidators,
   sortValidators,
-  getComicsForUserValidators,
+  getComicsWithChaptersValidators,
   validation,
   getAllSubscribedComics
 );
@@ -58,7 +58,7 @@ router.get(
   '/uploads/:login',
   paginationValidators,
   sortValidators,
-  getComicsForUserValidators,
+  getComicsWithChaptersValidators,
   validation,
   getUploads
 );

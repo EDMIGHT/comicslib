@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { LIMITS } from '@/configs/site.configs';
 import { useActions } from '@/hooks/use-actions';
@@ -63,10 +64,6 @@ export const EditItemsPerPageForm: FC = ({}) => {
     });
   };
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
     <Form {...form}>
       <form
@@ -88,8 +85,14 @@ export const EditItemsPerPageForm: FC = ({}) => {
                         role='combobox'
                         className='w-[150px] justify-between'
                       >
-                        {field.value}
-                        <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                        {mounted ? (
+                          <>
+                            {field.value}
+                            <Icons.chevronUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                          </>
+                        ) : (
+                          <Icons.loading className='mx-auto h-5 w-5 animate-spin' />
+                        )}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -136,8 +139,14 @@ export const EditItemsPerPageForm: FC = ({}) => {
                         role='combobox'
                         className='w-[150px] justify-between'
                       >
-                        {field.value}
-                        <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                        {mounted ? (
+                          <>
+                            {field.value}
+                            <Icons.chevronUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                          </>
+                        ) : (
+                          <Icons.loading className='mx-auto h-5 w-5 animate-spin' />
+                        )}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>

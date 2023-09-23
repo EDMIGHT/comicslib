@@ -1,7 +1,7 @@
 import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
 import { IChangePasswordSchema } from '@/lib/validators/user.validators';
-import { IResponseAllSubscribedComics, IResponseAllUploadedComics } from '@/types/comic.types';
+import { IResponseAllComicsWithChapters } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
   IBookmark,
@@ -67,7 +67,7 @@ export class UsersService {
     sort = 'updatedAt',
     order = 'desc',
   }: IGetAllSubscribedComicsArg) {
-    const { data } = await apiAuth.get<IResponseAllSubscribedComics>(
+    const { data } = await apiAuth.get<IResponseAllComicsWithChapters>(
       `${ENDPOINTS.users.comicsSubscribed}?title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
     return data;
@@ -101,7 +101,7 @@ export class UsersService {
   }: IGetAllUploadsArg) {
     const query = `title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
 
-    const { data } = await apiAuth.get<IResponseAllUploadedComics>(
+    const { data } = await apiAuth.get<IResponseAllComicsWithChapters>(
       `${ENDPOINTS.users.uploads}/${login}?${query}`
     );
     return data;

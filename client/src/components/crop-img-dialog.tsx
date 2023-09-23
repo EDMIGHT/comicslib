@@ -84,14 +84,14 @@ export const CropImgDialog: FC<CropImgDialogProps> = ({ file, open, setOpen, onC
             }}
             variant='outline'
           >
-            Reset Crop
+            Reset
           </Button>
           <Button
             onClick={() => {
               onCrop();
             }}
           >
-            Confirm Crop
+            Confirm
           </Button>
         </DialogFooter>
       </DialogContent>

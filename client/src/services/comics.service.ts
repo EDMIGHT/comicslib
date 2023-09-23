@@ -4,6 +4,7 @@ import { ICreateComicFields } from '@/lib/validators/comic.validators';
 import {
   IComic,
   IResponseAllComics,
+  IResponseAllComicsWithChapters,
   IResponseRandomComic,
   IResponseSingleComic,
 } from '@/types/comic.types';
@@ -25,6 +26,10 @@ export type IGetAllComicsArg = IPaginationArg &
     date?: 'createdAt' | 'updatedAt' | 'releasedAt' | '';
     startDate?: string;
     endDate?: string;
+  };
+export type IGetAllComicsWithChaptersArg = IPaginationArg &
+  ISortArg & {
+    title?: string;
   };
 
 export class ComicsService {
@@ -50,6 +55,20 @@ export class ComicsService {
 
     const { data } = await api.get<IResponseAllComics>(
       `${API_COMICS_URL.origin}?${paginationANDsortQuery}&${searchQuery}&${dateSearchQuery}`
+    );
+    return data;
+  }
+  public static async getAllWithChapters({
+    page = 1,
+    limit = LIMITS.comics,
+    sort = SORT_VARIANTS.comicsWithChapters[4].field,
+    order = SORT_VARIANTS.comicsWithChapters[4].order,
+    title = '',
+  }: IGetAllComicsWithChaptersArg) {
+    const query = `title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
+
+    const { data } = await api.get<IResponseAllComicsWithChapters>(
+      `${API_COMICS_URL.withChapters}?${query}`
     );
     return data;
   }

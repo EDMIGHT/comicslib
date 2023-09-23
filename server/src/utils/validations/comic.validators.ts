@@ -79,3 +79,22 @@ export const getComicsValidators = [
   query('startDate').optional().isString().withMessage('Field "startDate" must be a string'),
   query('endDate').optional().isString().withMessage('Field "endDate" must be a string'),
 ];
+
+export const getComicsWithChaptersValidators = [
+  query(comicSchema.title.name)
+    .optional()
+    .isLength({ max: LIMITS.maxStringLength })
+    .withMessage(`The maximum comic title length is ${LIMITS.maxStringLength} characters`),
+  query('sort')
+    .optional()
+    .trim()
+    .isIn([
+      comicSchema.createdAt.name,
+      comicSchema.updatedAt.name,
+      comicSchema.releasedAt.name,
+      comicSchema.title.name,
+    ])
+    .withMessage(
+      `Sorting can be by fields: ${comicSchema.createdAt.name}, ${comicSchema.updatedAt.name}, ${comicSchema.releasedAt.name},${comicSchema.title.name}`
+    ),
+];

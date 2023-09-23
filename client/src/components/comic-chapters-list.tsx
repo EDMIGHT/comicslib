@@ -1,10 +1,12 @@
+'use client';
+
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { FC, useState } from 'react';
 
+import { ChapterItem } from '@/components/layouts/chapter-item';
+import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { IChapterWithUser } from '@/types/chapter.types';
-
-import { ChapterItem } from './layouts/chapter-item';
-import { buttonVariants } from './ui/button';
 
 type ComicChaptersListProps = {
   chapters: IChapterWithUser[];
@@ -12,12 +14,14 @@ type ComicChaptersListProps = {
 };
 
 export const ComicChaptersList: FC<ComicChaptersListProps> = ({ chapters, limit = 3 }) => {
+  const [parent] = useAutoAnimate();
+
   const [isShowMore, setIsShowMore] = useState(false);
 
   return (
     <div className='flex flex-col gap-2'>
       {chapters.length > 0 ? (
-        <ul className='flex w-full flex-col gap-1'>
+        <ul ref={parent} className='flex w-full flex-col gap-1'>
           {(isShowMore ? chapters : chapters.slice(0, limit)).map((chap) => (
             <li key={chap.id}>
               <ChapterItem variant='transparent' {...chap} />
