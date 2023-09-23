@@ -100,6 +100,7 @@ export const SITE_META = {
   generateOg: {
     page: `${process.env.APP_URL}/api/meta/og`,
     comic: `${process.env.APP_URL}/api/meta/comic-og`,
+    profile: `${process.env.APP_URL}/api/meta/profile-og`,
   },
 };
 

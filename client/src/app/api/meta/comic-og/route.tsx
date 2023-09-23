@@ -2,7 +2,7 @@
 import { ServerRuntime } from 'next';
 import { ImageResponse } from 'next/server';
 
-import { API_COMICS_URL } from '@/configs/endpoint.configs';
+import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { SITE_CONFIG } from '@/configs/site.configs';
 import { comicOgImageSchema } from '@/lib/validators/site.validators';
 import { IResponseComic } from '@/types/comic.types';
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
 
     const { comicId } = parsedValues;
 
-    const fetchUrl = process.env.API_HOST + `${API_COMICS_URL.origin}/${comicId}`;
+    const fetchUrl = process.env.API_HOST + `${ENDPOINTS.comics.origin}/${comicId}`;
 
     const existedComic = (await fetch(fetchUrl).then((res) => res.json())) as IResponseComic;
 
@@ -46,8 +46,20 @@ export async function GET(req: Request) {
             }}
           />
           <div tw='flex flex-col w-2/3 py-6 px-8 flex-wrap'>
-            <h1 tw='text-5xl flex font-semibold m-0'>{existedComic.title}</h1>
-            <h2 tw='text-xl font-medium m-0'>
+            <h1
+              tw='text-5xl flex font-semibold m-0'
+              style={{
+                wordBreak: 'break-all',
+              }}
+            >
+              {existedComic.title}
+            </h1>
+            <h2
+              tw='text-xl font-medium m-0'
+              style={{
+                wordBreak: 'break-all',
+              }}
+            >
               {existedComic.authors.map((author) => author.login).join(', ')}
             </h2>
             <div tw='flex flex-row items-center mt-auto'>

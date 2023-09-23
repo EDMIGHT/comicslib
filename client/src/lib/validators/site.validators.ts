@@ -11,6 +11,10 @@ export const comicOgImageSchema = z.object({
   comicId: z.string(),
 });
 
+export const profileOgImageSchema = z.object({
+  login: z.string(),
+});
+
 export const ItemsPerPageSchema = z.object({
   comicsPerPage: z.number().refine((num) => num % 2 === 0, {
     message: 'The number of comics on the page must be even',
