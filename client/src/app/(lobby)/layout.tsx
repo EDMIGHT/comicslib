@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { Header } from '@/components/layouts/header';
+import { MobileSidebar } from '@/components/layouts/mobile-sidebar';
 import { Sidebar } from '@/components/layouts/sidebar';
 import { MenuSetter } from '@/components/menu-setter';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
@@ -16,6 +17,7 @@ const LobbyLayout = async ({ children, modals }: LobbyLayoutProps) => {
   return (
     <div className='relative flex min-h-screen'>
       <Sidebar user={user} />
+      <MobileSidebar user={user} />
 
       <MenuSetter isOpen />
 

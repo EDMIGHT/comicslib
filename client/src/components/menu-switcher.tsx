@@ -1,34 +1,29 @@
 'use client';
 
-import Link from 'next/link';
-
-import { SITE_CONFIG } from '@/configs/site.configs';
+import { MenuSwitcherBase } from '@/components/menu-switcher-base';
 import { useAppSelector } from '@/hooks/redux-hooks';
 import { useActions } from '@/hooks/use-actions';
-
-import { Icons } from './ui/icons';
 
 export const MenuSwitcher = () => {
   const { isActiveMenu } = useAppSelector((state) => state.settings);
   const { setIsActiveMenu } = useActions();
 
-  return !isActiveMenu ? (
-    <div className='flex items-center gap-2'>
-      <button
-        onClick={() => setIsActiveMenu(!isActiveMenu)}
-        className='hover:opacity-80 focus:opacity-80'
-      >
-        <Icons.menu className='h-6 w-6' />
-      </button>
-      <h2>
-        <Link
-          href='/'
-          className='flex items-center gap-1 text-xl font-bold hover:opacity-80 focus:opacity-80'
-        >
-          {SITE_CONFIG.name}
-          <Icons.logo />
-        </Link>
-      </h2>
-    </div>
-  ) : null;
+  if (!isActiveMenu) {
+    return (
+      <MenuSwitcherBase
+        onClickBtn={() => setIsActiveMenu(!isActiveMenu)}
+        className='hidden lg:flex'
+      />
+    );
+  }
+  // if (windowSizes.width < 1024 && !isActiveMobileMenu) {
+  //   return (
+  //     <MenuSwitcherBase
+  //       onClickBtn={() => setIsActiveMobileMenu(!isActiveMobileMenu)}
+  //       className='flex lg:hidden'
+  //     />
+  //   );
+  // }
+
+  return null;
 };

@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type ISettingsSlice = {
   isActiveMenu: boolean;
+  isActiveMobileMenu: boolean;
   countComicsPerPage: number;
   countUsersPerPage: number;
 };
 
 const initialState: ISettingsSlice = {
   isActiveMenu: true,
+  isActiveMobileMenu: false,
   countComicsPerPage: 6,
   countUsersPerPage: 6,
 };
@@ -18,6 +20,9 @@ export const settingsSlice = createSlice({
   reducers: {
     setIsActiveMenu: (state, action: PayloadAction<boolean>) => {
       state.isActiveMenu = action.payload;
+    },
+    setIsActiveMobileMenu: (state, action: PayloadAction<boolean>) => {
+      state.isActiveMobileMenu = action.payload;
     },
     setCountsPerPage: (
       state,

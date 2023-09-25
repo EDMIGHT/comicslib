@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
+import { Menu } from '@/components/layouts/menu';
 import { SidebarFooter } from '@/components/sidebar-footer';
 import { Icons } from '@/components/ui/icons';
 import { SITE_CONFIG } from '@/configs/site.configs';
@@ -11,21 +12,21 @@ import { useActions } from '@/hooks/use-actions';
 import { cn } from '@/lib/utils';
 import { IUser } from '@/types/user.types';
 
-import { Menu } from './menu';
-
-type SidebarProps = {
+type SidebarProps = HTMLAttributes<HTMLDivElement> & {
   user: IUser | null;
 };
 
-export const Sidebar: FC<SidebarProps> = ({ user }) => {
+export const Sidebar: FC<SidebarProps> = ({ user, className, ...rest }) => {
   const { isActiveMenu } = useAppSelector((state) => state.settings);
   const { setIsActiveMenu } = useActions();
 
   return (
     <aside
+      {...rest}
       className={cn(
-        'sticky left-0 top-0 z-10 flex h-screen w-[--menu-width] flex-col bg-card p-3 transition-all',
-        isActiveMenu ? 'm-0' : '-ml-[--menu-width] -left-[--menu-width]'
+        'hidden lg:sticky left-0 top-0 z-40 lg:flex h-screen w-[--menu-width] flex-shrink-0 flex-col bg-card p-3 transition-all',
+        isActiveMenu ? 'm-0' : '-ml-[--menu-width] -left-[--menu-width]',
+        className
       )}
     >
       <div className='flex items-center justify-between'>
