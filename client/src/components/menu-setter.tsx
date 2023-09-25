@@ -1,19 +1,27 @@
 'use client';
 
-import { useEffect } from 'react';
+import { FC, ReactNode, useEffect, useRef } from 'react';
 
+import { useAppSelector } from '@/hooks/redux-hooks';
 import { useActions } from '@/hooks/use-actions';
 
 type MenuSetterProps = {
-  isOpen?: boolean;
+  children: ReactNode;
 };
 
-export const MenuSetter = ({ isOpen = false }: MenuSetterProps) => {
+export const MenuSetter: FC<MenuSetterProps> = ({ children }) => {
+  const { isActiveMenu } = useAppSelector((state) => state.settings);
+  const prevStateMenu = useRef<boolean>(isActiveMenu);
   const { setIsActiveMenu } = useActions();
 
   useEffect(() => {
-    setIsActiveMenu(isOpen);
-  }, []);
+    const previousMenuState = prevStateMenu.current;
+    setIsActiveMenu(false);
 
-  return null;
+    return () => {
+      setIsActiveMenu(previousMenuState);
+    };
+  }, [prevStateMenu, setIsActiveMenu]);
+
+  return <>{children}</>;
 };

@@ -40,17 +40,18 @@ export const BookmarkComicControl: FC<BookmarkComicControlProps> = ({
     },
   });
 
-  return (
+  return !isLoading ? (
     <button disabled={isLoading} onClick={() => updateBookmark()}>
       <Icons.bookmark
         className={cn(
-          'h-7 w-7',
+          'h-7 w-7 transition-colors',
           bookmark?.chapterId === chapterId &&
             bookmark.pageNumber == pageNumber &&
-            'fill-foreground',
-          isLoading && 'fill-muted'
+            'fill-foreground'
         )}
       />
     </button>
+  ) : (
+    <Icons.loading className='h-7 w-7 animate-spin' />
   );
 };

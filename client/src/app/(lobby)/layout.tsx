@@ -3,7 +3,6 @@ import { ReactNode } from 'react';
 import { Header } from '@/components/layouts/header';
 import { MobileSidebar } from '@/components/layouts/mobile-sidebar';
 import { Sidebar } from '@/components/layouts/sidebar';
-import { MenuSetter } from '@/components/menu-setter';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 
 interface LobbyLayoutProps {
@@ -18,8 +17,6 @@ const LobbyLayout = async ({ children, modals }: LobbyLayoutProps) => {
     <div className='relative flex min-h-screen'>
       <Sidebar user={user} />
       <MobileSidebar user={user} />
-
-      <MenuSetter isOpen />
 
       <div className='flex-1'>
         <Header user={user} />

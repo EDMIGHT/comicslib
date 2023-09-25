@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 
 import { BookmarkComicControl } from '@/components/bookmark-comic-control';
 import { ChapterControl } from '@/components/chapter-control';
+import { MenuSetter } from '@/components/menu-setter';
 import { PageBackground } from '@/components/page-background';
 import { HREFS } from '@/configs/href.configs';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
@@ -53,45 +54,47 @@ const Page = async ({ params: { slug } }: PageProps) => {
   }
 
   return (
-    <div>
-      <div className='container flex items-center justify-between gap-2'>
-        <Link
-          href={`${HREFS.comics}/${chapter.comic.id}`}
-          className='p-1 hover:opacity-80 focus:opacity-80'
+    <MenuSetter>
+      <div>
+        <div className='container flex items-center justify-between gap-2'>
+          <Link
+            href={`${HREFS.comics}/${chapter.comic.id}`}
+            className='p-1 hover:opacity-80 focus:opacity-80'
+          >
+            <h1 className='text-xl font-semibold'>{chapter.comic.title}</h1>
+            <h2 className='text-sm'>
+              Ch. {chapter.number} {chapter.title ? `- ${chapter.title}` : null}
+            </h2>
+          </Link>
+          <div className='font-semibold'>
+            {page}/{response.totalPages}
+          </div>
+          <div className='flex items-center gap-2'>
+            {isAuth && (
+              <BookmarkComicControl
+                chapterId={chapter.id}
+                comicId={chapter.comicId}
+                pageNumber={page}
+                bookmark={bookmark}
+              />
+            )}
+            <ChapterControl comicId={chapter.comicId} currentChapterId={chapter.id} />
+          </div>
+        </div>
+        <PageBackground
+          page={+page}
+          comicId={chapter.comicId}
+          chapterId={chapterId}
+          totalPages={response.totalPages}
+          nextChapter={response.nextChapter}
+          prevChapter={response.prevChapter}
         >
-          <h1 className='text-xl font-semibold'>{chapter.comic.title}</h1>
-          <h2 className='text-sm'>
-            Ch. {chapter.number} {chapter.title ? `- ${chapter.title}` : null}
-          </h2>
-        </Link>
-        <div className='font-semibold'>
-          {page}/{response.totalPages}
-        </div>
-        <div className='flex items-center gap-2'>
-          {isAuth && (
-            <BookmarkComicControl
-              chapterId={chapter.id}
-              comicId={chapter.comicId}
-              pageNumber={page}
-              bookmark={bookmark}
-            />
-          )}
-          <ChapterControl comicId={chapter.comicId} currentChapterId={chapter.id} />
-        </div>
+          <div className='relative min-h-screen w-auto'>
+            <Image src={response.img} alt={`${page} page`} fill className='object-contain' />
+          </div>
+        </PageBackground>
       </div>
-      <PageBackground
-        page={+page}
-        comicId={chapter.comicId}
-        chapterId={chapterId}
-        totalPages={response.totalPages}
-        nextChapter={response.nextChapter}
-        prevChapter={response.prevChapter}
-      >
-        <div className='relative min-h-screen w-auto'>
-          <Image src={response.img} alt={`${page} page`} fill className='object-contain' />
-        </div>
-      </PageBackground>
-    </div>
+    </MenuSetter>
   );
 };
 
