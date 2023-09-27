@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 
 import { BookmarkComicControl } from '@/components/bookmark-comic-control';
 import { ChapterControl } from '@/components/chapter-control';
-import { MenuSetter } from '@/components/menu-setter';
+import { MenuSetterHOC } from '@/components/hocs/menu-setter-hoc';
 import { PageBackground } from '@/components/page-background';
 import { HREFS } from '@/configs/href.configs';
 import { getServerAccessToken } from '@/lib/helpers/token.helper';
@@ -54,7 +54,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
   }
 
   return (
-    <MenuSetter>
+    <MenuSetterHOC>
       <div>
         <div className='container flex items-center justify-between gap-2'>
           <Link
@@ -94,7 +94,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
           </div>
         </PageBackground>
       </div>
-    </MenuSetter>
+    </MenuSetterHOC>
   );
 };
 

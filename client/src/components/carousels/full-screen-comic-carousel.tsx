@@ -45,7 +45,7 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
           {comics.map((comic) => (
             <Link
               href={`${HREFS.comics}/${comic.id}`}
-              className='relative mr-2 min-w-0 flex-[0_0_100%] overflow-hidden  p-4'
+              className='relative min-w-0 flex-[0_0_100%] overflow-hidden  p-4'
               key={comic.id}
             >
               <div className='relative h-[260px] w-full'>
@@ -58,19 +58,21 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
                     className='h-full overflow-hidden rounded object-cover object-center'
                   />
 
-                  <div className='flex h-full flex-col gap-2 py-2'>
-                    <h3 className='line-clamp-2 text-xl font-bold lg:text-4xl'>
-                      {comic.title}
-                    </h3>
-                    <ComicAttributes
-                      isLink={false}
-                      themes={comic.themes}
-                      genres={comic.genres}
-                    />
-                    <p className='line-clamp-5 text-sm'>{comic.desc}</p>
-                    <h4 className='mt-auto w-[90%] truncate font-medium italic'>
-                      {comic.authors.map((author) => author.login).join(', ')}
-                    </h4>
+                  <div className='grid grid-cols-1'>
+                    <div className='flex h-full flex-col gap-2 py-2'>
+                      <h3 className='line-clamp-2 text-xl font-bold lg:text-4xl'>
+                        {comic.title}
+                      </h3>
+                      <ComicAttributes
+                        isLink={false}
+                        themes={comic.themes}
+                        genres={comic.genres}
+                      />
+                      <p className='line-clamp-5 text-sm'>{comic.desc}</p>
+                      <h4 className='mt-auto w-[90%] truncate font-medium italic'>
+                        {comic.authors.map((author) => author.login).join(', ')}
+                      </h4>
+                    </div>
                   </div>
                 </div>
                 <Image

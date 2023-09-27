@@ -16,7 +16,7 @@ export const AuthProvider: FC<LayoutProps> = ({ children }) => {
     if (getAccessToken()) {
       authMeThunk();
     }
-  }, []);
+  }, [authMeThunk]);
 
   return <>{children}</>;
 };

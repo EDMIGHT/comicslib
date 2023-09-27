@@ -1,5 +1,3 @@
-import { notFound } from 'next/navigation';
-
 import { CreateCommentForm } from '@/components/forms/create-comment-form';
 import { Comment } from '@/components/layouts/comment';
 import { Pagination } from '@/components/ui/pagination';
@@ -20,7 +18,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const response = await CommentsService.getAll({ comicId: id, limit, page });
 
   if (!response) {
-    return notFound();
+    throw new Error();
   }
 
   return (

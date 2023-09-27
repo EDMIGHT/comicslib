@@ -1,5 +1,3 @@
-import { notFound } from 'next/navigation';
-
 import { ChapterItem } from '@/components/layouts/chapter-item';
 import { Pagination } from '@/components/ui/pagination';
 import { LIMITS } from '@/configs/site.configs';
@@ -19,7 +17,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const response = await ChaptersService.getAll({ comicId: id, limit, page });
 
   if (!response) {
-    return notFound();
+    throw new Error();
   }
 
   return (

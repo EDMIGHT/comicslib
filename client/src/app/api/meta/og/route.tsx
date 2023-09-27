@@ -6,12 +6,19 @@ import { ogImageSchema } from '@/lib/validators/site.validators';
 
 export const runtime: ServerRuntime = 'edge';
 
-export function GET(req: Request) {
+export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const parsedValues = ogImageSchema.parse(Object.fromEntries(url.searchParams));
 
-    const { mode, title, description, type } = parsedValues;
+    const { mode, title, description } = parsedValues;
+
+    const fontSemiBold = await fetch(
+      new URL('../../../../assets/fonts/Poppins-SemiBold.ttf', import.meta.url)
+    ).then((res) => res.arrayBuffer());
+    const fontMedium = await fetch(
+      new URL('../../../../assets/fonts/Poppins-Medium.ttf', import.meta.url)
+    ).then((res) => res.arrayBuffer());
 
     return new ImageResponse(
       (
@@ -48,12 +55,7 @@ export function GET(req: Request) {
               whiteSpace: 'pre-wrap',
             }}
           >
-            {type ? (
-              <div tw='text-xl uppercase font-medium tracking-tight leading-tight dark:text-zinc-50 px-8'>
-                {type}
-              </div>
-            ) : null}
-            <h1 tw='text-5xl font-bold tracking-tight leading-tight dark:text-zinc-50 px-8'>
+            <h1 tw='text-6xl font-bold tracking-tight leading-tight dark:text-zinc-50 px-8'>
               {title}
             </h1>
             {description ? (
@@ -67,6 +69,20 @@ export function GET(req: Request) {
       {
         width: 1200,
         height: 630,
+        fonts: [
+          {
+            name: 'Poppins',
+            data: fontMedium,
+            style: 'normal',
+            weight: 400,
+          },
+          {
+            name: 'Poppins',
+            data: fontSemiBold,
+            style: 'normal',
+            weight: 700,
+          },
+        ],
       }
     );
   } catch (error) {

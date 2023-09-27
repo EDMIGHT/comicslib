@@ -7,6 +7,7 @@ import {
   BookOpen,
   CalendarIcon,
   Camera,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   ChevronsRight,
@@ -56,6 +57,7 @@ export const Icons = {
   camera: Camera,
   calendar: CalendarIcon,
   chevronUpDown: ChevronsUpDown,
+  chevronDown: ChevronDown,
   cleaning: Eraser,
   close: X,
   comment: MessageCircle,
@@ -125,6 +127,7 @@ export const Icons = {
       />
     </svg>
   ),
+
   palette: Palette,
   read: BookOpen,
   rules: Scale,

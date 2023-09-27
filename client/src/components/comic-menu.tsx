@@ -1,5 +1,8 @@
 import Link from 'next/link';
+import { HTMLAttributes } from 'react';
 
+import { ComicFoldersBtn } from '@/components/comic-folders-btn';
+import { ComicUpdateRating } from '@/components/comic-update-rating';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
@@ -9,12 +12,10 @@ import { ComicsService } from '@/services/comics.service';
 import { UsersService } from '@/services/users.service';
 import { IResponseSingleComic } from '@/types/comic.types';
 
-import { ComicFoldersBtn } from './comic-folders-btn';
-import { ComicUpdateRating } from './comic-update-rating';
+type ComicMenuProps = HTMLAttributes<HTMLDivElement> &
+  Pick<IResponseSingleComic, 'first_chapter' | 'id'>;
 
-type ComicMenuProps = Pick<IResponseSingleComic, 'first_chapter' | 'id'>;
-
-export const ComicMenu = async ({ id, first_chapter }: ComicMenuProps) => {
+export const ComicMenu = async ({ id, first_chapter, className, ...rest }: ComicMenuProps) => {
   const accessToken = getServerAccessToken();
 
   let rating = null;
@@ -26,21 +27,28 @@ export const ComicMenu = async ({ id, first_chapter }: ComicMenuProps) => {
   }
 
   return (
-    <div className='flex gap-2'>
+    <div {...rest} className={cn('flex gap-2 w-full', className)}>
       {first_chapter &&
         (bookmark ? (
           <Link
             href={`${HREFS.chapter}/${bookmark.chapterId}/${bookmark.pageNumber}`}
-            className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
+            className={cn(
+              buttonVariants(),
+              'flex gap-1 items-center font-semibold flex-1 sm:flex-initial'
+            )}
           >
             <Icons.read className='h-5 w-5' /> Continue
           </Link>
         ) : (
           <Link
             href={`${HREFS.chapter}/${first_chapter.id}/1`}
-            className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
+            className={cn(
+              buttonVariants(),
+              'flex gap-1 items-center font-semibold flex-1 sm:flex-initial'
+            )}
           >
-            <Icons.read className='h-5 w-5' /> Read
+            <Icons.read className='h-5 w-5' />
+            Read
           </Link>
         ))}
       {accessToken && (
@@ -51,7 +59,8 @@ export const ComicMenu = async ({ id, first_chapter }: ComicMenuProps) => {
             href={`${HREFS.create.chapter}/${id}`}
             className={cn(buttonVariants(), 'flex gap-1 items-center font-semibold')}
           >
-            <Icons.upload className='h-5 w-5' /> Upload Chapter
+            <Icons.upload className='h-5 w-5' />{' '}
+            <span className='hidden sm:inline'>Upload Chapter</span>
           </Link>
         </>
       )}

@@ -1,19 +1,18 @@
 import { format } from 'date-fns';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { HREFS } from '@/configs/href.configs';
+import { cn } from '@/lib/utils';
 import { IResponseComic } from '@/types/comic.types';
 
 import { GenresList } from './genres-list';
 import { StatusBadge } from './status-badge';
 import { ThemesList } from './themes-list';
 
-type ComicInfoProps = Pick<
-  IResponseComic,
-  'genres' | 'authors' | 'status' | 'themes' | 'releasedAt'
->;
+type ComicInfoProps = HTMLAttributes<HTMLDivElement> &
+  Pick<IResponseComic, 'genres' | 'authors' | 'status' | 'themes' | 'releasedAt'>;
 
 export const ComicInfo: FC<ComicInfoProps> = ({
   authors,
@@ -21,9 +20,11 @@ export const ComicInfo: FC<ComicInfoProps> = ({
   status,
   themes,
   releasedAt,
+  className,
+  ...rest
 }) => {
   return (
-    <div className='flex min-w-[30%] max-w-[300px] flex-col gap-2'>
+    <div {...rest} className={cn('flex min-w-[30%] max-w-[300px] flex-col gap-2', className)}>
       {status && (
         <div className='flex items-center gap-1'>
           <h2 className='text-xl font-semibold'>Status:</h2>

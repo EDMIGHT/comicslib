@@ -1,11 +1,14 @@
 import { Metadata, NextPage } from 'next';
 import { notFound } from 'next/navigation';
 
+import { ComicAttributes } from '@/components/comic-attributes';
 import { ComicCounters } from '@/components/comic-counters';
 import { ComicInfo } from '@/components/comic-info';
 import { ComicMenu } from '@/components/comic-menu';
 import { ComicPageImg } from '@/components/comic-page-img';
+import { ShowMoreHoc } from '@/components/hocs/show-more-hoc';
 import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
+import { StatusBadge } from '@/components/status-badge';
 import { HREFS } from '@/configs/href.configs';
 import { SITE_META } from '@/configs/site.configs';
 import { absoluteUrl, createTitle } from '@/lib/utils';
@@ -97,19 +100,42 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
       <div className='grid grid-cols-[auto_1fr]  items-start gap-2 md:gap-4'>
         <ComicPageImg imgSrc={img} alt={title} />
         <div className='flex h-full flex-col justify-between gap-2'>
-          <h1 className='text-7xl font-bold'>{title}</h1>
-          <ComicMenu id={comicId} first_chapter={first_chapter} />
+          <h1 className='text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl'>{title}</h1>
+          <ComicMenu id={comicId} first_chapter={first_chapter} className='hidden md:flex' />
         </div>
       </div>
-      <div>
-        <p className='text-sm '>{desc}</p>
+      <ComicMenu id={comicId} first_chapter={first_chapter} className='flex md:hidden' />
+      <div className='space-y-2 xl:hidden'>
+        <ComicAttributes genres={genres} themes={themes} />
+        <div className='flex gap-2'>
+          <StatusBadge status={status.name} variant='transparent' className='text-sm' />
+          <ComicCounters
+            avg_rating={avg_rating}
+            comments_count={comments_count}
+            unique_bookmarks_count={unique_bookmarks_count}
+          />
+        </div>
       </div>
-      <div className='grid grid-cols-[1fr_250px] gap-4'>
-        <div className='flex flex-1 flex-col gap-2'>
+
+      <p className='hidden text-sm xl:block'>{desc}</p>
+
+      <ShowMoreHoc className='xl:hidden' classNameContent='space-y-2'>
+        <p className='text-sm '>{desc}</p>
+
+        <ComicInfo
+          genres={genres}
+          authors={authors}
+          status={status}
+          themes={themes}
+          releasedAt={releasedAt}
+        />
+      </ShowMoreHoc>
+      <div className='mt-2 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_250px]'>
+        <div className='flex flex-col gap-2'>
           <NavigationBtns variants={variants} />
           {children}
         </div>
-        <div className='space-y-4'>
+        <div className='hidden space-y-4 xl:block'>
           <ComicCounters
             avg_rating={avg_rating}
             comments_count={comments_count}

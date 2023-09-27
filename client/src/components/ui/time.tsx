@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import formatTime from '@/lib/helpers/formatTime';
 import { cn } from '@/lib/utils';

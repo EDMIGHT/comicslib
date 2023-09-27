@@ -31,7 +31,7 @@ export const LocalProvider: FC<LayoutProps> = ({ children }) => {
       countComicsPerPage: localCountComicsPerPage,
       countUsersPerPage: localCountUsersPerPage,
     });
-  }, [localCountComicsPerPage, localCountUsersPerPage]);
+  }, [localCountComicsPerPage, localCountUsersPerPage, setCountsPerPage]);
 
   return <>{children}</>;
 };

@@ -18,7 +18,7 @@ export const ChapterUserInfo: FC<IShortUserWithCounts> = ({
     <HoverCard>
       <HoverCardTrigger asChild>
         <Link
-          className={cn(buttonVariants({ variant: 'link' }), 'p-0 h-fit')}
+          className={cn(buttonVariants({ variant: 'link' }), 'p-0 h-fit text-center')}
           href={`${HREFS.profile}/${login}`}
         >
           {login}

@@ -5,11 +5,11 @@ import { FC, ReactNode, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/hooks/redux-hooks';
 import { useActions } from '@/hooks/use-actions';
 
-type MenuSetterProps = {
+type MenuSetterHOCProps = {
   children: ReactNode;
 };
 
-export const MenuSetter: FC<MenuSetterProps> = ({ children }) => {
+export const MenuSetterHOC: FC<MenuSetterHOCProps> = ({ children }) => {
   const { isActiveMenu } = useAppSelector((state) => state.settings);
   const prevStateMenu = useRef<boolean>(isActiveMenu);
   const { setIsActiveMenu } = useActions();

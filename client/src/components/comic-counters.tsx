@@ -18,10 +18,10 @@ export const ComicCounters: FC<ComicCountersProps> = ({
   ...rest
 }) => {
   return (
-    <ul {...rest} className={cn('flex items-center gap-2', className)}>
+    <ul {...rest} className={cn('flex flex-wrap items-center gap-2', className)}>
       <li className='flex items-center gap-1 '>
         <Icons.star className='fill-foreground' />
-        {avg_rating || 0}
+        {avg_rating.toFixed(2)}
       </li>
 
       <li className='flex items-center gap-1'>

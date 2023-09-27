@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 
 import { FullScreenComicCarousel } from '@/components/carousels/full-screen-comic-carousel';
 import { SectionHeader } from '@/components/section-header';
+import { Card, CardTitle } from '@/components/ui/card';
 import { ComicsService } from '@/services/comics.service';
 
 export const metadata: Metadata = {
@@ -33,10 +34,10 @@ const IndexPage = async () => {
 
   return (
     <div className='space-y-3'>
-      <section>
-        <SectionHeader>Popular New Titles</SectionHeader>
+      <Card variant='transparent' as='section' className='space-y-2'>
+        <CardTitle className='text-2xl'>Popular New Titles</CardTitle>
         <FullScreenComicCarousel comics={popularNewComicsCarousel.comics} />
-      </section>
+      </Card>
     </div>
   );
 };

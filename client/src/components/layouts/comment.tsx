@@ -18,12 +18,13 @@ export const Comment: FC<CommentProps> = ({ text, user, createdAt }) => {
           className='flex items-center gap-2 hover:opacity-75 focus:opacity-75'
         >
           <UserAvatar img={user.img} login={user.login} />
-          <h3 className=''>{user.login}</h3>
+          <h3>{user.login}</h3>
         </Link>
 
         <Time time={new Date(createdAt)} className='text-xs opacity-80' />
       </div>
-      <p className='line-clamp-2 '>{text}</p>
+
+      <p className='break-words'>{text}</p>
     </Card>
   );
 };
