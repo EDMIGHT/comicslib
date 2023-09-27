@@ -1,9 +1,12 @@
-import React, { FC } from 'react';
+'use client';
+
+import React, { FC, useEffect, useState } from 'react';
 
 import { ComicSearch } from '@/components/comic-search';
 import { MenuSwitcher } from '@/components/menu-switcher';
 import { MobileMenuSwitcher } from '@/components/mobile-menu-switcher';
 import { UserMenu } from '@/components/user-menu';
+import { cn, isServer } from '@/lib/utils';
 import { IUser } from '@/types/user.types';
 
 type HeaderProps = {
@@ -11,15 +14,36 @@ type HeaderProps = {
 };
 
 export const Header: FC<HeaderProps> = ({ user }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const checkScroll = () => {
+    setIsScrolled(window.scrollY > 10);
+  };
+
+  useEffect(() => {
+    if (!isServer) {
+      window.addEventListener('scroll', checkScroll);
+      return () => {
+        window.removeEventListener('scroll', checkScroll);
+      };
+    }
+  }, []);
+
   return (
-    <header className='supports-backdrop-blur:bg-background/60 sticky top-0 z-20 w-full border-b bg-background/95 p-2 backdrop-blur'>
+    <header
+      className={cn(
+        'sticky top-0 z-20 w-full p-2',
+        isScrolled &&
+          'border-b bg-background/95  backdrop-blur supports-backdrop-blur:bg-background/60'
+      )}
+    >
       <div className='container flex items-center justify-between gap-2'>
         <div>
           <MenuSwitcher />
           <MobileMenuSwitcher />
         </div>
         <div className='flex items-center justify-end gap-2'>
-          <ComicSearch />
+          <ComicSearch isScrolled={isScrolled} />
           <UserMenu user={user} />
         </div>
       </div>

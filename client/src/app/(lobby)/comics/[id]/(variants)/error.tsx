@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 
 export default function Error({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };
@@ -18,7 +17,7 @@ export default function Error({
       description: 'Please try again later or refresh the page',
       variant: 'destructive',
     });
-  }, [error]);
+  }, []);
 
   return (
     <div className='flex h-[30vh] w-full flex-col items-center justify-center gap-2'>

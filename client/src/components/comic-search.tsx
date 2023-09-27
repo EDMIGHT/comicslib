@@ -7,9 +7,13 @@ import { SearchComics } from '@/components/search-comics';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
-import { isMacOS } from '@/lib/utils';
+import { cn, isMacOS } from '@/lib/utils';
 
-export const ComicSearch: FC = () => {
+type ComicSearchProps = {
+  isScrolled?: boolean;
+};
+
+export const ComicSearch: FC<ComicSearchProps> = ({ isScrolled = false }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -29,7 +33,10 @@ export const ComicSearch: FC = () => {
     <>
       <Button
         variant='outline'
-        className='relative h-9 w-9 p-0 xl:h-10 xl:w-60 xl:justify-start xl:px-3 xl:py-2'
+        className={cn(
+          'relative h-9 w-9  p-0  xl:h-10 xl:w-60 xl:justify-start xl:px-3 xl:py-2',
+          !isScrolled && 'bg-background/70 hover:bg-background'
+        )}
         onClick={() => setOpen(true)}
       >
         <Icons.search className='h-4 w-4 xl:mr-2' aria-hidden='true' />

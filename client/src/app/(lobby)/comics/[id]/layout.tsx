@@ -1,4 +1,5 @@
 import { Metadata, NextPage } from 'next';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
 import { ComicAttributes } from '@/components/comic-attributes';
@@ -96,51 +97,43 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
   ];
 
   return (
-    <div className='flex flex-col gap-2 md:gap-4'>
-      <div className='grid grid-cols-[auto_1fr]  items-start gap-2 md:gap-4'>
-        <ComicPageImg imgSrc={img} alt={title} />
-        <div className='flex h-full flex-col justify-between gap-2'>
-          <h1 className='text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl'>{title}</h1>
-          <ComicMenu id={comicId} first_chapter={first_chapter} className='hidden md:flex' />
-        </div>
-      </div>
-      <ComicMenu id={comicId} first_chapter={first_chapter} className='flex md:hidden' />
-      <div className='space-y-2 xl:hidden'>
-        <ComicAttributes genres={genres} themes={themes} />
-        <div className='flex gap-2'>
-          <StatusBadge status={status.name} variant='transparent' className='text-sm' />
-          <ComicCounters
-            avg_rating={avg_rating}
-            comments_count={comments_count}
-            unique_bookmarks_count={unique_bookmarks_count}
-          />
-        </div>
-      </div>
-
-      <p className='hidden text-sm xl:block'>{desc}</p>
-
-      <ShowMoreHoc className='xl:hidden' classNameContent='space-y-2'>
-        <p className='text-sm '>{desc}</p>
-
-        <ComicInfo
-          genres={genres}
-          authors={authors}
-          status={status}
-          themes={themes}
-          releasedAt={releasedAt}
+    <>
+      <div className='absolute left-0 top-0 -z-10 h-[30vh] w-full overflow-hidden '>
+        <Image
+          src={img}
+          alt={title}
+          fill
+          sizes='100vw'
+          quality={60}
+          className='object-cover blur-sm brightness-[.6]'
         />
-      </ShowMoreHoc>
-      <div className='mt-2 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_250px]'>
-        <div className='flex flex-col gap-2'>
-          <NavigationBtns variants={variants} />
-          {children}
+      </div>
+      <div className='flex flex-col gap-2 md:gap-4'>
+        <div className='grid grid-cols-[auto_1fr]  items-start gap-2 md:gap-4'>
+          <ComicPageImg imgSrc={img} alt={title} />
+          <div className='flex h-full flex-col justify-between gap-2'>
+            <h1 className='text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl'>{title}</h1>
+            <ComicMenu id={comicId} first_chapter={first_chapter} className='hidden md:flex' />
+          </div>
         </div>
-        <div className='hidden space-y-4 xl:block'>
-          <ComicCounters
-            avg_rating={avg_rating}
-            comments_count={comments_count}
-            unique_bookmarks_count={unique_bookmarks_count}
-          />
+        <ComicMenu id={comicId} first_chapter={first_chapter} className='flex md:hidden' />
+        <div className='space-y-2 xl:hidden'>
+          <ComicAttributes genres={genres} themes={themes} />
+          <div className='flex gap-2'>
+            <StatusBadge status={status.name} variant='transparent' className='text-sm' />
+            <ComicCounters
+              avg_rating={avg_rating}
+              comments_count={comments_count}
+              unique_bookmarks_count={unique_bookmarks_count}
+            />
+          </div>
+        </div>
+
+        <p className='hidden text-sm xl:block'>{desc}</p>
+
+        <ShowMoreHoc className='xl:hidden' classNameContent='space-y-2'>
+          <p className='text-sm '>{desc}</p>
+
           <ComicInfo
             genres={genres}
             authors={authors}
@@ -148,9 +141,29 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
             themes={themes}
             releasedAt={releasedAt}
           />
+        </ShowMoreHoc>
+        <div className='mt-2 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_250px]'>
+          <div className='flex flex-col gap-2'>
+            <NavigationBtns variants={variants} />
+            {children}
+          </div>
+          <div className='hidden space-y-4 xl:block'>
+            <ComicCounters
+              avg_rating={avg_rating}
+              comments_count={comments_count}
+              unique_bookmarks_count={unique_bookmarks_count}
+            />
+            <ComicInfo
+              genres={genres}
+              authors={authors}
+              status={status}
+              themes={themes}
+              releasedAt={releasedAt}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
