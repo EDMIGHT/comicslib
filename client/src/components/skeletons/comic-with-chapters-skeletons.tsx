@@ -18,12 +18,12 @@ export const ComicWithChaptersSkeletons: FC<ComicSkeletonsProps> = ({
       {skeletonArray.map((_, i) => (
         <li key={i}>
           <Card className='flex gap-2 p-2'>
-            <Skeleton className='min-h-[200px] min-w-[160px]' />
+            <Skeleton className='h-[170px] w-[110px] shrink-0 xl:h-[200px] xl:w-[140px]' />
             <div className='flex w-full flex-col gap-2'>
-              <Skeleton className='h-9 w-[200px]' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
+              <Skeleton className='h-8 w-[200px]' />
+              <Skeleton className='h-9 w-full' />
+              <Skeleton className='h-9 w-full' />
+              <Skeleton className='h-9 w-full' />
             </div>
           </Card>
         </li>

@@ -38,7 +38,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ ...queryOptions }) => {
   const statusesList = combineString(queryOptions[AdvancedQuerySearchParams.STATUS]);
   const themesList = combineString(queryOptions[AdvancedQuerySearchParams.THEME]);
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
+  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess, isError } = useInfiniteQuery(
     [
       REACT_QUERY_KEYS.comics,
       queryOptions.folderId,
@@ -85,7 +85,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ ...queryOptions }) => {
   const comics = data?.pages.flatMap((page) => page.comics);
 
   return (
-    <ul ref={parent} className='grid auto-cols-max grid-cols-1 gap-2 lg:grid-cols-2'>
+    <ul ref={parent} className='grid grid-cols-1 gap-2 lg:grid-cols-2'>
       {isSuccess &&
         (comics && comics.length > 0 ? (
           comics.map((comic, i) => {
@@ -108,7 +108,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ ...queryOptions }) => {
             <h3 className='text-3xl font-medium'>no comics found</h3>
           </div>
         ))}
-      {isLoading && <ComicSkeletons />}
+      {(isLoading || isError) && <ComicSkeletons />}
     </ul>
   );
 };

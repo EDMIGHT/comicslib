@@ -9,6 +9,7 @@ import { IChapterWithUser } from '@/types/chapter.types';
 
 type ChapterItemProps = IChapterWithUser & {
   variant?: 'default' | 'transparent';
+  className?: string;
 };
 
 export const ChapterItem: FC<ChapterItemProps> = ({
@@ -18,14 +19,16 @@ export const ChapterItem: FC<ChapterItemProps> = ({
   user,
   createdAt,
   variant = 'default',
+  className,
 }) => {
   return (
     <div
       className={cn(
-        'grid grid-cols-[1fr_150px] sm:grid-cols-[minmax(250px,_1fr)_auto_150px] items-center justify-between gap-2 shadow-sm transition-colors ',
+        'grid grid-cols-[1fr_auto] sm:grid-cols-[minmax(250px,_1fr)_auto_150px] items-center justify-between gap-2 shadow-sm transition-colors ',
         variant === 'default' &&
           'rounded border bg-card text-card-foreground hover:bg-card/80',
-        variant === 'transparent' && 'border-l-8 border-active hover:bg-active/20'
+        variant === 'transparent' && 'border-l-8 border-active hover:bg-active/20',
+        className
       )}
     >
       <Link href={`${HREFS.chapter}/${id}`} className=' p-2'>

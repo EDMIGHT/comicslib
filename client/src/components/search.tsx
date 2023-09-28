@@ -18,24 +18,25 @@ type SearchProps = {
 export const Search: FC<SearchProps> = ({
   className,
   paramsKey,
-  initialValue,
+  initialValue = '',
   placeholder = 'enter text..',
   ...rest
 }) => {
   const searchParams = useSearchParams();
   const [changeSearchParams] = useChangeSearchParams();
-  const [value, setValue] = useState<undefined | string>(initialValue);
+  const [value, setValue] = useState<string>(initialValue);
+  const [isChanged, setIsChanged] = useState(false);
   const [debounced] = useDebounce(value, 500);
 
   useEffect(() => {
-    if (debounced !== undefined) {
+    if (isChanged) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const params = new URLSearchParams(searchParams);
       params.set(paramsKey, debounced.trim());
       changeSearchParams(params.toString());
     }
-  }, [debounced, searchParams, paramsKey, changeSearchParams]);
+  }, [debounced, searchParams, paramsKey, changeSearchParams, isChanged]);
 
   return (
     <div {...rest} className={cn('relative', className)}>
@@ -45,7 +46,10 @@ export const Search: FC<SearchProps> = ({
         placeholder={placeholder}
         className='bg-secondary py-3 pl-10 text-sm'
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value);
+          !isChanged && setIsChanged(true);
+        }}
       />
     </div>
   );
