@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FC, useCallback, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +15,7 @@ import {
 import { Icons } from '@/components/ui/icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { useChangeSearchParams } from '@/hooks/use-change-search-params';
 import { cn } from '@/lib/utils';
 import { IGenre } from '@/types/genre.types';
 import { IStatus } from '@/types/status.types';
@@ -45,9 +46,8 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
   themes,
 }) => {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [changeSearchParams, resetSearchParams] = useChangeSearchParams();
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -74,35 +74,19 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
   );
 
   const onClickGenre = (genreTitle: string) => {
-    router.push(
-      pathname +
-        (pathname.includes('?') ? '&' : '?') +
-        createQueryString(AdvancedQuerySearchParams.GENRE, genreTitle)
-    );
+    changeSearchParams(createQueryString(AdvancedQuerySearchParams.GENRE, genreTitle));
   };
   const onClickAuthor = (authorLogin: string) => {
-    router.push(
-      pathname +
-        (pathname.includes('?') ? '&' : '?') +
-        createQueryString(AdvancedQuerySearchParams.AUTHOR, authorLogin)
-    );
+    changeSearchParams(createQueryString(AdvancedQuerySearchParams.AUTHOR, authorLogin));
   };
   const onClickStatus = (statusName: string) => {
-    router.push(
-      pathname +
-        (pathname.includes('?') ? '&' : '?') +
-        createQueryString(AdvancedQuerySearchParams.STATUS, statusName)
-    );
+    changeSearchParams(createQueryString(AdvancedQuerySearchParams.STATUS, statusName));
   };
   const onClickTheme = (themeTitle: string) => {
-    router.push(
-      pathname +
-        (pathname.includes('?') ? '&' : '?') +
-        createQueryString(AdvancedQuerySearchParams.THEME, themeTitle)
-    );
+    changeSearchParams(createQueryString(AdvancedQuerySearchParams.THEME, themeTitle));
   };
   const resetFilters = () => {
-    router.push(pathname);
+    resetSearchParams();
   };
 
   const activeGenres = searchParams.getAll(AdvancedQuerySearchParams.GENRE);
@@ -118,7 +102,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
           <Icons.filter className='h-5 w-5 md:ml-1' />
         </Button>
       </DialogTrigger>
-      <DialogContent className={cn('max-w-[1300px] max-h-[100%]')}>
+      <DialogContent className='max-h-[100%] max-w-[1300px]'>
         <DialogHeader>
           <DialogTitle>Advanced filters</DialogTitle>
         </DialogHeader>
@@ -221,7 +205,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
             </div>
             <Separator />
             <div className='space-y-1 md:space-y-2'>
-              <div className='flex gap-2'>
+              <div className='flex flex-wrap gap-2'>
                 <div>
                   <h3 className='ml-2 text-base font-medium'>Authors</h3>
                   <AuthorsFiltering

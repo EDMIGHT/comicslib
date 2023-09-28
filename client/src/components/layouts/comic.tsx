@@ -4,6 +4,7 @@ import { FC } from 'react';
 
 import { ComicAttributes } from '@/components/comic-attributes';
 import { ComicCounters } from '@/components/comic-counters';
+import { StatusBadge } from '@/components/status-badge';
 import { Card, CardTitle } from '@/components/ui/card';
 import { HREFS } from '@/configs/href.configs';
 import { IResponseComic } from '@/types/comic.types';
@@ -15,6 +16,7 @@ export const Comic: FC<IResponseComic> = ({
   desc,
   img,
   title,
+  status,
   comments_count,
   avg_rating,
   unique_bookmarks_count,
@@ -22,7 +24,7 @@ export const Comic: FC<IResponseComic> = ({
   return (
     <Card className='flex gap-2 p-2'>
       <Link href={`${HREFS.comics}/${id}`}>
-        <div className='h-[200px] w-[140px]'>
+        <div className='h-[170px] w-[110px] xl:h-[200px] xl:w-[140px]'>
           <Image
             src={img}
             alt={title}
@@ -32,17 +34,21 @@ export const Comic: FC<IResponseComic> = ({
           />
         </div>
       </Link>
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-1 flex-col gap-2'>
         <Link href={`${HREFS.comics}/${id}`}>
           <CardTitle className='text-xl hover:opacity-80'>{title}</CardTitle>
         </Link>
-        <ComicCounters
-          avg_rating={avg_rating}
-          comments_count={comments_count}
-          unique_bookmarks_count={unique_bookmarks_count}
-        />
+        <div className='flex justify-between gap-1'>
+          <ComicCounters
+            avg_rating={avg_rating}
+            comments_count={comments_count}
+            unique_bookmarks_count={unique_bookmarks_count}
+          />
+
+          <StatusBadge status={status.name} variant='transparent' type='link' />
+        </div>
         <ComicAttributes genres={genres} themes={themes} />
-        <p className='line-clamp-3'>{desc}</p>
+        <p className='line-clamp-3 text-sm xl:text-base'>{desc}</p>
       </div>
     </Card>
   );

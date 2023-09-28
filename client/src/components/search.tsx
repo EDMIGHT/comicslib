@@ -1,10 +1,11 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FC, HTMLAttributes, useEffect, useState } from 'react';
 
 import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
+import { useChangeSearchParams } from '@/hooks/use-change-search-params';
 import { useDebounce } from '@/hooks/use-debounce';
 import { cn } from '@/lib/utils';
 
@@ -21,9 +22,8 @@ export const Search: FC<SearchProps> = ({
   placeholder = 'enter text..',
   ...rest
 }) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [changeSearchParams] = useChangeSearchParams();
   const [value, setValue] = useState<undefined | string>(initialValue);
   const [debounced] = useDebounce(value, 500);
 
@@ -32,11 +32,10 @@ export const Search: FC<SearchProps> = ({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const params = new URLSearchParams(searchParams);
-      params.set(paramsKey, debounced);
-
-      router.push(pathname + (pathname.includes('?') ? '&' : '?') + params.toString());
+      params.set(paramsKey, debounced.trim());
+      changeSearchParams(params.toString());
     }
-  }, [debounced, searchParams, paramsKey, router, pathname]);
+  }, [debounced, searchParams, paramsKey, changeSearchParams]);
 
   return (
     <div {...rest} className={cn('relative', className)}>

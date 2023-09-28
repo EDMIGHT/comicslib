@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FC, HTMLAttributes, useCallback, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Command, CommandEmpty, CommandGroup, CommandItem } from '@/components/u
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { COMIC_DATE_FIELDS } from '@/configs/comic.configs';
+import { useChangeSearchParams } from '@/hooks/use-change-search-params';
 import { cn } from '@/lib/utils';
 import { IConfigVariant } from '@/types/configs.types';
 
@@ -22,9 +23,8 @@ export enum DateFilterSearchParams {
 }
 
 export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams()!;
+  const [changeSearchParams] = useChangeSearchParams();
 
   const initialVariant = searchParams.get(DateFilterSearchParams.DATE);
   const initialDateFrom = searchParams.get(DateFilterSearchParams.START_DATE);
@@ -62,32 +62,16 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
   const onClickDateFrom = (selectedDate: Date | undefined) => {
     setDateFrom(selectedDate);
 
-    let formattedDate;
+    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined;
 
-    if (selectedDate) {
-      formattedDate = format(selectedDate, 'yyyy-MM-dd');
-    }
-
-    router.push(
-      pathname +
-        (pathname.includes('?') ? '&' : '?') +
-        createQueryString('startDate', formattedDate)
-    );
+    changeSearchParams(createQueryString('startDate', formattedDate));
   };
   const onClickDateTo = (selectedDate: Date | undefined) => {
     setDateTo(selectedDate);
 
-    let formattedDate;
+    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined;
 
-    if (selectedDate) {
-      formattedDate = format(selectedDate, 'yyyy-MM-dd');
-    }
-
-    router.push(
-      pathname +
-        (pathname.includes('?') ? '&' : '?') +
-        createQueryString('endDate', formattedDate)
-    );
+    changeSearchParams(createQueryString('endDate', formattedDate));
   };
   const onClickDateVariant = (selectedVariant: IConfigVariant) => {
     setCurrentVariant((prev) =>
@@ -95,18 +79,18 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
     );
 
     // ? в теории невозможно получить stale данных, на практике возможно
-    router.push(
-      pathname +
-        (pathname.includes('?') ? '&' : '?') +
-        createQueryString(
-          'date',
-          currentVariant === selectedVariant.field ? undefined : selectedVariant.field
-        )
+    changeSearchParams(
+      createQueryString(
+        'date',
+        currentVariant === selectedVariant.field ? undefined : selectedVariant.field
+      )
     );
   };
 
+  const currentDate = new Date();
+
   return (
-    <div {...rest} className={cn('flex items-center gap-1', className)}>
+    <div {...rest} className={cn('flex flex-wrap items-center gap-1', className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -123,9 +107,12 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
         <PopoverContent className='w-auto p-0' align='start'>
           <Calendar
             mode='single'
+            captionLayout='dropdown-buttons'
             selected={dateFrom}
             onSelect={onClickDateFrom}
-            initialFocus
+            disabled={(date) => date > currentDate || date < new Date('1900-01-01')}
+            fromYear={1900}
+            toYear={currentDate.getFullYear()}
           />
         </PopoverContent>
       </Popover>
@@ -181,7 +168,15 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start'>
-          <Calendar mode='single' selected={dateTo} onSelect={onClickDateTo} initialFocus />
+          <Calendar
+            mode='single'
+            captionLayout='dropdown-buttons'
+            selected={dateTo}
+            onSelect={onClickDateTo}
+            disabled={(date) => date > currentDate || date < new Date('1900-01-01')}
+            fromYear={1900}
+            toYear={currentDate.getFullYear()}
+          />
         </PopoverContent>
       </Popover>
     </div>

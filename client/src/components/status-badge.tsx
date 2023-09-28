@@ -15,7 +15,8 @@ const statusBadgeVariants = cva(
           'border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80',
         secondary:
           'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        transparent: 'border-none text-foreground',
+        transparent:
+          'border-none text-foreground hover:bg-accent hover:text-accent-foreground',
       },
     },
     defaultVariants: {

@@ -195,7 +195,6 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                           disabled={(date) =>
                             date > new Date() || date < new Date('1900-01-01')
                           }
-                          initialFocus
                           fromYear={1960}
                           toYear={2030}
                         />
