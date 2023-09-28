@@ -101,37 +101,16 @@ export class ComicModel {
 
     const inOrder: Sql = order === 'desc' ? Prisma.sql`DESC` : Prisma.sql`ASC`;
 
-    // ? can I optimize it somehow?
-    let sortBy: Sql;
-    switch (sort) {
-      case 'best': {
-        sortBy = Prisma.sql`avg_rating`;
-        break;
-      }
-      case 'popular': {
-        sortBy = Prisma.sql`unique_bookmarks_count`;
-        break;
-      }
-      case comicSchema.title.name: {
-        sortBy = Prisma.sql`Comic.title`;
-        break;
-      }
-      case comicSchema.createdAt.name: {
-        sortBy = Prisma.sql`Comic.created_at`;
-        break;
-      }
-      case comicSchema.updatedAt.name: {
-        sortBy = Prisma.sql`Comic.updated_at`;
-        break;
-      }
-      case comicSchema.releasedAt.name: {
-        sortBy = Prisma.sql`Comic.released_at`;
-        break;
-      }
-      default:
-        sortBy = Prisma.sql`Comic.created_at`;
-    }
+    const sortOptions = {
+      best: Prisma.sql`avg_rating`,
+      popular: Prisma.sql`unique_bookmarks_count`,
+      [comicSchema.title.name]: Prisma.sql`Comic.title`,
+      [comicSchema.createdAt.name]: Prisma.sql`Comic.created_at`,
+      [comicSchema.updatedAt.name]: Prisma.sql`Comic.updated_at`,
+      [comicSchema.releasedAt.name]: Prisma.sql`Comic.released_at`,
+    };
 
+    const sortBy: Sql = sortOptions[sort] || Prisma.sql`Comic.created_at`;
     const orderQuery = Prisma.sql`ORDER BY ${sortBy} ${inOrder}, Comic.id ASC`;
 
     const comics = await prisma.$queryRaw<IComicWithData[]>`
@@ -139,7 +118,7 @@ export class ComicModel {
       Comic.*,
       AVG(Rating.value) as avg_rating,
       CAST(COUNT(DISTINCT Bookmark.user_id) AS DECIMAL(10, 0)) as unique_bookmarks_count,
-      CAST(COUNT(Comment.id) AS DECIMAL(10, 0)) as comments_count,
+      COALESCE((SELECT COUNT(*) FROM Comment WHERE Comment.comic_id = Comic.id), 0) as comments_count,
       COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Genre.id, 'title', Genre.title))
@@ -171,7 +150,6 @@ export class ComicModel {
     FROM Comic
     LEFT JOIN Rating ON Comic.id = Rating.comic_id
     LEFT JOIN Bookmark ON Comic.id = Bookmark.comic_id
-    LEFT JOIN Comment ON Comic.id = Comment.comic_id
     LEFT JOIN Status ON Comic.status_id = Status.id
     WHERE ${whereQuery}
     GROUP BY Comic.id
@@ -195,7 +173,6 @@ export class ComicModel {
     FROM Comic
     LEFT JOIN Rating ON Comic.id = Rating.comic_id
     LEFT JOIN Bookmark ON Comic.id = Bookmark.comic_id
-    LEFT JOIN Comment ON Comic.id = Comment.comic_id
     LEFT JOIN Status ON Comic.status_id = Status.id
     WHERE ${whereQuery}
   `;
@@ -208,7 +185,7 @@ export class ComicModel {
       Comic.*,
       AVG(Rating.value) as avg_rating,
       CAST(COUNT(DISTINCT Bookmark.user_id) AS DECIMAL(10, 0)) as unique_bookmarks_count,
-      CAST(COUNT(Comment.id) AS DECIMAL(10, 0)) as comments_count,
+      COALESCE((SELECT COUNT(*) FROM Comment WHERE Comment.comic_id = Comic.id), 0) as comments_count,
       COALESCE(
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Genre.id, 'title', Genre.title))
@@ -247,7 +224,6 @@ export class ComicModel {
     FROM Comic
     LEFT JOIN Rating ON Comic.id = Rating.comic_id
     LEFT JOIN Bookmark ON Comic.id = Bookmark.comic_id
-    LEFT JOIN Comment ON Comic.id = Comment.comic_id
     LEFT JOIN Status ON Comic.status_id = Status.id
     WHERE Comic.id = ${id}
     GROUP BY Comic.id
