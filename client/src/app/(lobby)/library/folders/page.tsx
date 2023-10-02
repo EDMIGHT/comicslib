@@ -30,7 +30,7 @@ const Page = async () => {
     <div className='flex flex-col gap-2'>
       <PageHeader>Your folders</PageHeader>
       {isMoreThanZeroFolder && (
-        <p className='pl-2 text-base font-medium text-muted-foreground'>
+        <p className='pl-2 text-sm font-medium text-muted-foreground md:text-base'>
           You can change the order of folders by dragging them and saving the change using the
           &#34;Save changes&#34; button at the bottom of the list
         </p>

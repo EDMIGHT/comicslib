@@ -55,18 +55,21 @@ const Page = async ({ params: { slug } }: PageProps) => {
 
   return (
     <MenuSetterHOC>
-      <div>
+      <div className='relative space-y-1'>
+        <div className='fixed bottom-2 left-2 z-20 rounded bg-black px-2 py-1  font-semibold md:hidden'>
+          {page}/{response.totalPages}
+        </div>
         <div className='container flex items-center justify-between gap-2'>
           <Link
             href={`${HREFS.comics}/${chapter.comic.id}`}
-            className='p-1 hover:opacity-80 focus:opacity-80'
+            className='p-1 text-center hover:opacity-80 focus:opacity-80'
           >
-            <h1 className='text-xl font-semibold'>{chapter.comic.title}</h1>
+            <h1 className='text-lg font-semibold md:text-xl'>{chapter.comic.title}</h1>
             <h2 className='text-sm'>
               Ch. {chapter.number} {chapter.title ? `- ${chapter.title}` : null}
             </h2>
           </Link>
-          <div className='font-semibold'>
+          <div className='hidden font-semibold md:block'>
             {page}/{response.totalPages}
           </div>
           <div className='flex items-center gap-2'>
@@ -89,7 +92,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
           nextChapter={response.nextChapter}
           prevChapter={response.prevChapter}
         >
-          <div className='relative min-h-screen w-auto'>
+          <div className='relative h-screen'>
             <Image src={response.img} alt={`${page} page`} fill className='object-contain' />
           </div>
         </PageBackground>

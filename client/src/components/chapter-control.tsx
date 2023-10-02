@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { FC, useState } from 'react';
 
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
@@ -21,8 +21,6 @@ type ChapterControlProps = {
 
 export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapterId }) => {
   const [open, setOpen] = useState(false);
-
-  const router = useRouter();
 
   const {
     data: content,
@@ -51,9 +49,9 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[200px] justify-between'
+          className='w-fit justify-between md:w-[200px]'
         >
-          <span className='block w-[150px] truncate'>
+          <span className='mr-2 hidden w-[150px] truncate md:block'>
             {existedChap
               ? `Ch. ${existedChap.number} ${
                   existedChap.title ? `- ${existedChap.title}` : ''
@@ -61,30 +59,27 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
               : 'select chapter'}
           </span>
 
-          <Icons.chevronUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+          <Icons.chevronUpDown className='h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='z-10 w-[200px] p-2'>
-        <ScrollArea className='max-h-[40vh]'>
-          <ul className='flex flex-col gap-1 '>
+        <ScrollArea className='flex max-h-[40vh] flex-col' type='always'>
+          <ul className='flex flex-col gap-1'>
             {content?.map((chap) => (
               <li key={chap.id}>
-                <button
+                <Link
+                  href={`${HREFS.chapter}/${chap.id}`}
                   className={cn(
-                    'px-2 py-1 text-sm rounded cursor-pointer w-full text-start outline-none truncate',
+                    'px-2 py-1 text-sm rounded cursor-pointer w-full text-start outline-none truncate block',
                     chap.id === currentChapterId
                       ? 'bg-active text-active-foreground'
                       : 'hover:bg-secondary focus:bg-secondary'
                   )}
-                  onClick={() => {
-                    setOpen(false);
-                    router.push(`${HREFS.chapter}/${chap.id}`);
-                  }}
                 >
                   <span className='block w-[150px] truncate'>
                     Ch. {chap.number} {chap.title ? `- ${chap.title}` : null}
                   </span>
-                </button>
+                </Link>
               </li>
             ))}
           </ul>

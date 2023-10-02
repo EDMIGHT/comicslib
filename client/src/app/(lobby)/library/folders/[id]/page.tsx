@@ -37,7 +37,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
         />
         <Sort variants={SORT_VARIANTS.comics} {...searchParams} />
       </div>
-      <ComicsFeed folderId={folderInfo.id} />
+      <ComicsFeed folderId={folderInfo.id} {...searchParams} />
     </div>
   );
 };

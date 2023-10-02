@@ -36,7 +36,7 @@ export const Comic: FC<IResponseComic> = ({
       </Link>
       <div className='flex flex-1 flex-col gap-2'>
         <Link href={`${HREFS.comics}/${id}`}>
-          <CardTitle className='text-xl hover:opacity-80'>{title}</CardTitle>
+          <CardTitle className='text-lg hover:opacity-80 xl:text-xl'>{title}</CardTitle>
         </Link>
         <div className='flex justify-between gap-1'>
           <ComicCounters
