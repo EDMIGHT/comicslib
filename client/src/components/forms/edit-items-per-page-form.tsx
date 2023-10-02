@@ -1,8 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CaretSortIcon } from '@radix-ui/react-icons';
-import { CheckIcon } from 'lucide-react';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -109,7 +107,7 @@ export const EditItemsPerPageForm: FC = ({}) => {
                             }}
                           >
                             {comicVar}
-                            <CheckIcon
+                            <Icons.check
                               className={cn(
                                 'ml-auto h-4 w-4',
                                 comicVar === field.value ? 'opacity-100' : 'opacity-0'
@@ -163,7 +161,7 @@ export const EditItemsPerPageForm: FC = ({}) => {
                             }}
                           >
                             {userVar}
-                            <CheckIcon
+                            <Icons.check
                               className={cn(
                                 'ml-auto h-4 w-4',
                                 userVar === field.value ? 'opacity-100' : 'opacity-0'

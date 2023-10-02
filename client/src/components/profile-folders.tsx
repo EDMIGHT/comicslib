@@ -39,7 +39,7 @@ export const ProfileFolders: FC<ProfileFoldersProps> = ({ folders, login }) => {
               href={`${HREFS.profile}/${login}/folders/${f.id}`}
               className={cn(
                 'flex items-center gap-1 rounded px-4 py-1 text-base',
-                pathname.includes(`${HREFS.profile}/${login}/folders/${f.id}`)
+                pathname === `${HREFS.profile}/${login}/folders/${f.id}`
                   ? 'bg-active text-active-foreground'
                   : 'hover:bg-background/30 focus:bg-background/30'
               )}

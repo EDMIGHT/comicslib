@@ -6,8 +6,9 @@ import { ProfileAvatar } from '@/components/profile-avatar';
 import { ProfileFolders } from '@/components/profile-folders';
 import { ProfileHeader } from '@/components/profile-header';
 import { ProfileMenu } from '@/components/profile-menu';
+import { ProfileMobileNav } from '@/components/profile-mobile-nav';
 import { HREFS } from '@/configs/href.configs';
-import { SITE_META } from '@/configs/site.configs';
+import { PROFILE_NAVIGATION, SITE_META } from '@/configs/site.configs';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { absoluteUrl, createTitle } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
@@ -54,21 +55,23 @@ const Layout: FC<LayoutProps> = async ({ children, params: { login } }) => {
   const user = await UsersService.getProfile(login);
 
   if (!user) {
-    return notFound();
+    notFound();
   }
 
   return (
-    <div className='grid grid-cols-[200px_1fr] gap-2 md:gap-6'>
+    <div className='grid grid-cols-[auto_1fr] gap-2 md:grid-cols-[200px_1fr] md:gap-6'>
       <ProfileAvatar {...user} currentUser={currentUser} />
 
       <ProfileHeader user={user} currentUser={currentUser} />
 
-      <nav className='h-fit rounded border-none bg-card p-1'>
+      <ProfileMobileNav login={user.login} folders={user.folders} />
+
+      <nav className='hidden h-fit rounded border-none bg-card p-1 md:block'>
         <ProfileMenu login={user.login} />
         <ProfileFolders folders={user.folders} login={user.login} />
       </nav>
 
-      {children}
+      <div className='col-span-2 md:col-span-1'>{children}</div>
     </div>
   );
 };

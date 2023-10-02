@@ -13,6 +13,9 @@ type ComicSearchProps = {
   isScrolled?: boolean;
 };
 
+// BAG in mobile adaptation mode (I don’t get it in other options), there may be a hydration error when checking the client’s operating system
+// Is it worth complicating the code to fix this error or not...
+
 export const ComicSearch: FC<ComicSearchProps> = ({ isScrolled = false }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);

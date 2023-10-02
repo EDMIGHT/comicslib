@@ -10,7 +10,7 @@ import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { ComicSkeletons } from '@/components/skeletons/comic-skeletons';
 import { useAppSelector } from '@/hooks/redux-hooks';
 import { useIntersection } from '@/hooks/use-intersection';
-import { combineString } from '@/lib/utils';
+import { cn, combineString } from '@/lib/utils';
 import { ComicsService, IGetAllComicsArg } from '@/services/comics.service';
 
 type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses' | 'themes'> & {
@@ -21,9 +21,10 @@ type IComicsProps = Omit<IGetAllComicsArg, 'genres' | 'authors' | 'statuses' | '
   date?: string;
   startDate?: string;
   endDate?: string;
+  className?: string;
 };
 
-export const ComicsFeed: FC<IComicsProps> = ({ ...queryOptions }) => {
+export const ComicsFeed: FC<IComicsProps> = ({ className, ...queryOptions }) => {
   const { countComicsPerPage } = useAppSelector((state) => state.settings);
   const lastCommentRef = useRef<HTMLLIElement>(null);
   const [parent] = useAutoAnimate();
@@ -85,7 +86,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ ...queryOptions }) => {
   const comics = data?.pages.flatMap((page) => page.comics);
 
   return (
-    <ul ref={parent} className='grid grid-cols-1 gap-2 lg:grid-cols-2'>
+    <ul ref={parent} className={cn('grid grid-cols-1 gap-2 lg:grid-cols-2', className)}>
       {isSuccess &&
         (comics && comics.length > 0 ? (
           comics.map((comic, i) => {
@@ -105,7 +106,7 @@ export const ComicsFeed: FC<IComicsProps> = ({ ...queryOptions }) => {
           })
         ) : (
           <div className='col-span-2 flex h-[50vh] items-center justify-center text-center'>
-            <h3 className='text-3xl font-medium'>no comics found</h3>
+            <h3 className='text-2xl font-medium xl:text-3xl'>no comics found</h3>
           </div>
         ))}
       {(isLoading || isError) && <ComicSkeletons />}

@@ -77,7 +77,7 @@ export const CropImgDialog: FC<CropImgDialogProps> = ({ file, open, setOpen, onC
             guides={true}
           />
         </div>
-        <DialogFooter>
+        <DialogFooter className='gap-2'>
           <Button
             onClick={() => {
               cropperRef.current?.cropper.reset();

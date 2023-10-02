@@ -50,7 +50,9 @@ export class UserModel {
   public static async getAllCount(login: string): Promise<number> {
     return prisma.user.count({
       where: {
-        login,
+        login: {
+          startsWith: login,
+        },
       },
     });
   }

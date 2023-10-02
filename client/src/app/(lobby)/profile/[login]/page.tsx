@@ -31,7 +31,7 @@ const Page = ({ params: { login }, searchParams }: PageProps) => {
           className='w-[230px]'
         />
       </div>
-      <ComicsFeed ratedUser={login} {...searchParams} />
+      <ComicsFeed ratedUser={login} className='lg:grid-cols-1' {...searchParams} />
     </div>
   );
 };

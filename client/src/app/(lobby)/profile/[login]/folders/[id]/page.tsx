@@ -20,7 +20,7 @@ const Page = async ({ params: { id } }: PageProps) => {
         </span>
       </div>
       <div>
-        <ComicsFeed folderId={id} />
+        <ComicsFeed folderId={id} className='lg:grid-cols-1' />
       </div>
     </div>
   );

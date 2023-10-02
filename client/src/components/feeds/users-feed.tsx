@@ -23,7 +23,7 @@ export const UsersFeed: FC<IGetAllUsersArg> = ({ ...searchQuery }) => {
     threshold: 1,
   });
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useInfiniteQuery(
+  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess, isError } = useInfiniteQuery(
     [
       REACT_QUERY_KEYS.users,
       countUsersPerPage,
@@ -81,10 +81,10 @@ export const UsersFeed: FC<IGetAllUsersArg> = ({ ...searchQuery }) => {
           })
         ) : (
           <div className='col-span-1 flex h-[50vh] items-center justify-center text-center md:col-span-2 lg:col-span-3 xl:col-span-4'>
-            <h3 className='text-xl font-medium md:text-3xl'>No users found 😢</h3>
+            <h3 className='text-2xl font-medium xl:text-3xl'>No users found 😢</h3>
           </div>
         ))}
-      {isLoading && <UserItemSkeletons />}
+      {(isLoading || isError) && <UserItemSkeletons />}
     </ul>
   );
 };
