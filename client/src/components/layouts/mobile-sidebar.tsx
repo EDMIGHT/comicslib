@@ -20,6 +20,10 @@ export const MobileSidebar: FC<MobileSidebarProps> = ({ user, className, ...rest
   const { isActiveMobileMenu } = useAppSelector((state) => state.settings);
   const { setIsActiveMobileMenu } = useActions();
 
+  const onClickMenuItem = () => {
+    setIsActiveMobileMenu(false);
+  };
+
   return (
     <>
       {isActiveMobileMenu && (
@@ -51,7 +55,11 @@ export const MobileSidebar: FC<MobileSidebarProps> = ({ user, className, ...rest
           </button>
         </div>
 
-        <Menu navigation={SITE_CONFIG.navigation} user={user} />
+        <Menu
+          navigation={SITE_CONFIG.navigation}
+          user={user}
+          onClickMenuItem={onClickMenuItem}
+        />
         <SidebarFooter socialLinks={SITE_CONFIG.socials} />
       </aside>
     </>

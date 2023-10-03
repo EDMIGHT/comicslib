@@ -12,11 +12,12 @@ import { IUser } from '@/types/user.types';
 export type MenuProps = {
   user: IUser | null;
   navigation: readonly NavigationItem[];
+  onClickMenuItem?: () => void;
 };
 
 const navItemStyles = 'flex items-center gap-1 font-semibold py-1 px-2';
 
-export const Menu: FC<MenuProps> = ({ navigation, user }) => {
+export const Menu: FC<MenuProps> = ({ navigation, user, onClickMenuItem }) => {
   const pathname = usePathname();
 
   return (
@@ -38,6 +39,7 @@ export const Menu: FC<MenuProps> = ({ navigation, user }) => {
                           ? 'bg-active text-active-foreground'
                           : 'hover:bg-background/30 focus:bg-background/30'
                       )}
+                      onClick={() => onClickMenuItem && onClickMenuItem()}
                     >
                       {Icon && <Icon />}
                       {navItem.title}
@@ -62,6 +64,7 @@ export const Menu: FC<MenuProps> = ({ navigation, user }) => {
                               ? 'bg-active text-active-foreground'
                               : 'hover:bg-background/30 focus:bg-background/30'
                           )}
+                          onClick={() => onClickMenuItem && onClickMenuItem()}
                         >
                           {navItemLink.title}
                         </Link>

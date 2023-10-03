@@ -115,7 +115,14 @@ export class ComicModel {
 
     const comics = await prisma.$queryRaw<IComicWithData[]>`
     SELECT
-      Comic.*,
+      Comic.id, 
+      Comic.title,
+      Comic.desc,
+      Comic.img,
+      Comic.status_id AS statusId,
+      Comic.created_at AS createdAt,
+      Comic.released_at as releasedAt,
+      Comic.updated_at as updatedAt,
       AVG(Rating.value) as avg_rating,
       CAST(COUNT(DISTINCT Bookmark.user_id) AS DECIMAL(10, 0)) as unique_bookmarks_count,
       COALESCE((SELECT COUNT(*) FROM Comment WHERE Comment.comic_id = Comic.id), 0) as comments_count,
@@ -182,7 +189,14 @@ export class ComicModel {
   public static async get(id: string): Promise<IComicWithDataSingle | null> {
     const [comic] = await prisma.$queryRaw<IComicWithDataSingle[]>`
     SELECT
-      Comic.*,
+      Comic.id, 
+      Comic.title,
+      Comic.desc,
+      Comic.img,
+      Comic.status_id AS statusId,
+      Comic.created_at AS createdAt,
+      Comic.released_at as releasedAt,
+      Comic.updated_at as updatedAt,
       AVG(Rating.value) as avg_rating,
       CAST(COUNT(DISTINCT Bookmark.user_id) AS DECIMAL(10, 0)) as unique_bookmarks_count,
       COALESCE((SELECT COUNT(*) FROM Comment WHERE Comment.comic_id = Comic.id), 0) as comments_count,

@@ -23,7 +23,7 @@ export const ComicPageImg = forwardRef<HTMLDivElement, ComicPageImgProps>(
           ref={ref}
           {...rest}
           className={cn(
-            'relative flex flex-col w-[140px] h-[200px] sm:w-[180px] sm:h-[240px] md:w-[210px] md:h-[270px] justify-center shrink-0  gap-1 rounded cursor-pointer group',
+            'relative flex flex-col w-[210px] h-[270px] justify-center shrink-0  gap-1 rounded cursor-pointer group',
             className
           )}
           onClick={() => setOpen(true)}

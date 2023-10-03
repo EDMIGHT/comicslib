@@ -11,7 +11,7 @@ import { ShowMoreHoc } from '@/components/hocs/show-more-hoc';
 import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns';
 import { StatusBadge } from '@/components/status-badge';
 import { HREFS } from '@/configs/href.configs';
-import { SITE_META } from '@/configs/site.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
 import { absoluteUrl, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
@@ -35,7 +35,7 @@ export async function generateMetadata({ params: { id } }: PageProps): Promise<M
     return {};
   }
 
-  const ogUrl = new URL(SITE_META.generateOg.comic);
+  const ogUrl = new URL(OPENGRAPHS_URLS.comic);
   ogUrl.searchParams.set('comicId', comic.id);
 
   return {
@@ -110,7 +110,11 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
       </div>
       <div className='flex flex-col gap-2 md:gap-4'>
         <div className='grid grid-cols-[auto_1fr]  items-start gap-2 md:gap-4'>
-          <ComicPageImg imgSrc={img} alt={title} />
+          <ComicPageImg
+            imgSrc={img}
+            alt={title}
+            className='h-[200px] w-[140px] sm:h-[240px] sm:w-[180px] md:h-[270px] md:w-[210px]'
+          />
           <div className='flex h-full flex-col justify-between gap-2'>
             <h1 className='text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl'>
               {title}

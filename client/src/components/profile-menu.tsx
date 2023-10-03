@@ -6,7 +6,7 @@ import { FC } from 'react';
 
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
-import { PROFILE_NAVIGATION } from '@/configs/site.configs';
+import { PROFILE_NAVIGATION } from '@/configs/navigation.configs';
 import { cn } from '@/lib/utils';
 
 type IProfileMenuProps = {

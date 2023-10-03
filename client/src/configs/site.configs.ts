@@ -2,7 +2,6 @@ import {
   COMIC_SORT_VARIANTS,
   COMIC_WITH_CHAPTERS_SORT_VARIANTS,
 } from '@/configs/comic.configs';
-import { CREATE_PAGES_META } from '@/configs/meta.configs';
 import { NAVIGATION } from '@/configs/navigation.configs';
 import { ISortVariants, SiteConfig, SocialLink } from '@/types/configs.types';
 
@@ -38,12 +37,10 @@ export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
   },
 ];
 
-export const SITE_META = {
-  generateOg: {
-    page: `${process.env.APP_URL}/api/meta/og`,
-    comic: `${process.env.APP_URL}/api/meta/comic-og`,
-    profile: `${process.env.APP_URL}/api/meta/profile-og`,
-  },
+export const OPENGRAPHS_URLS = {
+  page: `${process.env.APP_URL}/api/meta/og`,
+  comic: `${process.env.APP_URL}/api/meta/comic-og`,
+  profile: `${process.env.APP_URL}/api/meta/profile-og`,
 };
 
 export const SITE_CONFIG: SiteConfig = {

@@ -4,7 +4,7 @@ import { CreateComicForm } from '@/components/forms/create-comic-form';
 import { PageHeader } from '@/components/page-header';
 import { HREFS } from '@/configs/href.configs';
 import { CREATE_PAGES_META } from '@/configs/meta.configs';
-import { SITE_META } from '@/configs/site.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
 import { absoluteUrl, createTitle } from '@/lib/utils';
 import { GenresService } from '@/services/genres.service';
 import { StatusesService } from '@/services/statuses.service';
@@ -14,7 +14,7 @@ import { ThemesService } from '@/services/themes.service';
 export const generateMetadata = async (): Promise<Metadata> => {
   const { title, desc } = CREATE_PAGES_META.title;
 
-  const ogUrl = new URL(SITE_META.generateOg.page);
+  const ogUrl = new URL(OPENGRAPHS_URLS.page);
   ogUrl.searchParams.set('title', title);
   ogUrl.searchParams.set('description', desc);
   ogUrl.searchParams.set('mode', 'dark');

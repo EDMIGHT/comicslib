@@ -16,14 +16,6 @@ export const MenuSwitcher = () => {
       />
     );
   }
-  // if (windowSizes.width < 1024 && !isActiveMobileMenu) {
-  //   return (
-  //     <MenuSwitcherBase
-  //       onClickBtn={() => setIsActiveMobileMenu(!isActiveMobileMenu)}
-  //       className='flex lg:hidden'
-  //     />
-  //   );
-  // }
 
   return null;
 };

@@ -5,12 +5,13 @@ import { notFound } from 'next/navigation';
 
 import { CreateChapterForm } from '@/components/forms/create-chapter-form';
 import { PageHeader } from '@/components/page-header';
-import { SectionHeader } from '@/components/section-header';
 import { StatusBadge } from '@/components/status-badge';
-import { Card } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { HREFS } from '@/configs/href.configs';
-import { createTitle } from '@/lib/utils';
+import { CREATE_PAGES_META } from '@/configs/meta.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
+import { absoluteUrl, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 type PageProps = {
@@ -19,10 +20,33 @@ type PageProps = {
   };
 };
 
-export const metadata: Metadata = {
-  title: createTitle('Upload Chapter'),
-  description:
-    'Turn your ideas into comics! Download a new chapter and unravel the plot. Easily and conveniently create your worlds on the pages of each chapter.',
+// eslint-disable-next-line @typescript-eslint/require-await
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { title, desc } = CREATE_PAGES_META.chapter;
+
+  const ogUrl = new URL(OPENGRAPHS_URLS.page);
+  ogUrl.searchParams.set('title', title);
+  ogUrl.searchParams.set('description', desc);
+  ogUrl.searchParams.set('mode', 'dark');
+
+  return {
+    title: createTitle(title),
+    description: desc,
+    openGraph: {
+      title: title,
+      description: desc,
+      type: 'website',
+      url: absoluteUrl(HREFS.create.chapter),
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+  };
 };
 
 const Page = async ({ params: { id } }: PageProps) => {
@@ -35,8 +59,8 @@ const Page = async ({ params: { id } }: PageProps) => {
   return (
     <div className='space-y-4'>
       <PageHeader>Upload Chapter</PageHeader>
-      <section>
-        <SectionHeader>Comic Details</SectionHeader>
+      <Card variant='transparent' as='section' className='space-y-2'>
+        <CardTitle className='text-2xl'>Comic Details</CardTitle>
         <Link href={`${HREFS.comics}/${id}`}>
           <Card className='grid grid-cols-[auto_1fr] gap-2 p-2 hover:bg-card/80'>
             <Image
@@ -63,7 +87,7 @@ const Page = async ({ params: { id } }: PageProps) => {
             </div>
           </Card>
         </Link>
-      </section>
+      </Card>
       <Separator />
       <CreateChapterForm comicId={id} />
     </div>
