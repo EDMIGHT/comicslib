@@ -113,7 +113,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
         className='space-y-2'
       >
-        <div className='grid grid-cols-[200px_1fr] gap-2'>
+        <div className='grid grid-cols-1 gap-2 sm:grid-cols-[200px_1fr]'>
           <FormField
             control={form.control}
             name='img'
@@ -125,7 +125,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                       void onSelectFile(field.onChange, selectedFile)
                     }
                   >
-                    <div className='group relative flex h-[270px] w-[200px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border p-2 transition-colors hover:bg-muted'>
+                    <div className='group relative mx-auto flex h-[270px] w-[200px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border p-2 transition-colors hover:bg-muted sm:mx-0'>
                       <Icons.uploadCloud className='h-10 w-10' />
                       {field.value && (
                         <>

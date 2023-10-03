@@ -9,7 +9,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { HREFS } from '@/configs/href.configs';
-import { AUTH_MENU_NAVIGATION } from '@/configs/site.configs';
+import { AUTH_MENU_NAVIGATION } from '@/configs/navigation.configs';
 import { cn } from '@/lib/utils';
 import { IUser } from '@/types/user.types';
 

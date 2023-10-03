@@ -112,7 +112,9 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
         <div className='grid grid-cols-[auto_1fr]  items-start gap-2 md:gap-4'>
           <ComicPageImg imgSrc={img} alt={title} />
           <div className='flex h-full flex-col justify-between gap-2'>
-            <h1 className='text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl'>{title}</h1>
+            <h1 className='text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl'>
+              {title}
+            </h1>
             <div className='flex flex-col justify-between gap-6'>
               <h4 className='mt-auto w-[90%] truncate font-medium italic'>
                 {comic.authors.map((author) => author.login).join(', ')}
