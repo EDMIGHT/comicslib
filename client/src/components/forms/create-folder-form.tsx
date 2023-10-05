@@ -123,12 +123,19 @@ export const CreateFolderForm: FC = () => {
                   open={isOpenSearchDialog}
                   setOpen={setIsOpenSearchDialog}
                   onClickItem={(comic) => {
-                    field.onChange([...field.value, comic.id]);
-                    setSelectedComic((prev) => [...prev, comic]);
+                    if (field.value.find((addedComicId) => addedComicId === comic.id)) {
+                      field.onChange(field.value.filter((comicId) => comicId !== comic.id));
+                      setSelectedComic((prev) =>
+                        prev.filter((prevComic) => prevComic.id !== comic.id)
+                      );
+                    } else {
+                      field.onChange([...field.value, comic.id]);
+                      setSelectedComic((prev) => [...prev, comic]);
+                    }
                   }}
                 />
               </FormControl>
-              <ul className='grid grid-cols-3 gap-2'>
+              <ul className='grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3'>
                 {selectedComic.map((comic) => (
                   <li key={comic.id} className='relative'>
                     <Link href={`${HREFS.comics}/${comic.id}`}>

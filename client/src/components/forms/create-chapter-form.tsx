@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form';
 
 import { FileDialog } from '@/components/file-dialog';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
+import { SortablePage } from '@/components/sortable-page';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -32,16 +33,16 @@ import {
 import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
+import { LIMITS } from '@/configs/site.configs';
 import { toast } from '@/hooks/use-toast';
 import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { cn } from '@/lib/utils';
 import {
   createChapterSchema,
   ICreateChapterFields,
 } from '@/lib/validators/chapter.validators';
 import { ChaptersService, ICreateChapterArg } from '@/services/chapters.service';
-
-import { SortablePage } from '../sortable-page';
 
 type CreateChapterFormProps = {
   comicId: string;
@@ -80,7 +81,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
     onSuccess: ({ id, number, title }) => {
       toast({
         title: 'Congratulations!!',
-        description: `You have successfully created a chpater: Ch. ${number} ${
+        description: `You have successfully created a chapter: Ch. ${number} ${
           title ? title : ''
         }`,
       });
@@ -91,28 +92,43 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
         conflictError: {
           title: 'Chapter already exists',
           description: 'There already exists a chapter for this comic with this number',
+          action: () => {
+            form.setError('number', {
+              type: 'server',
+              message: 'chapter already exists',
+            });
+          },
         },
       });
     },
   });
 
   const onClickUploadPage = async ({
-    file,
+    files,
     currentValues,
     onChange,
   }: IFieldControlPage & {
-    file: File;
+    files: File[];
   }) => {
-    const convertedFile = await convertImgToBase64(file);
+    try {
+      const convertedFiles = await Promise.all(files.map((file) => convertImgToBase64(file)));
 
-    if (convertedFile) {
-      return onChange([
-        ...currentValues,
-        {
-          id: nanoid(),
-          img: convertedFile,
-        },
-      ]);
+      if (convertedFiles.length > 0) {
+        return onChange([
+          ...currentValues,
+          ...convertedFiles.map((convertedFile) => ({
+            id: nanoid(),
+            img: convertedFile,
+          })),
+        ]);
+      }
+    } catch (error) {
+      toast({
+        title: 'Oops. Something went wrong!',
+        description:
+          'An error occurred while processing photos to upload them, please try again or select another file for this image',
+        variant: 'destructive',
+      });
     }
   };
   const onClickEditPage = async ({
@@ -180,9 +196,15 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
       >
         <div className='flex flex-col gap-2 md:flex-row'>
           <FormItem className='w-full'>
-            <FormLabel>Number</FormLabel>
+            <FormLabel
+              isRequired
+              className={cn(!!form.formState.errors.number && 'text-destructive')}
+            >
+              Number
+            </FormLabel>
             <FormControl>
               <Input
+                aria-invalid={!!form.formState.errors.number}
                 type='number'
                 inputMode='numeric'
                 placeholder='enter number..'
@@ -214,7 +236,12 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
           render={({ field }) => (
             <FormItem className='space-y-2'>
               <div className='flex items-center justify-between gap-2'>
-                <FormLabel isRequired>Pages</FormLabel>
+                <FormLabel isRequired>
+                  Pages{' '}
+                  <span className='text-sm text-muted-foreground'>
+                    (no more than {LIMITS.pagePerChapter})
+                  </span>
+                </FormLabel>
                 {field.value.length > 0 && (
                   <Button
                     type='button'
@@ -256,26 +283,29 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
                     ))}
                   </SortableContext>
                 </DndContext>
-                <li key='control'>
-                  <FormControl>
-                    <FileDialog
-                      onSelectFile={(selectedFile) =>
-                        void onClickUploadPage({
-                          file: selectedFile,
-                          onChange: field.onChange,
-                          currentValues: field.value,
-                        })
-                      }
-                    >
-                      <div className='relative flex h-[270px] w-[210px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border bg-background p-2 transition-colors hover:bg-muted'>
-                        <Icons.uploadCloud className='h-10 w-10' />
-                        <span className='text-center text-sm font-medium'>
-                          Click to upload page for the comic
-                        </span>
-                      </div>
-                    </FileDialog>
-                  </FormControl>
-                </li>
+                {field.value.length < LIMITS.pagePerChapter && (
+                  <li key='control'>
+                    <FormControl>
+                      <FileDialog
+                        maxFiles={LIMITS.pagePerChapter}
+                        onSelectFiles={(selectedFiles) =>
+                          void onClickUploadPage({
+                            files: selectedFiles,
+                            onChange: field.onChange,
+                            currentValues: field.value,
+                          })
+                        }
+                      >
+                        <div className='relative flex h-[270px] w-[210px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border bg-background p-2 transition-colors hover:bg-muted'>
+                          <Icons.uploadCloud className='h-10 w-10' />
+                          <span className='text-center text-sm font-medium'>
+                            Click to upload page for the comic
+                          </span>
+                        </div>
+                      </FileDialog>
+                    </FormControl>
+                  </li>
+                )}
               </ul>
 
               <FormMessage />

@@ -80,6 +80,7 @@ export const SORT_VARIANTS: ISortVariants = {
 } as const;
 
 export const LIMITS = {
+  pagePerChapter: 30,
   chapters: 5,
   comics: 6,
   comicsSearch: 5,

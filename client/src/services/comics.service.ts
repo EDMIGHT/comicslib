@@ -1,4 +1,4 @@
-import { API_COMICS_URL } from '@/configs/endpoint.configs';
+import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
 import { ICreateComicFields } from '@/lib/validators/comic.validators';
 import {
@@ -54,7 +54,7 @@ export class ComicsService {
     const dateSearchQuery = `date=${date}&startDate=${startDate}&endDate=${endDate}`;
 
     const { data } = await api.get<IResponseAllComics>(
-      `${API_COMICS_URL.origin}?${paginationANDsortQuery}&${searchQuery}&${dateSearchQuery}`
+      `${ENDPOINTS.comics.origin}?${paginationANDsortQuery}&${searchQuery}&${dateSearchQuery}`
     );
     return data;
   }
@@ -68,29 +68,29 @@ export class ComicsService {
     const query = `title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`;
 
     const { data } = await api.get<IResponseAllComicsWithChapters>(
-      `${API_COMICS_URL.withChapters}?${query}`
+      `${ENDPOINTS.comics.withChapters}?${query}`
     );
     return data;
   }
 
   public static async getById(id: string | number) {
-    const { data } = await api.get<IResponseSingleComic>(`${API_COMICS_URL.origin}/${id}`);
+    const { data } = await api.get<IResponseSingleComic>(`${ENDPOINTS.comics.origin}/${id}`);
     return data;
   }
   public static async getUserRating(id: string | number) {
-    const { data } = await apiAuth.get<IRating | null>(`${API_COMICS_URL.ratingUser}/${id}`);
+    const { data } = await apiAuth.get<IRating | null>(`${ENDPOINTS.comics.ratingUser}/${id}`);
     return data;
   }
   public static async getRandomId() {
-    const { data } = await api.get<IResponseRandomComic>(API_COMICS_URL.random);
+    const { data } = await api.get<IResponseRandomComic>(ENDPOINTS.comics.random);
     return data;
   }
   public static async create(payload: ICreateComicFields) {
-    const { data } = await apiAuth.post<IComic>(API_COMICS_URL.origin, payload);
+    const { data } = await apiAuth.post<IComic>(ENDPOINTS.comics.origin, payload);
     return data;
   }
   public static async updateRating(id: string | number, value: number) {
-    const { data } = await apiAuth.patch<IRating>(`${API_COMICS_URL.rating}/${id}`, {
+    const { data } = await apiAuth.patch<IRating>(`${ENDPOINTS.comics.rating}/${id}`, {
       value,
     });
     return data;

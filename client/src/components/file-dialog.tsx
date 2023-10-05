@@ -21,7 +21,7 @@ import { cn, formatBytes } from '@/lib/utils';
 
 type FileDialogProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
-  onSelectFile: (file: File) => void;
+  onSelectFiles: (files: File[]) => void;
   accept?: Accept;
   maxSize?: number;
   maxFiles?: number;
@@ -30,7 +30,7 @@ type FileDialogProps = HTMLAttributes<HTMLDivElement> & {
 
 export const FileDialog: FC<FileDialogProps> = ({
   children,
-  onSelectFile,
+  onSelectFiles,
   accept = {
     'image/*': [],
   },
@@ -42,12 +42,14 @@ export const FileDialog: FC<FileDialogProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
 
+  const isMoreThanOneMaxFiles = maxFiles > 1;
+
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
-      acceptedFiles.forEach((file) => {
-        onSelectFile(file);
+      if (acceptedFiles.length > 0) {
+        onSelectFiles(acceptedFiles);
         setOpen(false);
-      });
+      }
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
@@ -65,6 +67,14 @@ export const FileDialog: FC<FileDialogProps> = ({
               title: 'Invalid File Type',
               description: `You can only upload pictures as comic cover`,
             });
+          } else if (errors[0].code === 'too-many-files') {
+            toast({
+              variant: 'destructive',
+              title: 'Too many files',
+              description: `You have selected too many files at once, please select no more than ${maxFiles} ${
+                isMoreThanOneMaxFiles ? 'files' : 'file'
+              } `,
+            });
           } else {
             toast({
               variant: 'destructive',
@@ -75,7 +85,7 @@ export const FileDialog: FC<FileDialogProps> = ({
         });
       }
     },
-    [onSelectFile, maxSize, setOpen]
+    [isMoreThanOneMaxFiles, maxFiles, maxSize, onSelectFiles]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -122,10 +132,12 @@ export const FileDialog: FC<FileDialogProps> = ({
                 aria-hidden='true'
               />
               <p className='mt-2 text-base font-medium text-muted-foreground'>
-                Drag & Drop file here or Click to select file
+                Drag & Drop file here or Click to select{' '}
+                {isMoreThanOneMaxFiles ? 'files' : 'file'}
               </p>
               <p className='text-sm text-slate-500'>
-                Please upload file with size less than {formatBytes(maxSize)}
+                Please upload {isMoreThanOneMaxFiles ? `up to ${maxFiles} files` : 'file'} with
+                size less than {formatBytes(maxSize)}
               </p>
             </div>
           )}

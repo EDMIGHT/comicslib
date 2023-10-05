@@ -1,4 +1,4 @@
-export const API_AUTH_URL = {
+export const API_AUTH_ENDPOINTS = {
   signIn: '/auth/sign-in',
   signUp: '/auth/sign-up',
   signOut: '/auth/sign-out',
@@ -6,7 +6,7 @@ export const API_AUTH_URL = {
   authMe: '/auth/me',
 } as const;
 
-export const API_COMICS_URL = {
+export const API_COMICS_ENDPOINTS = {
   origin: '/comics',
   withChapters: '/comics/with-chapters',
   random: '/comics/random',
@@ -14,11 +14,11 @@ export const API_COMICS_URL = {
   ratingUser: '/comics/rating/me',
 } as const;
 
-export const API_GENRES_URL = {
+export const API_GENRES_ENDPOINTS = {
   origin: '/genres',
 } as const;
 
-export const API_AUTHORS_URL = {
+export const API_AUTHORS_ENDPOINTS = {
   origin: '/authors',
 } as const;
 
@@ -35,7 +35,7 @@ export const API_THEMES_ENDPOINTS = {
   origin: '/themes',
 } as const;
 
-export const API_COMMENTS_URL = {
+export const API_COMMENTS_ENDPOINTS = {
   origin: '/comments',
 } as const;
 
@@ -55,13 +55,13 @@ export const API_FOLDERS_ENDPOINTS = {
 } as const;
 
 export const ENDPOINTS = {
-  auth: API_AUTH_URL,
-  authors: API_AUTHORS_URL,
-  comments: API_COMMENTS_URL,
-  comics: API_COMICS_URL,
+  auth: API_AUTH_ENDPOINTS,
+  authors: API_AUTHORS_ENDPOINTS,
+  comments: API_COMMENTS_ENDPOINTS,
+  comics: API_COMICS_ENDPOINTS,
   chapters: API_CHAPTERS_ENDPOINTS,
   folders: API_FOLDERS_ENDPOINTS,
-  genres: API_GENRES_URL,
+  genres: API_GENRES_ENDPOINTS,
   themes: API_THEMES_ENDPOINTS,
   users: API_USERS_ENDPOINTS,
   statuses: API_STATUSES_ENDPOINTS,

@@ -6,7 +6,10 @@ import { StatusBadge } from '@/components/status-badge';
 import { cn } from '@/lib/utils';
 import { IResponseComic } from '@/types/comic.types';
 
-type SearchComicProps = HTMLAttributes<HTMLButtonElement> &
+type SearchComicProps = Pick<
+  HTMLAttributes<HTMLButtonElement>,
+  'className' | 'onClick' | 'onKeyDown'
+> &
   Pick<
     IResponseComic,
     'img' | 'title' | 'status' | 'avg_rating' | 'unique_bookmarks_count' | 'comments_count'
@@ -40,7 +43,9 @@ export const SearchComic: FC<SearchComicProps> = ({
       />
 
       <div className='flex h-full flex-col justify-between gap-1 py-1'>
-        <h3 className='line-clamp-1 w-fit text-xl font-semibold'>{title}</h3>
+        <h3 className='line-clamp-2 w-[90%] break-words text-start text-base font-semibold lg:text-xl'>
+          {title}
+        </h3>
 
         <ComicCounters
           avg_rating={avg_rating}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { API_AUTH_URL } from '@/configs/endpoint.configs';
+import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { HREFS } from '@/configs/href.configs';
 import { AuthCookie } from '@/lib/helpers/token.helper';
 
@@ -29,7 +29,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (refreshToken && (!accessToken || !isTokenValid)) {
-    const fetchUrl = process.env.API_HOST + API_AUTH_URL.tokens;
+    const fetchUrl = process.env.API_HOST + ENDPOINTS.auth.tokens;
 
     const res = await fetch(fetchUrl, {
       method: 'POST',

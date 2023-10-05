@@ -27,7 +27,7 @@ export const SearchComics: FC<SearchComicsProps> = ({ open, setOpen, onClickItem
   const resetDialog = useCallback(() => {
     setOpen(false);
     setValue('');
-  }, []);
+  }, [setOpen]);
 
   useEffect(() => {
     if (!open) {

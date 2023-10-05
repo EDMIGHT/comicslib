@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FC, HTMLAttributes, ReactNode } from 'react';
 
+import { FileDialogWithCrop } from '@/components/file-dialog-with-crop';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
 import { useActions } from '@/hooks/use-actions';
@@ -11,8 +12,6 @@ import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
-
-import { FileDialogWithCrop } from './file-dialog-with-crop';
 
 type ProfileEditAvatarProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;

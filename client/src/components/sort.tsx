@@ -29,7 +29,9 @@ export const Sort: FC<SortProps> = ({
   const initialVariant = variants.find(
     (v) => v.field === initialSort && v.order === initialOrder
   );
-  const [variant, setVariant] = useState(initialVariant ?? variants[defaultVariantNumber]);
+  const [activeVariant, setActiveVariant] = useState(
+    initialVariant ?? variants[defaultVariantNumber]
+  );
   const [open, setOpen] = useState(false);
 
   const pathname = usePathname();
@@ -59,19 +61,22 @@ export const Sort: FC<SortProps> = ({
           role='combobox'
           aria-expanded={open}
         >
-          {variant.label ?? 'sort'} <Icons.chevronUpDown className='h-4 w-4' />
+          {activeVariant.label ?? 'sort'} <Icons.chevronUpDown className='h-4 w-4' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn(`w-[${contentWidth}] bg-secondary p-0 shadow-xl`)}>
+      <PopoverContent className={cn(`w-[${contentWidth}] p-0 shadow-xl`)}>
         <ul>
           {variants.map((variant, i) => (
             <li
               key={i}
               className={cn(
-                'cursor-pointer hover:bg-background/80 p-2 pl-4 rounded text-sm font-medium'
+                'cursor-pointer  p-2 pl-4 rounded text-sm font-medium',
+                variant.field === activeVariant.field && variant.order === activeVariant.order
+                  ? 'bg-active'
+                  : 'hover:bg-muted/80'
               )}
               onClick={() => {
-                setVariant(variant);
+                setActiveVariant(variant);
                 setOpen(false);
                 router.push(
                   pathname.includes('?')

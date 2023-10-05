@@ -8,7 +8,7 @@ import { ProfileHeader } from '@/components/profile-header';
 import { ProfileMenu } from '@/components/profile-menu';
 import { ProfileMobileNav } from '@/components/profile-mobile-nav';
 import { HREFS } from '@/configs/href.configs';
-import { PROFILE_NAVIGATION, SITE_META } from '@/configs/site.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { absoluteUrl, createTitle } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
@@ -27,7 +27,7 @@ export async function generateMetadata({ params: { login } }: LayoutProps): Prom
     return {};
   }
 
-  const ogUrl = new URL(SITE_META.generateOg.profile);
+  const ogUrl = new URL(OPENGRAPHS_URLS.profile);
   ogUrl.searchParams.set('login', user.login);
 
   return {

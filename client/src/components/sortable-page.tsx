@@ -4,11 +4,10 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { FC } from 'react';
 
+import { ComicPageImg } from '@/components/comic-page-img';
+import { FileDialog } from '@/components/file-dialog';
 import { Icons } from '@/components/ui/icons';
 import { ICreateChapterFields } from '@/lib/validators/chapter.validators';
-
-import { ComicPageImg } from './comic-page-img';
-import { FileDialog } from './file-dialog';
 
 type ICreateChapterField = ICreateChapterFields['pages'][number];
 
@@ -36,7 +35,7 @@ export const SortablePage: FC<SortablePageProps> = ({
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} className='relative'>
-      <FileDialog onSelectFile={(selectedFile) => onClickEditPage(id, selectedFile)}>
+      <FileDialog onSelectFiles={(selectedFiles) => onClickEditPage(id, selectedFiles[0])}>
         <button className='group absolute left-1 top-1 z-10 rounded-full bg-card p-1'>
           <Icons.edit className='h-6 w-6 transition-colors group-hover:stroke-active' />
         </button>

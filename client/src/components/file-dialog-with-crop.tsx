@@ -8,6 +8,7 @@ import {
   useDropzone,
 } from 'react-dropzone';
 
+import { CropImgDialog } from '@/components/crop-img-dialog';
 import {
   Dialog,
   DialogContent,
@@ -19,14 +20,11 @@ import { Icons } from '@/components/ui/icons';
 import { toast } from '@/hooks/use-toast';
 import { cn, formatBytes } from '@/lib/utils';
 
-import { CropImgDialog } from './crop-img-dialog';
-
 type FileDialogProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
   onSelectFile: (file: File) => Promise<void>;
   accept?: Accept;
   maxSize?: number;
-  maxFiles?: number;
   disabled?: boolean;
 };
 
@@ -37,7 +35,6 @@ export const FileDialogWithCrop: FC<FileDialogProps> = ({
     'image/*': [],
   },
   maxSize = 1024 * 1024 * 3,
-  maxFiles = 1,
   disabled = false,
   className,
   ...props
@@ -48,10 +45,8 @@ export const FileDialogWithCrop: FC<FileDialogProps> = ({
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
-      acceptedFiles.forEach((file) => {
-        setOpenCroppedModal(true);
-        setFile(file);
-      });
+      setFile(acceptedFiles[0]);
+      setOpenCroppedModal(true);
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
@@ -86,8 +81,8 @@ export const FileDialogWithCrop: FC<FileDialogProps> = ({
     onDrop,
     accept,
     maxSize,
-    maxFiles,
-    multiple: maxFiles > 1,
+    maxFiles: 1,
+    multiple: false,
     disabled,
   });
 

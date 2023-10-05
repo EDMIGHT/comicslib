@@ -1,5 +1,7 @@
 import * as z from 'zod';
 
+import { LIMITS } from '@/configs/site.configs';
+
 export const createChapterSchema = z.object({
   title: z
     .string()
@@ -22,6 +24,9 @@ export const createChapterSchema = z.object({
     )
     .refine((value) => value.some((item) => item), {
       message: 'you must add at least 1 page to the chapter',
+    })
+    .refine((value) => value.length <= LIMITS.pagePerChapter, {
+      message: `you cannot add more than ${LIMITS.pagePerChapter} pages to the chapter`,
     }),
 });
 

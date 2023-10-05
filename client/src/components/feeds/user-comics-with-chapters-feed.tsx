@@ -65,7 +65,7 @@ export const UserComicsWithChaptersFeed: FC<ComicsWithChaptersFeedProps> = ({
   const comics = data?.pages.flatMap((page) => page.comics);
 
   return (
-    <ul ref={parent} className='grid auto-cols-max grid-cols-2 gap-2'>
+    <ul ref={parent} className='grid grid-cols-1 gap-2'>
       {isSuccess &&
         (comics && comics.length > 0 ? (
           comics.map((comic, i) => {

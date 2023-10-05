@@ -121,8 +121,8 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
               <FormItem>
                 <FormControl>
                   <FileDialog
-                    onSelectFile={(selectedFile) =>
-                      void onSelectFile(field.onChange, selectedFile)
+                    onSelectFiles={(selectedFile) =>
+                      void onSelectFile(field.onChange, selectedFile[0])
                     }
                   >
                     <div className='group relative mx-auto flex h-[270px] w-[200px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border p-2 transition-colors hover:bg-muted sm:mx-0'>
