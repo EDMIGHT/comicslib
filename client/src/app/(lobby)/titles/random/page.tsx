@@ -6,13 +6,38 @@ import { useEffect } from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { HREFS } from '@/configs/href.configs';
-import { createTitle } from '@/lib/utils';
+import { TITLES_PAGE_META } from '@/configs/meta.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
+import { absoluteUrl, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
-export const metadata: Metadata = {
-  title: createTitle('Random comic'),
-  description:
-    "Explore the unknown with a random comic adventure. Dive into the world of comics with a surprise as you're redirected to a randomly selected comic. Discover something new every time you visit!",
+// eslint-disable-next-line @typescript-eslint/require-await
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { title, desc } = TITLES_PAGE_META.random;
+
+  const ogUrl = new URL(OPENGRAPHS_URLS.page);
+  ogUrl.searchParams.set('title', title);
+  ogUrl.searchParams.set('description', desc);
+  ogUrl.searchParams.set('mode', 'dark');
+
+  return {
+    title: createTitle(title),
+    description: desc,
+    openGraph: {
+      title: title,
+      description: desc,
+      type: 'website',
+      url: absoluteUrl(HREFS.titles.random),
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+  };
 };
 
 const Page = () => {
@@ -25,18 +50,18 @@ const Page = () => {
     };
 
     void redirectToRandomComic();
-  }, []);
+  }, [router]);
 
   return (
     <div className='flex flex-col gap-2 md:gap-4'>
       <div className='flex gap-2 md:gap-4'>
-        <Skeleton className='h-[200px] w-[200px] rounded' />
+        <Skeleton className='h-[180px] w-[140px] shrink-0 rounded sm:h-[220px] sm:w-[180px] md:h-[250px] md:w-[210px]' />
         <div className='flex w-full flex-col gap-2'>
-          <div className='flex justify-between gap-2 pt-2'>
-            <Skeleton className='h-[4.5rem] w-[200px]' />
-            <Skeleton className='h-7 w-[100px]' />
-          </div>
-          <div className='mt-auto'>
+          <Skeleton className='h-[3rem] w-[80%]' />
+
+          <div className='mt-auto hidden space-y-2 xl:block'>
+            <Skeleton className='h-[30px] w-[200px]' />
+
             <div className='flex gap-2'>
               <Skeleton className='h-[50px] w-[150px]' />
               <Skeleton className='h-[50px] w-[150px]' />
@@ -45,12 +70,27 @@ const Page = () => {
           </div>
         </div>
       </div>
+
+      <div className='flex gap-2'>
+        <Skeleton className='h-[40px] w-full lg:w-[150px]' />
+        <Skeleton className='h-[40px] w-[150px]' />
+        <Skeleton className='h-[40px] w-12 lg:w-[150px]' />
+      </div>
+
       <div>
         <Skeleton className='h-[100px] w-full' />
       </div>
       <div className='flex gap-2'>
-        <div className='flex flex-1 flex-col gap-2'></div>
-        <div className='flex min-w-[25%] max-w-[300px] flex-col gap-2'>
+        <div className='flex flex-1 flex-col gap-2'>
+          <Skeleton className='h-10 w-[150px]' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+        <div className='hidden w-[250px] flex-col gap-2 xl:flex'>
+          <Skeleton className='h-10 w-[200px]' />
           <div className='flex items-center gap-1'>
             <h2 className='text-xl font-semibold'>Status:</h2>
             <Skeleton className='h-5 w-[120px]' />

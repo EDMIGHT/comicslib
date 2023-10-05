@@ -35,7 +35,7 @@ export const MobileSidebar: FC<MobileSidebarProps> = ({ user, className, ...rest
       <aside
         {...rest}
         className={cn(
-          'absolute lg:hidden left-0 top-0 z-40 flex h-screen flex-shrink-0 w-[--menu-width] flex-col bg-card p-3 transition-all',
+          'fixed lg:hidden left-0 top-0 z-40 flex h-screen flex-shrink-0 w-[--menu-width] flex-col bg-card p-3 transition-all',
           isActiveMobileMenu ? 'm-0' : '-ml-[--menu-width] -left-[--menu-width]',
           className
         )}

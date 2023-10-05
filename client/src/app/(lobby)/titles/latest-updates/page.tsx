@@ -4,8 +4,10 @@ import { ComicsWithChaptersFeed } from '@/components/feeds/comics-with-chapters-
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
-import { SORT_VARIANTS } from '@/configs/site.configs';
-import { createTitle } from '@/lib/utils';
+import { HREFS } from '@/configs/href.configs';
+import { TITLES_PAGE_META } from '@/configs/meta.configs';
+import { OPENGRAPHS_URLS, SORT_VARIANTS } from '@/configs/site.configs';
+import { absoluteUrl, createTitle } from '@/lib/utils';
 
 type PageProps = {
   searchParams: {
@@ -15,10 +17,33 @@ type PageProps = {
   };
 };
 
-export const metadata: Metadata = {
-  title: createTitle('Latest updates'),
-  description:
-    'Discover the latest updates in the world of comics. Explore newly updated comics that have just been released or refreshed. Stay current with the freshest content from your favorite comics.',
+// eslint-disable-next-line @typescript-eslint/require-await
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { title, desc } = TITLES_PAGE_META.latestUpdaters;
+
+  const ogUrl = new URL(OPENGRAPHS_URLS.page);
+  ogUrl.searchParams.set('title', title);
+  ogUrl.searchParams.set('description', desc);
+  ogUrl.searchParams.set('mode', 'dark');
+
+  return {
+    title: createTitle(title),
+    description: desc,
+    openGraph: {
+      title: title,
+      description: desc,
+      type: 'website',
+      url: absoluteUrl(HREFS.titles.latestUpdates),
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+  };
 };
 
 const Page = ({ searchParams }: PageProps) => {
@@ -30,7 +55,7 @@ const Page = ({ searchParams }: PageProps) => {
           initialValue={searchParams.title}
           placeholder='enter title name..'
           paramsKey='title'
-          className='flex-1'
+          className='min-w-[300px] flex-1'
         />
         <Sort
           initialSort={searchParams.sort}

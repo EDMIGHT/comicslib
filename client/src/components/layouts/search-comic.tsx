@@ -23,12 +23,14 @@ export const SearchComic: FC<SearchComicProps> = ({
   unique_bookmarks_count,
   status,
   className,
-  ...props
+  onClick,
+  onKeyDown,
 }) => {
   return (
     <button
       type='button'
-      {...props}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
       className={cn(
         'grid grid-cols-[auto_1fr] w-full h-full gap-2 rounded p-1 transition-colors hover:bg-secondary/75',
         className

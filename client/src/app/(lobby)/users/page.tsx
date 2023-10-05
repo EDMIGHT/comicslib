@@ -26,18 +26,21 @@ const Page: FC<PageProps> = ({ searchParams }) => {
   return (
     <div className='space-y-2'>
       <PageHeader>Search Users</PageHeader>
-      <Search
-        className='min-w-[300px]'
-        initialValue={searchParams.login}
-        placeholder='enter user login..'
-        paramsKey='login'
-      />
-      <Sort
-        variants={SORT_VARIANTS.users}
-        initialSort={searchParams.sort}
-        initialOrder={searchParams.order}
-        contentWidth='200px'
-      />
+      <div className='flex flex-col gap-2 md:flex-row'>
+        <Search
+          className='min-w-[300px] flex-1'
+          initialValue={searchParams.login}
+          placeholder='enter user login..'
+          paramsKey='login'
+        />
+        <Sort
+          variants={SORT_VARIANTS.users}
+          initialSort={searchParams.sort}
+          initialOrder={searchParams.order}
+          contentWidth='200px'
+        />
+      </div>
+
       <UsersFeed {...searchParams} />
     </div>
   );

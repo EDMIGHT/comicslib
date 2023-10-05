@@ -14,11 +14,37 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { HREFS } from '@/configs/href.configs';
-import { cn, createTitle } from '@/lib/utils';
+import { AUTH_PAGES_META } from '@/configs/meta.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
+import { absoluteUrl, cn, createTitle } from '@/lib/utils';
 
-export const metadata: Metadata = {
-  title: createTitle('Sign Up'),
-  description: 'Page for user registration',
+// eslint-disable-next-line @typescript-eslint/require-await
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { title, desc } = AUTH_PAGES_META.signUp;
+
+  const ogUrl = new URL(OPENGRAPHS_URLS.page);
+  ogUrl.searchParams.set('title', title);
+  ogUrl.searchParams.set('description', desc);
+  ogUrl.searchParams.set('mode', 'dark');
+
+  return {
+    title: createTitle(title),
+    description: desc,
+    openGraph: {
+      title: title,
+      description: desc,
+      type: 'website',
+      url: absoluteUrl(HREFS.auth.signUp),
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+  };
 };
 
 const Page = () => {

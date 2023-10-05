@@ -32,7 +32,7 @@ export const Header: FC<HeaderProps> = ({ user }) => {
   return (
     <header
       className={cn(
-        'sticky top-0 z-20 w-full p-2',
+        'sticky top-0 z-20 w-full py-2',
         isScrolled &&
           'border-b bg-background/95  backdrop-blur supports-backdrop-blur:bg-background/60'
       )}

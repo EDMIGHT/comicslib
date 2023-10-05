@@ -125,7 +125,10 @@ export const EditFolderForm: FC<EditFolderFormProps> = ({
                   const isDeleted = field.value?.some((val) => val === id);
 
                   return (
-                    <li key={id} className='relative h-[300px] overflow-hidden rounded'>
+                    <li
+                      key={id}
+                      className='relative h-[250px] overflow-hidden rounded md:h-[300px]'
+                    >
                       {!isDeleted && (
                         <button
                           className='absolute right-1 top-1 z-10 rounded-full bg-destructive p-1 hover:brightness-75 focus:brightness-75'

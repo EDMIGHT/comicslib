@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { Mdx } from '@/components/mdx/mdx-components';
 import { PageHeader } from '@/components/page-header';
-import { SITE_META } from '@/configs/site.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
 import { absoluteUrl, createTitle } from '@/lib/utils';
 
 type PageProps = {
@@ -27,7 +27,7 @@ export const generateMetadata = async ({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
-  const ogUrl = new URL(SITE_META.generateOg.page);
+  const ogUrl = new URL(OPENGRAPHS_URLS.page);
   ogUrl.searchParams.set('title', content.title);
   ogUrl.searchParams.set('type', 'Document');
   ogUrl.searchParams.set('mode', 'dark');

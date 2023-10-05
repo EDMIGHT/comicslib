@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 
+import { MenuAction } from '@/components/menu-action';
 import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import { NavigationItem } from '@/types/configs.types';
@@ -15,7 +16,7 @@ export type MenuProps = {
   onClickMenuItem?: () => void;
 };
 
-const navItemStyles = 'flex items-center gap-1 font-semibold py-1 px-2';
+const navItemStyles = 'flex items-center gap-1 font-semibold py-1 px-2 w-full';
 
 export const Menu: FC<MenuProps> = ({ navigation, user, onClickMenuItem }) => {
   const pathname = usePathname();
@@ -25,16 +26,17 @@ export const Menu: FC<MenuProps> = ({ navigation, user, onClickMenuItem }) => {
       <ul className='flex flex-col gap-2'>
         {navigation.map((navItem, i) => {
           const Icon = Icons[navItem.icon];
+
           return (
             ((navItem.isPrivate && user) || !navItem.isPrivate) && (
               <li key={'navItem' + i}>
-                <h3>
+                <h3 className='flex justify-between gap-1'>
                   {navItem.href ? (
                     <Link
                       href={navItem.href}
                       className={cn(
                         navItemStyles,
-                        'rounded',
+                        'rounded w-full',
                         pathname === navItem.href
                           ? 'bg-active text-active-foreground'
                           : 'hover:bg-background/30 focus:bg-background/30'
@@ -49,6 +51,11 @@ export const Menu: FC<MenuProps> = ({ navigation, user, onClickMenuItem }) => {
                       {Icon && <Icon />}
                       {navItem.title}
                     </span>
+                  )}
+                  {navItem.action && (
+                    <button onClick={() => onClickMenuItem && onClickMenuItem()}>
+                      <MenuAction action={navItem.action} />
+                    </button>
                   )}
                 </h3>
 

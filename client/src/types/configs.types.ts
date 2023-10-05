@@ -1,5 +1,3 @@
-import { LucideProps } from 'lucide-react';
-
 import { Icons } from '@/components/ui/icons';
 
 export type SocialLink = {
@@ -15,10 +13,16 @@ export type NavigationLink = {
   isPrivate?: boolean;
 };
 
+export type NavigationItemAction = {
+  icon: keyof typeof Icons;
+  href: string;
+};
+
 export type NavigationItem = {
   title: string;
   href?: string;
   isPrivate?: boolean;
+  action?: NavigationItemAction;
   icon: keyof typeof Icons;
   links?: NavigationLink[];
 };

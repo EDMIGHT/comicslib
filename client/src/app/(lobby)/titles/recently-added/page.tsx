@@ -4,7 +4,10 @@ import { AdvancedFiltering } from '@/components/advanced-filtering';
 import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
-import { createTitle } from '@/lib/utils';
+import { HREFS } from '@/configs/href.configs';
+import { TITLES_PAGE_META } from '@/configs/meta.configs';
+import { OPENGRAPHS_URLS } from '@/configs/site.configs';
+import { absoluteUrl, createTitle } from '@/lib/utils';
 import { GenresService } from '@/services/genres.service';
 import { StatusesService } from '@/services/statuses.service';
 import { ThemesService } from '@/services/themes.service';
@@ -15,10 +18,33 @@ type PageProps = {
   };
 };
 
-export const metadata: Metadata = {
-  title: createTitle('Recently added'),
-  description:
-    'Page showing recently added comics. Stay up-to-date with the latest and greatest comic releases.',
+// eslint-disable-next-line @typescript-eslint/require-await
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { title, desc } = TITLES_PAGE_META.recentlyAdded;
+
+  const ogUrl = new URL(OPENGRAPHS_URLS.page);
+  ogUrl.searchParams.set('title', title);
+  ogUrl.searchParams.set('description', desc);
+  ogUrl.searchParams.set('mode', 'dark');
+
+  return {
+    title: createTitle(title),
+    description: desc,
+    openGraph: {
+      title: title,
+      description: desc,
+      type: 'website',
+      url: absoluteUrl(HREFS.titles.recentlyAdded),
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+  };
 };
 
 const Page = async ({ searchParams }: PageProps) => {

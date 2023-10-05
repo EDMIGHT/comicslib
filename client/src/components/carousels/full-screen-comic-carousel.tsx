@@ -55,7 +55,7 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
                     alt={comic.title}
                     width={190}
                     height={260}
-                    className='h-full overflow-hidden rounded object-cover object-center'
+                    className='h-[220px] w-[150px] overflow-hidden rounded object-cover object-center md:h-[260px] md:w-[190px]'
                   />
 
                   <div className='grid grid-cols-1'>

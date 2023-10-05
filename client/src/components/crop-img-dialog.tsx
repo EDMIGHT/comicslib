@@ -61,7 +61,7 @@ export const CropImgDialog: FC<CropImgDialogProps> = ({ file, open, setOpen, onC
         <div className='p-2'>
           <Cropper
             ref={cropperRef}
-            className='h-[450px] w-[450px] object-cover'
+            className='h-auto w-full object-cover lg:h-[450px] lg:w-[450px]'
             src={URL.createObjectURL(file)}
             zoomTo={0.5}
             initialAspectRatio={1 / 1}

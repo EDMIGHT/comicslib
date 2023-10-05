@@ -9,6 +9,7 @@ import { ReduxProvider } from '@/components/providers/redux-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { TailwindIndicator } from '@/components/tailwind-indicator';
 import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { SITE_CONFIG, SITE_THEMES } from '@/configs/site.configs';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
@@ -38,9 +39,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   defaultTheme='system'
                   enableSystem
                 >
-                  {children}
-                  <Toaster />
-                  <TailwindIndicator />
+                  <TooltipProvider>
+                    {children}
+                    <Toaster />
+                    <TailwindIndicator />
+                  </TooltipProvider>
                 </ThemeProvider>
               </AuthProvider>
             </LocalProvider>

@@ -19,7 +19,7 @@ const LobbyLayout = async ({ children }: LobbyLayoutProps) => {
 
       <div className='relative flex-1'>
         <Header user={user} />
-        <main className='container  py-2 md:px-8'>{children}</main>
+        <main className='container p-2 md:px-8'>{children}</main>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { NavigationLink } from '@/types/configs.types';
+import { NavigationItem, NavigationLink } from '@/types/configs.types';
 
 import { HREFS } from './href.configs';
 
@@ -33,10 +33,6 @@ export const TITLES_NAVIGATION: NavigationLink[] = [
   {
     title: 'Random',
     href: HREFS.titles.random,
-  },
-  {
-    title: 'Create Title',
-    href: HREFS.create.title,
   },
 ];
 
@@ -100,7 +96,7 @@ export const AUTH_MENU_NAVIGATION: readonly NavigationLink[] = [
   },
 ];
 
-export const NAVIGATION = [
+export const NAVIGATION: readonly NavigationItem[] = [
   {
     title: 'Home',
     href: '/',
@@ -116,6 +112,10 @@ export const NAVIGATION = [
     title: 'Titles',
     links: TITLES_NAVIGATION,
     icon: 'titles',
+    action: {
+      icon: 'add',
+      href: HREFS.create.title,
+    },
   },
   {
     title: 'Community',
@@ -127,4 +127,4 @@ export const NAVIGATION = [
     links: INFO_PAGE_NAVIGATION,
     icon: 'rules',
   },
-] as const;
+];
