@@ -96,7 +96,7 @@ export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
           ))}
         </ul>
       ) : (
-        <div className='text-sm text-secondary-foreground'>empty folder</div>
+        <div className='text-sm text-muted-foreground'>empty</div>
       )}
     </Card>
   );

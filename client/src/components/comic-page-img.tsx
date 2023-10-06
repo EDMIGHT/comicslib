@@ -1,25 +1,34 @@
 'use client';
 
 import Image from 'next/image';
-import { forwardRef, HTMLAttributes, useState } from 'react';
+import { forwardRef, HTMLAttributes, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { OverlayModal } from '@/components/overlay-modal';
 import { Icons } from '@/components/ui/icons';
+import { useKeyPress } from '@/hooks/use-key-press';
 import { cn } from '@/lib/utils';
 
 type ComicPageImgProps = {
   imgSrc: string;
   alt: string;
-} & HTMLAttributes<HTMLDivElement>;
+} & HTMLAttributes<HTMLButtonElement>;
 
-export const ComicPageImg = forwardRef<HTMLDivElement, ComicPageImgProps>(
+export const ComicPageImg = forwardRef<HTMLButtonElement, ComicPageImgProps>(
   ({ imgSrc, alt, className, ...rest }, ref) => {
     const [open, setOpen] = useState(false);
 
+    const isEscapePressed = useKeyPress('Escape');
+
+    useEffect(() => {
+      if (isEscapePressed && open) {
+        setOpen(false);
+      }
+    }, [isEscapePressed, open]);
+
     return (
       <>
-        <div
+        <button
           ref={ref}
           {...rest}
           className={cn(
@@ -27,6 +36,11 @@ export const ComicPageImg = forwardRef<HTMLDivElement, ComicPageImgProps>(
             className
           )}
           onClick={() => setOpen(true)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              setOpen(true);
+            }
+          }}
         >
           <Image
             src={imgSrc}
@@ -38,7 +52,7 @@ export const ComicPageImg = forwardRef<HTMLDivElement, ComicPageImgProps>(
           <span className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 group-hover:block'>
             <Icons.maximize className=' z-10 h-12 w-12 stroke-white' />
           </span>
-        </div>
+        </button>
         {open &&
           createPortal(
             <OverlayModal onClick={() => setOpen(false)}>

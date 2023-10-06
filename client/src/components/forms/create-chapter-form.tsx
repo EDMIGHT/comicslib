@@ -5,7 +5,8 @@ import {
   DndContext,
   DragEndEvent,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -14,9 +15,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { nanoid } from '@reduxjs/toolkit';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { DndKeyboardRecommendAlert } from '@/components/dnd-keyboard-recommend-alert';
 import { FileDialog } from '@/components/file-dialog';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { SortablePage } from '@/components/sortable-page';
@@ -34,6 +36,7 @@ import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
 import { LIMITS } from '@/configs/site.configs';
+import { useKeyPress } from '@/hooks/use-key-press';
 import { toast } from '@/hooks/use-toast';
 import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
@@ -54,17 +57,30 @@ type IFieldControlPage = {
 };
 
 export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
+  const [showKeyboardRecommend, setShowKeyboardRecommend] = useState(false);
   const router = useRouter();
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
+      keyboardCodes: {
+        start: ['Space'],
+        cancel: ['Escape'],
+        end: ['Space'],
+      },
     })
   );
+
   const form = useForm<ICreateChapterFields>({
     resolver: zodResolver(createChapterSchema),
     defaultValues: {
@@ -72,6 +88,14 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
       pages: [],
     },
   });
+
+  const isTabPressed = useKeyPress('Tab');
+
+  useEffect(() => {
+    if (isTabPressed && !showKeyboardRecommend) {
+      setShowKeyboardRecommend(true);
+    }
+  }, [isTabPressed, showKeyboardRecommend]);
 
   const { mutate: createChapter, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.chapters],
@@ -189,134 +213,140 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
-        className='flex flex-col gap-2'
-      >
-        <div className='flex flex-col gap-2 md:flex-row'>
-          <FormItem className='w-full'>
-            <FormLabel
-              isRequired
-              className={cn(!!form.formState.errors.number && 'text-destructive')}
-            >
-              Number
-            </FormLabel>
-            <FormControl>
-              <Input
-                aria-invalid={!!form.formState.errors.number}
-                type='number'
-                inputMode='numeric'
-                placeholder='enter number..'
-                {...form.register('number', {
-                  valueAsNumber: true,
-                })}
-              />
-            </FormControl>
-            <UncontrolledFormMessage message={form.formState.errors.number?.message} />
-          </FormItem>
+    <>
+      {showKeyboardRecommend && <DndKeyboardRecommendAlert />}
+      <Form {...form}>
+        <form
+          onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+          className='flex flex-col gap-2'
+        >
+          <div className='flex flex-col gap-2 md:flex-row'>
+            <FormItem className='w-full'>
+              <FormLabel
+                isRequired
+                className={cn(!!form.formState.errors.number && 'text-destructive')}
+              >
+                Number
+              </FormLabel>
+              <FormControl>
+                <Input
+                  aria-invalid={!!form.formState.errors.number}
+                  type='number'
+                  inputMode='numeric'
+                  placeholder='enter number..'
+                  {...form.register('number', {
+                    valueAsNumber: true,
+                  })}
+                />
+              </FormControl>
+              <UncontrolledFormMessage message={form.formState.errors.number?.message} />
+            </FormItem>
+            <FormField
+              control={form.control}
+              name='title'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder='enter title..' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
             control={form.control}
-            name='title'
+            name='pages'
             render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input placeholder='enter title..' {...field} />
-                </FormControl>
+              <FormItem className='space-y-2'>
+                <div className='flex items-center justify-between gap-2'>
+                  <FormLabel isRequired>
+                    Pages{' '}
+                    <span className='text-sm text-muted-foreground'>
+                      (no more than {LIMITS.pagePerChapter})
+                    </span>
+                  </FormLabel>
+                  {field.value.length > 0 && (
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      className='gap-1'
+                      onClick={() => field.onChange([])}
+                    >
+                      <Icons.cleaning className='h-5 w-5' /> Remove All Pages
+                    </Button>
+                  )}
+                </div>
+                <ul className='flex flex-wrap items-center gap-2 overflow-hidden'>
+                  <DndContext
+                    sensors={sensors}
+                    autoScroll={{ layoutShiftCompensation: false }}
+                    collisionDetection={closestCenter}
+                    onDragEnd={(e) =>
+                      onDragEnd({ e, currentValues: field.value, onChange: field.onChange })
+                    }
+                  >
+                    <SortableContext items={field.value}>
+                      {field.value.map((page, i) => (
+                        <li key={page.id}>
+                          <SortablePage
+                            {...page}
+                            pageNumber={i + 1}
+                            onClickDelete={(deletedId) =>
+                              field.onChange(
+                                field.value.filter((page) => page.id !== deletedId)
+                              )
+                            }
+                            onClickEditPage={(changeId, selectedFile) =>
+                              void onClickEditPage({
+                                changeId,
+                                file: selectedFile,
+                                currentValues: field.value,
+                                onChange: field.onChange,
+                              })
+                            }
+                          />
+                        </li>
+                      ))}
+                    </SortableContext>
+                  </DndContext>
+                  {field.value.length < LIMITS.pagePerChapter && (
+                    <li key='control'>
+                      <FormControl>
+                        <FileDialog
+                          maxFiles={LIMITS.pagePerChapter}
+                          onSelectFiles={(selectedFiles) =>
+                            void onClickUploadPage({
+                              files: selectedFiles,
+                              onChange: field.onChange,
+                              currentValues: field.value,
+                            })
+                          }
+                        >
+                          <div className='relative flex h-[270px] w-[210px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border bg-background p-2 transition-colors hover:bg-muted'>
+                            <Icons.uploadCloud className='h-10 w-10' />
+                            <span className='text-center text-sm font-medium'>
+                              Click to upload page for the comic
+                            </span>
+                          </div>
+                        </FileDialog>
+                      </FormControl>
+                    </li>
+                  )}
+                </ul>
+
                 <FormMessage />
               </FormItem>
             )}
           />
-        </div>
 
-        <FormField
-          control={form.control}
-          name='pages'
-          render={({ field }) => (
-            <FormItem className='space-y-2'>
-              <div className='flex items-center justify-between gap-2'>
-                <FormLabel isRequired>
-                  Pages{' '}
-                  <span className='text-sm text-muted-foreground'>
-                    (no more than {LIMITS.pagePerChapter})
-                  </span>
-                </FormLabel>
-                {field.value.length > 0 && (
-                  <Button
-                    type='button'
-                    variant='ghost'
-                    className='gap-1'
-                    onClick={() => field.onChange([])}
-                  >
-                    <Icons.cleaning className='h-5 w-5' /> Remove All Pages
-                  </Button>
-                )}
-              </div>
-              <ul className='flex flex-wrap items-center gap-2 overflow-hidden'>
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={(e) =>
-                    onDragEnd({ e, currentValues: field.value, onChange: field.onChange })
-                  }
-                >
-                  <SortableContext items={field.value}>
-                    {field.value.map((page, i) => (
-                      <li key={page.id}>
-                        <SortablePage
-                          {...page}
-                          pageNumber={i + 1}
-                          onClickDelete={(deletedId) =>
-                            field.onChange(field.value.filter((page) => page.id !== deletedId))
-                          }
-                          onClickEditPage={(changeId, selectedFile) =>
-                            void onClickEditPage({
-                              changeId,
-                              file: selectedFile,
-                              currentValues: field.value,
-                              onChange: field.onChange,
-                            })
-                          }
-                        />
-                      </li>
-                    ))}
-                  </SortableContext>
-                </DndContext>
-                {field.value.length < LIMITS.pagePerChapter && (
-                  <li key='control'>
-                    <FormControl>
-                      <FileDialog
-                        maxFiles={LIMITS.pagePerChapter}
-                        onSelectFiles={(selectedFiles) =>
-                          void onClickUploadPage({
-                            files: selectedFiles,
-                            onChange: field.onChange,
-                            currentValues: field.value,
-                          })
-                        }
-                      >
-                        <div className='relative flex h-[270px] w-[210px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded border bg-background p-2 transition-colors hover:bg-muted'>
-                          <Icons.uploadCloud className='h-10 w-10' />
-                          <span className='text-center text-sm font-medium'>
-                            Click to upload page for the comic
-                          </span>
-                        </div>
-                      </FileDialog>
-                    </FormControl>
-                  </li>
-                )}
-              </ul>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type='submit' isLoading={isLoading} className='self-end'>
-          Upload
-        </Button>
-      </form>
-    </Form>
+          <Button type='submit' isLoading={isLoading} className='self-end'>
+            Upload
+          </Button>
+        </form>
+      </Form>
+    </>
   );
 };

@@ -5,7 +5,8 @@ import {
   DndContext,
   DragEndEvent,
   KeyboardSensor,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -19,9 +20,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 
+import { DndKeyboardRecommendAlert } from '@/components/dnd-keyboard-recommend-alert';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { SortableFolder } from '@/components/sortable-folder';
 import { Button } from '@/components/ui/button';
+import { useKeyPress } from '@/hooks/use-key-press';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
 import { FoldersService } from '@/services/folders.service';
@@ -34,6 +37,7 @@ type FoldersSortableListProps = {
 export const FoldersSortableList: FC<FoldersSortableListProps> = ({ folders }) => {
   const router = useRouter();
   const [isEdit, setIsEdit] = useState(false);
+  const [showKeyboardRecommend, setShowKeyboardRecommend] = useState(false);
 
   const [tempFolders, setTempFolders] = useState<IFolderWithComics[]>(folders);
 
@@ -42,15 +46,34 @@ export const FoldersSortableList: FC<FoldersSortableListProps> = ({ folders }) =
   }, [folders]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 10,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
+      keyboardCodes: {
+        start: ['Space'],
+        cancel: ['Escape'],
+        end: ['Space'],
+      },
     })
   );
+
+  const isTabPressed = useKeyPress('Tab');
+
+  useEffect(() => {
+    if (isTabPressed && !showKeyboardRecommend) {
+      setShowKeyboardRecommend(true);
+    }
+  }, [isTabPressed, showKeyboardRecommend]);
 
   const onDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
@@ -98,28 +121,35 @@ export const FoldersSortableList: FC<FoldersSortableListProps> = ({ folders }) =
   });
 
   return (
-    <div className='flex flex-col gap-3'>
-      <ul className='space-y-2 overflow-hidden'>
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-          <SortableContext items={tempFolders} strategy={verticalListSortingStrategy}>
-            {tempFolders.map((folder) => (
-              <li key={folder.id}>
-                <SortableFolder {...folder} />
-              </li>
-            ))}
-          </SortableContext>
-        </DndContext>
-      </ul>
+    <>
+      {showKeyboardRecommend && <DndKeyboardRecommendAlert />}
+      <div className='flex flex-col gap-3'>
+        <ul className='space-y-2 overflow-hidden'>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={onDragEnd}
+          >
+            <SortableContext items={tempFolders} strategy={verticalListSortingStrategy}>
+              {tempFolders.map((folder) => (
+                <li key={folder.id}>
+                  <SortableFolder {...folder} />
+                </li>
+              ))}
+            </SortableContext>
+          </DndContext>
+        </ul>
 
-      {isEdit && (
-        <Button
-          className='w-fit self-end'
-          isLoading={isLoading}
-          onClick={() => reorderFolders()}
-        >
-          Save changes
-        </Button>
-      )}
-    </div>
+        {isEdit && (
+          <Button
+            className='w-fit self-end'
+            isLoading={isLoading}
+            onClick={() => reorderFolders()}
+          >
+            Save changes
+          </Button>
+        )}
+      </div>
+    </>
   );
 };
