@@ -33,12 +33,12 @@ const Page = async () => {
       <Separator />
       <Card variant='transparent' className='space-y-2' as='section'>
         <CardTitle className='text-xl'>Delete Account</CardTitle>
-        <CardContent className='flex flex-wrap items-center justify-between gap-2  p-0'>
-          <span className='block w-1/2 break-words text-muted-foreground'>
+        <CardContent className='flex flex-col flex-wrap gap-2 p-0 md:flex-row md:items-center'>
+          <span className='block break-words text-muted-foreground md:w-1/2'>
             Permanently delete your account. Once deleted, the data is not recoverable.
             Uploaded chapters will not be deleted with the account.
           </span>
-          <DeleteAccountBtn />
+          <DeleteAccountBtn className='ml-auto w-fit' />
         </CardContent>
       </Card>
     </div>

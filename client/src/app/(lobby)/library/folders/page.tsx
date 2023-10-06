@@ -22,6 +22,7 @@ const Page = async () => {
   if (!user) {
     return notFound();
   }
+
   const folders = await FoldersService.getAllUserFolders();
 
   const isMoreThanZeroFolder = folders.length > 0;

@@ -42,7 +42,7 @@ export const ComicPageImg = forwardRef<HTMLDivElement, ComicPageImgProps>(
         {open &&
           createPortal(
             <OverlayModal onClick={() => setOpen(false)}>
-              <div className={cn('relative h-[80vh] w-[80vw] max-w-[90vw]', className)}>
+              <div className={cn('relative h-[80vh] w-[80vw] max-w-[90vw]')}>
                 <Image src={imgSrc} alt={alt} fill className=' object-contain object-center' />
               </div>
             </OverlayModal>,

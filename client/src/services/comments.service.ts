@@ -1,10 +1,9 @@
 import { ICreateCommentFields } from '@/components/forms/create-comment-form';
-import { API_COMMENTS_URL } from '@/configs/endpoint.configs';
+import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS } from '@/configs/site.configs';
+import { api } from '@/services/api';
+import { apiAuth } from '@/services/apiAuth';
 import { IResponseAllComments, IResponseComment } from '@/types/comment.types';
-
-import { api } from './api';
-import { apiAuth } from './apiAuth';
 
 type IGetAllChaptersArg = {
   comicId: string;
@@ -16,7 +15,7 @@ type IGetAllChaptersArg = {
 export class CommentsService {
   public static async create(formData: ICreateCommentFields, comicId: string) {
     const { data } = await apiAuth.post<IResponseComment>(
-      `${API_COMMENTS_URL.origin}/${comicId}`,
+      `${ENDPOINTS.comments.origin}/${comicId}`,
       formData
     );
     return data;
@@ -28,7 +27,7 @@ export class CommentsService {
     order = 'desc',
   }: IGetAllChaptersArg) {
     const { data } = await api.get<IResponseAllComments>(
-      `${API_COMMENTS_URL.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
+      `${ENDPOINTS.comments.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
     );
     return data;
   }

@@ -6,7 +6,7 @@ import { DetailedHTMLProps, FC, HTMLAttributes } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { SETTINGS_NAVIGATION } from '@/configs/site.configs';
+import { SETTINGS_NAVIGATION } from '@/configs/navigation.configs';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 

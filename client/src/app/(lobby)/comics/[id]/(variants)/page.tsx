@@ -1,5 +1,4 @@
-import { ChapterItem } from '@/components/layouts/chapter-item';
-import { Pagination } from '@/components/ui/pagination';
+import { ChaptersList } from '@/components/chapters-list';
 import { LIMITS } from '@/configs/site.configs';
 import { ChaptersService } from '@/services/chapters.service';
 
@@ -23,22 +22,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
   return (
     <div className='flex flex-col gap-2'>
       {response.chapters.length > 0 ? (
-        <>
-          <ul className='flex flex-col gap-1'>
-            {response.chapters.map((chap) => (
-              <li key={chap.id}>
-                <ChapterItem {...chap} />
-              </li>
-            ))}
-          </ul>
-          {response.totalPages > 1 && (
-            <Pagination
-              currentPage={response.currentPage}
-              totalPages={response.totalPages}
-              className='justify-center'
-            />
-          )}
-        </>
+        <ChaptersList {...response} />
       ) : (
         <div className='flex h-[30vh] w-full items-center justify-center'>
           <h3 className='text-xl font-medium'>No chapters uploaded</h3>
