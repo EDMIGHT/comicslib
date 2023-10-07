@@ -2,6 +2,7 @@ import express from 'express';
 
 import {
   createComment,
+  createVoteForComment,
   getComments,
   getRepliesForComment,
 } from '@/controllers/comment.controllers';
@@ -13,7 +14,9 @@ const router = express.Router();
 
 router.get('/:comicId', paginationValidators, sortValidators, validation, getComments);
 router.get('/:commentId/replies', paginationValidators, validation, getRepliesForComment);
+router.get('/:comicId/test');
 
 router.post('/:comicId', authentication, createCommentValidators, validation, createComment);
+router.post('/:commentId/vote', authentication, createVoteForComment);
 
 export default router;

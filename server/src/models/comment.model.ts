@@ -1,4 +1,4 @@
-import { Comment } from '@prisma/client';
+import { Comment, CommentVote } from '@prisma/client';
 
 import { LIMITS } from '@/configs/limits.configs';
 import prisma from '@/db/prisma';
@@ -17,21 +17,27 @@ type IGetRepliesForCommentArgs = IPaginationArg & {
 };
 
 export class CommentModel {
-  public static async createForComic(
-    data: ICreateCommentForComicArgs
-  ): Promise<ICommentWithUser> {
-    return prisma.comment.create({
-      data,
-      include: {
-        user: {
-          select: {
-            id: true,
-            login: true,
-            img: true,
-          },
-        },
-      },
-    });
+  public static async getCommentsTest({
+    comicId,
+    limit,
+    order,
+    page,
+    sort,
+  }: IGetAllForComicsArgs) {
+    const commentsWithVotes = await prisma.$queryRaw`
+      SELECT "Comment"."id", "Comment"."text", SUM(
+        CASE "CommentVote"."type"
+          WHEN 'up' THEN 1
+          WHEN 'down' THEN -1
+          ELSE 0
+        END) as votes
+      FROM "Comment"
+      LEFT JOIN "CommentVote" ON "Comment"."id" = "CommentVote"."commentId"
+      WHERE "Comment"."comicId" = ${comicId}
+      GROUP BY "Comment"."id";
+    `;
+
+    return commentsWithVotes;
   }
   public static async getAllForComic({
     comicId,
@@ -45,6 +51,7 @@ export class CommentModel {
     return prisma.comment.findMany({
       where: {
         comicId,
+        replyToId: null,
       },
       skip: offset,
       take: limit,
@@ -88,6 +95,7 @@ export class CommentModel {
             },
           },
         },
+
         _count: {
           select: {
             replies: true,
@@ -100,6 +108,7 @@ export class CommentModel {
     return prisma.comment.count({
       where: {
         comicId,
+        replyToId: null,
       },
     });
   }
@@ -158,6 +167,40 @@ export class CommentModel {
     return prisma.comment.findFirst({
       where: {
         id,
+      },
+    });
+  }
+  public static async createForComic(
+    data: ICreateCommentForComicArgs
+  ): Promise<ICommentWithUser> {
+    return prisma.comment.create({
+      data,
+      include: {
+        user: {
+          select: {
+            id: true,
+            login: true,
+            img: true,
+          },
+        },
+      },
+    });
+  }
+  public static async countingVote({
+    commentId,
+    userId,
+    type,
+  }: CommentVote): Promise<CommentVote> {
+    return prisma.commentVote.upsert({
+      where: {
+        userId_commentId: {
+          commentId,
+          userId,
+        },
+      },
+      create: { type, commentId, userId },
+      update: {
+        type,
       },
     });
   }

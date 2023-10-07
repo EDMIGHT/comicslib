@@ -35,13 +35,13 @@ model User {
   provider   Providers?
   providerId String?
 
-  session     Session?
-  ratings     Rating[]
-  folders     Folder[]
-  comments    Comment[]
-  bookmarks   Bookmark[]
-  chapters    Chapter[]
-  CommentVote CommentVote[]
+  session      Session?
+  ratings      Rating[]
+  folders      Folder[]
+  comments     Comment[]
+  bookmarks    Bookmark[]
+  chapters     Chapter[]
+  commentsVote CommentVote[]
 
   @@index([login])
   @@index([provider, providerId])
@@ -176,9 +176,9 @@ model Comment {
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
 
-  comic       Comic         @relation(fields: [comicId], references: [id], onDelete: Cascade)
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  CommentVote CommentVote[]
+  comic        Comic         @relation(fields: [comicId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  commentsVote CommentVote[]
 }
 
 model CommentVote {
