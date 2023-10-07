@@ -19,6 +19,11 @@ enum Providers {
   github
 }
 
+enum VoteType {
+  up
+  down
+}
+
 model User {
   id        String   @id @default(uuid())
   login     String   @unique
@@ -30,12 +35,13 @@ model User {
   provider   Providers?
   providerId String?
 
-  session   Session?
-  ratings   Rating[]
-  folders   Folder[]
-  comments  Comment[]
-  bookmarks Bookmark[]
-  chapters  Chapter[]
+  session     Session?
+  ratings     Rating[]
+  folders     Folder[]
+  comments    Comment[]
+  bookmarks   Bookmark[]
+  chapters    Chapter[]
+  CommentVote CommentVote[]
 
   @@index([login])
   @@index([provider, providerId])
@@ -166,8 +172,24 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  comic Comic @relation(fields: [comicId], references: [id], onDelete: Cascade)
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replyToId String?
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("ReplyTo")
+
+  comic       Comic         @relation(fields: [comicId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  CommentVote CommentVote[]
+}
+
+model CommentVote {
+  userId    String
+  commentId String
+  type      VoteType
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@id([userId, commentId])
 }
 
 model Bookmark {

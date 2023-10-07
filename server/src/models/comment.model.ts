@@ -54,6 +54,30 @@ export class CommentModel {
             img: true,
           },
         },
+        replies: {
+          take: 5,
+          include: {
+            user: {
+              select: {
+                id: true,
+                login: true,
+                img: true,
+              },
+            },
+            replies: {
+              take: 5,
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    login: true,
+                    img: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
   }
