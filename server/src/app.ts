@@ -13,7 +13,7 @@ const CLIENT_DOMAIN = process.env.CLIENT_DOMAIN!;
 
 const app = express();
 
-app.use(express.json({ limit: '310mb' }));
+app.use(express.json({ limit: '110mb' }));
 app.use(
   cors({
     origin: CLIENT_DOMAIN,

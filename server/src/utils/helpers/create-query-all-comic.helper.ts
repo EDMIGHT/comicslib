@@ -75,6 +75,7 @@ export const createWhereQueryAllComics = ({
           INNER JOIN _comictogenre ON Genre.id = _comictogenre.B
           WHERE _comictogenre.A = Comic.id
           AND Genre.title IN (${Prisma.join(genres)})
+          HAVING COUNT(DISTINCT Genre.title) >= ${genres.length}
         )`
       : Prisma.empty;
   const themesQuery =
@@ -85,6 +86,7 @@ export const createWhereQueryAllComics = ({
           INNER JOIN _comictotheme ON Theme.id = _comictotheme.B
           WHERE _comictotheme.A = Comic.id
           AND Theme.title IN (${Prisma.join(themes)})
+          HAVING COUNT(DISTINCT Theme.title) >= ${themes.length}
         )`
       : Prisma.empty;
   const authorsQuery =
@@ -95,6 +97,7 @@ export const createWhereQueryAllComics = ({
           INNER JOIN _authortocomic ON Author.id = _authortocomic.A
           WHERE _authortocomic.B = Comic.id
           AND Author.login IN (${Prisma.join(authors)})
+          HAVING COUNT(DISTINCT Author.login) >= ${authors.length}
         )`
       : Prisma.empty;
   const ratedUserQuery = ratedUser
