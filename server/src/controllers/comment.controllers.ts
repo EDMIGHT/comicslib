@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { LIMITS } from '@/configs/limits.configs';
 import { ComicModel } from '@/models/comic.model';
 import { CommentModel } from '@/models/comment.model';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
@@ -22,7 +23,7 @@ export const createComment = async (req: Request, res: Response): Promise<Respon
     const comment = await CommentModel.createForComic({
       comicId,
       userId: req.user.id,
-      text: req.body.text,
+      ...req.body,
     });
 
     return CustomResponse.created(res, {
@@ -64,7 +65,7 @@ export const getComments = async (req: Request, res: Response): Promise<Response
       order,
     });
 
-    const totalCommentsByComic = await CommentModel.getTotal(comicId);
+    const totalCommentsByComic = await CommentModel.getAllCount(comicId);
 
     const responseComments = comments.map((comm) => ({
       ...comm,
@@ -80,6 +81,40 @@ export const getComments = async (req: Request, res: Response): Promise<Response
     return serverErrorResponse({
       res,
       message: 'error while fetching comics on server side',
+      error,
+    });
+  }
+};
+
+export const getRepliesForComment = async (req: Request, res: Response): Promise<Response> => {
+  const { commentId } = req.params;
+  const { page = 1, limit = LIMITS.commentReplies } = req.query as unknown as IPaginationArg;
+
+  try {
+    const existedComment = await CommentModel.getById(commentId);
+
+    if (!existedComment) {
+      return CustomResponse.notFound(res, {
+        message: 'The comment for which responses were requested does not exist',
+      });
+    }
+
+    const replies = await CommentModel.getRepliesForComment({
+      commentId,
+      page,
+      limit,
+    });
+    const totalReplies = await CommentModel.getRepliesCount(commentId);
+
+    return CustomResponse.ok(res, {
+      comments: replies,
+      currentPage: page,
+      totalPages: Math.ceil(totalReplies / limit),
+    });
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `error on the server side when receiving responses for comment with ID ${commentId}`,
       error,
     });
   }
