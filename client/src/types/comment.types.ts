@@ -9,8 +9,16 @@ export type IComment = {
   userId: string;
 };
 
-export type IResponseComment = IComment & {
+export type ICommentWithUser = IComment & {
   user: IShortUser;
+};
+
+export type ICommentWithUserAndVotes = ICommentWithUser & {
+  votes: number;
+};
+
+export type IResponseComment = ICommentWithUserAndVotes & {
+  replies: ICommentWithUserAndVotes[];
 };
 
 export type IResponseAllComments = {
