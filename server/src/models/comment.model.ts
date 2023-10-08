@@ -49,8 +49,8 @@ export class CommentModel {
       Comment.replyToId,
       Comment.user_id as userId,
       Comment.comic_id as comicId,
-      Comment.created_at as createdAt,
-      Comment.updated_at as updatedAt,
+      DATE_FORMAT(Comment.created_at, '%Y-%m-%dT%H:%i:%s.%fZ') as createdAt,
+      DATE_FORMAT(Comment.updated_at, '%Y-%m-%dT%H:%i:%s.%fZ') as updatedAt,
       JSON_OBJECT('id', User.id, 'login', User.login, 'img', User.img) as user,
       ${nestedCommentsQuery} as replies,
       SUM(
@@ -63,7 +63,7 @@ export class CommentModel {
     FROM Comment
     LEFT JOIN CommentVote ON Comment.id = CommentVote.commentId
     INNER JOIN User ON Comment.user_id = User.id
-    WHERE Comment.comic_id = ${comicId}
+    WHERE Comment.comic_id = ${comicId} AND Comment.replyToId IS NULL
     GROUP BY Comment.id, User.id
     ${orderQuery}
     LIMIT ${Number(limit)} OFFSET ${offset}

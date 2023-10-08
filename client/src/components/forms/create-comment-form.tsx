@@ -26,11 +26,17 @@ import { IInvalidResponse } from '@/types/response.types';
 
 type CreateCommentFormProps = {
   comicId: string;
+  parentCommentId?: string;
+  onConfirm?: () => void;
 };
 
 export type ICreateCommentFields = z.infer<typeof createCommentValidation>;
 
-export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
+export const CreateCommentForm: FC<CreateCommentFormProps> = ({
+  comicId,
+  parentCommentId,
+  onConfirm,
+}) => {
   const router = useRouter();
   const form = useForm<ICreateCommentFields>({
     resolver: zodResolver(createCommentValidation),
@@ -42,7 +48,11 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
   const { mutate: createComment, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.comments],
     mutationFn: async (data: ICreateCommentFields) => {
-      return await CommentsService.create(data, comicId);
+      return await CommentsService.create({
+        formData: data,
+        comicId,
+        replyToId: parentCommentId,
+      });
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
@@ -72,6 +82,7 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({ comicId }) => {
     onSuccess: () => {
       form.reset();
       router.refresh();
+      onConfirm && onConfirm();
     },
   });
 

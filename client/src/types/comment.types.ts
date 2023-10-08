@@ -7,6 +7,7 @@ export type IComment = {
   createdAt: string;
   updatedAt: string;
   userId: string;
+  comicId: string;
 };
 
 export type ICommentWithUser = IComment & {

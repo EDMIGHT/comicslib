@@ -30,6 +30,7 @@ export const ComicPageImg = forwardRef<HTMLButtonElement, ComicPageImgProps>(
       <>
         <button
           ref={ref}
+          type='button'
           {...rest}
           className={cn(
             'relative flex flex-col w-[210px] h-[270px] justify-center shrink-0  gap-1 rounded cursor-pointer group',

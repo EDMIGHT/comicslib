@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { FC } from 'react';
 
 import { ChapterUserInfo } from '@/components/chapter-user-info';
-import { Time } from '@/components/ui/time';
 import { HREFS } from '@/configs/href.configs';
+import { formatTimeToNow } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { IChapterWithUser } from '@/types/chapter.types';
 
@@ -21,6 +21,8 @@ export const ChapterItem: FC<ChapterItemProps> = ({
   variant = 'default',
   className,
 }) => {
+  const formattedDate = createdAt && formatTimeToNow(new Date(createdAt));
+
   return (
     <div
       className={cn(
@@ -45,8 +47,8 @@ export const ChapterItem: FC<ChapterItemProps> = ({
         )}
       </div>
 
-      <Link href={`${HREFS.chapter}/${id}`} className='p-2 text-center'>
-        {createdAt && <Time time={new Date(createdAt)} />}
+      <Link href={`${HREFS.chapter}/${id}`} className='p-2 text-center text-sm'>
+        {formattedDate}
       </Link>
     </div>
   );

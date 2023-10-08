@@ -8,7 +8,7 @@ export const Comment: FC<IResponseComment> = ({ replies, ...comment }) => {
   return (
     <Card variant='transparent' className='flex flex-col gap-2'>
       <CommentBase {...comment} withReply />
-      <div className='ml-5 border-l-2 border-l-active'>
+      <div className='ml-7 border-l-2 border-l-active'>
         {replies.map((user) => (
           <CommentBase key={user.id} {...user} />
         ))}

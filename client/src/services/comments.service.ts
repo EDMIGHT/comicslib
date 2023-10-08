@@ -12,11 +12,24 @@ type IGetAllChaptersArg = {
   order?: 'asc' | 'desc';
 };
 
+type ICreateCommentArg = {
+  formData: ICreateCommentFields;
+  comicId: string;
+  replyToId?: string | null;
+};
+
 export class CommentsService {
-  public static async create(formData: ICreateCommentFields, comicId: string) {
+  public static async create({ formData, comicId, replyToId = null }: ICreateCommentArg) {
+    console.log({
+      ...formData,
+      replyToId,
+    });
     const { data } = await apiAuth.post<IResponseComment>(
       `${ENDPOINTS.comments.origin}/${comicId}`,
-      formData
+      {
+        ...formData,
+        replyToId,
+      }
     );
     return data;
   }

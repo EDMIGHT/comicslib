@@ -11,6 +11,8 @@ type PageProps = {
   searchParams: { [key: string]: string | undefined };
 };
 
+export const dynamic = 'force-dynamic';
+
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const page = searchParams['page'] ?? '1';
   const limit = searchParams['limit'] ?? LIMITS.comments;
