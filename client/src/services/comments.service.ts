@@ -3,7 +3,11 @@ import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS } from '@/configs/site.configs';
 import { api } from '@/services/api';
 import { apiAuth } from '@/services/apiAuth';
-import { IResponseAllComments, IResponseComment } from '@/types/comment.types';
+import {
+  ICommentVoteType,
+  ICommentWithReplies,
+  IResponseAllComments,
+} from '@/types/comment.types';
 
 type IGetAllChaptersArg = {
   comicId: string;
@@ -19,20 +23,6 @@ type ICreateCommentArg = {
 };
 
 export class CommentsService {
-  public static async create({ formData, comicId, replyToId = null }: ICreateCommentArg) {
-    console.log({
-      ...formData,
-      replyToId,
-    });
-    const { data } = await apiAuth.post<IResponseComment>(
-      `${ENDPOINTS.comments.origin}/${comicId}`,
-      {
-        ...formData,
-        replyToId,
-      }
-    );
-    return data;
-  }
   public static async getAll({
     comicId,
     limit = LIMITS.chapters,
@@ -41,6 +31,25 @@ export class CommentsService {
   }: IGetAllChaptersArg) {
     const { data } = await api.get<IResponseAllComments>(
       `${ENDPOINTS.comments.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
+    );
+    return data;
+  }
+  public static async create({ formData, comicId, replyToId = null }: ICreateCommentArg) {
+    const { data } = await apiAuth.post<ICommentWithReplies>(
+      `${ENDPOINTS.comments.origin}/${comicId}`,
+      {
+        ...formData,
+        replyToId,
+      }
+    );
+    return data;
+  }
+  public static async countingVote(comicId: string, vote: ICommentVoteType) {
+    const { data } = await apiAuth.post<ICommentWithReplies>(
+      `${ENDPOINTS.comments.origin}/${comicId}/vote`,
+      {
+        type: vote,
+      }
     );
     return data;
   }

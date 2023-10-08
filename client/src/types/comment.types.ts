@@ -10,6 +10,8 @@ export type IComment = {
   comicId: string;
 };
 
+export type ICommentVoteType = 'up' | 'down';
+
 export type ICommentWithUser = IComment & {
   user: IShortUser;
 };
@@ -18,10 +20,10 @@ export type ICommentWithUserAndVotes = ICommentWithUser & {
   votes: number;
 };
 
-export type IResponseComment = ICommentWithUserAndVotes & {
-  replies: ICommentWithUserAndVotes[];
+export type ICommentWithReplies = ICommentWithUserAndVotes & {
+  replies: ICommentWithReplies[];
 };
 
 export type IResponseAllComments = {
-  comments: IResponseComment[];
+  comments: ICommentWithReplies[];
 } & IPagination;
