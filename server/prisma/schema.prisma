@@ -182,8 +182,8 @@ model Comment {
 }
 
 model CommentVote {
-  userId    String
-  commentId String
+  userId    String   @map("user_id")
+  commentId String   @map("comment_id")
   type      VoteType
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)

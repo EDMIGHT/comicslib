@@ -1,9 +1,10 @@
-import { Comment, CommentVote } from '@prisma/client';
+import { Comment, CommentVote, Prisma } from '@prisma/client';
+import { Sql } from '@prisma/client/runtime/library';
 
-import { LIMITS } from '@/configs/limits.configs';
 import prisma from '@/db/prisma';
 import { ICommentWithUser } from '@/types/comment.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
+import { createQueryNestedComments } from '@/utils/helpers/create-query-nested-comments';
 
 type ICreateCommentForComicArgs = Pick<Comment, 'text' | 'userId' | 'comicId' | 'replyToId'>;
 
@@ -12,154 +13,73 @@ type IGetAllForComicsArgs = ISortArg &
     comicId: string;
   };
 
-type IGetRepliesForCommentArgs = IPaginationArg & {
-  commentId: string;
+type IGetAllComment = ICommentWithUser & {
+  replies: ICommentWithUser[];
+  votes: number;
 };
 
+const commentSchema = prisma.comment.fields;
+
 export class CommentModel {
-  public static async getCommentsTest({
+  public static async getAllForComic({
     comicId,
-    limit,
-    order,
-    page,
     sort,
-  }: IGetAllForComicsArgs) {
-    const commentsWithVotes = await prisma.$queryRaw`
-      SELECT "Comment"."id", "Comment"."text", SUM(
-        CASE "CommentVote"."type"
+    order,
+    limit,
+    page,
+  }: IGetAllForComicsArgs): Promise<IGetAllComment[]> {
+    const offset = (page - 1) * limit;
+
+    const inOrder: Sql = order === 'desc' ? Prisma.sql`DESC` : Prisma.sql`ASC`;
+
+    const sortOptions = {
+      votes: Prisma.sql`votes`,
+      [commentSchema.createdAt.name]: Prisma.sql`Comment.created_at`,
+    };
+
+    const sortBy: Sql = sortOptions[sort] || Prisma.sql`Comment.created_at`;
+    const orderQuery = Prisma.sql`ORDER BY ${sortBy} ${inOrder}`;
+
+    const nestedCommentsQuery = createQueryNestedComments(1);
+
+    const commentsWithVotes = await prisma.$queryRaw<IGetAllComment[]>`
+    SELECT
+      Comment.id,
+      Comment.text,
+      Comment.replyToId,
+      Comment.user_id as userId,
+      Comment.comic_id as comicId,
+      Comment.created_at as createdAt,
+      Comment.updated_at as updatedAt,
+      JSON_OBJECT('id', User.id, 'login', User.login, 'img', User.img) as user,
+      ${nestedCommentsQuery} as replies,
+      SUM(
+        CASE CommentVote.type
           WHEN 'up' THEN 1
           WHEN 'down' THEN -1
           ELSE 0
-        END) as votes
-      FROM "Comment"
-      LEFT JOIN "CommentVote" ON "Comment"."id" = "CommentVote"."commentId"
-      WHERE "Comment"."comicId" = ${comicId}
-      GROUP BY "Comment"."id";
-    `;
+        END
+      ) as votes
+    FROM Comment
+    LEFT JOIN CommentVote ON Comment.id = CommentVote.commentId
+    INNER JOIN User ON Comment.user_id = User.id
+    WHERE Comment.comic_id = ${comicId}
+    GROUP BY Comment.id, User.id
+    ${orderQuery}
+    LIMIT ${Number(limit)} OFFSET ${offset}
+  `;
+
+    commentsWithVotes.forEach((comment) => {
+      comment.votes = Number(comment.votes);
+    });
 
     return commentsWithVotes;
-  }
-  public static async getAllForComic({
-    comicId,
-    limit,
-    order,
-    page,
-    sort,
-  }: IGetAllForComicsArgs) {
-    const offset = (page - 1) * limit;
-
-    return prisma.comment.findMany({
-      where: {
-        comicId,
-        replyToId: null,
-      },
-      skip: offset,
-      take: limit,
-      orderBy: {
-        [sort as string]: order,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            login: true,
-            img: true,
-          },
-        },
-        replies: {
-          take: LIMITS.commentReplies,
-          include: {
-            user: {
-              select: {
-                id: true,
-                login: true,
-                img: true,
-              },
-            },
-            replies: {
-              take: LIMITS.commentReplies,
-              include: {
-                user: {
-                  select: {
-                    id: true,
-                    login: true,
-                    img: true,
-                  },
-                },
-              },
-            },
-            _count: {
-              select: {
-                replies: true,
-              },
-            },
-          },
-        },
-
-        _count: {
-          select: {
-            replies: true,
-          },
-        },
-      },
-    });
   }
   public static async getAllCount(comicId: string): Promise<number> {
     return prisma.comment.count({
       where: {
         comicId,
         replyToId: null,
-      },
-    });
-  }
-  public static async getRepliesForComment({
-    commentId,
-    page,
-    limit,
-  }: IGetRepliesForCommentArgs) {
-    const offset = (page - 1) * limit;
-
-    return prisma.comment.findMany({
-      where: {
-        replyToId: commentId,
-      },
-      skip: offset,
-      take: LIMITS.commentReplies,
-      orderBy: {
-        createdAt: 'desc',
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            login: true,
-            img: true,
-          },
-        },
-        replies: {
-          take: LIMITS.commentReplies,
-          include: {
-            user: {
-              select: {
-                id: true,
-                login: true,
-                img: true,
-              },
-            },
-          },
-        },
-        _count: {
-          select: {
-            replies: true,
-          },
-        },
-      },
-    });
-  }
-  public static async getRepliesCount(commentId: string): Promise<number> {
-    return prisma.comment.count({
-      where: {
-        replyToId: commentId,
       },
     });
   }
