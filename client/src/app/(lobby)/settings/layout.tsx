@@ -12,7 +12,7 @@ const Page: FC<PageProps> = ({ children }) => {
   return (
     <div className='space-y-4'>
       <PageHeader>Settings</PageHeader>
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-[auto_1fr]'>
+      <div className='grid grid-cols-1 gap-4 lg:grid-cols-[auto_1fr]'>
         <PageVerticalNav items={SETTINGS_NAVIGATION} />
         {children}
       </div>

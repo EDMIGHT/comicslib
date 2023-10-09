@@ -1,9 +1,9 @@
-import { Comment } from '@prisma/client';
+import { Comment, VoteType } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import { ComicModel } from '@/models/comic.model';
 import { CommentModel } from '@/models/comment.model';
-import { CommentVoteModel } from '@/models/comment-vote.mode';
+import { CommentVoteModel } from '@/models/comment-vote.model';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { CustomResponse } from '@/utils/helpers/customResponse';
@@ -122,6 +122,9 @@ export const createComment = async (req: Request, res: Response): Promise<Respon
 
 export const createVoteForComment = async (req: Request, res: Response): Promise<Response> => {
   const { commentId } = req.params;
+  const { type } = req.body as unknown as {
+    type: VoteType;
+  };
 
   try {
     const existedComment = await CommentModel.getById(commentId);
@@ -132,10 +135,21 @@ export const createVoteForComment = async (req: Request, res: Response): Promise
       });
     }
 
+    const existedVote = await CommentVoteModel.get({ commentId, userId: req.user.id });
+
+    if (existedVote && existedVote.type === type) {
+      await CommentVoteModel.delete({
+        commentId: existedVote.commentId,
+        userId: existedVote.userId,
+      });
+
+      return CustomResponse.ok(res, null);
+    }
+
     const vote = await CommentVoteModel.countingVote({
       commentId,
       userId: req.user.id,
-      ...req.body,
+      type,
     });
 
     return CustomResponse.created(res, vote);
