@@ -1,7 +1,9 @@
+import { Comment } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import { ComicModel } from '@/models/comic.model';
 import { CommentModel } from '@/models/comment.model';
+import { CommentVoteModel } from '@/models/comment-vote.mode';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { CustomResponse } from '@/utils/helpers/customResponse';
@@ -54,6 +56,39 @@ export const getComments = async (req: Request, res: Response): Promise<Response
   }
 };
 
+export const checkCommentsVotes = async (req: Request, res: Response): Promise<Response> => {
+  const { commentsIds } = req.body as {
+    commentsIds: Comment['id'][];
+  };
+
+  try {
+    const commentsUserVotes = await CommentVoteModel.getVotes({
+      userId: req.user.id,
+      commentsIds,
+    });
+
+    const resultMap: Record<string, string | null> = {};
+
+    commentsUserVotes.forEach((vote) => {
+      resultMap[vote.commentId] = vote.type;
+    });
+
+    return CustomResponse.ok(
+      res,
+      commentsIds.map((commentId) => ({
+        commentId: commentId,
+        type: resultMap[commentId] || null,
+      }))
+    );
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: 'error while fetching comics on server side',
+      error,
+    });
+  }
+};
+
 export const createComment = async (req: Request, res: Response): Promise<Response> => {
   const { comicId } = req.params;
 
@@ -97,7 +132,7 @@ export const createVoteForComment = async (req: Request, res: Response): Promise
       });
     }
 
-    const vote = await CommentModel.countingVote({
+    const vote = await CommentVoteModel.countingVote({
       commentId,
       userId: req.user.id,
       ...req.body,

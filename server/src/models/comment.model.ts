@@ -1,4 +1,4 @@
-import { Comment, CommentVote, Prisma } from '@prisma/client';
+import { Comment, Prisma } from '@prisma/client';
 import { Sql } from '@prisma/client/runtime/library';
 
 import prisma from '@/db/prisma';
@@ -12,7 +12,6 @@ type IGetAllForComicsArgs = ISortArg &
   IPaginationArg & {
     comicId: string;
   };
-
 type IGetAllComment = ICommentWithUser & {
   replies: ICommentWithUser[];
   votes: number;
@@ -103,24 +102,6 @@ export class CommentModel {
             img: true,
           },
         },
-      },
-    });
-  }
-  public static async countingVote({
-    commentId,
-    userId,
-    type,
-  }: CommentVote): Promise<CommentVote> {
-    return prisma.commentVote.upsert({
-      where: {
-        userId_commentId: {
-          commentId,
-          userId,
-        },
-      },
-      create: { type, commentId, userId },
-      update: {
-        type,
       },
     });
   }

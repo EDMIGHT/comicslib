@@ -1,16 +1,7 @@
 import { StatusName } from '@prisma/client';
 import { check } from 'express-validator';
 
-type StatusEnum = {
-  [key in StatusName]: StatusName;
-};
-
-const NameEnum: StatusEnum = {
-  ongoing: 'ongoing',
-  completed: 'completed',
-  cancelled: 'cancelled',
-  hiatus: 'hiatus',
-};
+const NameEnum: StatusName[] = ['cancelled', 'completed', 'hiatus', 'ongoing'];
 
 export const createStatusValidators = [
   check('name')
