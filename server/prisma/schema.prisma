@@ -33,7 +33,7 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   provider   Providers?
-  providerId String?
+  providerId String?    @map("provider_id")
 
   session      Session?
   ratings      Rating[]
@@ -98,7 +98,7 @@ model Page {
 model Chapter {
   id        String   @id @default(uuid())
   comicId   String   @map("comic_id")
-  userId    String?
+  userId    String?  @map("user_id")
   number    Float
   title     String?
   createdAt DateTime @default(now()) @map("created_at")
@@ -172,8 +172,8 @@ model Comment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  replyToId String?
-  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replyToId String?   @map("reply_to_id")
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: Cascade)
   replies   Comment[] @relation("ReplyTo")
 
   comic        Comic         @relation(fields: [comicId], references: [id], onDelete: Cascade)

@@ -20,7 +20,7 @@ export const createQueryNestedComments = (depth = 0, prefix?: number): Prisma.Sq
           JSON_OBJECT(
             'id', id,
             'text', text,
-            'replyToId', replyToId,
+            'replyToId', reply_to_id,
             'userId', userId,
             'comicId', comicId,
             'createdAt', createdAt,
@@ -33,7 +33,7 @@ export const createQueryNestedComments = (depth = 0, prefix?: number): Prisma.Sq
         SELECT
           ${alias}.id,
           ${alias}.text,
-          ${alias}.replyToId,
+          ${alias}.reply_to_id,
           ${alias}.user_id as userId,
           ${alias}.comic_id as comicId,
           DATE_FORMAT(${alias}.created_at, '%Y-%m-%dT%H:%i:%s.%fZ') as createdAt,
@@ -47,9 +47,9 @@ export const createQueryNestedComments = (depth = 0, prefix?: number): Prisma.Sq
             END
           ) as votes
         FROM Comment AS ${alias}
-        LEFT JOIN CommentVote AS ${voteAlias} ON ${alias}.id = ${voteAlias}.commentId
+        LEFT JOIN CommentVote AS ${voteAlias} ON ${alias}.id = ${voteAlias}.comment_id
         INNER JOIN User AS ${userAlias} ON ${alias}.user_id = ${userAlias}.id
-        WHERE ${alias}.replyToId = ${originComment}.id
+        WHERE ${alias}.reply_to_id = ${originComment}.id
         GROUP BY ${alias}.id, ${userAlias}.id
       ) AS SubQuery
     ),

@@ -31,7 +31,7 @@ export const createCommentValidators = [
     .withMessage('The maximum text length is 255 characters'),
 ];
 
-export const createCommentVoteValidators = [
+export const countCommentVoteValidators = [
   check(commentVoteSchema.type.name)
     .trim()
     .exists()

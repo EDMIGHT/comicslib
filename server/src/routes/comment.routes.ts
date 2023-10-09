@@ -2,15 +2,16 @@ import express from 'express';
 
 import {
   checkCommentsVotes,
+  countVoteForComment,
   createComment,
-  createVoteForComment,
+  deleteComment,
   getComments,
 } from '@/controllers/comment.controllers';
 import { authentication, validation } from '@/middleware';
 import {
   checkUserCommentsVotesValidators,
+  countCommentVoteValidators,
   createCommentValidators,
-  createCommentVoteValidators,
 } from '@/utils/validations/comment.validators';
 import { paginationValidators, sortValidators } from '@/utils/validations/req.validators';
 
@@ -29,9 +30,11 @@ router.post('/:comicId', authentication, createCommentValidators, validation, cr
 router.post(
   '/:commentId/vote',
   authentication,
-  createCommentVoteValidators,
+  countCommentVoteValidators,
   validation,
-  createVoteForComment
+  countVoteForComment
 );
+
+router.delete('/:commentId', authentication, deleteComment);
 
 export default router;

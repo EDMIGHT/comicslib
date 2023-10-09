@@ -45,7 +45,7 @@ export class CommentModel {
     SELECT
       Comment.id,
       Comment.text,
-      Comment.replyToId,
+      Comment.reply_to_id as replyToId,
       Comment.user_id as userId,
       Comment.comic_id as comicId,
       DATE_FORMAT(Comment.created_at, '%Y-%m-%dT%H:%i:%s.%fZ') as createdAt,
@@ -60,9 +60,9 @@ export class CommentModel {
         END
       ) as votes
     FROM Comment
-    LEFT JOIN CommentVote ON Comment.id = CommentVote.commentId
+    LEFT JOIN CommentVote ON Comment.id = CommentVote.comment_id
     INNER JOIN User ON Comment.user_id = User.id
-    WHERE Comment.comic_id = ${comicId} AND Comment.replyToId IS NULL
+    WHERE Comment.comic_id = ${comicId} AND Comment.reply_to_id IS NULL
     GROUP BY Comment.id, User.id
     ${orderQuery}
     LIMIT ${Number(limit)} OFFSET ${offset}
@@ -102,6 +102,13 @@ export class CommentModel {
             img: true,
           },
         },
+      },
+    });
+  }
+  public static async delete(id: Comment['id']): Promise<Comment> {
+    return prisma.comment.delete({
+      where: {
+        id,
       },
     });
   }

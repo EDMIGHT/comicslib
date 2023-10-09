@@ -120,7 +120,7 @@ export const createComment = async (req: Request, res: Response): Promise<Respon
   }
 };
 
-export const createVoteForComment = async (req: Request, res: Response): Promise<Response> => {
+export const countVoteForComment = async (req: Request, res: Response): Promise<Response> => {
   const { commentId } = req.params;
   const { type } = req.body as unknown as {
     type: VoteType;
@@ -157,6 +157,36 @@ export const createVoteForComment = async (req: Request, res: Response): Promise
     return serverErrorResponse({
       res,
       message: `error when counting user vote for comment with ID ${commentId}`,
+      error,
+    });
+  }
+};
+
+export const deleteComment = async (req: Request, res: Response): Promise<Response> => {
+  const { commentId } = req.params;
+
+  try {
+    const existedComment = await CommentModel.getById(commentId);
+
+    if (!existedComment) {
+      return CustomResponse.notFound(res, {
+        message: `Comment with ID = ${commentId} does not exist or has already been deleted`,
+      });
+    }
+
+    if (existedComment.userId !== req.user.id) {
+      return CustomResponse.conflict(res, {
+        message: `You are not the owner of the comment with ID = ${commentId}, so you cannot delete it`,
+      });
+    }
+
+    await CommentModel.delete(commentId);
+
+    return CustomResponse.ok(res, null);
+  } catch (error) {
+    return serverErrorResponse({
+      res,
+      message: `server side error when deleting a comment with ID ${commentId}`,
       error,
     });
   }
