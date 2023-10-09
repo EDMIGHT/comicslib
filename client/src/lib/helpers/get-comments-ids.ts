@@ -1,6 +1,6 @@
 import { ICommentWithReplies, IResponseAllComments } from '@/types/comment.types';
 
-export const getCommentsId = (comments: IResponseAllComments['comments']): string[] => {
+export const getCommentsIds = (comments: IResponseAllComments['comments']): string[] => {
   const commentsId: string[] = [];
 
   const processCommentsId = (commentsArray: ICommentWithReplies[]) => {

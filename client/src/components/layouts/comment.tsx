@@ -2,15 +2,19 @@ import { FC } from 'react';
 
 import { CommentBase } from '@/components/comment-base';
 import { Card } from '@/components/ui/card';
-import { IResponseComment } from '@/types/comment.types';
+import { ICommentVoteType, ICommentWithReplies } from '@/types/comment.types';
 
-export const Comment: FC<IResponseComment> = ({ replies, ...comment }) => {
+type CommentProps = ICommentWithReplies & {
+  userVotes: Record<string, ICommentVoteType | null>;
+};
+
+export const Comment: FC<CommentProps> = ({ replies, userVotes, ...comment }) => {
   return (
     <Card variant='transparent' className='flex flex-col gap-2'>
-      <CommentBase {...comment} withReply />
+      <CommentBase {...comment} userVote={userVotes[comment.id] ?? null} withReply />
       <div className='ml-7 border-l-2 border-l-active'>
-        {replies.map((user) => (
-          <CommentBase key={user.id} {...user} />
+        {replies.map((reply) => (
+          <CommentBase key={reply.id} {...reply} userVote={userVotes[reply.id] ?? null} />
         ))}
       </div>
     </Card>

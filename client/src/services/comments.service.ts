@@ -7,6 +7,7 @@ import {
   ICommentVoteType,
   ICommentWithReplies,
   IResponseAllComments,
+  IResponseCheckUserCommentVote,
 } from '@/types/comment.types';
 
 type IGetAllChaptersArg = {
@@ -40,6 +41,15 @@ export class CommentsService {
       {
         ...formData,
         replyToId,
+      }
+    );
+    return data;
+  }
+  public static async getUserCommentsVotes(commentsIds: string[]) {
+    const { data } = await apiAuth.post<IResponseCheckUserCommentVote[]>(
+      ENDPOINTS.comments.check,
+      {
+        commentsIds,
       }
     );
     return data;

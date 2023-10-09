@@ -27,3 +27,8 @@ export type ICommentWithReplies = ICommentWithUserAndVotes & {
 export type IResponseAllComments = {
   comments: ICommentWithReplies[];
 } & IPagination;
+
+export type IResponseCheckUserCommentVote = {
+  commentId: IComment['id'];
+  type: ICommentVoteType | null;
+};

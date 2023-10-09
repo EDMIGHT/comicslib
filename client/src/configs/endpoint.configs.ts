@@ -37,6 +37,7 @@ export const API_THEMES_ENDPOINTS = {
 
 export const API_COMMENTS_ENDPOINTS = {
   origin: '/comments',
+  check: '/comments/check',
 } as const;
 
 export const API_USERS_ENDPOINTS = {

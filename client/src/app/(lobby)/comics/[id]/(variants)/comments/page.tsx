@@ -2,8 +2,10 @@ import { CreateCommentForm } from '@/components/forms/create-comment-form';
 import { Comment } from '@/components/layouts/comment';
 import { Pagination } from '@/components/ui/pagination';
 import { LIMITS } from '@/configs/site.configs';
-import { getCommentsId } from '@/lib/helpers/get-comments-id';
+import { getCommentsIds } from '@/lib/helpers/get-comments-ids';
+import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { CommentsService } from '@/services/comments.service';
+import { ICommentVoteType } from '@/types/comment.types';
 
 type PageProps = {
   params: {
@@ -20,17 +22,28 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
     comicId: id,
     limit,
     page,
-  }).catch(() => {
-    throw new Error();
+  });
+
+  const user = await getAuthServer();
+
+  const requestedCommentsIds = getCommentsIds(comments);
+
+  const userCommentsVotes = user
+    ? await CommentsService.getUserCommentsVotes(requestedCommentsIds)
+    : [];
+
+  const convertedUserCommentsVotes: Record<string, ICommentVoteType | null> = {};
+  userCommentsVotes.forEach((item) => {
+    convertedUserCommentsVotes[item.commentId] = item.type;
   });
 
   return (
     <div className='flex flex-col gap-2'>
-      <CreateCommentForm comicId={id} />
+      {user && <CreateCommentForm comicId={id} />}
       <ul className='flex flex-col gap-1'>
         {comments.map((com) => (
           <li key={com.id}>
-            <Comment {...com} />
+            <Comment {...com} userVotes={convertedUserCommentsVotes} />
           </li>
         ))}
       </ul>

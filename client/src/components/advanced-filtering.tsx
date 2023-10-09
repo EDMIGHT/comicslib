@@ -16,7 +16,6 @@ import { Icons } from '@/components/ui/icons';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useChangeSearchParams } from '@/hooks/use-change-search-params';
-import { cn } from '@/lib/utils';
 import { IGenre } from '@/types/genre.types';
 import { IStatus } from '@/types/status.types';
 import { ITheme } from '@/types/theme.types';
@@ -191,7 +190,11 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
                 </ul>
               </div>
 
-              {activeAuthors.length + activeGenres.length + activeStatuses.length > 0 && (
+              {activeAuthors.length +
+                activeGenres.length +
+                activeStatuses.length +
+                activeThemes.length >
+                0 && (
                 <Button
                   variant='outline'
                   onClick={() => {
