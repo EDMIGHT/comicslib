@@ -38,7 +38,16 @@ export const createQueryNestedComments = (depth = 0, prefix?: number): Prisma.Sq
           ${alias}.comic_id as comicId,
           DATE_FORMAT(${alias}.created_at, '%Y-%m-%dT%H:%i:%s.%fZ') as createdAt,
           DATE_FORMAT(${alias}.updated_at, '%Y-%m-%dT%H:%i:%s.%fZ') as updatedAt,
-          JSON_OBJECT('id', ${userAlias}.id, 'login', ${userAlias}.login, 'img', ${userAlias}.img) as user,
+          JSON_OBJECT(
+            'id', ${userAlias}.id, 
+            'login', ${userAlias}.login, 
+            'img', ${userAlias}.img,
+            '_count', JSON_OBJECT(
+              'chapters', (SELECT COUNT(*) FROM Chapter WHERE Chapter.user_id = ${userAlias}.id),
+              'comments', (SELECT COUNT(*) FROM Comment WHERE Comment.user_id = ${userAlias}.id),
+              'ratings', (SELECT COUNT(*) FROM Rating WHERE Rating.user_id = ${userAlias}.id)
+            )
+          ) as user,
           SUM(
             CASE ${voteAlias}.type
               WHEN 'up' THEN 1

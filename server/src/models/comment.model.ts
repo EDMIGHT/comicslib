@@ -50,7 +50,16 @@ export class CommentModel {
       Comment.comic_id as comicId,
       DATE_FORMAT(Comment.created_at, '%Y-%m-%dT%H:%i:%s.%fZ') as createdAt,
       DATE_FORMAT(Comment.updated_at, '%Y-%m-%dT%H:%i:%s.%fZ') as updatedAt,
-      JSON_OBJECT('id', User.id, 'login', User.login, 'img', User.img) as user,
+      JSON_OBJECT(
+        'id', User.id, 
+        'login', User.login, 
+        'img', User.img,
+        '_count', JSON_OBJECT(
+          'chapters', (SELECT COUNT(*) FROM Chapter WHERE Chapter.user_id = User.id),
+          'comments', (SELECT COUNT(*) FROM Comment WHERE Comment.user_id = User.id),
+          'ratings', (SELECT COUNT(*) FROM Rating WHERE Rating.user_id = User.id)
+        )
+      ) as user,
       ${nestedCommentsQuery} as replies,
       SUM(
         CASE CommentVote.type
