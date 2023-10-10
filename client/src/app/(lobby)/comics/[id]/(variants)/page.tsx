@@ -1,19 +1,22 @@
 import { ChaptersSection } from '@/components/chapters-section';
-import { LIMITS } from '@/configs/site.configs';
 import { ChaptersService } from '@/services/chapters.service';
 
 type PageProps = {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | undefined };
+  searchParams: {
+    sort?: string;
+    order?: string;
+    page?: string;
+    limit?: string;
+  };
 };
 
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
-  const page = searchParams['page'] ?? '1';
-  const limit = searchParams['limit'] ?? LIMITS.chapters;
+  const { page, limit, sort, order } = searchParams;
 
-  const response = await ChaptersService.getAll({ comicId: id, limit, page });
+  const response = await ChaptersService.getAll({ comicId: id, limit, page, sort, order });
 
   return (
     <div className='flex flex-col gap-2'>

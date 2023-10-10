@@ -99,6 +99,28 @@ export const SORT_VARIANTS = {
       order: 'asc',
     },
   ],
+  chapters: [
+    {
+      label: 'Number: Most to least',
+      field: 'number',
+      order: 'desc',
+    },
+    {
+      label: 'Number: Least to most',
+      field: 'number',
+      order: 'asc',
+    },
+    {
+      label: 'Date Added: New to old',
+      field: 'createdAt',
+      order: 'desc',
+    },
+    {
+      label: 'Date Added: Old to new',
+      field: 'createdAt',
+      order: 'asc',
+    },
+  ],
 } as const;
 
 export const LIMITS = {

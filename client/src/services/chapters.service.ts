@@ -1,18 +1,16 @@
 import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS } from '@/configs/site.configs';
 import { ICreateChapterFields } from '@/lib/validators/chapter.validators';
+import { api } from '@/services/api';
+import { apiAuth } from '@/services/apiAuth';
 import { IChapter, IResponseAllChapters, IShortChapter } from '@/types/chapter.types';
 import { IResponsePage } from '@/types/page.types';
+import { IPaginationArg, ISortArg } from '@/types/response.types';
 
-import { api } from './api';
-import { apiAuth } from './apiAuth';
-
-type IGetAllChaptersArg = {
-  comicId: string;
-  page?: string | number;
-  limit?: string | number;
-  order?: 'asc' | 'desc';
-};
+type IGetAllChaptersArg = IPaginationArg &
+  ISortArg & {
+    comicId: string;
+  };
 
 type IGetChapterPageArg = {
   chapterId: string;
@@ -33,10 +31,11 @@ export class ChaptersService {
     comicId,
     limit = LIMITS.chapters,
     page = 1,
+    sort = 'number',
     order = 'desc',
   }: IGetAllChaptersArg) {
     const { data } = await api.get<IResponseAllChapters>(
-      `${ENDPOINTS.chapters.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
+      `${ENDPOINTS.chapters.origin}/${comicId}?page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
     return data;
   }
