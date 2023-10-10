@@ -51,7 +51,7 @@ export const SITE_CONFIG: SiteConfig = {
   socials: SITE_SOCIAL_LINKS,
 };
 
-export const SORT_VARIANTS: ISortVariants = {
+export const SORT_VARIANTS = {
   comics: COMIC_SORT_VARIANTS,
   comicsWithChapters: COMIC_WITH_CHAPTERS_SORT_VARIANTS,
   users: [
@@ -75,6 +75,28 @@ export const SORT_VARIANTS: ISortVariants = {
       label: 'username descending',
       field: 'login',
       order: 'desc',
+    },
+  ],
+  comments: [
+    {
+      label: 'Date Added: New to old',
+      field: 'createdAt',
+      order: 'desc',
+    },
+    {
+      label: 'Date Added: Old to new',
+      field: 'createdAt',
+      order: 'asc',
+    },
+    {
+      label: 'Popular: Best to worse',
+      field: 'votes',
+      order: 'desc',
+    },
+    {
+      label: 'Popular: Worse to best',
+      field: 'votes',
+      order: 'asc',
     },
   ],
 } as const;

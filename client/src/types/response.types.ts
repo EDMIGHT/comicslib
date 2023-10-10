@@ -10,8 +10,8 @@ export type ITokens = {
 };
 
 export type IPaginationArg = {
-  page?: number;
-  limit?: number;
+  page?: number | string;
+  limit?: number | string;
 };
 
 export type ISortArg = {

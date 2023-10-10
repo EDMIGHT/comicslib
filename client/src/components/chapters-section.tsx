@@ -8,7 +8,7 @@ import { ChapterSkeletons } from '@/components/skeletons/chapter-skeletons';
 import { Pagination } from '@/components/ui/pagination';
 import { IResponseAllChapters } from '@/types/chapter.types';
 
-export const ChaptersList: FC<IResponseAllChapters> = ({
+export const ChaptersSection: FC<IResponseAllChapters> = ({
   chapters,
   totalPages,
   currentPage,

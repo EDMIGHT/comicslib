@@ -158,7 +158,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
           />
         </ShowMoreHoc>
         <div className='mt-2 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_250px]'>
-          <div className='flex flex-col gap-2'>
+          <div className='space-y-3'>
             <NavigationBtns variants={variants} />
             {children}
           </div>

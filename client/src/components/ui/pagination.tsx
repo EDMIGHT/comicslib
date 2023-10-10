@@ -1,9 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { FC, HTMLAttributes } from 'react';
 
 import { Icons } from '@/components/ui/icons';
+import { useChangeSearchParams } from '@/hooks/use-change-search-params';
 import { cn } from '@/lib/utils';
 
 type PaginationProps = HTMLAttributes<HTMLUListElement> & {
@@ -23,13 +23,13 @@ export const Pagination: FC<PaginationProps> = ({
   customHandlePageChange,
   ...rest
 }) => {
-  const router = useRouter();
+  const [changeSearchParams] = useChangeSearchParams();
 
   const hasNextPage = currentPage < totalPages;
   const hasPrevPage = currentPage > 1;
 
   const handlePageChange = (newPage: number) => {
-    router.push(`?page=${newPage}`);
+    changeSearchParams(`page=${newPage}`);
   };
 
   let startPage: number;
@@ -71,7 +71,7 @@ export const Pagination: FC<PaginationProps> = ({
           <Icons.back />
         </button>
       </li>
-      {currentPage > pageRange + 1 && (
+      {startPage > 1 && (
         <>
           <li>
             <button

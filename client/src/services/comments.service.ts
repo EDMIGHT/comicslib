@@ -11,13 +11,12 @@ import {
   IResponseAllComments,
   IResponseCheckUserCommentVote,
 } from '@/types/comment.types';
+import { IPaginationArg, ISortArg } from '@/types/response.types';
 
-type IGetAllChaptersArg = {
-  comicId: IComic['id'];
-  page?: string | number;
-  limit?: string | number;
-  order?: 'asc' | 'desc';
-};
+type IGetAllChaptersArg = IPaginationArg &
+  ISortArg & {
+    comicId: IComic['id'];
+  };
 
 type ICreateCommentArg = {
   formData: ICreateCommentFields;
@@ -30,10 +29,11 @@ export class CommentsService {
     comicId,
     limit = LIMITS.chapters,
     page = 1,
+    sort = 'createdAt',
     order = 'desc',
   }: IGetAllChaptersArg) {
     const { data } = await api.get<IResponseAllComments>(
-      `${ENDPOINTS.comments.origin}/${comicId}?page=${page}&limit=${limit}&order=${order}`
+      `${ENDPOINTS.comments.origin}/${comicId}?page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
     return data;
   }

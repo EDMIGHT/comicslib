@@ -60,6 +60,7 @@ export const createQueryNestedComments = (depth = 0, prefix?: number): Prisma.Sq
         INNER JOIN User AS ${userAlias} ON ${alias}.user_id = ${userAlias}.id
         WHERE ${alias}.reply_to_id = ${originComment}.id
         GROUP BY ${alias}.id, ${userAlias}.id
+        ORDER BY ${alias}.created_at ASC
       ) AS SubQuery
     ),
     JSON_ARRAY()

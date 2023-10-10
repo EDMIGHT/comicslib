@@ -1,20 +1,23 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { FC, useCallback, useState } from 'react';
 
 import { Button, ButtonProps } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useChangeSearchParams } from '@/hooks/use-change-search-params';
 import { cn } from '@/lib/utils';
 import { ISortVariant } from '@/types/configs.types';
 
 type SortProps = {
   defaultVariantNumber?: number;
   variants: readonly ISortVariant[];
-  initialSort?: string;
-  initialOrder?: string;
+  initialSort?: string | null;
+  initialOrder?: string | null;
   contentWidth?: string;
+  styleVariant?: 'default' | 'transparent';
+  customHandler?: (variant: ISortVariant) => void;
 } & ButtonProps;
 
 export const Sort: FC<SortProps> = ({
@@ -24,6 +27,8 @@ export const Sort: FC<SortProps> = ({
   initialSort,
   className,
   contentWidth = '180px',
+  styleVariant = 'default',
+  customHandler,
   ...rest
 }) => {
   const initialVariant = variants.find(
@@ -34,9 +39,8 @@ export const Sort: FC<SortProps> = ({
   );
   const [open, setOpen] = useState(false);
 
-  const pathname = usePathname();
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const [changeSearchParams] = useChangeSearchParams();
 
   const createQueryString = useCallback(
     (field: string, order: string) => {
@@ -51,12 +55,26 @@ export const Sort: FC<SortProps> = ({
     [searchParams]
   );
 
+  const handleChoice = (variant: ISortVariant) => {
+    setActiveVariant(variant);
+    setOpen(false);
+
+    customHandler
+      ? customHandler(variant)
+      : changeSearchParams(createQueryString(variant.field, variant.order));
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           {...rest}
-          className={cn(`w-[${contentWidth}] justify-between gap-1 bg-secondary`, className)}
+          className={cn(
+            `w-[${contentWidth}] justify-between gap-1 `,
+            styleVariant === 'default' && 'bg-secondary',
+            styleVariant === 'transparent' && 'bg-inherit border-none',
+            className
+          )}
           variant='outline'
           role='combobox'
           aria-expanded={open}
@@ -76,13 +94,7 @@ export const Sort: FC<SortProps> = ({
                   : 'hover:bg-muted/80'
               )}
               onClick={() => {
-                setActiveVariant(variant);
-                setOpen(false);
-                router.push(
-                  pathname.includes('?')
-                    ? '&'
-                    : '?' + createQueryString(variant.field, variant.order)
-                );
+                handleChoice(variant);
               }}
             >
               {variant.label}

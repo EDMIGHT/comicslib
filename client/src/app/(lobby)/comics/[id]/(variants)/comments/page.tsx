@@ -1,7 +1,5 @@
+import { CommentsSection } from '@/components/comments-section';
 import { CreateCommentForm } from '@/components/forms/create-comment-form';
-import { Comment } from '@/components/layouts/comment';
-import { Pagination } from '@/components/ui/pagination';
-import { LIMITS } from '@/configs/site.configs';
 import { getCommentsIds } from '@/lib/helpers/get-comments-ids';
 import { getAuthServer } from '@/lib/helpers/getAuthServer';
 import { CommentsService } from '@/services/comments.service';
@@ -11,22 +9,28 @@ type PageProps = {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | undefined };
+  searchParams: {
+    sort?: string;
+    order?: string;
+    page?: string;
+    limit?: string;
+  };
 };
 
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
-  const page = searchParams['page'] ?? '1';
-  const limit = searchParams['limit'] ?? LIMITS.comments;
+  const { page, limit, sort, order } = searchParams;
 
-  const { comments, totalPages, currentPage } = await CommentsService.getAll({
+  const res = await CommentsService.getAll({
     comicId: id,
-    limit,
     page,
+    limit,
+    sort,
+    order,
   });
 
   const user = await getAuthServer();
 
-  const requestedCommentsIds = getCommentsIds(comments);
+  const requestedCommentsIds = getCommentsIds(res.comments);
 
   const userCommentsVotes = user
     ? await CommentsService.getUserCommentsVotes(requestedCommentsIds)
@@ -40,20 +44,7 @@ const Page = async ({ params: { id }, searchParams }: PageProps) => {
   return (
     <div className='flex flex-col gap-2'>
       {user && <CreateCommentForm comicId={id} />}
-      <ul className='flex flex-col gap-1'>
-        {comments.map((com) => (
-          <li key={com.id}>
-            <Comment {...com} userVotes={convertedUserCommentsVotes} />
-          </li>
-        ))}
-      </ul>
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          className='justify-center'
-        />
-      )}
+      <CommentsSection {...res} convertedUserCommentsVotes={convertedUserCommentsVotes} />
     </div>
   );
 };

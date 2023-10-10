@@ -5,7 +5,7 @@ export const useChangeSearchParams = (): [(value: string) => void, () => void] =
   const pathname = usePathname();
 
   const change = (value: string) => {
-    router.push(pathname + (pathname.includes('?') ? '&' : '?') + value);
+    router.push(pathname + '?' + value);
   };
 
   const reset = () => {
