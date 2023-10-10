@@ -7,6 +7,7 @@ import { FC } from 'react';
 import { ComicPageImg } from '@/components/comic-page-img';
 import { FileDialog } from '@/components/file-dialog';
 import { Icons } from '@/components/ui/icons';
+import { cn } from '@/lib/utils';
 import { ICreateChapterFields } from '@/lib/validators/chapter.validators';
 
 type ICreateChapterField = ICreateChapterFields['pages'][number];
@@ -24,9 +25,11 @@ export const SortablePage: FC<SortablePageProps> = ({
   onClickDelete,
   onClickEditPage,
 }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-    id,
-  });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable(
+    {
+      id,
+    }
+  );
 
   const style = {
     transition,
@@ -46,7 +49,11 @@ export const SortablePage: FC<SortablePageProps> = ({
       >
         <Icons.delete className='h-6 w-6 transition-colors group-hover:stroke-red-900' />
       </button>
-      <ComicPageImg imgSrc={img} alt='comic page' />
+      <ComicPageImg
+        imgSrc={img}
+        alt='comic page'
+        className={cn(isDragging && 'cursor-grabbing')}
+      />
       <span className='absolute bottom-1 right-1 min-w-[30px] rounded bg-active p-1 text-center'>
         {pageNumber}
       </span>

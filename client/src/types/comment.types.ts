@@ -1,5 +1,5 @@
 import { IPagination } from './response.types';
-import { IShortUser } from './user.types';
+import { IShortUserWithCounts } from './user.types';
 
 export type IComment = {
   id: string;
@@ -13,7 +13,7 @@ export type IComment = {
 export type ICommentVoteType = 'up' | 'down';
 
 export type ICommentWithUser = IComment & {
-  user: IShortUser;
+  user: IShortUserWithCounts;
 };
 
 export type ICommentWithUserAndVotes = ICommentWithUser & {

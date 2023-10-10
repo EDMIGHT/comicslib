@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
 import { CreateCommentForm } from '@/components/forms/create-comment-form';
+import { UserDetailsHoc } from '@/components/hocs/user-details-hoc';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
@@ -63,13 +64,15 @@ export const CommentBase: FC<CommentBaseProps> = ({
   return (
     <div className='flex flex-col gap-2 p-2'>
       <div className='flex items-center gap-2'>
-        <Link
-          href={`${HREFS.profile}/${user.login}`}
-          className='flex items-center gap-2 hover:opacity-75 focus:opacity-75'
-        >
-          <UserAvatar img={user.img} login={user.login} />
-          <h3>{user.login}</h3>
-        </Link>
+        <UserDetailsHoc user={user}>
+          <Link
+            href={`${HREFS.profile}/${user.login}`}
+            className='flex items-center gap-2 hover:opacity-75 focus:opacity-75'
+          >
+            <UserAvatar img={user.img} login={user.login} />
+            <h3>{user.login}</h3>
+          </Link>
+        </UserDetailsHoc>
 
         <span className='text-xs opacity-80'>{dateToNow}</span>
       </div>

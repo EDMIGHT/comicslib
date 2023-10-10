@@ -13,7 +13,7 @@ export const ChapterSkeletons: FC<ChapterSkeletonsProps> = ({ count = LIMITS.cha
   return (
     <>
       {skeletonArray.map((_, i) => (
-        <Skeleton key={i} className='h-10 w-full' />
+        <Skeleton key={i} className='h-14 w-full' />
       ))}
     </>
   );

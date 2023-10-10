@@ -11,7 +11,7 @@ export const ComicWithChapters: FC<IComicWithChapter> = ({ id, img, title, chapt
   return (
     <Card className='flex gap-2 p-2'>
       <Link href={`${HREFS.comics}/${id}`} className='hover:opacity-80'>
-        <div className='h-[170px] w-[110px]  xl:h-[200px] xl:w-[140px]'>
+        <div className='h-[170px] w-[110px]  xl:h-[210px] xl:w-[140px]'>
           <Image
             src={img}
             alt={title}
@@ -23,7 +23,7 @@ export const ComicWithChapters: FC<IComicWithChapter> = ({ id, img, title, chapt
       </Link>
       <div className='flex w-full flex-col gap-2'>
         <Link href={`${HREFS.comics}/${id}`}>
-          <CardTitle className='text-xl hover:opacity-80'>{title}</CardTitle>
+          <CardTitle className='hover:opacity-80 lg:text-xl'>{title}</CardTitle>
         </Link>
         <ComicChaptersList chapters={chapters} />
       </div>

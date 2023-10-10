@@ -7,9 +7,14 @@ import { ComicCounters } from '@/components/comic-counters';
 import { StatusBadge } from '@/components/status-badge';
 import { Card, CardTitle } from '@/components/ui/card';
 import { HREFS } from '@/configs/href.configs';
+import { cn } from '@/lib/utils';
 import { IResponseComic } from '@/types/comic.types';
 
-export const Comic: FC<IResponseComic> = ({
+type ComicProps = IResponseComic & {
+  className?: string;
+};
+
+export const Comic: FC<ComicProps> = ({
   id,
   genres,
   themes,
@@ -20,9 +25,10 @@ export const Comic: FC<IResponseComic> = ({
   comments_count,
   avg_rating,
   unique_bookmarks_count,
+  className,
 }) => {
   return (
-    <Card className='flex gap-2 p-2'>
+    <Card className={cn('flex gap-2 p-2', className)}>
       <Link href={`${HREFS.comics}/${id}`} className='hover:opacity-80'>
         <div className='h-[170px] w-[110px] xl:h-[200px] xl:w-[140px]'>
           <Image

@@ -116,7 +116,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
             className='h-[200px] w-[140px] sm:h-[240px] sm:w-[180px] md:h-[270px] md:w-[210px]'
           />
           <div className='flex h-full flex-col justify-between gap-2'>
-            <h1 className='text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl'>
+            <h1 className='text-3xl font-bold drop-shadow-lg sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl'>
               {title}
             </h1>
             <div className='flex flex-col justify-between gap-6'>

@@ -20,10 +20,15 @@ import {
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { cn } from '@/lib/utils';
 import { FoldersService } from '@/services/folders.service';
 import { IFolderWithComics } from '@/types/user.types';
 
-export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
+type FolderProps = IFolderWithComics & {
+  className?: string;
+};
+
+export const Folder: FC<FolderProps> = memo(({ id, title, comics, className }) => {
   const router = useRouter();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
@@ -50,7 +55,12 @@ export const Folder: FC<IFolderWithComics> = memo(({ id, title, comics }) => {
   });
 
   return (
-    <Card className='flex flex-col items-start justify-start gap-2 p-2 transition-colors'>
+    <Card
+      className={cn(
+        'flex flex-col items-start justify-start gap-2 p-2 transition-colors',
+        className
+      )}
+    >
       <div className='flex w-full justify-between gap-2'>
         <Link href={`${HREFS.library.folders}/${id}`}>
           <h3 className=' text-xl font-semibold transition-all hover:brightness-75'>

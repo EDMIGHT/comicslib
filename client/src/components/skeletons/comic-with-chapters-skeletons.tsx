@@ -21,9 +21,9 @@ export const ComicWithChaptersSkeletons: FC<ComicSkeletonsProps> = ({
             <Skeleton className='h-[170px] w-[110px] shrink-0 xl:h-[200px] xl:w-[140px]' />
             <div className='flex w-full flex-col gap-2'>
               <Skeleton className='h-8 w-[200px]' />
-              <Skeleton className='h-9 w-full' />
-              <Skeleton className='h-9 w-full' />
-              <Skeleton className='h-9 w-full' />
+              <Skeleton className='h-12 w-full' />
+              <Skeleton className='h-12 w-full' />
+              <Skeleton className='h-12 w-full' />
             </div>
           </Card>
         </li>

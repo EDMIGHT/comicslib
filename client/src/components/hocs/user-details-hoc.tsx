@@ -1,29 +1,28 @@
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
-import { buttonVariants } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Separator } from '@/components/ui/separator';
 import { UserAvatar } from '@/components/user-avatar';
 import { HREFS } from '@/configs/href.configs';
-import { cn } from '@/lib/utils';
 import { IShortUserWithCounts } from '@/types/user.types';
 
-export const ChapterUserInfo: FC<IShortUserWithCounts> = ({
-  img,
-  login,
-  _count: { chapters, comments, ratings },
+type UserDetailsHocProps = {
+  children: ReactNode;
+  user: IShortUserWithCounts;
+};
+
+export const UserDetailsHoc: FC<UserDetailsHocProps> = ({
+  children,
+  user: {
+    img,
+    login,
+    _count: { chapters, comments, ratings },
+  },
 }) => {
   return (
     <HoverCard>
-      <HoverCardTrigger asChild>
-        <Link
-          className={cn(buttonVariants({ variant: 'link' }), 'p-0 h-fit text-center')}
-          href={`${HREFS.profile}/${login}`}
-        >
-          {login}
-        </Link>
-      </HoverCardTrigger>
+      <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent className='min-w-[240px] space-y-3 p-4'>
         <Link
           className='flex items-center gap-3 transition-all hover:brightness-75'

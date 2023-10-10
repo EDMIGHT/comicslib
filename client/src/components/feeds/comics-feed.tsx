@@ -93,13 +93,13 @@ export const ComicsFeed: FC<IComicsProps> = ({ className, ...queryOptions }) => 
             if (i === comics.length - 1) {
               return (
                 <li key={comic.id} ref={ref}>
-                  <Comic {...comic} />
+                  <Comic {...comic} className='h-full' />
                 </li>
               );
             } else {
               return (
                 <li key={comic.id}>
-                  <Comic {...comic} />
+                  <Comic {...comic} className='h-full' />
                 </li>
               );
             }
