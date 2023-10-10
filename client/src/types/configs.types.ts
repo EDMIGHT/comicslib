@@ -16,6 +16,7 @@ export type NavigationLink = {
 export type NavigationItemAction = {
   icon: keyof typeof Icons;
   href: string;
+  isPrivate?: boolean;
 };
 
 export type NavigationItem = {

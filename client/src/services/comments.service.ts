@@ -3,7 +3,9 @@ import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS } from '@/configs/site.configs';
 import { api } from '@/services/api';
 import { apiAuth } from '@/services/apiAuth';
+import { IComic } from '@/types/comic.types';
 import {
+  IComment,
   ICommentVoteType,
   ICommentWithReplies,
   IResponseAllComments,
@@ -11,7 +13,7 @@ import {
 } from '@/types/comment.types';
 
 type IGetAllChaptersArg = {
-  comicId: string;
+  comicId: IComic['id'];
   page?: string | number;
   limit?: string | number;
   order?: 'asc' | 'desc';
@@ -19,7 +21,7 @@ type IGetAllChaptersArg = {
 
 type ICreateCommentArg = {
   formData: ICreateCommentFields;
-  comicId: string;
+  comicId: IComic['id'];
   replyToId?: string | null;
 };
 
@@ -45,7 +47,7 @@ export class CommentsService {
     );
     return data;
   }
-  public static async getUserCommentsVotes(commentsIds: string[]) {
+  public static async getUserCommentsVotes(commentsIds: IComic['id'][]) {
     const { data } = await apiAuth.post<IResponseCheckUserCommentVote[]>(
       ENDPOINTS.comments.check,
       {
@@ -54,13 +56,17 @@ export class CommentsService {
     );
     return data;
   }
-  public static async countingVote(comicId: string, vote: ICommentVoteType) {
+  public static async countingVote(comicId: IComic['id'], vote: ICommentVoteType) {
     const { data } = await apiAuth.post<ICommentWithReplies>(
       `${ENDPOINTS.comments.origin}/${comicId}/vote`,
       {
         type: vote,
       }
     );
+    return data;
+  }
+  public static async delete(id: IComment['id']) {
+    const { data } = await apiAuth.delete<null>(`${ENDPOINTS.comments.origin}/${id}`);
     return data;
   }
 }

@@ -117,7 +117,7 @@ export const Pagination: FC<PaginationProps> = ({
           </button>
         </li>
       ))}
-      {currentPage + pageRange < totalPages && (
+      {endPage < totalPages && (
         <>
           <li>
             <span

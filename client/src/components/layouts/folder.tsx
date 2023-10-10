@@ -1,6 +1,5 @@
 'use client';
 
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -17,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
 import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
@@ -70,7 +70,7 @@ export const Folder: FC<FolderProps> = memo(({ id, title, comics, className }) =
         <DropdownMenu open={isOpenMenu} onOpenChange={setIsOpenMenu}>
           <DropdownMenuTrigger asChild>
             <Button variant='ghost' size='sm' disabled={isLoading}>
-              <DotsHorizontalIcon />
+              <Icons.more className='h-5 w-5' />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' className='font-medium'>

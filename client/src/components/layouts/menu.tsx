@@ -52,11 +52,12 @@ export const Menu: FC<MenuProps> = ({ navigation, user, onClickMenuItem }) => {
                       {navItem.title}
                     </span>
                   )}
-                  {navItem.action && (
-                    <button onClick={() => onClickMenuItem && onClickMenuItem()}>
-                      <MenuAction action={navItem.action} />
-                    </button>
-                  )}
+                  {navItem.action &&
+                    ((navItem.action.isPrivate && user) || !navItem.action?.isPrivate) && (
+                      <button onClick={() => onClickMenuItem && onClickMenuItem()}>
+                        <MenuAction action={navItem.action} />
+                      </button>
+                    )}
                 </h3>
 
                 {navItem.links && (

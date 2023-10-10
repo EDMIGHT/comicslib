@@ -115,6 +115,7 @@ export const NAVIGATION: readonly NavigationItem[] = [
     action: {
       icon: 'add',
       href: HREFS.create.title,
+      isPrivate: true,
     },
   },
   {
