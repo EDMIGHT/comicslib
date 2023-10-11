@@ -50,7 +50,6 @@ import {
   UploadCloud,
   User2,
   Users,
-  Users2,
   X,
 } from 'lucide-react';
 
@@ -118,7 +117,6 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  group: Users2,
   history: History,
   hide: EyeOff,
   home: Home,

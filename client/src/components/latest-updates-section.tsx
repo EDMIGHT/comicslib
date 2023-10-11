@@ -6,15 +6,14 @@ import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
 import { formatTimeToNow } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
-import { IResponseComic } from '@/types/comic.types';
+import { IComicWithChapter } from '@/types/comic.types';
 
 type LatestUpdatesSectionProps = {
-  comics: IResponseComic[];
+  comics: IComicWithChapter[];
 };
 
-type LatestUpdatesSectionBaseProps = HTMLAttributes<HTMLUListElement> & {
-  comics: IResponseComic[];
-};
+type LatestUpdatesSectionBaseProps = HTMLAttributes<HTMLUListElement> &
+  LatestUpdatesSectionProps;
 
 const LatestUpdatesSectionBase: FC<LatestUpdatesSectionBaseProps> = ({
   comics,
@@ -23,49 +22,72 @@ const LatestUpdatesSectionBase: FC<LatestUpdatesSectionBaseProps> = ({
 }) => {
   return (
     <ul {...rest} className={cn('space-y-2 rounded bg-card p-2', className)}>
-      {comics.map(({ id, title, img, authors, updatedAt }) => (
-        <li key={id}>
-          <Link
-            href={`${HREFS.comics}/${id}`}
-            className='flex gap-2 hover:brightness-75 focus:brightness-75'
-          >
-            <Image
-              src={img}
-              alt={title}
-              width={60}
-              height={80}
-              className='h-[80px] w-[60px] shrink-0 rounded object-cover object-center'
-            />
+      {comics.map(({ id, title, img, chapters }) => {
+        const firstChapter = chapters[0];
+        const formattedDate = formatTimeToNow(new Date(firstChapter.createdAt));
+        return (
+          <li key={id} className='flex gap-2'>
+            <Link
+              href={`${HREFS.comics}/${id}`}
+              className=' shrink-0 hover:brightness-75 focus:brightness-75'
+            >
+              <Image
+                src={img}
+                alt={title}
+                width={60}
+                height={80}
+                className='h-[80px] w-[60px] rounded object-cover object-center'
+              />
+            </Link>
             <div className='flex grow flex-col justify-evenly'>
-              <h3 className='line-clamp-1 break-all text-base font-semibold'>{title}</h3>
+              <Link
+                href={`${HREFS.comics}/${id}`}
+                className='group hover:brightness-75 focus:brightness-75'
+              >
+                <h3 className='line-clamp-1 break-all text-base font-semibold'>{title}</h3>
+              </Link>
 
-              <p className='line-clamp-1 break-all text-base'>Ch. 1 - sadsad</p>
+              <Link
+                href={`${HREFS.chapter}/${firstChapter.id}`}
+                className='line-clamp-1 break-all text-base hover:brightness-75 focus:brightness-75'
+              >
+                Ch. {firstChapter.number}
+                {firstChapter.title ? ` - ${firstChapter.title}` : ''}
+              </Link>
               <div className='flex w-full justify-between gap-1'>
-                <div className='flex items-center'>
-                  <Icons.group className='h-5 w-5 shrink-0' />
-                  <span className='line-clamp-1 break-all px-1 text-sm italic'>
-                    {authors.map(({ login }) => login).join(', ')}
-                  </span>
-                </div>
-                <span className='whitespace-nowrap text-sm'>
-                  {formatTimeToNow(new Date(updatedAt))}
-                </span>
+                {firstChapter.user ? (
+                  <Link
+                    href={`${HREFS.profile}/${firstChapter.user.login}`}
+                    className='flex items-center hover:brightness-75 focus:brightness-75'
+                  >
+                    <Icons.user className='h-5 w-5 shrink-0' />
+                    <span className='line-clamp-1 break-all px-1 text-sm'>
+                      {firstChapter.user.login}
+                    </span>
+                  </Link>
+                ) : (
+                  <div>
+                    <Icons.user className='h-5 w-5 shrink-0' />
+                    <span className='line-clamp-1 break-all px-1 text-sm'>deleted</span>
+                  </div>
+                )}
+                <span className='whitespace-nowrap text-sm'>{formattedDate}</span>
               </div>
             </div>
-          </Link>
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ul>
   );
 };
 
 export const LatestUpdatesSection: FC<LatestUpdatesSectionProps> = ({ comics }) => {
   return (
-    <div className='grid grid-cols-4 gap-2'>
+    <div className='grid grid-cols-1 gap-x-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
       <LatestUpdatesSectionBase comics={comics.slice(0, 6)} />
-      <LatestUpdatesSectionBase comics={comics.slice(6, 12)} />
-      <LatestUpdatesSectionBase comics={comics.slice(12, 18)} />
-      <LatestUpdatesSectionBase comics={comics.slice(18, 24)} />
+      <LatestUpdatesSectionBase comics={comics.slice(6, 12)} className='hidden lg:block' />
+      <LatestUpdatesSectionBase comics={comics.slice(12, 18)} className='hidden xl:block' />
+      <LatestUpdatesSectionBase comics={comics.slice(18, 24)} className='hidden 2xl:block' />
     </div>
   );
 };

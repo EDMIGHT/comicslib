@@ -21,7 +21,7 @@ export const TripleComicCarousel: FC<TripleComicCarouselProps> = ({ comics }) =>
   return (
     <div className='overflow-hidden' ref={emblaRef}>
       <ul className='flex'>
-        {comics.map(({ id, img, title, genres, themes, status }) => (
+        {comics.map(({ id, img, title, genres, themes }) => (
           <li
             key={id}
             className='relative mr-4 h-[16rem] min-w-0 flex-none basis-[calc(100%-1rem+1px)] overflow-hidden rounded-xl sm:h-[20rem] sm:basis-[calc(50%-1rem+1px)] lg:basis-[calc(33.333333%-1rem+1px)]'

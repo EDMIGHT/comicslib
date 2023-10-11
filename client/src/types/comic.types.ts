@@ -52,6 +52,7 @@ export type IResponseRandomComic = {
 
 export type IComicWithChapter = IComic & {
   chapters: IChapterWithUser[];
+  authors: IAuthor[];
 };
 
 export type IResponseAllComicsWithChapters = IPagination & {

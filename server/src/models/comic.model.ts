@@ -339,9 +339,10 @@ export class ComicModel {
             },
           },
           orderBy: {
-            number: 'desc',
+            createdAt: 'desc',
           },
         },
+        authors: true,
       },
     });
   }

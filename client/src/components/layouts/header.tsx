@@ -6,7 +6,8 @@ import { ComicSearch } from '@/components/comic-search';
 import { MenuSwitcher } from '@/components/menu-switcher';
 import { MobileMenuSwitcher } from '@/components/mobile-menu-switcher';
 import { UserMenu } from '@/components/user-menu';
-import { cn, isServer } from '@/lib/utils';
+import { useMounted } from '@/hooks/use-mounted';
+import { cn } from '@/lib/utils';
 import { IUser } from '@/types/user.types';
 
 type HeaderProps = {
@@ -14,6 +15,7 @@ type HeaderProps = {
 };
 
 export const Header: FC<HeaderProps> = ({ user }) => {
+  const isMounted = useMounted();
   const [isScrolled, setIsScrolled] = useState(false);
 
   const checkScroll = () => {
@@ -21,13 +23,15 @@ export const Header: FC<HeaderProps> = ({ user }) => {
   };
 
   useEffect(() => {
-    if (!isServer) {
+    if (isMounted) {
+      checkScroll();
+
       window.addEventListener('scroll', checkScroll);
       return () => {
         window.removeEventListener('scroll', checkScroll);
       };
     }
-  }, []);
+  }, [isMounted]);
 
   return (
     <header

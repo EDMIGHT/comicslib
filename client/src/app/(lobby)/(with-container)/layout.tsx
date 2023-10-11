@@ -5,7 +5,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  return <main className='container p-2 md:px-8'>{children}</main>;
+  return <main className='container p-2 md:px-4'>{children}</main>;
 };
 
 export default Layout;

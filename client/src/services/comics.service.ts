@@ -1,6 +1,8 @@
 import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
 import { ICreateComicFields } from '@/lib/validators/comic.validators';
+import { api } from '@/services/api';
+import { apiAuth } from '@/services/apiAuth';
 import {
   IComic,
   IResponseAllComics,
@@ -10,9 +12,6 @@ import {
 } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import { IRating } from '@/types/review.types';
-
-import { api } from './api';
-import { apiAuth } from './apiAuth';
 
 export type IGetAllComicsArg = IPaginationArg &
   ISortArg & {
