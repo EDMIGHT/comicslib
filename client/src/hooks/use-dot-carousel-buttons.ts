@@ -1,7 +1,5 @@
-'use client';
-
 import { EmblaCarouselType } from 'embla-carousel-react';
-import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type UseDotButtonType = {
   selectedIndex: number;
@@ -48,16 +46,4 @@ export const useDotButton = (
     scrollSnaps,
     onDotButtonClick,
   };
-};
-
-type PropType = PropsWithChildren<
-  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
->;
-
-export const DotButton: React.FC<PropType> = ({ children, ...restProps }) => {
-  return (
-    <button type='button' {...restProps}>
-      {children}
-    </button>
-  );
 };

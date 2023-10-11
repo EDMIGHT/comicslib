@@ -6,13 +6,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FC, useCallback } from 'react';
 
-import {
-  NextButton,
-  PrevButton,
-  usePrevNextButtons,
-} from '@/components/carousel-arrow-buttons';
 import { ComicAttributes } from '@/components/comic-attributes';
+import {
+  CarouselNextButton,
+  CarouselPrevButton,
+} from '@/components/ui/carousel-arrow-buttons';
 import { HREFS } from '@/configs/href.configs';
+import { usePrevNextButtons } from '@/hooks/use-prev-next-carousel-buttons';
 import { IResponseComic } from '@/types/comic.types';
 
 type FullScreenComicCarouselProps = {
@@ -89,8 +89,8 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
 
       <div className='absolute bottom-4 right-2 flex items-center gap-2'>
         <span className='text-sm font-semibold uppercase'>NO. {selectedIndex + 1}</span>
-        <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-        <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+        <CarouselPrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+        <CarouselNextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
       </div>
     </div>
   );

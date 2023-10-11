@@ -1,11 +1,5 @@
-'use client';
-
 import { EmblaCarouselType } from 'embla-carousel-react';
-import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
-
-import { cn } from '@/lib/utils';
-
-import { Icons } from './ui/icons';
+import { useCallback, useEffect, useState } from 'react';
 
 type UsePrevNextButtonsType = {
   prevBtnDisabled: boolean;
@@ -56,40 +50,4 @@ export const usePrevNextButtons = (
     onNextButtonClick,
     selectedIndex,
   };
-};
-
-type PropType = PropsWithChildren<
-  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
->;
-
-export const PrevButton: React.FC<PropType> = ({ children, className, ...restProps }) => {
-  return (
-    <button
-      type='button'
-      {...restProps}
-      className={cn(
-        'flex min-h-[2.5rem] min-w-[2.5rem] cursor-pointer items-center justify-center rounded-full enabled:cursor-pointer enabled:hover:bg-black/40 disabled:text-muted transition-colors',
-        className
-      )}
-    >
-      <Icons.back />
-      {children}
-    </button>
-  );
-};
-
-export const NextButton: React.FC<PropType> = ({ children, className, ...restProps }) => {
-  return (
-    <button
-      type='button'
-      {...restProps}
-      className={cn(
-        'flex min-h-[2.5rem] min-w-[2.5rem] cursor-pointer items-center justify-center rounded-full enabled:cursor-pointer enabled:hover:bg-black/40 disabled:text-muted transition-colors',
-        className
-      )}
-    >
-      <Icons.next />
-      {children}
-    </button>
-  );
 };

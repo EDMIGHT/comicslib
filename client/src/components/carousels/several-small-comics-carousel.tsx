@@ -1,12 +1,13 @@
 'use client';
 
-import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
+import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC } from 'react';
 
+import { CarouselDotButtons } from '@/components/ui/carousel-dot-buttons';
 import { HREFS } from '@/configs/href.configs';
-import { cn } from '@/lib/utils';
+import { useDotButton } from '@/hooks/use-dot-carousel-buttons';
 import { IResponseComic } from '@/types/comic.types';
 
 type SeveralSmallComicsCarouselProps = {
@@ -16,36 +17,13 @@ type SeveralSmallComicsCarouselProps = {
 export const SeveralSmallComicsCarousel: FC<SeveralSmallComicsCarouselProps> = ({
   comics,
 }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     dragFree: true,
     containScroll: 'trimSnaps',
   });
 
-  const scrollTo = useCallback(
-    (index: number) => emblaApi && emblaApi.scrollTo(index),
-    [emblaApi]
-  );
-
-  const onInit = useCallback((emblaApi: EmblaCarouselType) => {
-    setScrollSnaps(emblaApi.scrollSnapList());
-  }, []);
-
-  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    onInit(emblaApi);
-    onSelect(emblaApi);
-    emblaApi.on('reInit', onInit);
-    emblaApi.on('reInit', onSelect);
-    emblaApi.on('select', onSelect);
-  }, [emblaApi, onInit, onSelect]);
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
   return (
     <div className='space-y-2'>
@@ -75,28 +53,11 @@ export const SeveralSmallComicsCarousel: FC<SeveralSmallComicsCarouselProps> = (
           ))}
         </ul>
       </div>
-      <ul className='flex h-4 items-center justify-center gap-1'>
-        {scrollSnaps.map((_, i) => {
-          const distance = Math.abs(selectedIndex - i);
-
-          return (
-            <li key={i} className='flex items-center'>
-              <button
-                type='button'
-                onClick={() => scrollTo(i)}
-                className={cn(
-                  'rounded-full transition-all',
-                  i === selectedIndex ? 'bg-active h-4 w-4' : 'bg-card h-3 w-3',
-                  distance === 1 && 'h-3 w-3',
-                  distance === 2 && 'h-2 w-2',
-                  distance === 3 && 'h-1 w-1',
-                  distance > 3 && 'hidden'
-                )}
-              />
-            </li>
-          );
-        })}
-      </ul>
+      <CarouselDotButtons
+        scrollSnaps={scrollSnaps}
+        scrollTo={onDotButtonClick}
+        selectedIndex={selectedIndex}
+      />
     </div>
   );
 };
