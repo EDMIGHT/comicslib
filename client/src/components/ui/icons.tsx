@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  ArrowRight,
   Bomb,
   BookCopy,
   Bookmark,
@@ -49,6 +50,7 @@ import {
   UploadCloud,
   User2,
   Users,
+  Users2,
   X,
 } from 'lucide-react';
 
@@ -56,6 +58,7 @@ export type Icon = LucideIcon;
 
 export const Icons = {
   add: Plus,
+  arrowRight: ArrowRight,
   back: ChevronLeft,
   bookmark: Bookmark,
   camera: Camera,
@@ -115,6 +118,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
+  group: Users2,
   history: History,
   hide: EyeOff,
   home: Home,
