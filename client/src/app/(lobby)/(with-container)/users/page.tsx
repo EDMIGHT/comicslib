@@ -37,7 +37,7 @@ const Page: FC<PageProps> = ({ searchParams }) => {
           variants={SORT_VARIANTS.users}
           initialSort={searchParams.sort}
           initialOrder={searchParams.order}
-          contentWidth='200px'
+          contentWidth='260px'
         />
       </div>
 

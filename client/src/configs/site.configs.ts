@@ -56,23 +56,23 @@ export const SORT_VARIANTS = {
   comicsWithChapters: COMIC_WITH_CHAPTERS_SORT_VARIANTS,
   users: [
     {
-      label: 'recently registered',
+      label: 'Date Registration: New to old',
       field: 'createdAt',
       order: 'desc',
     },
     {
-      label: 'oldest registered',
+      label: 'Date Registration: Old to new',
       field: 'createdAt',
       order: 'asc',
     },
 
     {
-      label: 'username ascending',
+      label: 'Username: A to Z',
       field: 'login',
       order: 'asc',
     },
     {
-      label: 'username descending',
+      label: 'Username: Z to A',
       field: 'login',
       order: 'desc',
     },

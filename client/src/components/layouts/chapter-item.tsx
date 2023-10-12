@@ -31,7 +31,7 @@ export const ChapterItem: FC<ChapterItemProps> = ({
         'grid grid-cols-[1fr_150px] items-center justify-between gap-x-2 gap-y-1 px-2 py-1 shadow-sm transition-colors ',
         variant === 'default' &&
           'rounded border bg-card text-card-foreground hover:bg-card/80',
-        variant === 'transparent' && 'border-l-4 border-active hover:bg-active/20',
+        variant === 'transparent' && 'border-l-4 border-active hover:bg-active/20 shadow-none',
         className
       )}
     >

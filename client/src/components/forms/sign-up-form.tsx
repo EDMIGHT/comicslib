@@ -143,7 +143,7 @@ export const SignUpForm = () => {
           name='terms'
           render={({ field }) => (
             <FormItem>
-              <div className='flex flex-row items-center justify-start space-x-2 pl-2 shadow'>
+              <div className='flex flex-row items-center justify-start space-x-2 pl-2'>
                 <FormControl>
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
