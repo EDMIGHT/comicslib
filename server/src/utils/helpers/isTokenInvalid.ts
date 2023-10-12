@@ -1,9 +1,9 @@
-import { Token } from '@prisma/client';
+import { Session } from '@prisma/client';
 
 import { VerifiedTokenPayload } from '@/types/token.types';
 
 export const isTokenInvalid = (
-  dbToken: Token,
+  dbToken: Session,
   tokenPayload: VerifiedTokenPayload
 ): boolean => {
   return dbToken.userId !== tokenPayload.id;

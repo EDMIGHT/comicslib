@@ -4,7 +4,7 @@ import { ThemeModel } from '@/models/theme.model';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
-export const getAllThemes = async (req: Request, res: Response): Promise<Response> => {
+export const getAllThemes = async (_: Request, res: Response): Promise<Response> => {
   try {
     const themes = await ThemeModel.getAll();
 

@@ -4,7 +4,7 @@ import { GenreModel } from '@/models/genre.model';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
-export const getAllGenres = async (req: Request, res: Response): Promise<Response> => {
+export const getAllGenres = async (_: Request, res: Response): Promise<Response> => {
   try {
     const genres = await GenreModel.getAll();
 

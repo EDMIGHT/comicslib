@@ -5,7 +5,7 @@ import { StatusModel } from '@/models/status.model';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
-export const getAllStatuses = async (req: Request, res: Response): Promise<Response> => {
+export const getAllStatuses = async (_: Request, res: Response): Promise<Response> => {
   try {
     const statuses = await StatusModel.getAll();
 

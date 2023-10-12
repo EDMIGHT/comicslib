@@ -23,5 +23,5 @@ export type IShortChapter = Pick<Chapter, 'id' | 'number' | 'title'>;
 
 export type IChapterWithShortUserAndShortComic = Chapter & {
   comic: Omit<IShortComic, 'img'>;
-  user: Omit<IShortUser, 'img'>;
+  user: Omit<IShortUser, 'img'> | null;
 };

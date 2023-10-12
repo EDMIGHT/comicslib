@@ -166,7 +166,7 @@ export const getUserRating = async (req: Request, res: Response): Promise<Respon
   }
 };
 
-export const getRandom = async (req: Request, res: Response): Promise<Response> => {
+export const getRandom = async (_: Request, res: Response): Promise<Response> => {
   try {
     const totalComic = await ComicModel.getAllCount({});
     const skip = Math.floor(Math.random() * totalComic);
