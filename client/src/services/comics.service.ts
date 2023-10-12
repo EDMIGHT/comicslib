@@ -30,6 +30,9 @@ export type IGetAllComicsWithChaptersArg = IPaginationArg &
   ISortArg & {
     title?: string;
   };
+type ICreateComicArg = Omit<ICreateComicFields, 'releasedAt'> & {
+  releasedAt: string;
+};
 
 export class ComicsService {
   public static async getAll({
@@ -84,7 +87,7 @@ export class ComicsService {
     const { data } = await api.get<IResponseRandomComic>(ENDPOINTS.comics.random);
     return data;
   }
-  public static async create(payload: ICreateComicFields) {
+  public static async create(payload: ICreateComicArg) {
     const { data } = await apiAuth.post<IComic>(ENDPOINTS.comics.origin, payload);
     return data;
   }

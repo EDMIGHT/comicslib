@@ -9,14 +9,29 @@ import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const createComic = async (req: Request, res: Response): Promise<Response> => {
-  const { img, ...rest } = req.body;
+  const { img, releasedAt, ...rest } = req.body as {
+    releasedAt: Date;
+    title: string;
+    authors: string[];
+    genres: string[];
+    themes: string[];
+    statusId: string;
+    img: string;
+    desc: string | null;
+  };
 
   try {
     const uploadedImg = await cloudinary.uploader.upload(img, {
       folder: 'comics',
     });
+    const formattedReleasedAt = new Date(releasedAt);
+    console.log(formattedReleasedAt);
 
-    const comic = await ComicModel.create({ ...rest, img: uploadedImg.secure_url });
+    const comic = await ComicModel.create({
+      ...rest,
+      releasedAt: formattedReleasedAt,
+      img: uploadedImg.secure_url,
+    });
 
     return CustomResponse.created(res, comic);
   } catch (error) {

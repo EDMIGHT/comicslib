@@ -82,8 +82,11 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
 
   const { mutate: createComic, isLoading: isLoadingCreateComic } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.comics],
-    mutationFn: async (data: ICreateComicFields) => {
-      return await ComicsService.create(data);
+    mutationFn: async ({ releasedAt, ...data }: ICreateComicFields) => {
+      return await ComicsService.create({
+        ...data,
+        releasedAt: Formatter.timeForRequest(releasedAt),
+      });
     },
     onSuccess: ({ id, title }) => {
       toast({

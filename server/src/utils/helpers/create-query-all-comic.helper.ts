@@ -19,46 +19,49 @@ export const createWhereQueryAllComics = ({
 
   let dateFilter = Prisma.empty;
 
+  const formattedStartDate = `${startDate} 00:00:00`;
+  const formattedEndDate = `${endDate} 23:59:59`;
+
   if (date === 'createdAt') {
     if (startDate && endDate) {
       dateFilter = Prisma.sql`
-        AND Comic.created_at BETWEEN ${startDate} AND ${endDate}
+        AND Comic.created_at BETWEEN ${formattedStartDate} AND ${formattedEndDate}
       `;
     } else if (endDate) {
       dateFilter = Prisma.sql`
-      AND Comic.created_at <= ${endDate}
+      AND Comic.created_at <= ${formattedEndDate}
       `;
     } else if (startDate) {
       dateFilter = Prisma.sql`
-      AND Comic.created_at >= ${startDate}
+      AND Comic.created_at >= ${formattedStartDate}
       `;
     }
   } else if (date === 'updatedAt') {
     if (startDate && endDate) {
       dateFilter = Prisma.sql`
-      AND Comic.updated_at BETWEEN ${startDate} AND ${endDate}
+      AND Comic.updated_at BETWEEN ${formattedStartDate} AND ${formattedEndDate}
       `;
     } else if (endDate) {
       dateFilter = Prisma.sql`
-      AND Comic.updated_at <= ${endDate}
+      AND Comic.updated_at <= ${formattedEndDate}
       `;
     } else if (startDate) {
       dateFilter = Prisma.sql`
-      AND Comic.updated_at >= ${startDate}
+      AND Comic.updated_at >= ${formattedStartDate}
       `;
     }
   } else if (date === 'releasedAt') {
     if (startDate && endDate) {
       dateFilter = Prisma.sql`
-      AND Comic.released_at BETWEEN ${startDate} AND ${endDate}
+      AND Comic.released_at BETWEEN ${formattedStartDate} AND ${formattedEndDate}
       `;
     } else if (endDate) {
       dateFilter = Prisma.sql`
-      AND Comic.released_at <= ${endDate}
+      AND Comic.released_at <= ${formattedEndDate}
       `;
     } else if (startDate) {
       dateFilter = Prisma.sql`
-      AND Comic.released_at >= ${startDate}
+      AND Comic.released_at >= ${formattedStartDate}
       `;
     }
   }
