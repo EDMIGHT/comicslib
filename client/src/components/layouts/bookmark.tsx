@@ -29,7 +29,12 @@ export const Bookmark: FC<BookmarkProps> = ({
         className='flex flex-1 gap-2 hover:opacity-80'
       >
         <div className='relative h-[80px] w-[56px] overflow-hidden rounded'>
-          <Image src={comic.img} alt={comic.title} fill />
+          <Image
+            src={comic.img}
+            alt={comic.title}
+            fill
+            className='object-cover object-center'
+          />
         </div>
         <div className='flex h-full flex-col justify-between gap-1'>
           <h2 className='text-xl font-medium'>{comic.title}</h2>

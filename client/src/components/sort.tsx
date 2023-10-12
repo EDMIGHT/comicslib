@@ -72,7 +72,7 @@ export const Sort: FC<SortProps> = ({
           className={cn(
             `w-[${contentWidth}] justify-between gap-1 `,
             styleVariant === 'default' && 'bg-secondary',
-            styleVariant === 'transparent' && 'bg-inherit border-none',
+            styleVariant === 'transparent' && 'bg-inherit border-none shadow-none',
             className
           )}
           variant='outline'
