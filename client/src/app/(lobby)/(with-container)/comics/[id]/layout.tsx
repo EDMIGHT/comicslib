@@ -103,6 +103,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
           src={img}
           alt={title}
           fill
+          priority
           sizes='100vw'
           quality={60}
           className='object-cover blur-sm brightness-[.6]'

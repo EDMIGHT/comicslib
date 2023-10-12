@@ -19,7 +19,7 @@ import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { HREFS } from '@/configs/href.configs';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { FoldersService } from '@/services/folders.service';
 

@@ -5,7 +5,7 @@ import { UserDetailsHoc } from '@/components/hocs/user-details-hoc';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
-import { formatTimeToNow } from '@/lib/helpers/formatter.helper';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { IChapterWithUser } from '@/types/chapter.types';
 
@@ -23,7 +23,7 @@ export const ChapterItem: FC<ChapterItemProps> = ({
   variant = 'default',
   className,
 }) => {
-  const formattedDate = createdAt && formatTimeToNow(new Date(createdAt));
+  const formattedDate = createdAt && Formatter.timeToNow(new Date(createdAt));
 
   return (
     <div

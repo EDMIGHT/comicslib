@@ -1,10 +1,10 @@
 import { AuthService } from '@/services/auth.service';
 
-import { getServerRefreshToken } from './token.helper';
+import { TokenHelper } from './helpers/token.helper';
 
 export const getAuthServer = async () => {
   try {
-    if (getServerRefreshToken()) {
+    if (TokenHelper.getServerRefreshToken()) {
       return await AuthService.getUser();
     } else {
       return null;

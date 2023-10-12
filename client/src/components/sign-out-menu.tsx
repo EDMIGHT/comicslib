@@ -8,7 +8,7 @@ import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import { useActions } from '@/hooks/use-actions';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { AuthService } from '@/services/auth.service';
 

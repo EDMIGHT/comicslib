@@ -4,7 +4,7 @@ import { FC, HTMLAttributes } from 'react';
 
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
-import { formatTimeToNow } from '@/lib/helpers/formatter.helper';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { IComicWithChapter } from '@/types/comic.types';
 
@@ -24,7 +24,7 @@ const LatestUpdatesSectionBase: FC<LatestUpdatesSectionBaseProps> = ({
     <ul {...rest} className={cn('space-y-2 rounded bg-card p-2', className)}>
       {comics.map(({ id, title, img, chapters }) => {
         const firstChapter = chapters[0];
-        const formattedDate = formatTimeToNow(new Date(firstChapter.createdAt));
+        const formattedDate = Formatter.timeToNow(new Date(firstChapter.createdAt));
         return (
           <li key={id} className='flex gap-2'>
             <Link

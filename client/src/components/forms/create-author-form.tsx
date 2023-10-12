@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { createAuthorSchema, ICreateAuthorFields } from '@/lib/validators/author.validators';
 import { AuthorsService } from '@/services/authors.service';
 

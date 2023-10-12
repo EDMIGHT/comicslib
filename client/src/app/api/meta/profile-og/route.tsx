@@ -46,7 +46,7 @@ export async function GET(req: Request) {
             <h1
               tw='text-5xl font-semibold m-0'
               style={{
-                wordBreak: 'break-all',
+                wordBreak: 'break-word',
               }}
             >
               {existedUser.login}

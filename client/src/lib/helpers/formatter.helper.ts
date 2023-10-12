@@ -1,51 +1,56 @@
-import { formatDistanceToNowStrict } from 'date-fns';
+import { format, formatDistanceToNowStrict } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
 
-const formatDistanceLocale = {
-  lessThanXSeconds: 'just now',
-  xSeconds: 'just now',
-  halfAMinute: 'just now',
-  lessThanXMinutes: '{{count}} sec',
-  xMinutes: '{{count}} min',
-  aboutXHours: '{{count}} hour',
-  xHours: '{{count}} hour',
-  xDays: '{{count}} days',
-  aboutXWeeks: '{{count}} weak',
-  xWeeks: '{{count}} weak',
-  aboutXMonths: '{{count}} month',
-  xMonths: '{{count}} month',
-  aboutXYears: '{{count}} year',
-  xYears: '{{count}} year',
-  overXYears: '{{count}} year',
-  almostXYears: '{{count}} year',
+import { formatDistance } from '@/lib/utils';
+
+type NumberOptions = {
+  decimals?: number;
 };
 
-function formatDistance(token: string, count: number, options?: any): string {
-  options = options || {};
+export class Formatter {
+  public static number(number: number | string, options: NumberOptions = {}) {
+    const { decimals = 1 } = options;
+    const num = Number(number);
 
-  const result = formatDistanceLocale[token as keyof typeof formatDistanceLocale].replace(
-    '{{count}}',
-    count.toString()
-  );
-
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
-      return 'in ' + result;
+    let formattedNumber = '';
+    if (num >= 1e3 && num < 1e6) {
+      formattedNumber = (num / 1e3).toFixed(decimals) + 'K';
+    } else if (num >= 1e6 && num < 1e9) {
+      formattedNumber = (num / 1e6).toFixed(decimals) + 'M';
+    } else if (num >= 1e9 && num < 1e12) {
+      formattedNumber = (num / 1e9).toFixed(decimals) + 'B';
     } else {
-      if (result === 'just now') return result;
-      return result + ' ago';
+      formattedNumber = num.toString();
     }
+
+    return formattedNumber;
   }
-
-  return result;
-}
-
-export function formatTimeToNow(date: Date): string {
-  return formatDistanceToNowStrict(date, {
-    addSuffix: true,
-    locale: {
-      ...locale,
-      formatDistance,
-    },
-  });
+  public static time(date: Date): string {
+    return format(date, 'PPP');
+  }
+  public static timeToNow(date: Date): string {
+    return formatDistanceToNowStrict(date, {
+      addSuffix: true,
+      locale: {
+        ...locale,
+        formatDistance,
+      },
+    });
+  }
+  public static timeForRequest(date: Date): string {
+    return format(date, 'yyyy-MM-dd');
+  }
+  public static bytes(
+    bytes: number,
+    decimals = 0,
+    sizeType: 'accurate' | 'normal' = 'normal'
+  ): string {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const accurateSizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB'];
+    if (bytes === 0) return '0 Byte';
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
+      sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
+    }`;
+  }
 }

@@ -5,7 +5,7 @@ import { BookmarksCleaning } from '@/components/bookmarks-cleaning';
 import { BookmarksFeed } from '@/components/feeds/bookmarks-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
-import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getAuthServer } from '@/lib/getAuthServer';
 import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {

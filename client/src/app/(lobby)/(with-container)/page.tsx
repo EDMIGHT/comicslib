@@ -1,4 +1,4 @@
-import { format, subDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -9,6 +9,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
@@ -36,7 +37,7 @@ const Page = async () => {
     sort: 'best',
     order: 'desc',
     date: 'createdAt',
-    startDate: format(dateFewDaysAgo, 'yyyy-MM-dd'),
+    startDate: Formatter.timeForRequest(dateFewDaysAgo),
   });
 
   return (

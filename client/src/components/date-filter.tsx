@@ -1,6 +1,5 @@
 'use client';
 
-import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { FC, HTMLAttributes, useCallback, useState } from 'react';
 
@@ -11,6 +10,7 @@ import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { COMIC_DATE_FIELDS } from '@/configs/comic.configs';
 import { useChangeSearchParams } from '@/hooks/use-change-search-params';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { IConfigVariant } from '@/types/configs.types';
 
@@ -62,14 +62,14 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
   const onClickDateFrom = (selectedDate: Date | undefined) => {
     setDateFrom(selectedDate);
 
-    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined;
+    const formattedDate = selectedDate ? Formatter.timeForRequest(selectedDate) : undefined;
 
     changeSearchParams(createQueryString('startDate', formattedDate));
   };
   const onClickDateTo = (selectedDate: Date | undefined) => {
     setDateTo(selectedDate);
 
-    const formattedDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined;
+    const formattedDate = selectedDate ? Formatter.timeForRequest(selectedDate) : undefined;
 
     changeSearchParams(createQueryString('endDate', formattedDate));
   };
@@ -101,7 +101,7 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
             )}
           >
             <Icons.calendar className='mr-2 h-4 w-4' />
-            {dateFrom ? format(dateFrom, 'PPP') : <span>From this date</span>}
+            {dateFrom ? Formatter.time(dateFrom) : <span>From this date</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start'>
@@ -164,7 +164,7 @@ export const DateFilter: FC<DatesFilterProps> = ({ className, ...rest }) => {
             )}
           >
             <Icons.calendar className='mr-2 h-4 w-4' />
-            {dateTo ? format(dateTo, 'PPP') : <span>To this date</span>}
+            {dateTo ? Formatter.time(dateTo) : <span>To this date</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start'>

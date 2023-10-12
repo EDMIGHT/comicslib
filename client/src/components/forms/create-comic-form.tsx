@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -50,8 +49,9 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
-import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { convertImgToBase64 } from '@/lib/convertImgToBase64';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { createComicSchema, ICreateComicFields } from '@/lib/validators/comic.validators';
 import { ComicsService } from '@/services/comics.service';
@@ -179,7 +179,7 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
                           )}
                         >
                           {field.value ? (
-                            format(field.value, 'PPP')
+                            Formatter.time(field.value)
                           ) : (
                             <span>pick a release date</span>
                           )}

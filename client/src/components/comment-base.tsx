@@ -21,8 +21,8 @@ import { UserAvatar } from '@/components/user-avatar';
 import { HREFS } from '@/configs/href.configs';
 import { useAuth } from '@/hooks/use-auth';
 import { toast } from '@/hooks/use-toast';
-import { formatTimeToNow } from '@/lib/helpers/formatter.helper';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { CommentsService } from '@/services/comments.service';
 import { ICommentVoteType, ICommentWithReplies } from '@/types/comment.types';
@@ -85,7 +85,7 @@ export const CommentBase: FC<CommentBaseProps> = ({
     });
   };
 
-  const dateToNow = formatTimeToNow(new Date(createdAt));
+  const dateToNow = Formatter.timeToNow(new Date(createdAt));
 
   return (
     <div className='space-y-2 p-2'>
@@ -135,7 +135,7 @@ export const CommentBase: FC<CommentBaseProps> = ({
         >
           <Icons.chevronUp className={cn(userVote === 'up' && 'stroke-green-600')} />
         </Button>
-        <span className='px-1 text-center'>{votes}</span>
+        <span className='px-1 text-center'>{Formatter.number(votes)}</span>
         <Button
           variant='ghost'
           onClick={() => (currentUser ? countingVote('down') : handleUnauthorizedReq())}

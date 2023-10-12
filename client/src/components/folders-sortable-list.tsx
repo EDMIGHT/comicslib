@@ -26,7 +26,7 @@ import { SortableFolder } from '@/components/sortable-folder';
 import { Button } from '@/components/ui/button';
 import { useKeyPress } from '@/hooks/use-key-press';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { FoldersService } from '@/services/folders.service';
 import { IFolderWithComics } from '@/types/user.types';
 

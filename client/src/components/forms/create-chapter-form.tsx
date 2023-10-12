@@ -38,8 +38,8 @@ import { HREFS } from '@/configs/href.configs';
 import { LIMITS } from '@/configs/site.configs';
 import { useKeyPress } from '@/hooks/use-key-press';
 import { toast } from '@/hooks/use-toast';
-import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { convertImgToBase64 } from '@/lib/convertImgToBase64';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import {
   createChapterSchema,

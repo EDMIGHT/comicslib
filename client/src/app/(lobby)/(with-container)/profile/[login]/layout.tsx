@@ -9,7 +9,7 @@ import { ProfileMenu } from '@/components/profile-menu';
 import { ProfileMobileNav } from '@/components/profile-mobile-nav';
 import { HREFS } from '@/configs/href.configs';
 import { OPENGRAPHS_URLS } from '@/configs/site.configs';
-import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getAuthServer } from '@/lib/getAuthServer';
 import { absoluteUrl, createTitle } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
 

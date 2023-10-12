@@ -46,6 +46,7 @@ export const ComicPageImg = forwardRef<HTMLButtonElement, ComicPageImgProps>(
           <Image
             src={imgSrc}
             alt={alt}
+            priority
             width={210}
             height={270}
             className='overflow-hidden rounded object-cover object-center transition-all group-hover:brightness-50'

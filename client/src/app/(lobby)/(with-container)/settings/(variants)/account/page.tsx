@@ -4,7 +4,7 @@ import { DeleteAccountBtn } from '@/components/delete-account-btn';
 import { ChangePasswordForm } from '@/components/forms/change-password-form';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getAuthServer } from '@/lib/getAuthServer';
 
 const Page = async () => {
   const user = await getAuthServer();

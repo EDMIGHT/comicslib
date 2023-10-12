@@ -25,7 +25,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { HREFS } from '@/configs/href.configs';
 import { LIMITS, PLACEHOLDERS } from '@/configs/site.configs';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { getRandomNumber } from '@/lib/utils';
 import {
   createUserFolderSchema,

@@ -5,7 +5,7 @@ import { FC } from 'react';
 
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
 

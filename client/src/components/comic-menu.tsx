@@ -6,7 +6,7 @@ import { ComicUpdateRating } from '@/components/comic-update-rating';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
-import { getServerAccessToken } from '@/lib/helpers/token.helper';
+import { TokenHelper } from '@/lib/helpers/token.helper';
 import { cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { UsersService } from '@/services/users.service';
@@ -16,7 +16,7 @@ type ComicMenuProps = HTMLAttributes<HTMLDivElement> &
   Pick<IResponseSingleComic, 'first_chapter' | 'id'>;
 
 export const ComicMenu = async ({ id, first_chapter, className, ...rest }: ComicMenuProps) => {
-  const accessToken = getServerAccessToken();
+  const accessToken = TokenHelper.getServerAccessToken();
 
   let rating = null;
   let bookmark = null;

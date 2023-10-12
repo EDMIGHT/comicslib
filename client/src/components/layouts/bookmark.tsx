@@ -4,8 +4,8 @@ import { FC } from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Time } from '@/components/ui/time';
 import { HREFS } from '@/configs/href.configs';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { IResponseBookmark, IUser } from '@/types/user.types';
 
 import { BookmarkComicDelete } from '../bookmark-comic-deleting';
@@ -22,6 +22,8 @@ export const Bookmark: FC<BookmarkProps> = ({
   currentUser,
   userId,
 }) => {
+  const formattedDate = Formatter.timeToNow(new Date(updatedAt));
+
   return (
     <Card className='flex gap-2 p-2'>
       <Link
@@ -41,7 +43,7 @@ export const Bookmark: FC<BookmarkProps> = ({
           <p className='text-sm'>
             Ch. {chapter.number} {chapter.title ? ` - ${chapter.title}` : ''}
           </p>
-          <Time time={new Date(updatedAt)} />
+          <span className='text-sm'>{formattedDate}</span>
         </div>
       </Link>
 

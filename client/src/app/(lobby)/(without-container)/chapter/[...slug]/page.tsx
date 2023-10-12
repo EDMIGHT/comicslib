@@ -8,7 +8,7 @@ import { ChapterControl } from '@/components/chapter-control';
 import { MenuSetterHOC } from '@/components/hocs/menu-setter-hoc';
 import { PageBackground } from '@/components/page-background';
 import { HREFS } from '@/configs/href.configs';
-import { getServerAccessToken } from '@/lib/helpers/token.helper';
+import { TokenHelper } from '@/lib/helpers/token.helper';
 import { createTitle } from '@/lib/utils';
 import { ChaptersService } from '@/services/chapters.service';
 import { UsersService } from '@/services/users.service';
@@ -42,7 +42,7 @@ const Page = async ({ params: { slug } }: PageProps) => {
 
   const response = await ChaptersService.getPage({ chapterId, page });
   const { chapter } = response;
-  const isAuth = getServerAccessToken();
+  const isAuth = TokenHelper.getServerAccessToken();
 
   if (!response) {
     return notFound();
@@ -92,8 +92,14 @@ const Page = async ({ params: { slug } }: PageProps) => {
           nextChapter={response.nextChapter}
           prevChapter={response.prevChapter}
         >
-          <div className='relative h-screen'>
-            <Image src={response.img} alt={`${page} page`} fill className='object-contain' />
+          <div className='relative flex min-h-screen'>
+            <Image
+              src={response.img}
+              priority
+              alt={`${page} page`}
+              fill
+              className=' object-contain'
+            />
           </div>
         </PageBackground>
       </div>

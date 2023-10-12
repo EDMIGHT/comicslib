@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { Header } from '@/components/layouts/header';
 import { MobileSidebar } from '@/components/layouts/mobile-sidebar';
 import { Sidebar } from '@/components/layouts/sidebar';
-import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getAuthServer } from '@/lib/getAuthServer';
 
 interface LobbyLayoutProps {
   children: ReactNode;

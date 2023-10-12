@@ -1,5 +1,6 @@
 import { ComicsFeed } from '@/components/feeds/comics-feed';
 import { Icons } from '@/components/ui/icons';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { FoldersService } from '@/services/folders.service';
 
 type PageProps = {
@@ -16,7 +17,8 @@ const Page = async ({ params: { id } }: PageProps) => {
       <div className='flex justify-between'>
         <h2 className='text-3xl font-semibold'>{folderInfo.title}</h2>
         <span className='flex items-center text-xl'>
-          {folderInfo._count.comics} <Icons.bookmark className='fill-foreground' />
+          {Formatter.number(folderInfo._count.comics)}{' '}
+          <Icons.bookmark className='fill-foreground' />
         </span>
       </div>
       <div>

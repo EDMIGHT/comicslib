@@ -8,8 +8,8 @@ import { FileDialogWithCrop } from '@/components/file-dialog-with-crop';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
 import { useActions } from '@/hooks/use-actions';
-import { convertImgToBase64 } from '@/lib/helpers/convertImgToBase64';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { convertImgToBase64 } from '@/lib/convertImgToBase64';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { cn } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
 

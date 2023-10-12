@@ -49,7 +49,7 @@ export async function GET(req: Request) {
             <h1
               tw='text-5xl flex font-semibold m-0'
               style={{
-                wordBreak: 'break-all',
+                wordBreak: 'break-word',
               }}
             >
               {existedComic.title}
@@ -57,7 +57,7 @@ export async function GET(req: Request) {
             <h2
               tw='text-xl font-medium m-0'
               style={{
-                wordBreak: 'break-all',
+                wordBreak: 'break-word',
               }}
             >
               {existedComic.authors.map((author) => author.login).join(', ')}

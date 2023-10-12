@@ -17,7 +17,8 @@ import {
 } from '@/components/ui/dialog';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/hooks/use-toast';
-import { cn, formatBytes } from '@/lib/utils';
+import { Formatter } from '@/lib/helpers/formatter.helper';
+import { cn } from '@/lib/utils';
 
 type FileDialogProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
@@ -43,6 +44,7 @@ export const FileDialog: FC<FileDialogProps> = ({
   const [open, setOpen] = useState(false);
 
   const isMoreThanOneMaxFiles = maxFiles > 1;
+  const formattedMaxSize = Formatter.bytes(maxSize);
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
@@ -57,9 +59,7 @@ export const FileDialog: FC<FileDialogProps> = ({
             toast({
               variant: 'destructive',
               title: 'File size is too large',
-              description: `The file size is too large, the maximum allowable size is ${formatBytes(
-                maxSize
-              )}`,
+              description: `The file size is too large, the maximum allowable size is ${formattedMaxSize}`,
             });
           } else if (errors[0].code === 'file-invalid-type') {
             toast({
@@ -85,7 +85,7 @@ export const FileDialog: FC<FileDialogProps> = ({
         });
       }
     },
-    [isMoreThanOneMaxFiles, maxFiles, maxSize, onSelectFiles]
+    [formattedMaxSize, isMoreThanOneMaxFiles, maxFiles, onSelectFiles]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -137,7 +137,7 @@ export const FileDialog: FC<FileDialogProps> = ({
               </p>
               <p className='text-sm text-slate-500'>
                 Please upload {isMoreThanOneMaxFiles ? `up to ${maxFiles} files` : 'file'} with
-                size less than {formatBytes(maxSize)}
+                size less than {formattedMaxSize}
               </p>
             </div>
           )}

@@ -1,7 +1,7 @@
 import { CommentsSection } from '@/components/comments-section';
 import { CreateCommentForm } from '@/components/forms/create-comment-form';
-import { getCommentsIds } from '@/lib/helpers/get-comments-ids';
-import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getCommentsIds } from '@/lib/get-comments-ids';
+import { getAuthServer } from '@/lib/getAuthServer';
 import { CommentsService } from '@/services/comments.service';
 import { ICommentVoteType } from '@/types/comment.types';
 

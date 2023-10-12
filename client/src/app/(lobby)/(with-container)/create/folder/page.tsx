@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { CreateFolderForm } from '@/components/forms/create-folder-form';
 import { PageHeader } from '@/components/page-header';
 import { HREFS } from '@/configs/href.configs';
-import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getAuthServer } from '@/lib/getAuthServer';
 import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {

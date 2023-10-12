@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
-import { getAccessToken, getServerAccessToken } from '@/lib/helpers/token.helper';
+import { TokenHelper } from '@/lib/helpers/token.helper';
 import { isServer } from '@/lib/utils';
 import { AuthService } from '@/services/auth.service';
 
@@ -16,7 +16,9 @@ export const apiAuth = axios.create({
 });
 
 apiAuth.interceptors.request.use((config) => {
-  const accessToken = isServer ? getServerAccessToken() : getAccessToken();
+  const accessToken = isServer
+    ? TokenHelper.getServerAccessToken()
+    : TokenHelper.getAccessToken();
 
   if (config.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;

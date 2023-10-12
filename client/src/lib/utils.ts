@@ -51,20 +51,6 @@ export const absoluteUrl = (path: string) => {
   return `${process.env.APP_URL}${path}`;
 };
 
-export const formatBytes = (
-  bytes: number,
-  decimals = 0,
-  sizeType: 'accurate' | 'normal' = 'normal'
-) => {
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  const accurateSizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB'];
-  if (bytes === 0) return '0 Byte';
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
-    sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
-  }`;
-};
-
 export const generatePerPageVariants = (limit: number, numberOfVariants: number): number[] => {
   if (numberOfVariants === 0) {
     return [];
@@ -73,4 +59,47 @@ export const generatePerPageVariants = (limit: number, numberOfVariants: number)
   const variants = generatePerPageVariants(limit, numberOfVariants - 1);
   variants.push(numberOfVariants * limit);
   return variants;
+};
+
+export const formatDistanceLocale = {
+  lessThanXSeconds: 'just now',
+  xSeconds: 'just now',
+  halfAMinute: 'just now',
+  lessThanXMinutes: '{{count}} sec',
+  xMinutes: '{{count}} min',
+  aboutXHours: '{{count}} hour',
+  xHours: '{{count}} hour',
+  xDays: '{{count}} days',
+  aboutXWeeks: '{{count}} weak',
+  xWeeks: '{{count}} weak',
+  aboutXMonths: '{{count}} month',
+  xMonths: '{{count}} month',
+  aboutXYears: '{{count}} year',
+  xYears: '{{count}} year',
+  overXYears: '{{count}} year',
+  almostXYears: '{{count}} year',
+};
+
+export const formatDistance = (
+  token: keyof typeof formatDistanceLocale,
+  count: number,
+  options?: {
+    addSuffix?: boolean;
+    comparison?: number;
+  }
+): string => {
+  options = options || {};
+
+  const result = formatDistanceLocale[token].replace('{{count}}', count.toString());
+
+  if (options.addSuffix) {
+    if (options.comparison !== undefined && options.comparison > 0) {
+      return 'in ' + result;
+    } else {
+      if (result === 'just now') return result;
+      return result + ' ago';
+    }
+  }
+
+  return result;
 };

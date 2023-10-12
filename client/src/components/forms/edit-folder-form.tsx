@@ -25,7 +25,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { HREFS } from '@/configs/href.configs';
 import { PLACEHOLDERS } from '@/configs/site.configs';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { getRandomNumber } from '@/lib/utils';
 import { editFolderSchema, IEditFolderSchema } from '@/lib/validators/user.validators';
 import { FoldersService } from '@/services/folders.service';

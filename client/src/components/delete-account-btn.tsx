@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/helpers/handleErrorMutation';
+import { handleErrorMutation } from '@/lib/handleErrorMutation';
 import { UsersService } from '@/services/users.service';
 
 type DeleteAccountBtnProps = HTMLAttributes<HTMLButtonElement>;

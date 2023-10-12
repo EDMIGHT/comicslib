@@ -1,6 +1,7 @@
 import { FC, HTMLAttributes } from 'react';
 
 import { Icons } from '@/components/ui/icons';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { IResponseComic } from '@/types/comic.types';
 
@@ -26,12 +27,12 @@ export const ComicCounters: FC<ComicCountersProps> = ({
 
       <li className='flex items-center gap-1'>
         <Icons.bookmark className='fill-foreground' />
-        {unique_bookmarks_count}
+        {Formatter.number(unique_bookmarks_count)}
       </li>
 
       <li className='flex items-center gap-1'>
         <Icons.comment className='fill-foreground' />
-        {comments_count}
+        {Formatter.number(comments_count)}
       </li>
     </ul>
   );

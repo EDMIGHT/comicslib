@@ -5,6 +5,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { Separator } from '@/components/ui/separator';
 import { UserAvatar } from '@/components/user-avatar';
 import { HREFS } from '@/configs/href.configs';
+import { Formatter } from '@/lib/helpers/formatter.helper';
 import { IShortUserWithCounts } from '@/types/user.types';
 
 type UserDetailsHocProps = {
@@ -35,7 +36,7 @@ export const UserDetailsHoc: FC<UserDetailsHocProps> = ({
         <ul className='flex justify-between gap-2'>
           <li>
             <Link href={`${HREFS.profile}/${login}`} className='group'>
-              <span className='block font-medium'>{ratings}</span>
+              <span className='block font-medium'>{Formatter.number(ratings)}</span>
               <h5 className='text-xs text-muted-foreground transition-colors group-hover:text-foreground'>
                 Rated
               </h5>
@@ -43,14 +44,14 @@ export const UserDetailsHoc: FC<UserDetailsHocProps> = ({
           </li>
           <li>
             <Link href={`${HREFS.profile}/${login}/uploads`} className='group'>
-              <span className='block font-medium'>{chapters}</span>
+              <span className='block font-medium'>{Formatter.number(chapters)}</span>
               <h5 className='text-xs text-muted-foreground transition-colors group-hover:text-foreground'>
                 Uploaded
               </h5>
             </Link>
           </li>
           <li>
-            <span className='font-medium'>{comments}</span>
+            <span className='font-medium'>{Formatter.number(comments)}</span>
             <h5 className='text-xs text-muted-foreground'>Comments</h5>
           </li>
         </ul>

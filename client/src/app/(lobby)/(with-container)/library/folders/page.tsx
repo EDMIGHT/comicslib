@@ -7,7 +7,7 @@ import { PageHeader } from '@/components/page-header';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
-import { getAuthServer } from '@/lib/helpers/getAuthServer';
+import { getAuthServer } from '@/lib/getAuthServer';
 import { cn } from '@/lib/utils';
 import { FoldersService } from '@/services/folders.service';
 
