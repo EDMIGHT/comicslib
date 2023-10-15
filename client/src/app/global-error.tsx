@@ -11,9 +11,6 @@ type GlobalErrorProps = {
   reset: () => void;
 };
 
-// https://nextjs.org/docs/app/building-your-application/routing/error-handling#handling-errors-in-root-layouts
-// FIX абсолютно не работает
-
 const GlobalError: FC<GlobalErrorProps> = ({ reset }) => {
   return (
     <html>

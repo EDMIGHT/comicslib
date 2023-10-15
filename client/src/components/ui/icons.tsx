@@ -43,6 +43,7 @@ import {
   Scale,
   Search,
   Settings,
+  Shield,
   Star,
   Trash2,
   Twitter,
@@ -138,6 +139,7 @@ export const Icons = {
   ),
 
   palette: Palette,
+  protected: Shield,
   read: BookOpen,
   rules: Scale,
   search: Search,

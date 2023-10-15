@@ -23,7 +23,7 @@ export const CarouselDotButtons: React.FC<PropType> = ({
         const distance = Math.abs(selectedIndex - i);
 
         return (
-          <li key={i} className='flex items-center'>
+          <li key={i} className={cn('flex items-center', distance > 3 && 'hidden')}>
             <button
               type='button'
               onClick={() => scrollTo(i)}
@@ -32,8 +32,7 @@ export const CarouselDotButtons: React.FC<PropType> = ({
                 i === selectedIndex ? 'bg-active h-4 w-4' : 'bg-card h-3 w-3',
                 distance === 1 && 'h-3 w-3',
                 distance === 2 && 'h-2 w-2',
-                distance === 3 && 'h-1 w-1',
-                distance > 3 && 'hidden'
+                distance === 3 && 'h-1 w-1'
               )}
             />
           </li>

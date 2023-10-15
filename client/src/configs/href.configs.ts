@@ -27,12 +27,14 @@ export const COMMUNITY_HREFS = {
 };
 
 export const LIBRARY_HREFS = {
+  origin: '/library',
   updates: '/library/updates',
   folders: '/library/folders',
   bookmarks: '/library/bookmarks',
 };
 
 export const CREATE_HREFS = {
+  origin: '/create',
   title: '/create/title',
   author: '/create/author',
   chapter: '/create/chapter',

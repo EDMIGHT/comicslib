@@ -18,6 +18,8 @@ type PageProps = {
   };
 };
 
+export const revalidate = 3600; // 1hr
+
 export async function generateMetadata({ params: { slug } }: PageProps): Promise<Metadata> {
   const theme = await ThemesService.getByTitle(slug);
 

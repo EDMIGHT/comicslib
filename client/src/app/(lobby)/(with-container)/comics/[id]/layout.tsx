@@ -22,6 +22,8 @@ type PageProps = {
   };
 };
 
+export const revalidate = 3600; // 1hr
+
 export async function generateStaticParams() {
   const { comics } = await ComicsService.getAll({});
 
