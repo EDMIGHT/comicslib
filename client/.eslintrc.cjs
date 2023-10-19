@@ -3,7 +3,7 @@ module.exports = {
   parserOptions: {
     project: true,
   },
-  ignorePatterns: ['next.config.js', 'tailwind.config.js', 'contentlayer.config.js'],
+  ignorePatterns: ['*.config.js'],
   extends: [
     'next/core-web-vitals',
     'plugin:@typescript-eslint/recommended-type-checked',

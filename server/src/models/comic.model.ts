@@ -130,8 +130,8 @@ export class ComicModel {
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Genre.id, 'title', Genre.title))
         FROM Genre
-        INNER JOIN _comictogenre ON Genre.id = _comictogenre.B
-        WHERE _comictogenre.A = Comic.id
+        INNER JOIN _ComicToGenre ON Genre.id = _ComicToGenre.B
+        WHERE _ComicToGenre.A = Comic.id
       ),
         JSON_ARRAY()
       ) as genres,
@@ -139,8 +139,8 @@ export class ComicModel {
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Theme.id, 'title', Theme.title))
         FROM Theme
-        INNER JOIN _comictotheme ON Theme.id = _comictotheme.B
-        WHERE _comictotheme.A = Comic.id
+        INNER JOIN _ComicToTheme ON Theme.id = _ComicToTheme.B
+        WHERE _ComicToTheme.A = Comic.id
       ),
         JSON_ARRAY()
       ) as themes,
@@ -148,8 +148,8 @@ export class ComicModel {
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Author.id, 'login', Author.login, 'name', Author.name))
         FROM Author
-        INNER JOIN _authortocomic ON Author.id = _authortocomic.A
-        WHERE _authortocomic.B = Comic.id
+        INNER JOIN _AuthorToComic ON Author.id = _AuthorToComic.A
+        WHERE _AuthorToComic.B = Comic.id
       ),
         JSON_ARRAY()
       ) as authors,
@@ -204,8 +204,8 @@ export class ComicModel {
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Genre.id, 'title', Genre.title))
         FROM Genre
-        INNER JOIN _comictogenre ON Genre.id = _comictogenre.B
-        WHERE _comictogenre.A = Comic.id
+        INNER JOIN _ComicToGenre ON Genre.id = _ComicToGenre.B
+        WHERE _ComicToGenre.A = Comic.id
       ),
         JSON_ARRAY()
       ) as genres,
@@ -213,8 +213,8 @@ export class ComicModel {
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Theme.id, 'title', Theme.title))
         FROM Theme
-        INNER JOIN _comictotheme ON Theme.id = _comictotheme.B
-        WHERE _comictotheme.A = Comic.id
+        INNER JOIN _ComicToTheme ON Theme.id = _ComicToTheme.B
+        WHERE _ComicToTheme.A = Comic.id
       ),
         JSON_ARRAY()
       ) as themes,
@@ -222,8 +222,8 @@ export class ComicModel {
       (
         SELECT JSON_ARRAYAGG(JSON_OBJECT('id', Author.id, 'login', Author.login, 'name', Author.name))
         FROM Author
-        INNER JOIN _authortocomic ON Author.id = _authortocomic.A
-        WHERE _authortocomic.B = Comic.id
+        INNER JOIN _AuthorToComic ON Author.id = _AuthorToComic.A
+        WHERE _AuthorToComic.B = Comic.id
       ),
         JSON_ARRAY()
       ) as authors,

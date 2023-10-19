@@ -75,8 +75,8 @@ export const createWhereQueryAllComics = ({
       ? Prisma.sql`AND EXISTS (
           SELECT 1
           FROM Genre
-          INNER JOIN _comictogenre ON Genre.id = _comictogenre.B
-          WHERE _comictogenre.A = Comic.id
+          INNER JOIN _ComicToGenre ON Genre.id = _ComicToGenre.B
+          WHERE _ComicToGenre.A = Comic.id
           AND Genre.title IN (${Prisma.join(genres)})
           HAVING COUNT(DISTINCT Genre.title) >= ${genres.length}
         )`
@@ -86,8 +86,8 @@ export const createWhereQueryAllComics = ({
       ? Prisma.sql`AND EXISTS (
           SELECT 1
           FROM Theme
-          INNER JOIN _comictotheme ON Theme.id = _comictotheme.B
-          WHERE _comictotheme.A = Comic.id
+          INNER JOIN _ComicToTheme ON Theme.id = _ComicToTheme.B
+          WHERE _ComicToTheme.A = Comic.id
           AND Theme.title IN (${Prisma.join(themes)})
           HAVING COUNT(DISTINCT Theme.title) >= ${themes.length}
         )`
@@ -97,8 +97,8 @@ export const createWhereQueryAllComics = ({
       ? Prisma.sql`AND EXISTS (
           SELECT 1
           FROM Author
-          INNER JOIN _authortocomic ON Author.id = _authortocomic.A
-          WHERE _authortocomic.B = Comic.id
+          INNER JOIN _AuthorToComic ON Author.id = _AuthorToComic.A
+          WHERE _AuthorToComic.B = Comic.id
           AND Author.login IN (${Prisma.join(authors)})
           HAVING COUNT(DISTINCT Author.login) >= ${authors.length}
         )`
@@ -119,8 +119,8 @@ export const createWhereQueryAllComics = ({
       AND EXISTS (
         SELECT 1
         FROM Folder
-        INNER JOIN _comictofolder ON Folder.id = _comictofolder.B
-        WHERE _comictofolder.A = Comic.id 
+        INNER JOIN _ComicToFolder ON Folder.id = _ComicToFolder.B
+        WHERE _ComicToFolder.A = Comic.id 
         AND Folder.id = ${folderId}
       )
     `
