@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "prisma generate && webpack --mode production",
     "start": "node dist/app.js",
     "dev": "concurrently \"webpack --watch --mode development\" \"nodemon dist/app.js\"",
     "migrate": "npx prisma migrate dev --name init",
     "push": "npx prisma db push",
     "gen": "npx prisma generate",
+    "seed": "npx prisma db seed",
     "studio": "npx prisma studio"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "author": "",
   "license": "ISC",

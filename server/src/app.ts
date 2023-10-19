@@ -23,6 +23,10 @@ app.use(
 app.use(cookieParser());
 app.use('/api', routes);
 
+app.get('/', (_, res) => {
+  res.send('Hello 👋');
+});
+
 const main = async (): Promise<void> => {
   app.listen(PORT, () => {
     console.log(`[server] server has been start on port ${PORT}`);

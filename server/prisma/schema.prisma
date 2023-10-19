@@ -1,10 +1,11 @@
-generator client {
-  provider = "prisma-client-js"
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+generator client {
+  provider = "prisma-client-js"
 }
 
 enum StatusName {
@@ -54,6 +55,8 @@ model Session {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Author {
@@ -93,6 +96,7 @@ model Page {
   bookmarks Bookmark[]
 
   @@id([chapterId, number])
+  @@index([chapterId])
 }
 
 model Chapter {
@@ -107,6 +111,9 @@ model Chapter {
   bookmarks Bookmark[]
   comic     Comic      @relation(fields: [comicId], references: [id], onDelete: Cascade)
   user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([comicId])
+  @@index([userId])
 }
 
 model Comic {
@@ -130,6 +137,7 @@ model Comic {
   bookmarks Bookmark[]
 
   @@index([title])
+  @@index([statusId])
 }
 
 model Status {
@@ -151,6 +159,9 @@ model Rating {
 
   comic Comic @relation(fields: [comicId], references: [id], onDelete: Cascade)
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([comicId])
+  @@index([userId])
 }
 
 model Folder {
@@ -162,6 +173,8 @@ model Folder {
 
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   comics Comic[]
+
+  @@index([userId])
 }
 
 model Comment {
@@ -173,12 +186,16 @@ model Comment {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   replyToId String?   @map("reply_to_id")
-  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: Cascade)
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
 
   comic        Comic         @relation(fields: [comicId], references: [id], onDelete: Cascade)
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   commentsVote CommentVote[]
+
+  @@index([replyToId])
+  @@index([comicId])
+  @@index([userId])
 }
 
 model CommentVote {
@@ -190,6 +207,8 @@ model CommentVote {
   comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@id([userId, commentId])
+  @@index([userId])
+  @@index([commentId])
 }
 
 model Bookmark {
@@ -206,4 +225,6 @@ model Bookmark {
 
   @@id([userId, comicId])
   @@index([chapterId, pageNumber])
+  @@index([userId])
+  @@index([comicId])
 }
