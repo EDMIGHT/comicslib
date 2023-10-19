@@ -1,11 +1,8 @@
 import { Session } from '@prisma/client';
-import env from 'dotenv';
 import jwt from 'jsonwebtoken';
 
 import { SessionModel } from '@/models/session.model';
 import { CreationSession, TokenPayload, VerifiedTokenPayload } from '@/types/token.types';
-
-env.config();
 
 const accessKey = process.env.accessKey!;
 const refreshKey = process.env.refreshKey!;
