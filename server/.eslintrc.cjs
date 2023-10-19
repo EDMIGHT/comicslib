@@ -6,6 +6,7 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort'],
+  ignorePatterns: ['*.config.js'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
