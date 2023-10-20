@@ -27,7 +27,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en'>
       <body
-        className={cn('min-h-screen bg-background font-sans antialiased', fontSans.className)}
+        className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}
       >
         <QueryProvider>
           <ReduxProvider>

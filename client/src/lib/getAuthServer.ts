@@ -1,9 +1,9 @@
+import { TokenHelper } from '@/lib/helpers/token.helper';
 import { AuthService } from '@/services/auth.service';
-
-import { TokenHelper } from './helpers/token.helper';
 
 export const getAuthServer = async () => {
   try {
+    console.log('getAuthServer AccessToken', TokenHelper.getServerRefreshToken());
     if (TokenHelper.getServerRefreshToken()) {
       return await AuthService.getUser();
     } else {

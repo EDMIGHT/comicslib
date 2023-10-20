@@ -2,9 +2,8 @@ import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 import { TokenHelper } from '@/lib/helpers/token.helper';
 import { isServer } from '@/lib/utils';
+import { getContentType } from '@/services/api';
 import { AuthService } from '@/services/auth.service';
-
-import { getContentType } from './api';
 
 type CustomAxiosRequestConfig = AxiosRequestConfig & {
   _isRetry?: boolean;
@@ -19,6 +18,8 @@ apiAuth.interceptors.request.use((config) => {
   const accessToken = isServer
     ? TokenHelper.getServerAccessToken()
     : TokenHelper.getAccessToken();
+
+  console.log('interceptor AccessToken', accessToken);
 
   if (config.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
