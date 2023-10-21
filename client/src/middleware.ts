@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { HREFS } from '@/configs/href.configs';
+import { AuthCookiesNextResponseHelper } from '@/lib/helpers/auth-cookies-next-response.helper';
 import { AuthCookie } from '@/lib/helpers/token.helper';
+import { IBadResponse, isWithTokensResponse, ITokens } from '@/types/response.types';
 
 const PRIVATE_PAGES = [
   HREFS.library.origin,
@@ -28,10 +30,6 @@ export async function middleware(req: NextRequest) {
   const refreshToken = req.cookies.get(AuthCookie.REFRESH)?.value;
   const expAccessToken = req.cookies.get(AuthCookie.EXP)?.value;
 
-  console.log('middle acess', accessToken);
-  console.log('middle refreshToken', refreshToken);
-  console.log('middle expAccessToken', expAccessToken);
-
   const isPrivatePage = checkIsPrivatePages(req.nextUrl.pathname);
   const isAuthPage = checkIsAuthPages(req.nextUrl.pathname);
   const isTokenValid = checkIsTokenValid(Number(expAccessToken));
@@ -50,31 +48,26 @@ export async function middleware(req: NextRequest) {
     const res = await fetch(fetchUrl, {
       method: 'POST',
       headers: {
-        Cookie: `${AuthCookie.REFRESH}=${refreshToken}`,
+        'Content-Type': 'application/json',
       },
-      credentials: 'include',
+      body: JSON.stringify({
+        refreshToken,
+      }),
     });
 
-    if (res.status === 200) {
-      const newHeaders = new Headers(res.headers);
-      const cookieHeader = newHeaders.get('set-cookie');
+    const body = (await res.json()) as ITokens | IBadResponse;
 
+    if (res.status === 200 && isWithTokensResponse(body)) {
       const newResponse = NextResponse.redirect(req.url);
 
-      newResponse.headers.set('set-cookie', cookieHeader || '');
-
-      return newResponse;
-    } else {
-      const newResponse = isPrivatePage
-        ? NextResponse.redirect(new URL(HREFS.auth.signIn, req.url))
-        : NextResponse.next();
-
-      newResponse.cookies.delete(AuthCookie.ACCESS);
-      newResponse.cookies.delete(AuthCookie.REFRESH);
-      newResponse.cookies.delete(AuthCookie.EXP);
-
-      return newResponse;
+      return AuthCookiesNextResponseHelper.set(newResponse, body);
     }
+
+    const newResponse = isPrivatePage
+      ? NextResponse.redirect(new URL(HREFS.auth.signIn, req.url))
+      : NextResponse.next();
+
+    return AuthCookiesNextResponseHelper.clear(newResponse);
   }
 
   return NextResponse.next();

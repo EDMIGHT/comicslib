@@ -2,8 +2,9 @@ import {
   COMIC_SORT_VARIANTS,
   COMIC_WITH_CHAPTERS_SORT_VARIANTS,
 } from '@/configs/comic.configs';
+import { LOCAL_ENDPOINTS } from '@/configs/endpoint.configs';
 import { NAVIGATION } from '@/configs/navigation.configs';
-import { ISortVariants, SiteConfig, SocialLink } from '@/types/configs.types';
+import { SiteConfig, SocialLink } from '@/types/configs.types';
 
 import { HREFS } from './href.configs';
 
@@ -38,9 +39,9 @@ export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
 ];
 
 export const OPENGRAPHS_URLS = {
-  page: `${process.env.APP_URL}/api/meta/og`,
-  comic: `${process.env.APP_URL}/api/meta/comic-og`,
-  profile: `${process.env.APP_URL}/api/meta/profile-og`,
+  page: `${process.env.APP_URL}${LOCAL_ENDPOINTS.meta.page}`,
+  comic: `${process.env.APP_URL}${LOCAL_ENDPOINTS.meta.comic}`,
+  profile: `${process.env.APP_URL}${LOCAL_ENDPOINTS.meta.profile}`,
 };
 
 export const SITE_CONFIG: SiteConfig = {

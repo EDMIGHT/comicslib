@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const signInValidation = z.object({
+const credentialsValidation = z.object({
   login: z
     .string()
     .trim()
@@ -13,20 +13,12 @@ export const signInValidation = z.object({
     .max(190, 'The maximum password length is 190 characters'),
 });
 
+export const signInValidation = credentialsValidation;
+
 export type ISignInFields = z.infer<typeof signInValidation>;
 
-export const signUpValidation = z
-  .object({
-    login: z
-      .string()
-      .trim()
-      .min(2, 'The minimum login length is 2 characters')
-      .max(190, 'The maximum login length is 190 characters'),
-    password: z
-      .string()
-      .trim()
-      .min(5, 'The minimum password length is 5 characters')
-      .max(190, 'The maximum password length is 190 characters'),
+export const signUpValidation = credentialsValidation
+  .extend({
     confirmPassword: z
       .string()
       .trim()
@@ -42,3 +34,5 @@ export const signUpValidation = z
   });
 
 export type ISignUpFields = z.infer<typeof signUpValidation>;
+
+export const signUpRequestValidation = credentialsValidation;

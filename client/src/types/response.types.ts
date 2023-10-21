@@ -35,3 +35,10 @@ export type IInvalidResponse = IBadResponse & {
   ];
   body: unknown;
 };
+
+export const isWithTokensResponse = (obj: unknown): obj is ITokens =>
+  obj !== null &&
+  typeof obj === 'object' &&
+  'refreshToken' in obj &&
+  'accessToken' in obj &&
+  'expiresIn' in obj;

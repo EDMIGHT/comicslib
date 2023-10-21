@@ -19,8 +19,6 @@ apiAuth.interceptors.request.use((config) => {
     ? TokenHelper.getServerAccessToken()
     : TokenHelper.getAccessToken();
 
-  console.log('interceptor AccessToken', accessToken);
-
   if (config.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }

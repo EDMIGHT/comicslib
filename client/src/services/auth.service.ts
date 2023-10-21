@@ -1,11 +1,9 @@
 import axios from 'axios';
 
-import { ENDPOINTS } from '@/configs/endpoint.configs';
+import { ENDPOINTS, LOCAL_ENDPOINTS } from '@/configs/endpoint.configs';
 import { ISignInFields, ISignUpFields } from '@/lib/validators/auth.validators';
-import { api } from '@/services/api';
+import { apiAuth } from '@/services/apiAuth';
 import { IResponseAuth, IUser } from '@/types/user.types';
-
-import { apiAuth } from './apiAuth';
 
 export type IRequestSignUpBody = Pick<ISignUpFields, 'login' | 'password'>;
 
@@ -14,8 +12,8 @@ export class AuthService {
     type: 'signIn' | 'signUp',
     data: ISignInFields | IRequestSignUpBody
   ) {
-    const { data: respData } = await api<IResponseAuth>({
-      url: ENDPOINTS.auth[type],
+    const { data: respData } = await axios<IResponseAuth>({
+      url: LOCAL_ENDPOINTS.auth[type],
       method: 'POST',
       data,
       withCredentials: true,
@@ -24,16 +22,18 @@ export class AuthService {
     return respData;
   }
   public static async signOut() {
-    const { data } = await apiAuth.delete<null>(ENDPOINTS.auth.signOut, {
+    const { data } = await axios.delete<null>(LOCAL_ENDPOINTS.auth.signOut, {
       withCredentials: true,
     });
     return data;
   }
 
   public static async getNewTokens() {
-    await axios.post<null>(process.env.API_HOST + ENDPOINTS.auth.tokens, null, {
+    const { data } = await axios.post<null>(LOCAL_ENDPOINTS.auth.tokens, null, {
       withCredentials: true,
     });
+
+    return data;
   }
 
   public static async getUser() {

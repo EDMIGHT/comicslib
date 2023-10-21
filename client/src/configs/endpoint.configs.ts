@@ -67,3 +67,17 @@ export const ENDPOINTS = {
   users: API_USERS_ENDPOINTS,
   statuses: API_STATUSES_ENDPOINTS,
 } as const;
+
+export const LOCAL_ENDPOINTS = {
+  meta: {
+    page: '/api/meta/og',
+    comic: '/api/meta/comic-og',
+    profile: '/api/meta/profile-og',
+  },
+  auth: {
+    signIn: '/api/auth/sign-in',
+    signUp: '/api/auth/sign-up',
+    signOut: '/api/auth/sign-out',
+    tokens: '/api/auth/token',
+  },
+};
