@@ -8,7 +8,6 @@ import { UserModel } from '@/models/user.model';
 import { PasswordService } from '@/services/password.service';
 import { IPaginationArg, ISortArg, ISortOrder } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
-import { clearAuthCookieFromResponse } from '@/utils/helpers/auth-cookie-response.helper';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { CustomResponse } from '@/utils/helpers/customResponse';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
@@ -443,9 +442,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<Response>
 
     await UserModel.delete(req.user.id);
 
-    const newRes = clearAuthCookieFromResponse(res);
-
-    return CustomResponse.ok(newRes, null);
+    return CustomResponse.ok(res, null);
   } catch (error) {
     return serverErrorResponse({
       res,

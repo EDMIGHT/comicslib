@@ -7,10 +7,6 @@ import { UserModel } from '@/models/user.model';
 import { PasswordService } from '@/services/password.service';
 import tokenService from '@/services/token.service';
 import { IResponseGithubAuth, IResponseGoogleAuth } from '@/types/auth.types';
-import {
-  clearAuthCookieFromResponse,
-  setAuthCookieToResponse,
-} from '@/utils/helpers/auth-cookie-response.helper';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { createUniqueLogin } from '@/utils/helpers/create-unique-login';
 import { CustomResponse } from '@/utils/helpers/customResponse';
@@ -19,13 +15,13 @@ import { isTokenInvalid } from '@/utils/helpers/isTokenInvalid';
 // google
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const GOOGLE_REDIRECT_URL = process.env.GOOGLE_AUTH_REDIRECT_URL!;
 
 // github
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID!;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET!;
 
-const CLIENT_DOMAIN = process.env.CLIENT_DOMAIN!;
+const SERVER_DOMAIN = process.env.SERVER_DOMAIN!;
+const CLIENT_OAUTH_CALLBACK = process.env.CLIENT_OAUTH_CALLBACK!;
 
 export const signUp = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -54,9 +50,7 @@ export const signUp = async (req: Request, res: Response): Promise<Response> => 
       refreshToken: tokens.refreshToken,
     });
 
-    const resWithCookie = setAuthCookieToResponse(res, tokens);
-
-    return CustomResponse.created(resWithCookie, null);
+    return CustomResponse.created(res, tokens);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: 'an error occurred during registration on the server side',
@@ -99,9 +93,7 @@ export const signIn = async (req: Request, res: Response): Promise<Response> => 
       refreshToken: tokens.refreshToken,
     });
 
-    const resWithCookie = setAuthCookieToResponse(res, tokens);
-
-    return CustomResponse.created(resWithCookie, null);
+    return CustomResponse.created(res, tokens);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: 'server side authorization error',
@@ -124,15 +116,13 @@ export const authMe = async (req: Request, res: Response): Promise<Response> => 
 
 export const updateTokens = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { refreshToken: reqRefreshToken } = req.cookies;
+    const { refreshToken } = req.body;
 
-    const tokenPayload = await tokenService.verifyRefreshToken(reqRefreshToken);
-    const dbToken = await tokenService.findRefreshToken(reqRefreshToken);
+    const tokenPayload = await tokenService.verifyRefreshToken(refreshToken);
+    const dbToken = await tokenService.findRefreshToken(refreshToken);
 
     if (!dbToken || !tokenPayload || isTokenInvalid(dbToken, tokenPayload)) {
-      const newRes = clearAuthCookieFromResponse(res);
-
-      return CustomResponse.unauthorized(newRes, {
+      return CustomResponse.unauthorized(res, {
         message: 'unauthorized access',
       });
     }
@@ -146,9 +136,7 @@ export const updateTokens = async (req: Request, res: Response): Promise<Respons
       refreshToken: tokens.refreshToken,
     });
 
-    const resWithCookie = setAuthCookieToResponse(res, tokens);
-
-    return CustomResponse.ok(resWithCookie, null);
+    return CustomResponse.ok(res, tokens);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: `an error occurred on the server while updating tokens: ${error}`,
@@ -162,9 +150,7 @@ export const signOut = async (req: Request, res: Response): Promise<Response> =>
       userId: req.user.id,
     });
 
-    const newRes = clearAuthCookieFromResponse(res);
-
-    return CustomResponse.ok(newRes, null);
+    return CustomResponse.ok(res, null);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: `server side error when logging out`,
@@ -183,7 +169,7 @@ export const googleCallback = async (
       code,
       client_id: GOOGLE_CLIENT_ID,
       client_secret: GOOGLE_CLIENT_SECRET,
-      redirect_uri: GOOGLE_REDIRECT_URL,
+      redirect_uri: `${SERVER_DOMAIN}/api/auth/callback/google`,
       grant_type: 'authorization_code',
     });
 
@@ -205,9 +191,7 @@ export const googleCallback = async (
         refreshToken: tokens.refreshToken,
       });
 
-      const resWithCookie = setAuthCookieToResponse(res, tokens);
-
-      return resWithCookie.redirect(CLIENT_DOMAIN);
+      return res.redirect(`${CLIENT_OAUTH_CALLBACK}?refresh_token=${tokens.refreshToken}`);
     }
 
     const preparedLogin = googleUserData.email
@@ -235,9 +219,7 @@ export const googleCallback = async (
       refreshToken: tokens.refreshToken,
     });
 
-    const resWithCookie = setAuthCookieToResponse(res, tokens);
-
-    return resWithCookie.redirect(CLIENT_DOMAIN);
+    return res.redirect(`${CLIENT_OAUTH_CALLBACK}?refresh_token=${tokens.refreshToken}`);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: `An error occurred on the server side when logging in using Google.`,
@@ -262,7 +244,7 @@ export const githubCallback = async (
         params: {
           client_id: GITHUB_CLIENT_ID,
           client_secret: GITHUB_CLIENT_SECRET,
-          redirect_uri: 'http://localhost:3001/api/auth/callback/github',
+          redirect_uri: `${SERVER_DOMAIN}/api/auth/callback/github`,
           code,
         },
       }
@@ -291,9 +273,7 @@ export const githubCallback = async (
         refreshToken: tokens.refreshToken,
       });
 
-      const resWithCookie = setAuthCookieToResponse(res, tokens);
-
-      return resWithCookie.redirect(CLIENT_DOMAIN);
+      return res.redirect(`${CLIENT_OAUTH_CALLBACK}?refresh_token=${tokens.refreshToken}`);
     }
 
     const preparedLogin = githubUserData.login.substring(0, LIMITS.maxStringLength);
@@ -319,9 +299,7 @@ export const githubCallback = async (
       refreshToken: tokens.refreshToken,
     });
 
-    const resWithCookie = setAuthCookieToResponse(res, tokens);
-
-    return resWithCookie.redirect(CLIENT_DOMAIN);
+    return res.redirect(`${CLIENT_OAUTH_CALLBACK}?refresh_token=${tokens.refreshToken}`);
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: `An error occurred on the server side when logging in using Github.`,

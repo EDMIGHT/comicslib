@@ -8,16 +8,10 @@ const accessKey = process.env.accessKey!;
 const refreshKey = process.env.refreshKey!;
 const expiresIn = Number(process.env.expiresIn)!;
 
-type DecodedToken = TokenPayload & {
-  iat: number;
-  exp: number;
-};
-
 export type CreateTokensResult = {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
-  exp: number;
 };
 
 class TokenService {
@@ -27,13 +21,10 @@ class TokenService {
     });
     const refreshToken = jwt.sign(payload, refreshKey);
 
-    const decodedAccessToken = jwt.decode(accessToken) as DecodedToken;
-
     return {
       accessToken,
       refreshToken,
       expiresIn,
-      exp: decodedAccessToken.exp,
     };
   }
   public verifyAccessToken(token: string): VerifiedTokenPayload | null {

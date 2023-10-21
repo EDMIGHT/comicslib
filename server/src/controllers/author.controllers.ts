@@ -8,10 +8,10 @@ import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getAllAuthors = async (req: Request, res: Response): Promise<Response> => {
   const {
-    login,
-    sort,
+    login = '',
     page = 1,
     limit = 5,
+    sort = 'login',
     order = 'asc',
   } = req.query as unknown as IPaginationArg & ISortArg & Pick<Author, 'login'>;
 

@@ -28,6 +28,10 @@ export async function middleware(req: NextRequest) {
   const refreshToken = req.cookies.get(AuthCookie.REFRESH)?.value;
   const expAccessToken = req.cookies.get(AuthCookie.EXP)?.value;
 
+  console.log('middle acess', accessToken);
+  console.log('middle refreshToken', refreshToken);
+  console.log('middle expAccessToken', expAccessToken);
+
   const isPrivatePage = checkIsPrivatePages(req.nextUrl.pathname);
   const isAuthPage = checkIsAuthPages(req.nextUrl.pathname);
   const isTokenValid = checkIsTokenValid(Number(expAccessToken));
