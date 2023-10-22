@@ -20,8 +20,6 @@ type LayoutProps = {
   };
 };
 
-export const revalidate = 3600; // 1hr
-
 export async function generateMetadata({ params: { login } }: LayoutProps): Promise<Metadata> {
   const user = await UsersService.getProfile(login);
 
