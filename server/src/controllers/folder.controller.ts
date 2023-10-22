@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
-import { LIMITS } from '@/configs/limits.configs';
+import { LIMITS } from '@/configs/general.configs';
 import { ComicModel } from '@/models/comic.model';
 import { FolderModel } from '@/models/folder.model';
 import { UserModel } from '@/models/user.model';
 import { IFoldersWithIsExistComic } from '@/types/folder.types';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const createFolder = async (req: Request, res: Response): Promise<Response> => {

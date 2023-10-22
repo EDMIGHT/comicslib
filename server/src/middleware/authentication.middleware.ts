@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { UserModel } from '@/models/user.model';
 import tokenService from '@/services/token.service';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 
 export const authentication = async (
   request: Request,

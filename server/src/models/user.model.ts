@@ -1,6 +1,6 @@
 import { Providers, User } from '@prisma/client';
 
-import { DEFAULT_USER_FOLDER } from '@/configs/user.configs';
+import { DEFAULT_USER_FOLDER } from '@/configs/general.configs';
 import prisma from '@/db/prisma';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { IProfile } from '@/types/user.types';

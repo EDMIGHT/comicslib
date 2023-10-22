@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 
 export const validation = async (
   request: Request,

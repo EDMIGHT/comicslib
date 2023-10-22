@@ -1,6 +1,6 @@
 import { Response } from 'express';
 
-import { CustomResponse } from './customResponse';
+import { CustomResponse } from './custom-response';
 
 interface IServerErrorResponseArg {
   res: Response;

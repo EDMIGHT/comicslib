@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 
+import { ROOT_FOLDER_CLOUDINARY } from '@/configs/general.configs';
 import { ComicModel } from '@/models/comic.model';
 import { RatingModel } from '@/models/rating.model';
 import { IGetAllComicsQuery } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const createComic = async (req: Request, res: Response): Promise<Response> => {
@@ -22,7 +23,7 @@ export const createComic = async (req: Request, res: Response): Promise<Response
 
   try {
     const uploadedImg = await cloudinary.uploader.upload(img, {
-      folder: 'comics',
+      folder: `${ROOT_FOLDER_CLOUDINARY}/comics`,
     });
     const formattedReleasedAt = new Date(releasedAt);
     console.log(formattedReleasedAt);
@@ -187,8 +188,14 @@ export const getRandom = async (_: Request, res: Response): Promise<Response> =>
     const skip = Math.floor(Math.random() * totalComic);
     const randomComic = await ComicModel.getComicBySkip(skip);
 
+    if (!randomComic) {
+      return CustomResponse.notFound(res, {
+        message: 'there is not a single comic in the database to get a random one',
+      });
+    }
+
     return CustomResponse.ok(res, {
-      randomId: randomComic?.id,
+      randomId: randomComic.id,
     });
   } catch (error) {
     return serverErrorResponse({

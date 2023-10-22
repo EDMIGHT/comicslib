@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 
+import { ROOT_FOLDER_CLOUDINARY } from '@/configs/general.configs';
 import { ChapterModel } from '@/models/chapter.model';
 import { ComicModel } from '@/models/comic.model';
 import { PageModel } from '@/models/page.model';
 import { IRequestChapter } from '@/types/chapter.types';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getChaptersByComicId = async (req: Request, res: Response): Promise<Response> => {
@@ -128,7 +129,7 @@ export const createChapter = async (req: Request, res: Response): Promise<Respon
     await Promise.all(
       pages.map(async ({ img, number }) => {
         const uploadedImg = await cloudinary.uploader.upload(img, {
-          folder: 'pages',
+          folder: `${ROOT_FOLDER_CLOUDINARY}/pages`,
         });
         return await PageModel.create({
           number,

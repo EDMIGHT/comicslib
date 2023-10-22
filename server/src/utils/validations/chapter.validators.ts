@@ -1,6 +1,6 @@
 import { check, query } from 'express-validator';
 
-import { LIMITS } from '@/configs/limits.configs';
+import { LIMITS } from '@/configs/general.configs';
 import prisma from '@/db/prisma';
 
 const chapterSchema = prisma.chapter.fields;

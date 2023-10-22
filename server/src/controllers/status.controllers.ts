@@ -2,7 +2,7 @@ import { StatusName } from '@prisma/client';
 import { Request, Response } from 'express';
 
 import { StatusModel } from '@/models/status.model';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getAllStatuses = async (_: Request, res: Response): Promise<Response> => {

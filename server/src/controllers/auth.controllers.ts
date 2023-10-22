@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 
-import { LIMITS } from '@/configs/limits.configs';
+import { LIMITS } from '@/configs/general.configs';
 import { SessionModel } from '@/models/session.model';
 import { UserModel } from '@/models/user.model';
 import { PasswordService } from '@/services/password.service';
@@ -9,7 +9,7 @@ import tokenService from '@/services/token.service';
 import { IResponseGithubAuth, IResponseGoogleAuth } from '@/types/auth.types';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
 import { createUniqueLogin } from '@/utils/helpers/create-unique-login';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { isTokenInvalid } from '@/utils/helpers/isTokenInvalid';
 
 // google
@@ -20,6 +20,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID!;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET!;
 
+// general
 const SERVER_DOMAIN = process.env.SERVER_DOMAIN!;
 const CLIENT_OAUTH_CALLBACK = process.env.CLIENT_OAUTH_CALLBACK!;
 

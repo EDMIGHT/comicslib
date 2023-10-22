@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { ROOT_FOLDER_CLOUDINARY } from '@/configs/general.configs';
 import { BookmarksModel } from '@/models/bookmarks.model';
 import { ChapterModel } from '@/models/chapter.model';
 import { ComicModel } from '@/models/comic.model';
@@ -9,7 +10,7 @@ import { PasswordService } from '@/services/password.service';
 import { IPaginationArg, ISortArg, ISortOrder } from '@/types/common.types';
 import cloudinary from '@/utils/cloudinary';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getAllUser = async (req: Request, res: Response): Promise<Response> => {
@@ -315,7 +316,7 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
 
     if (img) {
       uploadedImg = await cloudinary.uploader.upload(img, {
-        folder: 'users',
+        folder: `${ROOT_FOLDER_CLOUDINARY}/users`,
       });
     }
 

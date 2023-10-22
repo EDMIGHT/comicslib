@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ThemeModel } from '@/models/theme.model';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getAllThemes = async (_: Request, res: Response): Promise<Response> => {

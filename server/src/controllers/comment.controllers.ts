@@ -6,7 +6,7 @@ import { CommentModel } from '@/models/comment.model';
 import { CommentVoteModel } from '@/models/comment-vote.model';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
 import { createResponseUser } from '@/utils/helpers/create-response-user';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getComments = async (req: Request, res: Response): Promise<Response> => {

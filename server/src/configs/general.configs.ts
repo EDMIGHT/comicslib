@@ -1,3 +1,5 @@
+export const ROOT_FOLDER_CLOUDINARY = 'comicslib';
+
 export const DEFAULT_USER_FOLDER = [
   {
     title: 'Reading',
@@ -16,3 +18,9 @@ export const DEFAULT_USER_FOLDER = [
     order: 4,
   },
 ];
+
+export const LIMITS = {
+  maxFoldersPerUser: 20,
+  maxStringLength: 190,
+  maxRequestPerWindow: 100,
+};

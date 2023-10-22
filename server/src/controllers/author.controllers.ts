@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { AuthorModel } from '@/models/author.model';
 import { IPaginationArg, ISortArg } from '@/types/common.types';
-import { CustomResponse } from '@/utils/helpers/customResponse';
+import { CustomResponse } from '@/utils/helpers/custom-response';
 import { serverErrorResponse } from '@/utils/helpers/serverErrorResponse';
 
 export const getAllAuthors = async (req: Request, res: Response): Promise<Response> => {

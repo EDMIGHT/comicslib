@@ -1,4 +1,4 @@
-import { LIMITS } from '@/configs/limits.configs';
+import { LIMITS } from '@/configs/general.configs';
 import { UserModel } from '@/models/user.model';
 
 const MAX_LOGIN_LENGTH = LIMITS.maxStringLength;
