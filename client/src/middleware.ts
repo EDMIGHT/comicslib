@@ -35,7 +35,7 @@ export async function middleware(req: NextRequest) {
   const isTokenValid = checkIsTokenValid(Number(expAccessToken));
 
   if (!refreshToken && isPrivatePage) {
-    return NextResponse.redirect(new URL(HREFS.auth.signIn, req.url));
+    return NextResponse.redirect(new URL(HREFS.protected, req.url));
   }
 
   if (refreshToken && isAuthPage) {

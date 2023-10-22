@@ -3,10 +3,9 @@ import {
   COMIC_WITH_CHAPTERS_SORT_VARIANTS,
 } from '@/configs/comic.configs';
 import { LOCAL_ENDPOINTS } from '@/configs/endpoint.configs';
+import { HREFS } from '@/configs/href.configs';
 import { NAVIGATION } from '@/configs/navigation.configs';
 import { SiteConfig, SocialLink } from '@/types/configs.types';
-
-import { HREFS } from './href.configs';
 
 export enum ESITE_THEMES {
   LIGHT = 'light',
@@ -39,15 +38,25 @@ export const SITE_SOCIAL_LINKS: readonly SocialLink[] = [
 ];
 
 export const OPENGRAPHS_URLS = {
-  page: `${process.env.APP_URL}${LOCAL_ENDPOINTS.meta.page}`,
   comic: `${process.env.APP_URL}${LOCAL_ENDPOINTS.meta.comic}`,
   profile: `${process.env.APP_URL}${LOCAL_ENDPOINTS.meta.profile}`,
 };
 
 export const SITE_CONFIG: SiteConfig = {
   name: 'comicslib',
-  desc: 'web application whose purpose is to provide comics viewing services',
+  desc: 'A pet project inspired by MangaDex, the purpose of which is to teach how to use NextJS 13.4',
   logo: 'logo',
+  keywords: [
+    'NextJS',
+    'Next.JS 13.4',
+    'NextJS 13.4',
+    'React',
+    'Tailwind CSS',
+    'Server Components',
+    'comicslib',
+    'comics',
+  ],
+  url: process.env.APP_URL!,
   navigation: NAVIGATION,
   socials: SITE_SOCIAL_LINKS,
 };
@@ -137,4 +146,5 @@ export const LIMITS = {
 
 export const PLACEHOLDERS = {
   folderTitle: ['reading..', 'completed..', 'in progress..', 'plan to read..'],
+  userLogin: ['alex123', 'test213', 'latyshev_oleksii', '1233321'],
 };

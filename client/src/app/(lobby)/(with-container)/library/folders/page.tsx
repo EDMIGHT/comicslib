@@ -7,14 +7,14 @@ import { PageHeader } from '@/components/page-header';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
+import { LIBRARY_PAGES_META } from '@/configs/meta.configs';
 import { getAuthServer } from '@/lib/getAuthServer';
 import { cn } from '@/lib/utils';
 import { FoldersService } from '@/services/folders.service';
 
 export const metadata: Metadata = {
-  title: 'Your folders',
-  description:
-    'User folders and the comics they have saved: an organized repository of comics that interest you',
+  title: LIBRARY_PAGES_META.folders.title,
+  description: LIBRARY_PAGES_META.folders.desc,
 };
 
 const Page = async () => {

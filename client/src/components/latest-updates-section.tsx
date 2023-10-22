@@ -84,10 +84,10 @@ const LatestUpdatesSectionBase: FC<LatestUpdatesSectionBaseProps> = ({
 export const LatestUpdatesSection: FC<LatestUpdatesSectionProps> = ({ comics }) => {
   return (
     <div className='grid grid-cols-1 gap-x-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
-      <LatestUpdatesSectionBase comics={comics.slice(0, 6)} />
-      <LatestUpdatesSectionBase comics={comics.slice(6, 12)} className='hidden lg:block' />
-      <LatestUpdatesSectionBase comics={comics.slice(12, 18)} className='hidden xl:block' />
-      <LatestUpdatesSectionBase comics={comics.slice(18, 24)} className='hidden 2xl:block' />
+      <LatestUpdatesSectionBase comics={comics.slice(0, 4)} />
+      <LatestUpdatesSectionBase comics={comics.slice(4, 8)} className='hidden lg:block' />
+      <LatestUpdatesSectionBase comics={comics.slice(8, 12)} className='hidden xl:block' />
+      <LatestUpdatesSectionBase comics={comics.slice(12, 16)} className='hidden 2xl:block' />
     </div>
   );
 };

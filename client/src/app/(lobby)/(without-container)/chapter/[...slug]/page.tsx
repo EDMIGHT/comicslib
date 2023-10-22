@@ -9,7 +9,6 @@ import { MenuSetterHOC } from '@/components/hocs/menu-setter-hoc';
 import { PageBackground } from '@/components/page-background';
 import { HREFS } from '@/configs/href.configs';
 import { TokenHelper } from '@/lib/helpers/token.helper';
-import { createTitle } from '@/lib/utils';
 import { ChaptersService } from '@/services/chapters.service';
 import { UsersService } from '@/services/users.service';
 
@@ -32,7 +31,8 @@ export async function generateMetadata({ params: { slug } }: PageProps): Promise
   const title = chapter.title ? `- ${chapter.title}` : null;
 
   return {
-    title: createTitle(`Ch. ${chapter.number} ${title ? title : ''}`),
+    title: `Ch. ${chapter.number} ${title ? title : ''}`,
+    description: 'The page on which the user is shown pages of comic book chapters',
   };
 }
 

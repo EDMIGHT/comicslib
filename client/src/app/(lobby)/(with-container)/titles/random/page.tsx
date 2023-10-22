@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { HREFS } from '@/configs/href.configs';
+import { toast } from '@/hooks/use-toast';
 import { ComicsService } from '@/services/comics.service';
 
 const Page = () => {
@@ -12,8 +13,18 @@ const Page = () => {
 
   useEffect(() => {
     const redirectToRandomComic = async () => {
-      const { randomId } = await ComicsService.getRandomId();
-      router.replace(`${HREFS.comics}/${randomId}`);
+      try {
+        const { randomId } = await ComicsService.getRandomId();
+        router.replace(`${HREFS.comics}/${randomId}`);
+      } catch (error) {
+        router.replace('/');
+        toast({
+          title: 'Failed to receive random comic',
+          description:
+            'Perhaps the collection of comics on the site is empty, if this is not the case, then try again a little later',
+          variant: 'destructive',
+        });
+      }
     };
 
     void redirectToRandomComic();

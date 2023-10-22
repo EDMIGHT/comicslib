@@ -8,7 +8,7 @@ import { PageHeader } from '@/components/page-header';
 import { SectionHeader } from '@/components/section-header';
 import { buttonVariants } from '@/components/ui/button';
 import { HREFS } from '@/configs/href.configs';
-import { cn, createTitle } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { AuthorsService } from '@/services/authors.service';
 import { ComicsService } from '@/services/comics.service';
 
@@ -28,7 +28,8 @@ export async function generateMetadata({ params: { slug } }: PageProps): Promise
   }
 
   return {
-    title: createTitle(existedAuthor.login),
+    title: existedAuthor.login,
+    description: `Page of comics created by the author: ${existedAuthor.login}`,
   };
 }
 

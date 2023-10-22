@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { OAuthUrlHelper } from '@/lib/helpers/oauth-urls.helper';
 import { cn } from '@/lib/utils';
-import { AuthService } from '@/services/auth.service';
 import { IOAuthProvider } from '@/types/auth.types';
 
 type OAuthSignInProps = HTMLAttributes<HTMLDivElement>;

@@ -1,8 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FC, MouseEvent, ReactNode, useEffect } from 'react';
+import { FC, MouseEvent, ReactNode, useCallback, useEffect } from 'react';
 
+import { HREFS } from '@/configs/href.configs';
 import { IChapter } from '@/types/chapter.types';
 
 type PageBackgroundProps = {
@@ -26,24 +27,25 @@ export const PageBackground: FC<PageBackgroundProps> = ({
 }) => {
   const router = useRouter();
 
-  const onClickToPrevPage = () => {
+  const onClickToPrevPage = useCallback(() => {
     if (page > 1) {
-      router.push(`/chapter/${chapterId}/${Number(page) - 1}`);
+      router.push(`${HREFS.chapter}/${chapterId}/${Number(page) - 1}`);
     } else if (prevChapter) {
-      router.push(`/chapter/${prevChapter.id}`);
+      router.push(`${HREFS.chapter}/${prevChapter.id}`);
     } else {
-      router.push(`/comics/${comicId}`);
+      router.push(`${HREFS.comics}/${comicId}`);
     }
-  };
-  const onClickToNextPage = () => {
+  }, [chapterId, comicId, page, prevChapter, router]);
+
+  const onClickToNextPage = useCallback(() => {
     if (page < totalPages) {
-      router.push(`/chapter/${chapterId}/${Number(page) + 1}`);
+      router.push(`${HREFS.chapter}/${chapterId}/${Number(page) + 1}`);
     } else if (nextChapter) {
-      router.push(`/chapter/${nextChapter.id}`);
+      router.push(`${HREFS.chapter}/${nextChapter.id}`);
     } else {
-      router.push(`/comics/${comicId}`);
+      router.push(`${HREFS.comics}/${comicId}`);
     }
-  };
+  }, [chapterId, comicId, nextChapter, page, router, totalPages]);
 
   const onClickBlock = (e: MouseEvent<HTMLDivElement>) => {
     const block = e.currentTarget;
@@ -69,7 +71,7 @@ export const PageBackground: FC<PageBackgroundProps> = ({
 
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
-  }, []);
+  }, [onClickToNextPage, onClickToPrevPage]);
 
   return (
     <div onClick={onClickBlock} className='w-full cursor-pointer'>

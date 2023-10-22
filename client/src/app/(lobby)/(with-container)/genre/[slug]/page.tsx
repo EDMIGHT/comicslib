@@ -8,7 +8,7 @@ import { PageHeader } from '@/components/page-header';
 import { SectionHeader } from '@/components/section-header';
 import { buttonVariants } from '@/components/ui/button';
 import { HREFS } from '@/configs/href.configs';
-import { capitalizeFirstLetter, cn, createTitle } from '@/lib/utils';
+import { capitalizeFirstLetter, cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { GenresService } from '@/services/genres.service';
 
@@ -28,7 +28,8 @@ export async function generateMetadata({ params: { slug } }: PageProps): Promise
   }
 
   return {
-    title: createTitle(capitalizeFirstLetter(genre.title)),
+    title: capitalizeFirstLetter(genre.title),
+    description: `A page with a catalog of comics that have genre ${genre.title}`,
   };
 }
 

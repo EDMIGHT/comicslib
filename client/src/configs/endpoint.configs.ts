@@ -70,7 +70,6 @@ export const ENDPOINTS = {
 
 export const LOCAL_ENDPOINTS = {
   meta: {
-    page: '/api/meta/og',
     comic: '/api/meta/comic-og',
     profile: '/api/meta/profile-og',
   },

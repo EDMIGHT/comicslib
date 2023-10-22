@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { FC, HTMLAttributes, MouseEvent, ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';

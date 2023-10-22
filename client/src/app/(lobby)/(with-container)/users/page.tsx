@@ -5,8 +5,8 @@ import { UsersFeed } from '@/components/feeds/users-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
+import { USERS_PAGE_META } from '@/configs/meta.configs';
 import { SORT_VARIANTS } from '@/configs/site.configs';
-import { createTitle } from '@/lib/utils';
 
 type PageProps = {
   searchParams: {
@@ -17,9 +17,8 @@ type PageProps = {
 };
 
 export const metadata: Metadata = {
-  title: createTitle('Search Users'),
-  description:
-    'Find new connections: Searching for members is a great way to find new friends and partners. Use filters for precise selection',
+  title: USERS_PAGE_META.title,
+  description: USERS_PAGE_META.desc,
 };
 
 const Page: FC<PageProps> = ({ searchParams }) => {

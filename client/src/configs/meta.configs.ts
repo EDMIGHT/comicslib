@@ -3,15 +3,14 @@ export const CREATE_PAGES_META = {
     title: 'Create Title',
     desc: 'Welcome to the Create Title Page! Here you can contribute by uploading a new comic to the site. Share your creativity with the world!',
   },
-  chapter: {
-    title: 'Upload Chapter',
-    desc: 'Turn your ideas into comics! Download a new chapter and unravel the plot. Easily and conveniently create your worlds on the pages of each chapter.',
+  author: {
+    title: 'Create Author',
+    desc: "Add an author to your comics! Personalize each story with uniqueness and style. Just enter the author's name and let the creativity begin!",
   },
-};
-
-export const USERS_PAGE_META = {
-  title: 'Sign In',
-  desc: 'Page for user authorization',
+  folder: {
+    title: 'Create Folder',
+    desc: 'Personalize your comic book collection with custom folders. Simple and convenient.',
+  },
 };
 
 export const TITLES_PAGE_META = {
@@ -33,6 +32,21 @@ export const TITLES_PAGE_META = {
   },
 };
 
+export const LIBRARY_PAGES_META = {
+  bookmarks: {
+    title: 'Your bookmarks',
+    desc: 'Track the bookmarks of your comics on a personal bookmarks page for the user. Recall each adventure and take a look at your comic book journey.',
+  },
+  folders: {
+    title: 'Your folders',
+    desc: 'User folders and the comics they have saved: an organized repository of comics that interest you',
+  },
+  updates: {
+    title: 'Updates',
+    desc: 'Stay tuned for updates on your comics! Display new releases from your personal collection. Stay up to date!',
+  },
+};
+
 export const AUTH_PAGES_META = {
   signIn: {
     title: 'Sign In',
@@ -46,4 +60,24 @@ export const AUTH_PAGES_META = {
     title: 'Sign Out',
     desc: 'Page for a user to log out of their account',
   },
+};
+
+export const PROTECTED_PAGE_META = {
+  title: 'Protected page',
+  desc: 'Redirection page from unauthorized access',
+};
+
+export const SETTINGS_PAGE_META = {
+  title: 'Settings',
+  desc: 'A page on which the user can configure the web application, as well as change its appearance',
+};
+
+export const USERS_PAGE_META = {
+  title: 'Users',
+  desc: 'A page that displays all users of the web application',
+};
+
+export const HOME_PAGE_META = {
+  title: 'Home',
+  desc: 'Main page',
 };

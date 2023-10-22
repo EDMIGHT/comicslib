@@ -32,6 +32,8 @@ export type SiteConfig = {
   name: string;
   desc: string;
   logo: keyof typeof Icons;
+  url: string;
+  keywords: string[];
   navigation: readonly NavigationItem[];
   socials: readonly SocialLink[];
 };

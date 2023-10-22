@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { PasswordInput } from '@/components/password-input';
@@ -20,8 +21,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
+import { PLACEHOLDERS } from '@/configs/site.configs';
 import { toast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
+import { cn, getRandomNumber } from '@/lib/utils';
 import { ISignUpFields, signUpValidation } from '@/lib/validators/auth.validators';
 import { AuthService, IRequestSignUpBody } from '@/services/auth.service';
 import { IInvalidResponse } from '@/types/response.types';
@@ -48,8 +50,9 @@ export const SignUpForm = () => {
       return await AuthService.auth('signUp', payload);
     },
     onSuccess: () => {
-      router.replace('/');
+      form.reset();
       router.refresh();
+      router.replace('/');
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
@@ -93,6 +96,18 @@ export const SignUpForm = () => {
     form.reset();
   };
 
+  const memoizedLoginPlaceholder = useMemo(
+    () =>
+      PLACEHOLDERS.userLogin[
+        getRandomNumber({
+          min: 0,
+          max: PLACEHOLDERS.userLogin.length - 1,
+          inclusive: true,
+        })
+      ],
+    []
+  );
+
   return (
     <Form {...form}>
       <form
@@ -106,7 +121,7 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>Login</FormLabel>
               <FormControl>
-                <Input placeholder='alex123' {...field} />
+                <Input placeholder={memoizedLoginPlaceholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

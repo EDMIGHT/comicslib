@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { ComicsFeed } from '@/components/feeds/comics-feed';
@@ -17,6 +18,19 @@ type PageProps = {
     order?: string;
   };
 };
+
+export async function generateMetadata({ params: { id } }: PageProps): Promise<Metadata> {
+  const folderInfo = await FoldersService.getFolderInfo(id);
+
+  if (!folderInfo) {
+    return {};
+  }
+
+  return {
+    title: `Folder "${folderInfo.title}"`,
+    description: `Folder view page with name: ${folderInfo.title}`,
+  };
+}
 
 const Page = async ({ params: { id }, searchParams }: PageProps) => {
   const folderInfo = await FoldersService.getFolderInfo(id);

@@ -15,8 +15,40 @@ import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: SITE_CONFIG.name,
+  metadataBase: new URL(SITE_CONFIG.url),
+  title: {
+    default: SITE_CONFIG.name,
+    template: `%s • ${SITE_CONFIG.name}`,
+  },
   description: SITE_CONFIG.desc,
+  keywords: SITE_CONFIG.keywords,
+  authors: [
+    {
+      name: 'Oleksii Latyshev',
+      url: 'https://github.com/EDMIGHT',
+    },
+  ],
+  creator: 'Oleksii Latyshev',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: SITE_CONFIG.url,
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.desc,
+    siteName: SITE_CONFIG.name,
+    images: [`${SITE_CONFIG.url}/opengraph-image.png`],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.desc,
+    images: [`${SITE_CONFIG.url}/twitter-image.png`],
+    creator: '@EDM1GHT',
+  },
 };
 
 interface RootLayoutProps {

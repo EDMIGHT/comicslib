@@ -9,9 +9,6 @@ import { StatusBadge } from '@/components/status-badge';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { HREFS } from '@/configs/href.configs';
-import { CREATE_PAGES_META } from '@/configs/meta.configs';
-import { OPENGRAPHS_URLS } from '@/configs/site.configs';
-import { absoluteUrl, createTitle } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 type PageProps = {
@@ -20,34 +17,18 @@ type PageProps = {
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const generateMetadata = async (): Promise<Metadata> => {
-  const { title, desc } = CREATE_PAGES_META.chapter;
+export async function generateMetadata({ params: { id } }: PageProps): Promise<Metadata> {
+  const existedComic = await ComicsService.getById(id);
 
-  const ogUrl = new URL(OPENGRAPHS_URLS.page);
-  ogUrl.searchParams.set('title', title);
-  ogUrl.searchParams.set('description', desc);
-  ogUrl.searchParams.set('mode', 'dark');
+  if (!existedComic) {
+    return {};
+  }
 
   return {
-    title: createTitle(title),
-    description: desc,
-    openGraph: {
-      title: title,
-      description: desc,
-      type: 'website',
-      url: absoluteUrl(HREFS.create.chapter),
-      images: [
-        {
-          url: ogUrl.toString(),
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-    },
+    title: `Create a chapter for the ${existedComic.title}`,
+    description: `Page for creating a chapter for a comic with a title: ${existedComic.title}`,
   };
-};
+}
 
 const Page = async ({ params: { id } }: PageProps) => {
   const existedComic = await ComicsService.getById(id);

@@ -5,14 +5,8 @@ import { UserComicsWithChaptersFeed } from '@/components/feeds/user-comics-with-
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
+import { LIBRARY_PAGES_META } from '@/configs/meta.configs';
 import { SORT_VARIANTS } from '@/configs/site.configs';
-import { createTitle } from '@/lib/utils';
-
-export const metadata: Metadata = {
-  title: createTitle('Updates'),
-  description:
-    'Stay tuned for updates on your comics! Display new releases from your personal collection. Stay up to date!',
-};
 
 type PageProps = {
   searchParams: {
@@ -20,6 +14,11 @@ type PageProps = {
     sort?: string;
     order?: string;
   };
+};
+
+export const metadata: Metadata = {
+  title: LIBRARY_PAGES_META.updates.title,
+  description: LIBRARY_PAGES_META.updates.desc,
 };
 
 const Page: FC<PageProps> = ({ searchParams }) => {

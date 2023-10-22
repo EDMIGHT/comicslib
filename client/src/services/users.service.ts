@@ -1,6 +1,8 @@
 import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
 import { IChangePasswordSchema } from '@/lib/validators/user.validators';
+import { api } from '@/services/api';
+import { apiAuth } from '@/services/apiAuth';
 import { IResponseAllComicsWithChapters } from '@/types/comic.types';
 import { IPaginationArg, ISortArg } from '@/types/response.types';
 import {
@@ -11,9 +13,6 @@ import {
   IResponseCleaningBookmarks,
   IUser,
 } from '@/types/user.types';
-
-import { api } from './api';
-import { apiAuth } from './apiAuth';
 
 export type IGetAllUsersArg = IPaginationArg &
   ISortArg & {
@@ -81,7 +80,7 @@ export class UsersService {
     order = 'desc',
   }: IGetAllBookmarksArg) {
     const { data } = await api.get<IResponseAllBookmarks>(
-      `${ENDPOINTS.users.bookmark}/${login}?page=${page}&limit=${limit}&sort=${sort}&order=${order}`
+      `${ENDPOINTS.users.bookmark}/${login}?title=${title}&page=${page}&limit=${limit}&sort=${sort}&order=${order}`
     );
     return data;
   }

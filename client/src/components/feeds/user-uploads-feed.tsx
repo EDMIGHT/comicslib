@@ -6,6 +6,7 @@ import { FC, useEffect, useRef } from 'react';
 
 import { ComicWithChapters } from '@/components/layouts/comic-with-chapters';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
+import { ComicWithChaptersSkeletons } from '@/components/skeletons/comic-with-chapters-skeletons';
 import { useAppSelector } from '@/hooks/redux-hooks';
 import { useIntersection } from '@/hooks/use-intersection';
 import { IGetAllUploadsArg, UsersService } from '@/services/users.service';
@@ -77,7 +78,7 @@ export const UserUploadsFeed: FC<UserUploadsFeedProps> = ({ login, title, sort, 
             <h3 className='text-3xl font-medium'>comics not found</h3>
           </div>
         ))}
-      {/* {isLoading && <ComicSkeletons />} */}
+      {isLoading && <ComicWithChaptersSkeletons />}
     </ul>
   );
 };

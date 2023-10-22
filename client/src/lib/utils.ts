@@ -44,6 +44,11 @@ export const getRandomNumber = ({
   }
 };
 
+export const extractStatusCode = (message: string): number | null => {
+  const match = message.match(/code (\d+)/);
+  return match ? parseInt(match[1]) : null;
+};
+
 export const capitalizeFirstLetter = (word: string): string =>
   word.charAt(0).toUpperCase() + word.slice(1);
 

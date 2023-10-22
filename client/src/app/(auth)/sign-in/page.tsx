@@ -15,36 +15,11 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { HREFS } from '@/configs/href.configs';
 import { AUTH_PAGES_META } from '@/configs/meta.configs';
-import { OPENGRAPHS_URLS } from '@/configs/site.configs';
-import { absoluteUrl, cn, createTitle } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const generateMetadata = async (): Promise<Metadata> => {
-  const { title, desc } = AUTH_PAGES_META.signIn;
-
-  const ogUrl = new URL(OPENGRAPHS_URLS.page);
-  ogUrl.searchParams.set('title', title);
-  ogUrl.searchParams.set('description', desc);
-  ogUrl.searchParams.set('mode', 'dark');
-
-  return {
-    title: createTitle(title),
-    description: desc,
-    openGraph: {
-      title: title,
-      description: desc,
-      type: 'website',
-      url: absoluteUrl(HREFS.auth.signIn),
-      images: [
-        {
-          url: ogUrl.toString(),
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-    },
-  };
+export const metadata: Metadata = {
+  title: AUTH_PAGES_META.signIn.title,
+  description: AUTH_PAGES_META.signIn.desc,
 };
 
 const Page = () => {

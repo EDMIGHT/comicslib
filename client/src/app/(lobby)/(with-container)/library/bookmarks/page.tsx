@@ -5,13 +5,12 @@ import { BookmarksCleaning } from '@/components/bookmarks-cleaning';
 import { BookmarksFeed } from '@/components/feeds/bookmarks-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
+import { LIBRARY_PAGES_META } from '@/configs/meta.configs';
 import { getAuthServer } from '@/lib/getAuthServer';
-import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: createTitle('Your bookmarks'),
-  description:
-    'Track the bookmarks of your comics on a personal bookmarks page for the user. Recall each adventure and take a look at your comic book journey.',
+  title: LIBRARY_PAGES_META.bookmarks.title,
+  description: LIBRARY_PAGES_META.bookmarks.desc,
 };
 
 type PageProps = {

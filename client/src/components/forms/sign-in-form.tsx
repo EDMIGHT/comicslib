@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { PasswordInput } from '@/components/password-input';
@@ -17,7 +18,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { PLACEHOLDERS } from '@/configs/site.configs';
 import { toast } from '@/hooks/use-toast';
+import { getRandomNumber } from '@/lib/utils';
 import { ISignInFields, signInValidation } from '@/lib/validators/auth.validators';
 import { AuthService } from '@/services/auth.service';
 import { IInvalidResponse } from '@/types/response.types';
@@ -93,6 +96,18 @@ export const SignInForm = () => {
     signIn(data);
   };
 
+  const memoizedLoginPlaceholder = useMemo(
+    () =>
+      PLACEHOLDERS.userLogin[
+        getRandomNumber({
+          min: 0,
+          max: PLACEHOLDERS.userLogin.length - 1,
+          inclusive: true,
+        })
+      ],
+    []
+  );
+
   return (
     <Form {...form}>
       <form
@@ -106,7 +121,7 @@ export const SignInForm = () => {
             <FormItem>
               <FormLabel>Login</FormLabel>
               <FormControl>
-                <Input placeholder='alex123' {...field} />
+                <Input placeholder={memoizedLoginPlaceholder} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -67,4 +67,5 @@ export const HREFS = {
   create: CREATE_HREFS,
   comicAttributes: COMIC_ATTRIBUTES,
   profile: '/profile',
+  protected: '/protected',
 };

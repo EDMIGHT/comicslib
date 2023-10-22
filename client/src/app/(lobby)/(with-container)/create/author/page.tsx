@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import { CreateAuthorForm } from '@/components/forms/create-author-form';
 import { PageHeader } from '@/components/page-header';
-import { createTitle } from '@/lib/utils';
+import { CREATE_PAGES_META } from '@/configs/meta.configs';
 
 type PageProps = {
   searchParams: {
@@ -12,9 +12,8 @@ type PageProps = {
 };
 
 export const metadata: Metadata = {
-  title: createTitle('Create Author'),
-  description:
-    "Add an author to your comics! Personalize each story with uniqueness and style. Just enter the author's name and let the creativity begin!",
+  title: CREATE_PAGES_META.author.title,
+  description: CREATE_PAGES_META.author.desc,
 };
 
 const Page: FC<PageProps> = ({ searchParams: { login } }) => {

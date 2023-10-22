@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LIMITS } from '@/configs/site.configs';
 

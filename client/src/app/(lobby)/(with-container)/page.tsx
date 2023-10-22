@@ -9,13 +9,14 @@ import { buttonVariants } from '@/components/ui/button';
 import { Card, CardTitle } from '@/components/ui/card';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
+import { HOME_PAGE_META } from '@/configs/meta.configs';
 import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 export const metadata: Metadata = {
-  title: 'Home',
-  description: 'Main page',
+  title: HOME_PAGE_META.title,
+  description: HOME_PAGE_META.desc,
 };
 
 const Page = async () => {

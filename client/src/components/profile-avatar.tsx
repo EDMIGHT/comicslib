@@ -1,11 +1,10 @@
-import { FC, HTMLAttributes } from 'react';
+import { FC } from 'react';
 
+import { ProfileEditAvatar } from '@/components/profile-edit-avatar';
 import { Icons } from '@/components/ui/icons';
+import { UserAvatar } from '@/components/user-avatar';
 import { cn } from '@/lib/utils';
 import { IShortUser, IUser } from '@/types/user.types';
-
-import { ProfileEditAvatar } from './profile-edit-avatar';
-import { UserAvatar } from './user-avatar';
 
 type ProfileAvatarProps = IShortUser & {
   className?: string;

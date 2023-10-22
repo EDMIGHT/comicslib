@@ -4,13 +4,12 @@ import { redirect } from 'next/navigation';
 import { CreateFolderForm } from '@/components/forms/create-folder-form';
 import { PageHeader } from '@/components/page-header';
 import { HREFS } from '@/configs/href.configs';
+import { CREATE_PAGES_META } from '@/configs/meta.configs';
 import { getAuthServer } from '@/lib/getAuthServer';
-import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: createTitle('Create Folder'),
-  description:
-    'Personalize your comic book collection with custom folders. Simple and convenient.',
+  title: CREATE_PAGES_META.folder.title,
+  description: CREATE_PAGES_META.folder.desc,
 };
 
 const Page = async () => {

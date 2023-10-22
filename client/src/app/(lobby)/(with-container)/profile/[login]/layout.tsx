@@ -10,7 +10,7 @@ import { ProfileMobileNav } from '@/components/profile-mobile-nav';
 import { HREFS } from '@/configs/href.configs';
 import { OPENGRAPHS_URLS } from '@/configs/site.configs';
 import { getAuthServer } from '@/lib/getAuthServer';
-import { absoluteUrl, createTitle } from '@/lib/utils';
+import { absoluteUrl } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
 
 type LayoutProps = {
@@ -33,7 +33,7 @@ export async function generateMetadata({ params: { login } }: LayoutProps): Prom
   ogUrl.searchParams.set('login', user.login);
 
   return {
-    title: createTitle(user.login),
+    title: user.login,
     description: `User Profile Page: ${user.login}`,
     openGraph: {
       title: user.login,

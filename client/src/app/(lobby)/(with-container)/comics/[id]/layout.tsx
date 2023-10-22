@@ -12,7 +12,7 @@ import { NavigationBtns, NavigationVariants } from '@/components/navigation-btns
 import { StatusBadge } from '@/components/status-badge';
 import { HREFS } from '@/configs/href.configs';
 import { OPENGRAPHS_URLS } from '@/configs/site.configs';
-import { absoluteUrl, createTitle } from '@/lib/utils';
+import { absoluteUrl } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 
 type PageProps = {
@@ -41,7 +41,7 @@ export async function generateMetadata({ params: { id } }: PageProps): Promise<M
   ogUrl.searchParams.set('comicId', comic.id);
 
   return {
-    title: createTitle(comic.title),
+    title: comic.title,
     description: `Page for viewing information about the comic with the title: ${comic.title}`,
     openGraph: {
       title: comic.title,

@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 
@@ -13,6 +14,19 @@ type PageProps = {
   };
   searchParams: IPaginationArg;
 };
+
+export async function generateMetadata({ params: { id } }: PageProps): Promise<Metadata> {
+  const folderInfo = await FoldersService.getFolderInfo(id);
+
+  if (!folderInfo) {
+    return {};
+  }
+
+  return {
+    title: `Edit folder "${folderInfo.title}"`,
+    description: `Page for editing a folder with the name: ${folderInfo.title}`,
+  };
+}
 
 const Page: FC<PageProps> = async ({ params: { id }, searchParams }) => {
   const folder = await FoldersService.getFolderInfo(id);
