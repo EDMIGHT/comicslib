@@ -25,8 +25,8 @@ app.use(
 );
 app.use(
   rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: LIMITS.maxRequestPerWindow, // per 15 minutes
+    windowMs: 1 * 60 * 1000, // 1 minutes
+    limit: LIMITS.maxRequestPerWindow, // per 1 minutes
     standardHeaders: 'draft-7',
     legacyHeaders: false,
   })
