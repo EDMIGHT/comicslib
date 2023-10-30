@@ -1,7 +1,6 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
@@ -10,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { COMIC_RATING_CONFIG } from '@/configs/comic.configs';
-import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { arrayFromRange, cn } from '@/lib/utils';
 import { ComicsService } from '@/services/comics.service';
 import { IRating } from '@/types/review.types';
@@ -36,21 +35,13 @@ export const ComicUpdateRating: FC<ComicUpdateRatingProps> = ({ comicId, rating 
       router.refresh();
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          return toast({
-            variant: 'destructive',
-            title: 'Authorization Error',
-            description: 'Please login or refresh the page',
-          });
-        } else {
-          toast({
-            variant: 'destructive',
-            title: "Sorry, something went wrong while updating the comic's rating",
-            description: 'Please try again later',
-          });
-        }
-      }
+      ErrorHandler.mutation(err, {
+        notFoundError: {
+          title: 'Comic not found',
+          description:
+            'This comic may have been removed from the site, please refresh the page.',
+        },
+      });
     },
     onMutate: () => {
       setOpen(false);

@@ -22,5 +22,4 @@ export const DEFAULT_USER_FOLDER = [
 export const LIMITS = {
   maxFoldersPerUser: 20,
   maxStringLength: 190,
-  maxRequestPerWindow: 100,
 };

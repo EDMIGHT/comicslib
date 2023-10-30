@@ -3,7 +3,7 @@
 import { useTheme } from 'next-themes';
 import { FC } from 'react';
 
-import { ThemeView } from '@/components/theme-view';
+import { ThemeView } from '@/components/layouts/theme-view';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { SITE_THEMES } from '@/configs/site.configs';
 import { useMounted } from '@/hooks/use-mounted';

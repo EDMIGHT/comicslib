@@ -52,45 +52,47 @@ export const CommentsSection: FC<CommentsListProps> = ({
   const sort = searchParams.get('sort');
   const order = searchParams.get('order');
 
-  return (
-    <>
-      <Sort
-        initialSort={sort}
-        initialOrder={order}
-        variants={SORT_VARIANTS.comments}
-        contentWidth='230px'
-        className='w-[230px]'
-        styleVariant='transparent'
-        disabled={isPending}
-        customHandler={({ field, order }) =>
-          startTransition(() => {
-            changeSearchParams(createSortQueryString(field, order));
-          })
-        }
-      />
-      <ul className='flex flex-col gap-1'>
-        {!isPending ? (
-          comments.map((com) => (
-            <li key={com.id}>
-              <Comment {...com} userVotes={convertedUserCommentsVotes} />
-            </li>
-          ))
-        ) : (
-          <CommentSkeletons />
-        )}
-      </ul>
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          className='justify-center'
-          customHandlePageChange={(newPage) =>
+  if (comments.length > 0) {
+    return (
+      <>
+        <Sort
+          initialSort={sort}
+          initialOrder={order}
+          variants={SORT_VARIANTS.comments}
+          contentWidth='230px'
+          className='w-[230px]'
+          styleVariant='transparent'
+          disabled={isPending}
+          customHandler={({ field, order }) =>
             startTransition(() => {
-              changeSearchParams(createPaginationQueryString('page', newPage));
+              changeSearchParams(createSortQueryString(field, order));
             })
           }
         />
-      )}
-    </>
-  );
+        <ul className='flex flex-col gap-1'>
+          {!isPending ? (
+            comments.map((com) => (
+              <li key={com.id}>
+                <Comment {...com} userVotes={convertedUserCommentsVotes} />
+              </li>
+            ))
+          ) : (
+            <CommentSkeletons />
+          )}
+        </ul>
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            className='justify-center'
+            customHandlePageChange={(newPage) =>
+              startTransition(() => {
+                changeSearchParams(createPaginationQueryString('page', newPage));
+              })
+            }
+          />
+        )}
+      </>
+    );
+  }
 };

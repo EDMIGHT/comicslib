@@ -51,7 +51,7 @@ export const signUp = async (req: Request, res: Response): Promise<Response> => 
       refreshToken: tokens.refreshToken,
     });
 
-    return CustomResponse.created(res, tokens);
+    return CustomResponse.created(res, { ...tokens, user });
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: 'an error occurred during registration on the server side',
@@ -94,7 +94,7 @@ export const signIn = async (req: Request, res: Response): Promise<Response> => 
       refreshToken: tokens.refreshToken,
     });
 
-    return CustomResponse.created(res, tokens);
+    return CustomResponse.created(res, { ...tokens, user: existedUser });
   } catch (error) {
     return CustomResponse.serverError(res, {
       message: 'server side authorization error',

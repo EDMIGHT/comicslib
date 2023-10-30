@@ -9,7 +9,7 @@ import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
 import { useActions } from '@/hooks/use-actions';
 import { convertImgToBase64 } from '@/lib/convertImgToBase64';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
 
@@ -37,7 +37,7 @@ export const ProfileEditAvatar: FC<ProfileEditAvatarProps> = ({
       router.refresh();
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.mutation(err);
     },
   });
 

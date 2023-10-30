@@ -120,10 +120,16 @@ export const updateComicsFolder = async (req: Request, res: Response): Promise<R
 
   try {
     const existedFolder = await FolderModel.getWithComicsIds(folderId);
+    const existedComic = await ComicModel.get(comicId);
 
     if (!existedFolder) {
       return CustomResponse.notFound(res, {
         message: 'folder does not exist',
+      });
+    }
+    if (!existedComic) {
+      return CustomResponse.notFound(res, {
+        message: 'comic does not exist',
       });
     }
     if (existedFolder.userId !== req.user.id) {

@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -19,14 +18,17 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { PLACEHOLDERS } from '@/configs/site.configs';
+import { useActions } from '@/hooks/use-actions';
 import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { getRandomNumber } from '@/lib/utils';
 import { ISignInFields, signInValidation } from '@/lib/validators/auth.validators';
 import { AuthService } from '@/services/auth.service';
-import { IInvalidResponse } from '@/types/response.types';
+import { isInvalidResponseWithDetails } from '@/types/response.types';
 
 export const SignInForm = () => {
   const router = useRouter();
+  const { setUser } = useActions();
 
   const form = useForm<ISignInFields>({
     resolver: zodResolver(signInValidation),
@@ -45,49 +47,63 @@ export const SignInForm = () => {
 
       return await AuthService.auth('signIn', payload);
     },
-    onSuccess: () => {
+    onSuccess: (payload) => {
+      console.log(payload);
+      setUser(payload.user);
       form.reset();
       router.refresh();
       router.replace('/');
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 400) {
-          const detailsResponse = (err.response.data as IInvalidResponse)?.details;
+      ErrorHandler.mutation(err, {
+        validError: {
+          withToast: false,
+          action: (err) => {
+            if (isInvalidResponseWithDetails(err.data)) {
+              const { details } = err.data;
+              const allFields = form.watch();
 
-          if (detailsResponse) {
-            detailsResponse.forEach((detail) => {
-              if (detail.path === 'login') {
-                form.setError('login', {
-                  type: 'server',
-                  message: detail.msg,
-                });
-              } else if (detail.path === 'password') {
-                form.setError('password', {
-                  type: 'server',
-                  message: detail.msg,
-                });
-              }
+              details.forEach((detail) => {
+                if (allFields.hasOwnProperty(detail.path)) {
+                  form.setError(detail.path as keyof ISignInFields, {
+                    type: 'server',
+                    message: detail.msg,
+                  });
+                } else {
+                  toast({
+                    variant: 'destructive',
+                    title: 'Validation error not from form',
+                    description: detail.msg,
+                  });
+                }
+              });
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'Validation error',
+                description: `A validation error occurred that was not caused by the server`,
+              });
+            }
+          },
+        },
+        notFoundError: {
+          withToast: false,
+          action: () => {
+            return form.setError('login', {
+              type: 'server',
+              message: 'Account with this username does not exist',
             });
-          }
-
-          return;
-        } else if (err.response?.status === 404) {
-          return form.setError('login', {
-            type: 'server',
-            message: 'Account with this username does not exist',
-          });
-        } else if (err.response?.status === 409) {
-          return form.setError('password', {
-            type: 'server',
-            message: 'You entered the wrong password',
-          });
-        }
-      }
-      toast({
-        variant: 'destructive',
-        title: 'Oops, something went wrong while logging in.',
-        description: 'Please double check your input or try again later.',
+          },
+        },
+        conflictError: {
+          withToast: false,
+          action: () => {
+            return form.setError('password', {
+              type: 'server',
+              message: 'You entered the wrong password',
+            });
+          },
+        },
       });
     },
   });

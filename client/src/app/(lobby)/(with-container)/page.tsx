@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { FullScreenComicCarousel } from '@/components/carousels/full-screen-comic-carousel';
 import { SeveralSmallComicsCarousel } from '@/components/carousels/several-small-comics-carousel';
 import { LatestUpdatesSection } from '@/components/latest-updates-section';
+import { SectionHeader } from '@/components/section-header';
 import { buttonVariants } from '@/components/ui/button';
-import { Card, CardTitle } from '@/components/ui/card';
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
 import { HOME_PAGE_META } from '@/configs/meta.configs';
@@ -43,13 +43,13 @@ const Page = async () => {
 
   return (
     <div className='space-y-3'>
-      <Card variant='transparent' as='section' className='space-y-2'>
-        <CardTitle className='text-2xl'>Popular New Titles</CardTitle>
+      <section className='space-y-2'>
+        <SectionHeader>Popular New Titles</SectionHeader>
         <FullScreenComicCarousel comics={popularNewComicsCarousel} />
-      </Card>
-      <Card variant='transparent' as='section' className='space-y-2'>
+      </section>
+      <section className='space-y-2'>
         <div className='flex items-baseline justify-between gap-2'>
-          <CardTitle className='text-2xl'>Latest Updates</CardTitle>
+          <SectionHeader>Latest Updates</SectionHeader>
           <Link
             href={HREFS.titles.latestUpdates}
             className={cn(
@@ -61,10 +61,10 @@ const Page = async () => {
           </Link>
         </div>
         <LatestUpdatesSection comics={latestUpdatesComics} />
-      </Card>
-      <Card variant='transparent' as='section' className='space-y-2'>
+      </section>
+      <section className='space-y-2'>
         <div className='flex items-baseline justify-between gap-2'>
-          <CardTitle className='text-2xl'>Recently Added</CardTitle>
+          <SectionHeader>Recently Added</SectionHeader>
           <Link
             href={HREFS.titles.recentlyAdded}
             className={cn(
@@ -76,7 +76,7 @@ const Page = async () => {
           </Link>
         </div>
         <SeveralSmallComicsCarousel comics={recentlyAddedComics} />
-      </Card>
+      </section>
     </div>
   );
 };

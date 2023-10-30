@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { CommentBase } from '@/components/comment-base';
+import { CommentBase } from '@/components/layouts/comment-base';
 import { Card } from '@/components/ui/card';
 import { ICommentVoteType, ICommentWithReplies } from '@/types/comment.types';
 

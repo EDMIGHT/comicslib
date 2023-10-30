@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Icons } from '@/components/ui/icons';
-import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 
@@ -52,26 +52,9 @@ export const FileDialogWithCrop: FC<FileDialogProps> = ({
       setOpenCroppedModal(true);
 
       if (rejectedFiles.length > 0) {
-        rejectedFiles.forEach(({ errors }) => {
-          if (errors[0].code === 'file-too-large') {
-            toast({
-              variant: 'destructive',
-              title: 'File size is too large',
-              description: `The file size is too large, the maximum allowable size is ${formattedMaxSize}`,
-            });
-          } else if (errors[0].code === 'file-invalid-type') {
-            toast({
-              variant: 'destructive',
-              title: 'Invalid File Type',
-              description: `You can only upload pictures as comic cover`,
-            });
-          } else {
-            toast({
-              variant: 'destructive',
-              title: 'Oops, something went wrong',
-              description: `An error occurred while parsing your file, please select another file`,
-            });
-          }
+        ErrorHandler.file(rejectedFiles[0].errors[0], {
+          formattedMaxSize,
+          maxFiles: 1,
         });
       }
     },

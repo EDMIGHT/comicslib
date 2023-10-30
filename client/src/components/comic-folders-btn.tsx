@@ -19,7 +19,7 @@ import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { HREFS } from '@/configs/href.configs';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { FoldersService } from '@/services/folders.service';
 
@@ -33,13 +33,18 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
 
   const queryClient = useQueryClient();
 
-  const { data: folders, isSuccess } = useQuery({
+  const {
+    data: folders,
+    isSuccess: isFetchFoldersSuccess,
+    refetch: foldersRefetch,
+    isError: isFetchFoldersError,
+  } = useQuery({
     queryKey: [REACT_QUERY_KEYS.folders],
     queryFn: async () => {
       return await FoldersService.getFoldersByComic(comicId);
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.query(err);
     },
   });
   const { mutate: updateFolder, isLoading } = useMutation({
@@ -52,7 +57,17 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
       router.refresh();
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.mutation(err, {
+        notFoundError: {
+          title: 'Data does not exist',
+          description:
+            'Perhaps the folder or comic no longer exists on the site, please refresh the page',
+        },
+        conflictError: {
+          title: 'Access error',
+          description: 'You are trying to change a folder that you are not the owner of',
+        },
+      });
     },
   });
 
@@ -72,7 +87,7 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
       </PopoverTrigger>
       <PopoverContent className='w-[200px] p-0'>
         {isExistAtLeastOneFolder ? (
-          isSuccess &&
+          isFetchFoldersSuccess &&
           folders && (
             <ScrollArea className='flex max-h-[20vh] flex-col p-1' type='always'>
               <Command
@@ -122,6 +137,12 @@ export const ComicFoldersBtn: FC<ComicFoldersBtnProps> = ({ comicId }) => {
             </Link>
           </h4>
         )}
+        {isFetchFoldersError && (
+          <Button onClick={() => void foldersRefetch()} className='w-full' variant='ghost'>
+            Try again
+          </Button>
+        )}
+        {isLoading && <Icons.loading className='mx-auto h-5 w-5 animate-spin' />}
       </PopoverContent>
     </Popover>
   );

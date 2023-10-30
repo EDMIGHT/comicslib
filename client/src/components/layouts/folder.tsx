@@ -19,7 +19,7 @@ import {
 import { Icons } from '@/components/ui/icons';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { FoldersService } from '@/services/folders.service';
 import { IFolderWithComics } from '@/types/user.types';
@@ -45,7 +45,7 @@ export const Folder: FC<FolderProps> = memo(({ id, title, comics, className }) =
       router.refresh();
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         forbiddenError: {
           title: 'Access error',
           description: 'You are trying to delete a folder that you do not own',

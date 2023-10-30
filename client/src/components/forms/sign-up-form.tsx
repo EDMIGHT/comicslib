@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
@@ -22,14 +21,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
 import { PLACEHOLDERS } from '@/configs/site.configs';
+import { useActions } from '@/hooks/use-actions';
 import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn, getRandomNumber } from '@/lib/utils';
 import { ISignUpFields, signUpValidation } from '@/lib/validators/auth.validators';
 import { AuthService, IRequestSignUpBody } from '@/services/auth.service';
-import { IInvalidResponse } from '@/types/response.types';
+import { isInvalidResponseWithDetails } from '@/types/response.types';
 
 export const SignUpForm = () => {
   const router = useRouter();
+  const { setUser } = useActions();
 
   const form = useForm<ISignUpFields>({
     resolver: zodResolver(signUpValidation),
@@ -49,44 +51,53 @@ export const SignUpForm = () => {
 
       return await AuthService.auth('signUp', payload);
     },
-    onSuccess: () => {
+    onSuccess: ({ user }) => {
+      setUser(user);
       form.reset();
       router.refresh();
       router.replace('/');
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 400) {
-          const detailsResponse = (err.response.data as IInvalidResponse)?.details;
+      ErrorHandler.mutation(err, {
+        validError: {
+          withToast: false,
+          action: (err) => {
+            if (isInvalidResponseWithDetails(err.data)) {
+              const { details } = err.data;
+              const allFields = form.watch();
 
-          if (detailsResponse) {
-            detailsResponse.forEach((detail) => {
-              if (detail.path === 'login') {
-                form.setError('login', {
-                  type: 'server',
-                  message: detail.msg,
-                });
-              } else if (detail.path === 'password') {
-                form.setError('password', {
-                  type: 'server',
-                  message: detail.msg,
-                });
-              }
+              details.forEach((detail) => {
+                if (allFields.hasOwnProperty(detail.path)) {
+                  form.setError(detail.path as keyof ISignUpFields, {
+                    type: 'server',
+                    message: detail.msg,
+                  });
+                } else {
+                  toast({
+                    variant: 'destructive',
+                    title: 'Validation error not from form',
+                    description: detail.msg,
+                  });
+                }
+              });
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'Validation error',
+                description: `A validation error occurred that was not caused by the server`,
+              });
+            }
+          },
+        },
+        conflictError: {
+          withToast: false,
+          action: () => {
+            return form.setError('login', {
+              type: 'server',
+              message: 'An account with this login already exists',
             });
-          }
-
-          return;
-        } else if (err.response?.status === 409) {
-          return form.setError('login', {
-            type: 'server',
-            message: 'An account with this login already exists',
-          });
-        }
-      }
-      toast({
-        variant: 'destructive',
-        title: 'Oops, something went wrong while logging in.',
-        description: 'Please double check your input or try again later.',
+          },
+        },
       });
     },
   });

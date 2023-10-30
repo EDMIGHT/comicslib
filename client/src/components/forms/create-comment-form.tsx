@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,9 +19,10 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { createCommentValidation } from '@/lib/validators/comment.validators';
 import { CommentsService } from '@/services/comments.service';
-import { IInvalidResponse } from '@/types/response.types';
+import { isInvalidResponseWithDetails } from '@/types/response.types';
 
 type CreateCommentFormProps = {
   comicId: string;
@@ -55,29 +55,38 @@ export const CreateCommentForm: FC<CreateCommentFormProps> = ({
       });
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 400) {
-          return toast({
-            variant: 'destructive',
-            title: 'Invalid request body',
-            description:
-              (err.response.data as IInvalidResponse)?.details[0]?.msg ||
-              'Check the correctness of the entered text',
-          });
-        } else if (err.response?.status === 401) {
-          return toast({
-            variant: 'destructive',
-            title: 'Authorization Error',
-            description: 'Please login or refresh the page',
-          });
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Sorry, something went wrong while creating the comment',
-            description: 'Please double check your input or try again later',
-          });
-        }
-      }
+      ErrorHandler.mutation(err, {
+        validError: {
+          withToast: false,
+          action: (err) => {
+            if (isInvalidResponseWithDetails(err.data)) {
+              const { details } = err.data;
+              const allFields = form.watch();
+
+              details.forEach((detail) => {
+                if (allFields.hasOwnProperty(detail.path)) {
+                  form.setError(detail.path as keyof ICreateCommentFields, {
+                    type: 'server',
+                    message: detail.msg,
+                  });
+                } else {
+                  toast({
+                    variant: 'destructive',
+                    title: 'Validation error not from form',
+                    description: detail.msg,
+                  });
+                }
+              });
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'Validation error',
+                description: `A validation error occurred that was not caused by the server`,
+              });
+            }
+          },
+        },
+      });
     },
     onSuccess: () => {
       form.reset();

@@ -17,14 +17,16 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { useActions } from '@/hooks/use-actions';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { UsersService } from '@/services/users.service';
 
 type DeleteAccountBtnProps = HTMLAttributes<HTMLButtonElement>;
 
 export const DeleteAccountBtn: FC<DeleteAccountBtnProps> = ({ className, ...rest }) => {
   const router = useRouter();
+  const { setUser } = useActions();
 
   const { mutate: deleteAccount, isLoading } = useMutation({
     mutationKey: [REACT_QUERY_KEYS.me, REACT_QUERY_KEYS.users],
@@ -36,11 +38,20 @@ export const DeleteAccountBtn: FC<DeleteAccountBtnProps> = ({ className, ...rest
         title: 'Congratulations!!',
         description: 'You have successfully deleted your account',
       });
+      setUser(null);
       router.refresh();
       router.replace('/');
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.mutation(err, {
+        notFoundError: {
+          title: 'Account has already been deleted',
+          description: 'You may have used an out-of-date page',
+          action: () => {
+            router.refresh();
+          },
+        },
+      });
     },
   });
 

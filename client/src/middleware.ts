@@ -14,10 +14,8 @@ const PRIVATE_PAGES = [
 ];
 const AUTH_PAGES = [HREFS.auth.signIn, HREFS.auth.signUp];
 
-const checkIsPrivatePages = (url: string): boolean =>
-  PRIVATE_PAGES.some((page) => url.startsWith(page));
-const checkIsAuthPages = (url: string): boolean =>
-  AUTH_PAGES.some((page) => url.startsWith(page));
+const checkIsSpecificPage = (url: string, urlsBase: string[]): boolean =>
+  urlsBase.some((page) => url.startsWith(page));
 const checkIsTokenValid = (exp: number): boolean => {
   const currentTime = Math.floor(Date.now() / 1000);
   const expWithReserve = exp - 60; // reserve 1 minute for slow connections
@@ -30,8 +28,8 @@ export async function middleware(req: NextRequest) {
   const refreshToken = req.cookies.get(AuthCookie.REFRESH)?.value;
   const expAccessToken = req.cookies.get(AuthCookie.EXP)?.value;
 
-  const isPrivatePage = checkIsPrivatePages(req.nextUrl.pathname);
-  const isAuthPage = checkIsAuthPages(req.nextUrl.pathname);
+  const isPrivatePage = checkIsSpecificPage(req.nextUrl.pathname, PRIVATE_PAGES);
+  const isAuthPage = checkIsSpecificPage(req.nextUrl.pathname, AUTH_PAGES);
   const isTokenValid = checkIsTokenValid(Number(expAccessToken));
 
   if (!refreshToken && isPrivatePage) {
@@ -72,3 +70,7 @@ export async function middleware(req: NextRequest) {
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ['/((?!_next).*)'],
+};

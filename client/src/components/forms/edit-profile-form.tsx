@@ -24,7 +24,7 @@ import { UserAvatar } from '@/components/user-avatar';
 import { HREFS } from '@/configs/href.configs';
 import { useActions } from '@/hooks/use-actions';
 import { convertImgToBase64 } from '@/lib/convertImgToBase64';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { editProfileSchema, IEditProfileSchema } from '@/lib/validators/user.validators';
 import { UsersService } from '@/services/users.service';
@@ -74,11 +74,15 @@ export const EditProfileForm: FC<EditProfileFormProps> = ({
       setDialogOpen(false);
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         conflictError: {
-          title: 'Conflict',
-          description:
-            'A user with this login already exists, please select a different login',
+          withToast: false,
+          action: () => {
+            form.setError('login', {
+              type: 'server',
+              message: 'Already exists',
+            });
+          },
         },
       });
     },

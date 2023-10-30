@@ -50,12 +50,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { HREFS } from '@/configs/href.configs';
 import { toast } from '@/hooks/use-toast';
 import { convertImgToBase64 } from '@/lib/convertImgToBase64';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { createComicSchema, ICreateComicFields } from '@/lib/validators/comic.validators';
 import { ComicsService } from '@/services/comics.service';
 import { IGenre } from '@/types/genre.types';
+import { isInvalidResponseWithDetails } from '@/types/response.types';
 import { IStatus } from '@/types/status.types';
 import { ITheme } from '@/types/theme.types';
 
@@ -96,7 +97,38 @@ export const CreateComicForm: FC<CreateComicFormProps> = ({ statuses, genres, th
       router.replace(`${HREFS.comics}/${id}`);
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.mutation(err, {
+        validError: {
+          withToast: false,
+          action: (err) => {
+            if (isInvalidResponseWithDetails(err.data)) {
+              const { details } = err.data;
+              const allFields = form.watch();
+
+              details.forEach((detail) => {
+                if (allFields.hasOwnProperty(detail.path)) {
+                  form.setError(detail.path as keyof ICreateComicFields, {
+                    type: 'server',
+                    message: detail.msg,
+                  });
+                } else {
+                  toast({
+                    variant: 'destructive',
+                    title: 'Validation error not from form',
+                    description: detail.msg,
+                  });
+                }
+              });
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'Validation error',
+                description: `A validation error occurred that was not caused by the server`,
+              });
+            }
+          },
+        },
+      });
     },
   });
 

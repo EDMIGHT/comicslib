@@ -81,6 +81,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
     unique_bookmarks_count,
     first_chapter,
     releasedAt,
+    createdAt,
   } = comic;
 
   const variants: NavigationVariants[] = [
@@ -156,6 +157,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
             status={status}
             themes={themes}
             releasedAt={releasedAt}
+            createdAt={createdAt}
           />
         </ShowMoreHoc>
         <div className='mt-2 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_250px]'>
@@ -175,6 +177,7 @@ const ComicPage: NextPage<PageProps> = async ({ params: { id }, children }) => {
               status={status}
               themes={themes}
               releasedAt={releasedAt}
+              createdAt={createdAt}
             />
           </div>
         </div>

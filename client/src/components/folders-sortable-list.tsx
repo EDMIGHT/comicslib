@@ -20,13 +20,13 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 
-import { DndKeyboardRecommendAlert } from '@/components/dnd-keyboard-recommend-alert';
+import { DndKeyboardRecommendAlert } from '@/components/layouts/dnd-keyboard-recommend-alert';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { SortableFolder } from '@/components/sortable-folder';
 import { Button } from '@/components/ui/button';
 import { useKeyPress } from '@/hooks/use-key-press';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { FoldersService } from '@/services/folders.service';
 import { IFolderWithComics } from '@/types/user.types';
 
@@ -106,7 +106,7 @@ export const FoldersSortableList: FC<FoldersSortableListProps> = ({ folders }) =
       });
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         notFoundError: {
           title: 'Folders not up to date',
           description:

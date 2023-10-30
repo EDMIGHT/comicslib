@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { UserUploadsFeed } from '@/components/feeds/user-uploads-feed';
+import { ComicsWithChaptersFeed } from '@/components/feeds/comics-with-chapters-feed';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
 import { SORT_VARIANTS } from '@/configs/site.configs';
@@ -35,7 +35,7 @@ const Page: FC<PageProps> = ({ params: { login }, searchParams }) => {
           className='w-[230px]'
         />
       </div>
-      <UserUploadsFeed login={login} {...searchParams} />
+      <ComicsWithChaptersFeed {...searchParams} fetchQuery='uploaded-by-user' login={login} />
     </div>
   );
 };

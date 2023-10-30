@@ -1,9 +1,7 @@
 import cors from 'cors';
 import env from 'dotenv';
 import express from 'express';
-import rateLimit from 'express-rate-limit';
 
-import { LIMITS } from '@/configs/general.configs';
 import prisma from '@/db/prisma';
 import routes from '@/routes';
 
@@ -21,14 +19,6 @@ app.use(express.json({ limit: '110mb' }));
 app.use(
   cors({
     origin: CLIENT_DOMAIN,
-  })
-);
-app.use(
-  rateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minutes
-    limit: LIMITS.maxRequestPerWindow, // per 1 minutes
-    standardHeaders: 'draft-7',
-    legacyHeaders: false,
   })
 );
 app.use('/api', routes);

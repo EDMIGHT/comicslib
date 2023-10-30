@@ -9,7 +9,7 @@ import { SearchComicSkeletons } from '@/components/skeletons/search-comic-skelet
 import { CommandDialog, CommandInput } from '@/components/ui/command';
 import { LIMITS } from '@/configs/site.configs';
 import { useDebounce } from '@/hooks/use-debounce';
-import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { ComicsService } from '@/services/comics.service';
 import { IResponseComic } from '@/types/comic.types';
 
@@ -51,12 +51,8 @@ export const SearchComics: FC<SearchComicsProps> = ({ open, setOpen, onClickItem
       }
       return null;
     },
-    onError: () => {
-      toast({
-        variant: 'destructive',
-        title: 'Oops, something went wrong',
-        description: 'An error occurred while searching, please try again later',
-      });
+    onError: (err) => {
+      ErrorHandler.query(err);
     },
   });
 

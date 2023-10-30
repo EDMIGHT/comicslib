@@ -10,7 +10,7 @@ import { Icons } from '@/components/ui/icons';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { HREFS } from '@/configs/href.configs';
-import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { ChaptersService } from '@/services/chapters.service';
 
@@ -25,18 +25,16 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
   const {
     data: content,
     isLoading,
+    isSuccess,
     isError,
+    refetch,
   } = useQuery({
     queryKey: [REACT_QUERY_KEYS.chapters],
     queryFn: async () => {
       return await ChaptersService.getContentForComic(comicId);
     },
-    onError: () => {
-      toast({
-        title: 'error while fetching chapters',
-        description: 'try refreshing the page or try again later',
-        variant: 'destructive',
-      });
+    onError: (err) => {
+      ErrorHandler.query(err);
     },
   });
 
@@ -63,32 +61,35 @@ export const ChapterControl: FC<ChapterControlProps> = ({ comicId, currentChapte
         </Button>
       </PopoverTrigger>
       <PopoverContent className='z-10 w-[200px] p-2'>
-        <ScrollArea className='flex max-h-[40vh] flex-col' type='always'>
-          <ul className='flex flex-col gap-1'>
-            {content?.map((chap) => (
-              <li key={chap.id}>
-                <Link
-                  href={`${HREFS.chapter}/${chap.id}`}
-                  className={cn(
-                    'px-2 py-1 text-sm rounded cursor-pointer w-full text-start outline-none truncate block',
-                    chap.id === currentChapterId
-                      ? 'bg-active text-active-foreground'
-                      : 'hover:bg-secondary focus:bg-secondary'
-                  )}
-                >
-                  <span className='block w-[150px] truncate'>
-                    Ch. {chap.number} {chap.title ? `- ${chap.title}` : null}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-          {(isLoading || isError) && (
-            <span>
-              <Icons.loading className='mx-auto h-5 w-5 animate-spin' />
-            </span>
-          )}
-        </ScrollArea>
+        {isSuccess && (
+          <ScrollArea className='flex max-h-[40vh] flex-col' type='always'>
+            <ul className='flex flex-col gap-1'>
+              {content?.map((chap) => (
+                <li key={chap.id}>
+                  <Link
+                    href={`${HREFS.chapter}/${chap.id}`}
+                    className={cn(
+                      'px-2 py-1 text-sm rounded cursor-pointer w-full text-start outline-none truncate block',
+                      chap.id === currentChapterId
+                        ? 'bg-active text-active-foreground'
+                        : 'hover:bg-secondary focus:bg-secondary'
+                    )}
+                  >
+                    <span className='block w-[150px] truncate'>
+                      Ch. {chap.number} {chap.title ? `- ${chap.title}` : null}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </ScrollArea>
+        )}
+        {isError && (
+          <Button onClick={() => void refetch()} className='w-full' variant='ghost'>
+            Try again
+          </Button>
+        )}
+        {isLoading && <Icons.loading className='mx-auto h-5 w-5 animate-spin' />}
       </PopoverContent>
     </Popover>
   );

@@ -8,7 +8,7 @@ import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Button } from '@/components/ui/button';
 import { useActions } from '@/hooks/use-actions';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { AuthService } from '@/services/auth.service';
 
@@ -31,10 +31,9 @@ export const SignOutMenu: FC<SignOutMenuProps> = ({ className, ...rest }) => {
       });
       router.refresh();
       router.replace('/');
-      // router.back(); //necessary for the modal window to close (this does not happen when replacing or pushing into the address bar)
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.mutation(err);
     },
   });
 

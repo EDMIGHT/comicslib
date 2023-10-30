@@ -1,19 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { FC, useState } from 'react';
 
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
+import { AuthorSearchSkeletons } from '@/components/skeletons/author-search-skeletons';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { HREFS } from '@/configs/href.configs';
 import { useClickOutside } from '@/hooks/use-click-outside';
 import { useDebounce } from '@/hooks/use-debounce';
-import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { AuthorsService } from '@/services/authors.service';
 import { IAuthor } from '@/types/author.types';
-
-import { AuthorSearchSkeletons } from './skeletons/author-search-skeletons';
-import { buttonVariants } from './ui/button';
+import { isInvalidResponseWithDetails } from '@/types/response.types';
 
 type AuthorsFilteringProps = {
   onClick: (author: IAuthor) => void;
@@ -37,6 +38,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({
     isLoading,
     isError,
     isSuccess,
+    refetch,
   } = useQuery({
     queryKey: [REACT_QUERY_KEYS.authors, debounced],
     queryFn: async () => {
@@ -45,12 +47,19 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({
         return authors;
       } else return [];
     },
-    onError: () => {
-      return toast({
-        title: 'Oops. Something went wrong!',
-        description:
-          'An error occurred while trying to search for the author behind your entered values, please try again later',
-        variant: 'destructive',
+    onError: (err) => {
+      const withDetails =
+        err instanceof AxiosError &&
+        isInvalidResponseWithDetails(err.response?.data) &&
+        err.response?.data;
+
+      ErrorHandler.query(err, {
+        validError: {
+          title: 'Validation error',
+          description:
+            (withDetails && withDetails.details[0].msg) ||
+            'There was a validation error caused by the server',
+        },
       });
     },
   });
@@ -76,7 +85,7 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({
         <div
           ref={handlerRefPopup}
           className={cn(
-            'absolute left-0 top-[110%] w-[240px] rounded border text-secondary-foreground py-1 px-2 bg-background'
+            'absolute left-0 top-[110%] w-[240px] rounded border text-secondary-foreground p-2 bg-background'
           )}
         >
           <ul className='flex flex-col gap-1'>
@@ -117,7 +126,14 @@ export const AuthorsFiltering: FC<AuthorsFilteringProps> = ({
                   </h4>
                 </li>
               ))}
-            {(isLoading || isError) && <AuthorSearchSkeletons count={5} />}
+            {isLoading && <AuthorSearchSkeletons count={5} />}
+            {isError && (
+              <li>
+                <Button onClick={() => void refetch()} className='w-full' variant='ghost'>
+                  Try again
+                </Button>
+              </li>
+            )}
           </ul>
         </div>
       )}

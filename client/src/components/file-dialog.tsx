@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Icons } from '@/components/ui/icons';
-import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 
@@ -54,38 +54,13 @@ export const FileDialog: FC<FileDialogProps> = ({
       }
 
       if (rejectedFiles.length > 0) {
-        rejectedFiles.forEach(({ errors }) => {
-          if (errors[0].code === 'file-too-large') {
-            toast({
-              variant: 'destructive',
-              title: 'File size is too large',
-              description: `The file size is too large, the maximum allowable size is ${formattedMaxSize}`,
-            });
-          } else if (errors[0].code === 'file-invalid-type') {
-            toast({
-              variant: 'destructive',
-              title: 'Invalid File Type',
-              description: `You can only upload pictures as comic cover`,
-            });
-          } else if (errors[0].code === 'too-many-files') {
-            toast({
-              variant: 'destructive',
-              title: 'Too many files',
-              description: `You have selected too many files at once, please select no more than ${maxFiles} ${
-                isMoreThanOneMaxFiles ? 'files' : 'file'
-              } `,
-            });
-          } else {
-            toast({
-              variant: 'destructive',
-              title: 'Oops, something went wrong',
-              description: `An error occurred while parsing your file, please select another file`,
-            });
-          }
+        ErrorHandler.file(rejectedFiles[0].errors[0], {
+          formattedMaxSize,
+          maxFiles,
         });
       }
     },
-    [formattedMaxSize, isMoreThanOneMaxFiles, maxFiles, onSelectFiles]
+    [formattedMaxSize, maxFiles, onSelectFiles]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -18,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { changePasswordSchema, IChangePasswordSchema } from '@/lib/validators/user.validators';
 import { UsersService } from '@/services/users.service';
 
@@ -47,31 +47,20 @@ export const ChangePasswordForm: FC = ({}) => {
       });
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 400) {
-          return toast({
-            variant: 'destructive',
-            title: 'Account not found',
-            description: 'This account does not exist or was created using external services',
-          });
-        } else if (err.response?.status === 409) {
-          form.setError('oldPassword', {
-            type: 'server',
-            message: 'The old password entered is incorrect',
-          });
-
-          return toast({
-            variant: 'destructive',
-            title: 'The old password entered is incorrect',
-            description: 'Please check that you entered your previous password correctly',
-          });
-        }
-      }
-
-      return toast({
-        variant: 'destructive',
-        title: 'Oops. Something went wrong!',
-        description: 'Something went wrong, please try again later',
+      ErrorHandler.mutation(err, {
+        notFoundError: {
+          title: 'Account not found',
+          description: 'This account does not exist or was created using external services',
+        },
+        conflictError: {
+          withToast: false,
+          action: () => {
+            form.setError('oldPassword', {
+              type: 'server',
+              message: 'The old password entered is incorrect',
+            });
+          },
+        },
       });
     },
   });

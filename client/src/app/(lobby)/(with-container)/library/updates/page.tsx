@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { FC } from 'react';
 
-import { UserComicsWithChaptersFeed } from '@/components/feeds/user-comics-with-chapters-feed';
+import { ComicsWithChaptersFeed } from '@/components/feeds/comics-with-chapters-feed';
 import { PageHeader } from '@/components/page-header';
 import { Search } from '@/components/search';
 import { Sort } from '@/components/sort';
@@ -41,7 +41,7 @@ const Page: FC<PageProps> = ({ searchParams }) => {
           className='w-[230px]'
         />
       </div>
-      <UserComicsWithChaptersFeed {...searchParams} />
+      <ComicsWithChaptersFeed {...searchParams} fetchQuery='for-user' />
     </div>
   );
 };

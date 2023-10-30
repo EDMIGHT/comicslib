@@ -5,7 +5,7 @@ import { FC } from 'react';
 
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { Icons } from '@/components/ui/icons';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import { UsersService } from '@/services/users.service';
 
@@ -25,7 +25,7 @@ export const BookmarkComicDelete: FC<BookmarkComicDeleteProps> = ({ comicId }) =
       void queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.bookmarks] });
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         conflictError: {
           title: 'You are not the owner of this bookmark',
           description:

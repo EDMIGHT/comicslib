@@ -64,7 +64,7 @@ export const ChapterItem: FC<ChapterItemProps> = ({
           </UserDetailsHoc>
         ) : (
           <h3 className='flex cursor-not-allowed items-center justify-start text-muted-foreground'>
-            <Icons.user className='mr-1 h-4 w-4' />
+            <Icons.deletedUser className='mr-1 h-4 w-4' />
             deleted
           </h3>
         )}

@@ -3,6 +3,11 @@
 import { useSearchParams } from 'next/navigation';
 import { FC, useCallback, useState } from 'react';
 
+import { AuthorsFiltering } from '@/components/authors-filtering';
+import { DateFilter } from '@/components/date-filter';
+import { GenresList } from '@/components/genres-list';
+import { StatusesList } from '@/components/statuses-list';
+import { ThemesList } from '@/components/themes-list';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,12 +24,6 @@ import { useChangeSearchParams } from '@/hooks/use-change-search-params';
 import { IGenre } from '@/types/genre.types';
 import { IStatus } from '@/types/status.types';
 import { ITheme } from '@/types/theme.types';
-
-import { AuthorsFiltering } from './authors-filtering';
-import { DateFilter } from './date-filter';
-import { GenresList } from './genres-list';
-import { StatusesList } from './statuses-list';
-import { ThemesList } from './themes-list';
 
 type AdvancedFilteringProps = {
   genres: IGenre[];
@@ -105,7 +104,7 @@ export const AdvancedFiltering: FC<AdvancedFilteringProps> = ({
         <DialogHeader>
           <DialogTitle>Advanced filters</DialogTitle>
         </DialogHeader>
-        <ScrollArea className='max-h-[80vh]'>
+        <ScrollArea className='max-h-[80vh] py-2'>
           <div className='space-y-3'>
             <div className='space-y-1 md:space-y-2'>
               <div>

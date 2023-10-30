@@ -25,7 +25,7 @@ import { Pagination } from '@/components/ui/pagination';
 import { HREFS } from '@/configs/href.configs';
 import { PLACEHOLDERS } from '@/configs/site.configs';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { getRandomNumber } from '@/lib/utils';
 import { editFolderSchema, IEditFolderSchema } from '@/lib/validators/user.validators';
 import { FoldersService } from '@/services/folders.service';
@@ -67,7 +67,7 @@ export const EditFolderForm: FC<EditFolderFormProps> = ({
       form.setValue('title', res.title);
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         forbiddenError: {
           title: 'Access error',
           description: 'You are not the owner of this folder to edit it',

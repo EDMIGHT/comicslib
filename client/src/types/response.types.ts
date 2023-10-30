@@ -36,6 +36,9 @@ export type IInvalidResponse = IBadResponse & {
   body: unknown;
 };
 
+export const isInvalidResponseWithDetails = (obj: unknown): obj is IInvalidResponse =>
+  obj !== null && typeof obj === 'object' && 'details' in obj;
+
 export const isWithTokensResponse = (obj: unknown): obj is ITokens =>
   obj !== null &&
   typeof obj === 'object' &&

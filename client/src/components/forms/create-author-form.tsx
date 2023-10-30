@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { createAuthorSchema, ICreateAuthorFields } from '@/lib/validators/author.validators';
 import { AuthorsService } from '@/services/authors.service';
 
@@ -54,7 +54,17 @@ export const CreateAuthorForm: FC<CreateAuthorFormProps> = ({
       handleSuccess && handleSuccess();
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.mutation(err, {
+        conflictError: {
+          withToast: false,
+          action: () => {
+            form.setError('login', {
+              type: 'server',
+              message: 'Already exists',
+            });
+          },
+        },
+      });
     },
   });
 

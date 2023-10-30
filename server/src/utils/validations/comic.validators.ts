@@ -18,11 +18,37 @@ export const createComicValidators = [
     .trim()
     .isLength({ max: 2000 })
     .withMessage('The maximum desc length is 2000 characters'),
-  check(comicSchema.img.name)
-    .optional()
+  check(comicSchema.img.name).isString().withMessage(`Image must be a string`).trim(),
+  check('authors')
+    .isArray()
+    .withMessage('Authors must be passed as an array of their ids')
+    .isLength({
+      min: 1,
+    })
+    .withMessage('A comic must have at least 1 author'),
+  check('authors.*')
     .isString()
-    .withMessage(`Image must be a string`)
-    .trim(),
+    .withMessage('Elements of the authors array must be their id type string'),
+  check('genres')
+    .isArray()
+    .withMessage('Genres must be passed as an array of their ids')
+    .isLength({
+      min: 1,
+    })
+    .withMessage('A comic must have at least 1 author'),
+  check('genres.*')
+    .isString()
+    .withMessage('Elements of the genres array must be their id type string'),
+  check('themes')
+    .isArray()
+    .withMessage('Themes must be passed as an array of their ids')
+    .isLength({
+      min: 1,
+    })
+    .withMessage('A comic must have at least 1 author'),
+  check('themes.*')
+    .isString()
+    .withMessage('Elements of the themes array must be their id type string'),
 ];
 
 export const getComicsValidators = [

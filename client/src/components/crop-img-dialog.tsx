@@ -1,3 +1,5 @@
+'use client';
+
 import 'cropperjs/dist/cropper.css';
 
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useRef } from 'react';
@@ -11,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { toast } from '@/hooks/use-toast';
 
 type CropImgDialogProps = {
   file: File;
@@ -29,7 +32,10 @@ export const CropImgDialog: FC<CropImgDialogProps> = ({ file, open, setOpen, onC
 
     croppedCanvas.toBlob((blob) => {
       if (!blob) {
-        return console.error('blob error');
+        return toast({
+          title: 'Oops, something went wrong',
+          description: 'Please refresh the page or choose another photo',
+        });
       }
       const croppedImage = new File([blob], file.name, {
         type: file.type,

@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { DndKeyboardRecommendAlert } from '@/components/dnd-keyboard-recommend-alert';
+import { DndKeyboardRecommendAlert } from '@/components/layouts/dnd-keyboard-recommend-alert';
 import { FileDialog } from '@/components/file-dialog';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { SortablePage } from '@/components/sortable-page';
@@ -39,7 +39,7 @@ import { LIMITS } from '@/configs/site.configs';
 import { useKeyPress } from '@/hooks/use-key-press';
 import { toast } from '@/hooks/use-toast';
 import { convertImgToBase64 } from '@/lib/convertImgToBase64';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { cn } from '@/lib/utils';
 import {
   createChapterSchema,
@@ -112,10 +112,9 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
       router.replace(`${HREFS.chapter}/${id}`);
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         conflictError: {
-          title: 'Chapter already exists',
-          description: 'There already exists a chapter for this comic with this number',
+          withToast: false,
           action: () => {
             form.setError('number', {
               type: 'server',

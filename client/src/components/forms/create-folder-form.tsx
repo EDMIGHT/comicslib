@@ -25,7 +25,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { HREFS } from '@/configs/href.configs';
 import { LIMITS, PLACEHOLDERS } from '@/configs/site.configs';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { getRandomNumber } from '@/lib/utils';
 import {
   createUserFolderSchema,
@@ -52,7 +52,7 @@ export const CreateFolderForm: FC = () => {
       return await FoldersService.createFolder(data);
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         forbiddenError: {
           title: 'The maximum number of folders has been reached',
           description: `You have already created ${LIMITS.folders} folders, please delete one of the old ones before creating a new one`,

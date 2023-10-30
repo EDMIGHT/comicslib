@@ -21,7 +21,7 @@ import { UserAvatar } from '@/components/user-avatar';
 import { HREFS } from '@/configs/href.configs';
 import { useAuth } from '@/hooks/use-auth';
 import { toast } from '@/hooks/use-toast';
-import { handleErrorMutation } from '@/lib/handleErrorMutation';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { Formatter } from '@/lib/helpers/formatter.helper';
 import { cn } from '@/lib/utils';
 import { CommentsService } from '@/services/comments.service';
@@ -56,7 +56,16 @@ export const CommentBase: FC<CommentBaseProps> = ({
       router.refresh();
     },
     onError: (err) => {
-      handleErrorMutation(err);
+      ErrorHandler.mutation(err, {
+        notFoundError: {
+          title: 'The comment not exists',
+          description:
+            'The comment for which you added a vote does not exist or was deleted by the owner',
+          action: () => {
+            router.refresh();
+          },
+        },
+      });
     },
   });
   const { mutate: deleteComment, isLoading: isLoadingDeletingComment } = useMutation({
@@ -68,7 +77,7 @@ export const CommentBase: FC<CommentBaseProps> = ({
       router.refresh();
     },
     onError: (err) => {
-      handleErrorMutation(err, {
+      ErrorHandler.mutation(err, {
         conflictError: {
           title: 'Access failed',
           description:

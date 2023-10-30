@@ -1,7 +1,6 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useState } from 'react';
 
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
@@ -9,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { CommandDialog } from '@/components/ui/command';
 import { Icons } from '@/components/ui/icons';
 import { toast } from '@/hooks/use-toast';
+import { ErrorHandler } from '@/lib/helpers/error-handler.helper';
 import { UsersService } from '@/services/users.service';
 
 export const BookmarksCleaning = () => {
@@ -28,20 +28,7 @@ export const BookmarksCleaning = () => {
       void queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.bookmarks] });
     },
     onError: (err) => {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          return toast({
-            variant: 'destructive',
-            title: 'Authorization Error',
-            description: 'Please login or refresh the page',
-          });
-        } else {
-          toast({
-            variant: 'destructive',
-            title: 'Sorry, something went wrong while clearing your bookmarks',
-          });
-        }
-      }
+      ErrorHandler.mutation(err);
     },
   });
 

@@ -244,13 +244,6 @@ export const getAllSubscribedComics = async (
 export const updateBookmark = async (req: Request, res: Response): Promise<Response> => {
   const { comicId, chapterId, pageNumber } = req.body;
   try {
-    const existedComic = await ComicModel.get(comicId);
-    if (!existedComic) {
-      return CustomResponse.notFound(res, {
-        message: 'the comic for bookmark is being updated was not found',
-      });
-    }
-
     const existedChapter = await ChapterModel.get(chapterId);
     if (!existedChapter) {
       return CustomResponse.notFound(res, {
