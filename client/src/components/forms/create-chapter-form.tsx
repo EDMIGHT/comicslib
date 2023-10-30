@@ -18,8 +18,8 @@ import { useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { DndKeyboardRecommendAlert } from '@/components/layouts/dnd-keyboard-recommend-alert';
 import { FileDialog } from '@/components/file-dialog';
+import { DndKeyboardRecommendAlert } from '@/components/layouts/dnd-keyboard-recommend-alert';
 import { REACT_QUERY_KEYS } from '@/components/providers/query-provider';
 import { SortablePage } from '@/components/sortable-page';
 import { Button } from '@/components/ui/button';
