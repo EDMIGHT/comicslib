@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ENDPOINTS, LOCAL_ENDPOINTS } from '@/configs/endpoint.configs';
 import { ISignInFields, ISignUpFields } from '@/lib/validators/auth.validators';
 import { apiAuth } from '@/services/apiAuth';
-import { IResponseAuth, IUser } from '@/types/user.types';
+import { IUser } from '@/types/user.types';
 
 export type IRequestSignUpBody = Pick<ISignUpFields, 'login' | 'password'>;
 
@@ -12,7 +12,7 @@ export class AuthService {
     type: 'signIn' | 'signUp',
     data: ISignInFields | IRequestSignUpBody
   ) {
-    const { data: respData } = await axios<IResponseAuth>({
+    const { data: respData } = await axios<IUser>({
       url: LOCAL_ENDPOINTS.auth[type],
       method: 'POST',
       data,

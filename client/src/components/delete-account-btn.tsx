@@ -47,9 +47,6 @@ export const DeleteAccountBtn: FC<DeleteAccountBtnProps> = ({ className, ...rest
         notFoundError: {
           title: 'Account has already been deleted',
           description: 'You may have used an out-of-date page',
-          action: () => {
-            router.refresh();
-          },
         },
       });
     },

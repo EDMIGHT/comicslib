@@ -51,8 +51,8 @@ export const SignUpForm = () => {
 
       return await AuthService.auth('signUp', payload);
     },
-    onSuccess: ({ user }) => {
-      setUser(user);
+    onSuccess: (payload) => {
+      setUser(payload);
       form.reset();
       router.refresh();
       router.replace('/');
@@ -104,7 +104,6 @@ export const SignUpForm = () => {
 
   const onSubmit = (data: ISignUpFields) => {
     signUp(data);
-    form.reset();
   };
 
   const memoizedLoginPlaceholder = useMemo(

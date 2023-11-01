@@ -78,5 +78,6 @@ export const LOCAL_ENDPOINTS = {
     signUp: '/api/auth/sign-up',
     signOut: '/api/auth/sign-out',
     tokens: '/api/auth/token',
+    delete: '/api/auth/delete',
   },
 };

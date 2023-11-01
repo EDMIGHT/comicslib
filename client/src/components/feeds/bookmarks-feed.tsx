@@ -62,9 +62,6 @@ export const BookmarksFeed: FC<BookmarksFeedProps> = ({
           notFoundError: {
             title: 'No information found',
             description: 'Try again, if the error persists, try again later',
-            action: () => {
-              router.refresh();
-            },
           },
           validError: {
             title: 'Validation error',

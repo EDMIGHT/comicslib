@@ -5,19 +5,22 @@ import { ENDPOINTS } from '@/configs/endpoint.configs';
 import { AuthCookiesNextResponseHelper } from '@/lib/helpers/auth-cookies-next-response.helper';
 import { signInValidation } from '@/lib/validators/auth.validators';
 import { api } from '@/services/api';
-import { ITokens } from '@/types/response.types';
+import { IResponseAuth } from '@/types/user.types';
 
 export async function POST(req: NextRequest) {
   try {
     const body = signInValidation.parse(await req.json());
 
-    const { data, status } = await api.post<ITokens>(ENDPOINTS.auth.signIn, body);
+    const {
+      data: { user, ...tokens },
+      status,
+    } = await api.post<IResponseAuth>(ENDPOINTS.auth.signIn, body);
 
-    const res = NextResponse.json(null, {
+    const res = NextResponse.json(user, {
       status,
     });
 
-    return AuthCookiesNextResponseHelper.set(res, data);
+    return AuthCookiesNextResponseHelper.set(res, tokens);
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       return NextResponse.json(error.response.data, {

@@ -1,4 +1,6 @@
-import { ENDPOINTS } from '@/configs/endpoint.configs';
+import axios from 'axios';
+
+import { ENDPOINTS, LOCAL_ENDPOINTS } from '@/configs/endpoint.configs';
 import { LIMITS, SORT_VARIANTS } from '@/configs/site.configs';
 import { IChangePasswordSchema } from '@/lib/validators/user.validators';
 import { api } from '@/services/api';
@@ -130,7 +132,9 @@ export class UsersService {
     return data;
   }
   public static async deleteAccount() {
-    const { data } = await apiAuth.delete<null>(ENDPOINTS.users.origin);
+    const { data } = await axios.delete<null>(LOCAL_ENDPOINTS.auth.delete, {
+      withCredentials: true,
+    });
     return data;
   }
 }

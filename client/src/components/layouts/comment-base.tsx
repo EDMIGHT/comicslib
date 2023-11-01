@@ -61,9 +61,6 @@ export const CommentBase: FC<CommentBaseProps> = ({
           title: 'The comment not exists',
           description:
             'The comment for which you added a vote does not exist or was deleted by the owner',
-          action: () => {
-            router.refresh();
-          },
         },
       });
     },

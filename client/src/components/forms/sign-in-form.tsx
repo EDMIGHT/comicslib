@@ -49,7 +49,7 @@ export const SignInForm = () => {
     },
     onSuccess: (payload) => {
       console.log(payload);
-      setUser(payload.user);
+      setUser(payload);
       form.reset();
       router.refresh();
       router.replace('/');
