@@ -1,7 +1,10 @@
 import cors from 'cors';
 import env from 'dotenv';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 
+import { LIMITS } from '@/configs/general.configs';
 import prisma from '@/db/prisma';
 import routes from '@/routes';
 
@@ -14,11 +17,21 @@ const VERSION = process.env.npm_package_version;
 const DESCRIPTION = process.env.npm_package_description;
 
 const app = express();
+app.set('trust proxy', 1 /* number of proxies between user and server */);
 
 app.use(express.json({ limit: '110mb' }));
 app.use(
   cors({
     origin: CLIENT_DOMAIN,
+  })
+);
+app.use(helmet());
+app.use(
+  rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minutes
+    limit: LIMITS.maxRequestPerWindow, // per 1 minutes
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
   })
 );
 app.use('/api', routes);
