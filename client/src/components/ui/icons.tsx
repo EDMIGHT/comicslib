@@ -51,7 +51,6 @@ import {
   UploadCloud,
   User2,
   Users,
-  UserX2,
   X,
 } from 'lucide-react';
 
@@ -94,7 +93,6 @@ export const Icons = {
     </svg>
   ),
   delete: Trash2,
-  deletedUser: UserX2,
   edit: Pencil,
   fatalError: Bomb,
   logOut: LogOut,

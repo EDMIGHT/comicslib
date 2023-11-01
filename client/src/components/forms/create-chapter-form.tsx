@@ -109,6 +109,7 @@ export const CreateChapterForm: FC<CreateChapterFormProps> = ({ comicId }) => {
           title ? title : ''
         }`,
       });
+      router.refresh();
       router.replace(`${HREFS.chapter}/${id}`);
     },
     onError: (err) => {

@@ -66,9 +66,9 @@ const LatestUpdatesSectionBase: FC<LatestUpdatesSectionBaseProps> = ({
                     </span>
                   </Link>
                 ) : (
-                  <h3 className='flex cursor-not-allowed items-center justify-start text-muted-foreground'>
-                    <Icons.deletedUser className='mr-1 h-4 w-4' />
-                    deleted
+                  <h3 className='flex cursor-not-allowed items-center text-muted-foreground'>
+                    <Icons.user className='h-5 w-5 shrink-0' />
+                    <span className='px-1 text-sm '>deleted</span>
                   </h3>
                 )}
                 <span className='whitespace-nowrap text-sm'>{formattedDate}</span>

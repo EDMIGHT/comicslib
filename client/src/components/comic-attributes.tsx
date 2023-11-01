@@ -15,6 +15,7 @@ type ComicAttributesProps = HTMLAttributes<HTMLUListElement> & {
   themes: ITheme[];
   limit?: number;
   isLink?: boolean;
+  withControl?: boolean;
   variant?: ButtonProps['variant'];
 };
 
@@ -25,6 +26,7 @@ export const ComicAttributes: FC<ComicAttributesProps> = ({
   isLink = true,
   variant,
   className,
+  withControl = true,
   ...rest
 }) => {
   const [showAll, setShowAll] = useState(false);
@@ -74,18 +76,35 @@ export const ComicAttributes: FC<ComicAttributesProps> = ({
           )}
         </li>
       ))}
-      {!showAll && mixedAttributes.length > limit && (
-        <li>
-          <button
-            onClick={() => setShowAll(true)}
-            className={cn(
-              buttonVariants({ variant: 'ghost' }),
-              'py-1 h-fit px-1 text-xs font-bold uppercase text-active'
-            )}
-          >
-            MORE
-          </button>
-        </li>
+      {withControl && (
+        <>
+          {!showAll && mixedAttributes.length > limit && (
+            <li>
+              <button
+                onClick={() => setShowAll(true)}
+                className={cn(
+                  buttonVariants({ variant: 'ghost' }),
+                  'py-1 h-fit px-1 text-xs font-bold uppercase text-active'
+                )}
+              >
+                MORE
+              </button>
+            </li>
+          )}
+          {showAll && (
+            <li>
+              <button
+                onClick={() => setShowAll(false)}
+                className={cn(
+                  buttonVariants({ variant: 'ghost' }),
+                  'py-1 h-fit px-1 text-xs font-bold uppercase text-active'
+                )}
+              >
+                LESS
+              </button>
+            </li>
+          )}
+        </>
       )}
     </ul>
   );

@@ -67,9 +67,10 @@ export const FullScreenComicCarousel: FC<FullScreenComicCarouselProps> = ({ comi
                         isLink={false}
                         themes={comic.themes}
                         genres={comic.genres}
+                        withControl={false}
                       />
                       <p className='line-clamp-5 text-sm'>{comic.desc}</p>
-                      <h4 className='mt-auto w-[90%] truncate font-medium italic'>
+                      <h4 className='mt-auto hidden w-[90%] truncate font-medium italic md:block'>
                         {comic.authors.map((author) => author.login).join(', ')}
                       </h4>
                     </div>
