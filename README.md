@@ -2,7 +2,7 @@
 
 This application is a personal project inspired by the existing **[MangaDex](https://mangadex.org/)** platform. The primary aim of this development effort was to enhance my skills in building the client-side using **Next.js 13.4**. It's important to note that **all materials** utilized in this application were directly sourced from **[MangaDex](https://mangadex.org/)**.
 
-[![Skateshop13](./resources/screenshots/preview.webp)](https://comicslib.vercel.app/)
+[![comicslib](./resources/screenshots/preview.webp)](https://comicslib.vercel.app/)
 
 > **Warning**
 > This project is still in development and is not ready for production use.
@@ -17,6 +17,8 @@ This application is a personal project inspired by the existing **[MangaDex](htt
 - **ORM:** [Prisma](https://www.prisma.io/)
 - **UI Components:** [shadcn/ui](https://ui.shadcn.com)
 - **Content Management:** [Contentlayer](https://www.contentlayer.dev)
+- **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/)
+- **Database:** [MySQL](https://www.mysql.com/)
 
 ## Features to be implemented
 
